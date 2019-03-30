@@ -16,6 +16,8 @@ backup <- function(
   children <- find_children(file)
   sfx <- "1"
 
+
+  # rename and prune children, pad suffix if necessary
   if (length(children)){
     children_new <- get_name_components(file, children)
     children_new[, "sfx"] <- as.integer(children_new[, "sfx"]) + 1L
@@ -30,9 +32,16 @@ backup <- function(
     }
   }
 
+  # generate new filename
   name <- tools::file_path_sans_ext(file)
   ext  <- tools::file_ext(file)
-  name_new <- paste(name, sfx, ext, sep = ".")
+  if (is_blank(ext)) {
+    name_new <- paste(name, sfx, sep = ".")
+  } else {
+    name_new <- paste(name, sfx, ext, sep = ".")
+  }
+
+
   file.copy(file, name_new, overwrite = FALSE)
 
   if (compression != "none"){
@@ -63,8 +72,3 @@ prune_backups = function(
 
   children_new
 }
-
-
-
-
-

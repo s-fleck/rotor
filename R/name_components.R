@@ -1,8 +1,23 @@
+#' Get components of backup filenames
+#'
+#' @param file `character` scalar: The base file.
+#' @param potential_children `chracter` vector: list of files that could
+#'   potentially be backups for `file` (and follow the rotor naming convention)
+#'
+#' @return
+#'   a matrix with 2 or 3 columns: `name`, `sfx` and `ext` (optional). The
+#'   number of rows depends on how many elements of `potential_children` are
+#'   really backups of `file`.
+#' @noRd
+#'
 get_name_components <- function(
   file,
   potential_children
 ){
-  assert(is_scalar_character(file))
+  stopifnot(
+    is_scalar_character(file),
+    is.character(potential_children)
+  )
 
   name <- tools::file_path_sans_ext(file)
   ext  <- tools::file_ext(file)
@@ -17,34 +32,62 @@ get_name_components <- function(
   # identify name parts
   name_end <- attr(gregexpr(name, children[[1]])[[1]], "match.length") + 1L
   a <- strsplit_at_pos(children, name_end)
-  ext_start <- gregexpr(ext, a[, 2][[1]])[[1]]
-  b <- strsplit_at_pos(a[, 2], ext_start - 1L)
 
-  res <- cbind(a[, 1], b)
-  colnames(res) <- c("name", "sfx", "ext")
+  if (!is_blank(ext)){
+    ext_start <- gregexpr(ext, a[, 2][[1]])[[1]]
+    b <- strsplit_at_pos(a[, 2], ext_start - 1L)
+    res <- cbind(a[, 1], b)
+    colnames(res) <- c("name", "sfx", "ext")
+  } else {
+    res <- a
+    colnames(res) <- c("name", "sfx")
+  }
+
   res
 }
 
 
 
+#' Identify which files are backups of `file`
+#'
+#' @inheritParams get_name_components
+#' @noRd
 get_children <- function(
   file,
   potential_children
 ){
+  stopifnot(
+    is_scalar_character(file),
+    is.character(potential_children)
+  )
+
   name <- tools::file_path_sans_ext(file)
   ext  <- tools::file_ext(file)
-  pat <- sprintf("^%s\\..*\\.%s\\.*", name, ext)
+
+  if (is_blank(ext)){
+    pat = paste0(name, "\\.[^.]+$")
+
+  } else {
+    pat <- sprintf("^%s\\..*\\.%s\\.*", name, ext)
+  }
+
   sort(grep(pat, potential_children, value = TRUE))
 }
 
 
 
 
+#' Find backups of `file`
+#'
+#' @inheritParams get_name_components
+#' @noRd
 find_children <- function(
   file
 ){
-  assert(is_scalar_character(file))
-  assert(dir.exists(dirname(file)))
+  stopifnot(
+    is_scalar_character(file),
+    dir.exists(dirname(file))
+  )
 
   get_children(
     file,
