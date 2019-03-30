@@ -1,14 +1,18 @@
 get_name_components <- function(
-  x,
-  src
+  file,
+  potential_children
 ){
-  assert(is_scalar_character(src))
+  assert(is_scalar_character(file))
 
-  name <- tools::file_path_sans_ext(basename(src))
-  ext  <- tools::file_ext(src)
+  name <- tools::file_path_sans_ext(file)
+  ext  <- tools::file_ext(file)
 
   # identify descent files
-  children <- get_children(x, src)
+  children <- get_children(file, potential_children)
+
+  if (!length(children)){
+    return(character())
+  }
 
   # identify name parts
   name_end <- attr(gregexpr(name, children[[1]])[[1]], "match.length") + 1L
@@ -23,15 +27,29 @@ get_name_components <- function(
 
 
 
-
 get_children <- function(
-  x,
-  src
+  file,
+  potential_children
 ){
-  name <- tools::file_path_sans_ext(basename(src))
-  ext  <- tools::file_ext(src)
+  name <- tools::file_path_sans_ext(file)
+  ext  <- tools::file_ext(file)
   pat <- sprintf("^%s\\..*\\.%s\\.*", name, ext)
-  grep(pat, x, value = TRUE)
+  sort(grep(pat, potential_children, value = TRUE))
+}
+
+
+
+
+find_children <- function(
+  file
+){
+  assert(is_scalar_character(file))
+  assert(dir.exists(dirname(file)))
+
+  get_children(
+    file,
+    list.files(dirname(file), full.names = TRUE)
+  )
 }
 
 
