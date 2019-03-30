@@ -6,33 +6,40 @@ test_that("name_components works as expected", {
     "blah",
     "blah.log",
     "blah.100",
-    "blah.log.100",
-    "blah.log.100.zip",
-    "path/to/blah.log.100.zip",
-    "path/to/blah.log.100.tar.gz",
+    "blah.100.log",
+    "blah.100.zip",
+    "path/to/blah.100.zip",
+    "path/to/blah.100.tar.gz",
     "zip",
-    "zip.100"
+    "zip.100",
+    "balltar.gz"
   )
-
-  r <- get_arc_ext(fnames)
-
-  expect_true(r[[5]] == "zip")
-  expect_true(r[[6]] == "zip")
-  expect_true(r[[7]] == "tar.gz")
-  expect_true(r[[8]] == "")
-  expect_true(r[[9]] == "")
 })
 
 
 
 
+test_that("get_descendents works as expected", {
+  x <- c("blah.1.log.zip", "blah.2.log.zip", "blah.3.log.zip", "blah.3.log.tar.gz", "blubb.3.log.zip")
+  src <- "blah.log"
 
-
-
-test_that("is_dater_sfx", {
-  a <- "2019-02-31"
-  b <- "2019-02"
-  c <- "201902"
-  d <- "2019W02"
+  expect_identical(
+    get_descendents(x, src),
+    x[1:4]
+  )
 })
 
+
+
+
+test_that("name_components works as expected", {
+  x <- c("blah.1.log.zip", "blah.2.log.zip", "blah.3.log.zip", "blah.4.log.tar.gz")
+  src <- "blah.log"
+
+  r <- get_name_components(x, "blah.log")
+
+  expect_true(all_are_identical(r[, "name"]))
+  expect_identical(r[, "sfx"], as.character(1:4))
+
+  r
+})

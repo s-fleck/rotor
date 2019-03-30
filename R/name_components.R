@@ -1,100 +1,52 @@
 get_name_components <- function(
-  x
-){
-  bn <- basename(x)
-
-  res <- matrix(
-    nrow = length(bn),
-    ncol = 5,
-    dimnames = list(NULL, c("dir", "name", "ext", "sfx", "arc"))
-  )
-
-
-
-
-
-
-  sp <- strsplit(bn, ".", fixed = TRUE)
-
-
-  lapply(sp, function(.x){
-    res <- list(
-      dir = dirname(.x),
-      name = NULL,
-      ext = NULL,
-      sfx = NULL,
-      arc = NULL
-    )
-
-    for (i in rev(seq_along(.x))){
-      if (is_arc_ext(x[[i]])){
-        res[["arc"]] <- x[[i]]
-      }
-
-
-
-
-
-
-
-    }
-
-
-
-
-    # Determine Archive Format
-      # id tarbals
-      if (x[[len - 1L]] == "tar"){
-        res[["arc"]] <- paste(.x[[len - 1L]], .x[{len}], sep = ".")
-
-      } else if (is_arc_ext(x[[len]])) {
-        res[["arc"]] <- x[[len]]
-      }
-
-
-
-
-
-  })
-
-
-}
-
-
-is_integer_sfx <- function(x){
-  !is.na(as.integer(x))
-}
-
-
-
-is_date_sfx <- function(x){
-
-}
-
-
-is_arc_ext <- function(
   x,
-  zip_exts = getOption("rtr.zip_exts")
+  src
 ){
-  tolower(x) %in% tolower(zip_exts)
+  assert(is_scalar_character(src))
+
+  name <- tools::file_path_sans_ext(basename(src))
+  ext  <- tools::file_ext(src)
+
+  # identify descent files
+  children <- get_children(x, src)
+
+  # identify name parts
+  name_end <- attr(gregexpr(name, children[[1]])[[1]], "match.length") + 1L
+  a <- strsplit_at_pos(children, name_end)
+  ext_start <- gregexpr(ext, a[, 2][[1]])[[1]]
+  b <- strsplit_at_pos(a[, 2], ext_start - 1L)
+
+  res <- cbind(a[, 1], b)
+  colnames(res) <- c("name", "sfx", "ext")
+  res
 }
 
 
 
-is_tarball <- function(x){
-  grepl("\\.tar\\.[a-zA-Z0-9]*$", x)
+
+get_children <- function(
+  x,
+  src
+){
+  name <- tools::file_path_sans_ext(basename(src))
+  ext  <- tools::file_ext(src)
+  pat <- sprintf("^%s\\..*\\.%s\\.*", name, ext)
+  grep(pat, x, value = TRUE)
 }
 
 
-get_arc_ext <- function(x){
-  ae <- getOption("rtr.arc_exts")
-  pat <- paste0("(\\.", ae, "$)", collapse = "|")
-  matches <- gregexpr(pat, x)
 
-  vapply(seq_along(x), function(i) {
-    start <- matches[[i]][[1]] + 1L
-    mlen <- attr(matches[[i]], "match.length")
-    substr(x[[i]], start, start + mlen)
-  }, character(1))
 
+#' Splits a string at `pos` (removing the character at pos)
+#'
+#' @param x a `character` vector
+#' @param pos an `integer` vector
+#'
+#' @noRd
+strsplit_at_pos <- function(
+  x,
+  pos
+){
+  assert(all(substr(x, pos, pos) == "."))
+  matrix(data = c(substr(x, 1, pos - 1L), substr(x, pos + 1L, nchar(x))), ncol = 2)
 }

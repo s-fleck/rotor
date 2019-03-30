@@ -9,4 +9,4 @@ NULL
 
 
 
-options(rtr.arc_exts = c("zip", "7z", "tar", "rar", "gz", "tar\\.[a-zA-Z0-9]*"))
+options(rtr.ext_pattern = "(\\.tar\\.[a-zA-Z0-9]*$)|(\\.[a-zA-Z0-9]*$)")
