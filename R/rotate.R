@@ -3,15 +3,19 @@ rotate <- function(file){
 }
 
 
+
+
 backup <- function(
   file,
   max_backups = 6,
   compression = "none"
 ){
-  assert(is_scalar_character(file))
-  assert(file.exists(file))
-  assert(is_scalar_integerish(max_backups))
-  assert(is_scalar_character(compression))
+  stopifnot(
+    is_scalar_character(file),
+    file.exists(file),
+    is_scalar_integerish(max_backups),
+    is_scalar_character(compression)
+  )
 
   children <- find_children(file)
   sfx <- "1"
@@ -28,7 +32,7 @@ backup <- function(
     file.rename(rev(children), rev(children_new))
 
     if (length(children_new) >= max_backups){
-      prune_backups(file, max_backups, children = children_new, verbose = verbose)
+      prune_backups(file, max_backups, children = children_new)
     }
   }
 
@@ -53,11 +57,11 @@ backup <- function(
 
 
 
-prune_backups = function(
+
+prune_backups <- function(
   file,
   max_backups,
-  children = find_children(file),
-  verbose = FALSE
+  children = find_children(file)
 ){
   to_remove <- sort(children)[(max_backups + 1):length(children)]
   file.remove(to_remove)
