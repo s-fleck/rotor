@@ -5,9 +5,19 @@ rotate <- function(file){
 
 
 
+#' Title
+#'
+#' @param file
+#' @param max_backups
+#' @param compression
+#'
+#' @return
+#' @export
+#'
+#' @examples
 backup <- function(
   file,
-  max_backups = 6,
+  max_backups = Inf,
   compression = "none"
 ){
   stopifnot(
@@ -53,7 +63,7 @@ backup <- function(
     name_new <- compress_and_remove(name_new, compression = compression)
   }
 
-  name_new
+  invisible(name_new)
 }
 
 

@@ -5,9 +5,21 @@ rotate_date <- function(file){
 
 
 
+#' Title
+#'
+#' @param file
+#' @param max_backups
+#' @param format
+#' @param compression
+#' @param time
+#'
+#' @return
+#' @export
+#'
+#' @examples
 backup_date <- function(
   file,
-  max_backups = 6,
+  max_backups = Inf,
   format = "%Y-%m-%d",
   compression = "none",
   time = Sys.time()
@@ -41,7 +53,7 @@ backup_date <- function(
     prune_backups(file, max_backups, backups = sort(backups, decreasing = TRUE))
   }
 
-  name_new
+  invisible(name_new)
 }
 
 
