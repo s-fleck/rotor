@@ -8,6 +8,7 @@ list_backups = function(file){
 
 
 
+
 do_rollover = function(file, compress, last_rollover, compress_args){
   new_ts <- format(Sys.time(), format = timestamp_fmt)
   assert(file.exists(file))
@@ -32,7 +33,9 @@ do_rollover = function(file, compress, last_rollover, compress_args){
 
   last_rollover <- Sys.time()
   invisible(self)
-},
+}
+
+
 
 
 prune_backups = function(max_backups){
@@ -45,7 +48,8 @@ prune_backups = function(max_backups){
     file.rename(backups, autopad_backup_index(backups))
   }
   invisible(self)
-},
+}
+
 
 
 
@@ -93,6 +97,8 @@ do_rollover = function(file, compress, compress_args){
 }
 
 
+
+
 prune_backups = function(max_backups){
   backups <- private$list_backups()
   if (length(backups) >= max_backups){
@@ -104,6 +110,9 @@ prune_backups = function(max_backups){
   }
   invisible(self)
 }
+
+
+
 
 get_backup_index <- function(
   x
@@ -121,6 +130,8 @@ get_backup_index <- function(
 }
 
 
+
+
 get_backup_timestamp <- function(
   x
 ){
@@ -134,6 +145,7 @@ get_backup_timestamp <- function(
     character(1)
   )
 }
+
 
 
 
