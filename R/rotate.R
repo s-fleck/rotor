@@ -17,22 +17,22 @@ backup <- function(
     is_scalar_character(compression)
   )
 
-  children <- find_children(file)
+  backups <- find_backups(file)
   sfx <- "1"
 
 
-  # rename and prune children, pad suffix if necessary
-  if (length(children)){
-    children_new <- get_name_components(file, children)
-    children_new[, "sfx"] <- as.integer(children_new[, "sfx"]) + 1L
-    children_new[, "sfx"] <- pad_left(children_new[, "sfx"], pad = "0")
-    sfx  <- pad_left(sfx, width = max(nchar(children_new[, "sfx"])), "0")
+  # rename and prune backups, pad suffix if necessary
+  if (length(backups)){
+    backups_new <- get_name_components(file, backups)
+    backups_new[, "sfx"] <- as.integer(backups_new[, "sfx"]) + 1L
+    backups_new[, "sfx"] <- pad_left(backups_new[, "sfx"], pad = "0")
+    sfx  <- pad_left(sfx, width = max(nchar(backups_new[, "sfx"])), "0")
 
-    children_new <- apply(children_new, 1, paste, collapse = ".")
-    file.rename(rev(children), rev(children_new))
+    backups_new <- apply(backups_new, 1, paste, collapse = ".")
+    file.rename(rev(backups), rev(backups_new))
 
-    if (length(children_new) >= max_backups){
-      prune_backups(file, max_backups, children = children_new)
+    if (length(backups_new) >= max_backups){
+      prune_backups(file, max_backups, backups = backups_new)
     }
   }
 
@@ -61,18 +61,18 @@ backup <- function(
 prune_backups <- function(
   file,
   max_backups,
-  children = find_children(file)
+  backups = find_backups(file)
 ){
-  to_remove <- sort(children)[(max_backups + 1):length(children)]
+  to_remove <- sort(backups)[(max_backups + 1):length(backups)]
   file.remove(to_remove)
 
-  children <- find_children(file)
-  children_new <- get_name_components(file, children)
-  children_new[, "sfx"] <- as.integer(children_new[, "sfx"])
-  children_new[, "sfx"] <- pad_left(children_new[, "sfx"], pad = "0")
-  children_new <- apply(children_new, 1, paste, collapse = ".")
+  backups <- find_backups(file)
+  backups_new <- get_name_components(file, backups)
+  backups_new[, "sfx"] <- as.integer(backups_new[, "sfx"])
+  backups_new[, "sfx"] <- pad_left(backups_new[, "sfx"], pad = "0")
+  backups_new <- apply(backups_new, 1, paste, collapse = ".")
 
-  file.rename(rev(children), rev(children_new))
+  file.rename(rev(backups), rev(backups_new))
 
-  children_new
+  backups_new
 }

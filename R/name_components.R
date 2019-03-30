@@ -1,37 +1,37 @@
 #' Get components of backup filenames
 #'
 #' @param file `character` scalar: The base file.
-#' @param potential_children `chracter` vector: list of files that could
+#' @param potential_backups `chracter` vector: list of files that could
 #'   potentially be backups for `file` (and follow the rotor naming convention)
 #'
 #' @return
 #'   a matrix with 2 or 3 columns: `name`, `sfx` and `ext` (optional). The
-#'   number of rows depends on how many elements of `potential_children` are
+#'   number of rows depends on how many elements of `potential_backups` are
 #'   really backups of `file`.
 #' @noRd
 #'
 get_name_components <- function(
   file,
-  potential_children
+  potential_backups
 ){
   stopifnot(
     is_scalar_character(file),
-    is.character(potential_children)
+    is.character(potential_backups)
   )
 
   name <- tools::file_path_sans_ext(file)
   ext  <- tools::file_ext(file)
 
   # identify descent files
-  children <- get_children(file, potential_children)
+  backups <- get_backups(file, potential_backups)
 
-  if (!length(children)){
+  if (!length(backups)){
     return(character())
   }
 
   # identify name parts
-  name_end <- attr(gregexpr(name, children[[1]])[[1]], "match.length") + 1L
-  a <- strsplit_at_pos(children, name_end)
+  name_end <- attr(gregexpr(name, backups[[1]])[[1]], "match.length") + 1L
+  a <- strsplit_at_pos(backups, name_end)
 
   if (!is_blank(ext)){
     ext_start <- gregexpr(ext, a[, 2][[1]])[[1]]
@@ -52,13 +52,13 @@ get_name_components <- function(
 #'
 #' @inheritParams get_name_components
 #' @noRd
-get_children <- function(
+get_backups <- function(
   file,
-  potential_children
+  potential_backups
 ){
   stopifnot(
     is_scalar_character(file),
-    is.character(potential_children)
+    is.character(potential_backups)
   )
 
   name <- tools::file_path_sans_ext(file)
@@ -71,7 +71,7 @@ get_children <- function(
     pat <- sprintf("^%s\\..*\\.%s\\.*", name, ext)
   }
 
-  sort(grep(pat, potential_children, value = TRUE))
+  sort(grep(pat, potential_backups, value = TRUE))
 }
 
 
@@ -81,7 +81,7 @@ get_children <- function(
 #'
 #' @inheritParams get_name_components
 #' @noRd
-find_children <- function(
+find_backups <- function(
   file
 ){
   stopifnot(
@@ -89,7 +89,7 @@ find_children <- function(
     dir.exists(dirname(file))
   )
 
-  get_children(
+  get_backups(
     file,
     list.files(dirname(file), full.names = TRUE)
   )
