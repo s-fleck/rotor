@@ -1,11 +1,15 @@
 context("utils-compress")
 
+dr <- tempdir()
+td <- file.path(dr, "rotor")
+dir.create(td, recursive = TRUE)
+teardown({
+  unlink(td, recursive = TRUE)
+  if (!length(list.files(dr))) unlink(dr, recursive = TRUE)
+})
+
 
 test_that("utils-compress works as expected", {
-  td <- file.path(tempdir(), "rotor")
-  dir.create(td, recursive = TRUE)
-  teardown(unlink(td, recursive = TRUE))
-
   tf <- file.path(td, "compresstest.log")
   saveRDS(iris, file = tf, compress = FALSE)
 

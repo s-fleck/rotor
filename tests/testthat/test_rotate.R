@@ -1,8 +1,12 @@
 context("roate")
 
-td <- file.path(tempdir(), "rotor")
+dr <- tempdir()
+td <- file.path(dr, "rotor")
 dir.create(td, recursive = TRUE)
-teardown(unlink(td, recursive = TRUE))
+teardown({
+  unlink(td, recursive = TRUE)
+  if (!length(list.files(dr))) unlink(dr, recursive = TRUE)
+})
 
 
 

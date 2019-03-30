@@ -27,7 +27,7 @@ backup_date <- function(
   stopifnot(
     is_scalar_character(file),
     file.exists(file),
-    is_scalar_integerish(max_backups),
+    is.infinite(max_backups) || is_scalar_integerish(max_backups),
     is_scalar_character(compression)
   )
 
@@ -50,30 +50,8 @@ backup_date <- function(
   # prune backups
   backups <- find_backups(file)
   if (length(backups) > max_backups){
-    prune_backups(file, max_backups, backups = sort(backups, decreasing = TRUE))
+    prune_head(file, max_backups, backups = backups)
   }
 
   invisible(name_new)
-}
-
-
-
-
-#' Prune list of files down to `max_backups`.
-#' You must ensure that `backups` is sorted as as you want it already!
-#'
-#' @param file
-#' @param max_backups
-#' @param backups
-#'
-#' @return `character` vector of the names of the remaining backups
-#' @noRd
-prune_backups <- function(
-  file,
-  max_backups,
-  backups = find_backups(file)
-){
-  to_remove <- backups[(max_backups + 1):length(backups)]
-  file.remove(to_remove)
-  backups[1:max_backups]
 }

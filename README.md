@@ -46,17 +46,17 @@ the same.
 
 ``` r
 library(rotor)
+```
 
+First we must create a temporary directory and an example log file.
+
+``` r
 # setup test file for examples
-td <- file.path(tempdir(), "rotor")
+dr <- tempdir()
+td <- file.path(dr, "rotor")
 dir.create(td, recursive = TRUE)
 tf <- file.path(td, "test.log")
 file.create(tf)
-```
-
-``` r
-cat(tf)
-#> /tmp/RtmpSGQwio/rotor/test.log
 ```
 
 `backup()` makes a copy of a file and inserts an index between the
@@ -69,9 +69,9 @@ backup(tf)
 backup(tf, compression = "zip")  # backup and rotate also support compression
 
 find_backups(tf)  # returns all backups of a file
-#> [1] "/tmp/RtmpSGQwio/rotor/test.1.log.zip"
-#> [2] "/tmp/RtmpSGQwio/rotor/test.2.log"    
-#> [3] "/tmp/RtmpSGQwio/rotor/test.3.log"
+#> [1] "/tmp/RtmpTwz4qK/rotor/test.1.log.zip"
+#> [2] "/tmp/RtmpTwz4qK/rotor/test.2.log"    
+#> [3] "/tmp/RtmpTwz4qK/rotor/test.3.log"
 ```
 
 You can also set a maximum number of backups to be kept
@@ -82,10 +82,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 find_backups(tf)
-#> [1] "/tmp/RtmpSGQwio/rotor/test.1.log"    
-#> [2] "/tmp/RtmpSGQwio/rotor/test.2.log"    
-#> [3] "/tmp/RtmpSGQwio/rotor/test.3.log"    
-#> [4] "/tmp/RtmpSGQwio/rotor/test.4.log.zip"
+#> [1] "/tmp/RtmpTwz4qK/rotor/test.1.log"    
+#> [2] "/tmp/RtmpTwz4qK/rotor/test.2.log"    
+#> [3] "/tmp/RtmpTwz4qK/rotor/test.3.log"    
+#> [4] "/tmp/RtmpTwz4qK/rotor/test.4.log.zip"
 ```
 
 ``` r
@@ -100,7 +100,7 @@ lexically sortable so that `max_backups` does the right thing; i.e.
 ``` r
 backup_date(tf)
 find_backups(tf)
-#> [1] "/tmp/RtmpSGQwio/rotor/test.2019-03-30.log"
+#> [1] "/tmp/RtmpTwz4qK/rotor/test.2019-03-30.log"
 ```
 
 ``` r

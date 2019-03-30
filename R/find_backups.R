@@ -12,7 +12,7 @@ find_backups <- function(
 
   get_backups(
     file,
-    list.files(dirname(file), full.names = TRUE)
+    list.files(dirname(file), full.names = dirname(file) != ".")
   )
 }
 

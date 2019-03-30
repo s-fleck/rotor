@@ -46,19 +46,20 @@ integer or a timestamp) into the filename. This is useful for log rotation.
 thus creting a backup. The examples below use `backup*()` because it's a bit
 more convenient to write examples for, but `rotate()` works mostly the same.
 
-
-```{r setup, results = "hide"}
+```{r}
 library(rotor)
+```
 
+First we must create a temporary directory and an example log file.
+```{r setup, results = "hide"}
 # setup test file for examples
-td <- file.path(tempdir(), "rotor")
+dr <- tempdir()
+td <- file.path(dr, "rotor")
 dir.create(td, recursive = TRUE)
 tf <- file.path(td, "test.log")
 file.create(tf)
 ```
-```{r}
-cat(tf)
-```
+
 
 `backup()` makes a copy of a file and inserts an index between the filename
 and the file extension. The file with the index `1` is always the most recently
@@ -97,6 +98,11 @@ find_backups(tf)
 ```
 ```{r}
 invisible(file.remove(find_backups(tf)))  # cleanup
+```
+
+```{r cleanup, include = FALSE}
+unlink(td, recursive = TRUE)
+if (!length(list.files(dr))) unlink(dr, recursive = TRUE)
 ```
 
 

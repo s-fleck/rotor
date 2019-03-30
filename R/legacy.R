@@ -38,19 +38,6 @@ do_rollover = function(file, compress, last_rollover, compress_args){
 
 
 
-prune_backups = function(max_backups){
-  backups <- private$list_backups()
-  if (length(backups) >= max_backups){
-    backups <- backups[order(as.integer(names(backups)))]
-    to_remove <- backups[-c(seq_len(max_backups))]
-    file.remove(to_remove)
-    backups <- private$list_backups()
-    file.rename(backups, autopad_backup_index(backups))
-  }
-  invisible(self)
-}
-
-
 
 
 do_rollover = function(file, compress, compress_args){
