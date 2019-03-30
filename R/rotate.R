@@ -32,7 +32,8 @@ backup <- function(
     file.rename(rev(backups), rev(backups_new))
 
     if (length(backups_new) >= max_backups){
-      prune_backups(file, max_backups, backups = backups_new)
+      backups_new <- prune_backups(file, max_backups, backups = backups_new)
+      pad_backup_index(file, backups = backups_new)
     }
   }
 
@@ -57,15 +58,10 @@ backup <- function(
 
 
 
-
-prune_backups <- function(
+pad_backup_index <- function(
   file,
-  max_backups,
   backups = find_backups(file)
 ){
-  to_remove <- sort(backups)[(max_backups + 1):length(backups)]
-  file.remove(to_remove)
-
   backups <- find_backups(file)
   backups_new <- get_name_components(file, backups)
   backups_new[, "sfx"] <- as.integer(backups_new[, "sfx"])
@@ -73,6 +69,5 @@ prune_backups <- function(
   backups_new <- apply(backups_new, 1, paste, collapse = ".")
 
   file.rename(rev(backups), rev(backups_new))
-
   backups_new
 }

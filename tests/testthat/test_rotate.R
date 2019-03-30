@@ -33,14 +33,19 @@ test_that("compressed rotate works as expected", {
   for (i in 1:10)  backup(tf, max_backups = 10)
     expect_length(find_backups(tf), 10)
 
-  for (i in 1:5)
+  for (i in 1:7)
     x <- backup(tf, max_backups = 10, compression = "zip")
 
-  expect_length(find_backups(tf), 10)
+  r <- find_backups(tf)
+
+  expect_length(r, 10)
   expect_identical(
-    tools::file_ext(find_backups(tf)),
-    c(rep("zip", 5), rep("log", 5))
+    tools::file_ext(r),
+    c(rep("zip", 7), rep("log", 3))
   )
+
+  expect_identical(first(basename(r)), "test.01.log.zip")
+  expect_identical(last(basename(r)), "test.10.log")
 
   # cleanup
   file.remove(find_backups(tf))
