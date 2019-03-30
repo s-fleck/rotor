@@ -5,12 +5,13 @@ rotate <- function(file){
 
 backup <- function(
   file,
-  verbose = FALSE,
-  max_backups = 6
+  max_backups = 6,
+  compression = "none"
 ){
   assert(is_scalar_character(file))
   assert(file.exists(file))
   assert(is_scalar_integerish(max_backups))
+  assert(is_scalar_character(compression))
 
   children <- find_children(file)
   sfx <- "1"
@@ -27,19 +28,16 @@ backup <- function(
     if (length(children_new) >= max_backups){
       prune_backups(file, max_backups, children = children_new, verbose = verbose)
     }
-
-    if (verbose){
-      message(file)
-      message(paste(find_children(file), collapse = "\n"))
-    }
-
-
   }
 
   name <- tools::file_path_sans_ext(file)
   ext  <- tools::file_ext(file)
   name_new <- paste(name, sfx, ext, sep = ".")
   file.copy(file, name_new, overwrite = FALSE)
+
+  if (compression != "none"){
+    name_new <- compress_and_remove(name_new, compression = compression)
+  }
 
   name_new
 }

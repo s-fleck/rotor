@@ -23,15 +23,13 @@ compress_and_remove <- function(
     is_scalar_logical(remove)
   )
 
-  fp <- tools::file_path_sans_ext(file)
-
   if (identical(compression, "zip")){
     assert_namespace("zip")
-    out <- paste0(fp, ".zip")
+    out <- paste0(file, ".zip")
     zip::zipr(out, file, compression_level = compression_level)
 
   } else if (identical(compression, "zip_base")){
-    out <- paste0(fp, ".zip")
+    out <- paste0(file, ".zip")
     assert(!file.exists(out))
     owd <- setwd(dir = dirname(file))
     on.exit(setwd(owd))
