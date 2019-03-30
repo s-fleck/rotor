@@ -1,13 +1,20 @@
-Package: rtr
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
-Encoding: UTF-8
-LazyData: true
+Package: rtr
+Title: Rote files
+Version: 0.0.1.9000
+Authors@R: 
+    person(given = "Stefan",
+           family = "Fleck",
+           role = c("aut", "cre"),
+           email = "stefan.b.fleck@gmail.com",
+           comment = c(ORCID = "0000-0003-3344-9851"))
+Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
+Description: Rotate or backup files based on size or date.
+    Inspired the unix program logrotate
+License: MIT + file LICENSE
+Imports:
+    tools
 Suggests: 
     testthat
+Encoding: UTF-8
+LazyData: true
