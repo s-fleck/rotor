@@ -36,8 +36,6 @@ test_that("roate_date keeps expected number of backups", {
     )
   )
 
-
-
   # cleanup
   file.remove(find_backups(tf))
   file.remove(tf)
@@ -72,7 +70,6 @@ test_that("compressed roate_date works as expected", {
   }
   r <- find_backups(tf)
   expect_length(r, 10)
-
   expect_identical(
     tools::file_ext(find_backups(tf)),
     c(rep("log", 3), rep("zip", 7))

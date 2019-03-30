@@ -55,6 +55,7 @@ test_that("compressed rotate works as expected", {
 
 
 
+
 test_that("roate file without extension", {
   tf <- file.path(td, "test")
   file.create(tf)
