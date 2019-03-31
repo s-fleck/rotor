@@ -69,9 +69,9 @@ backup(tf)
 backup(tf, compression = "zip")  # backup and rotate also support compression
 
 find_backups(tf)  # returns all backups of a file
-#> [1] "/tmp/RtmpTwz4qK/rotor/test.1.log.zip"
-#> [2] "/tmp/RtmpTwz4qK/rotor/test.2.log"    
-#> [3] "/tmp/RtmpTwz4qK/rotor/test.3.log"
+#> [1] "/tmp/RtmpbVXsKq/rotor/test.1.log.zip"
+#> [2] "/tmp/RtmpbVXsKq/rotor/test.2.log"    
+#> [3] "/tmp/RtmpbVXsKq/rotor/test.3.log"
 ```
 
 You can also set a maximum number of backups to be kept
@@ -82,25 +82,22 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 find_backups(tf)
-#> [1] "/tmp/RtmpTwz4qK/rotor/test.1.log"    
-#> [2] "/tmp/RtmpTwz4qK/rotor/test.2.log"    
-#> [3] "/tmp/RtmpTwz4qK/rotor/test.3.log"    
-#> [4] "/tmp/RtmpTwz4qK/rotor/test.4.log.zip"
+#> [1] "/tmp/RtmpbVXsKq/rotor/test.1.log"    
+#> [2] "/tmp/RtmpbVXsKq/rotor/test.2.log"    
+#> [3] "/tmp/RtmpbVXsKq/rotor/test.3.log"    
+#> [4] "/tmp/RtmpbVXsKq/rotor/test.4.log.zip"
 ```
 
 ``` r
 invisible(file.remove(find_backups(tf)))  # cleanup
 ```
 
-Instead of adding an index, you can also add a timestamp. The format of
-the timestamp can be arbitrary (see `?format.POSIXct`), but it must be
-lexically sortable so that `max_backups` does the right thing; i.e.
-`2019-02-18` is good, but `18-02-2019` is not.
+Instead of adding an index, you can also add a timestamp.
 
 ``` r
 backup_date(tf)
 find_backups(tf)
-#> [1] "/tmp/RtmpTwz4qK/rotor/test.2019-03-30.log"
+#> [1] "/tmp/RtmpbVXsKq/rotor/test.2019-03-31.log"
 ```
 
 ``` r

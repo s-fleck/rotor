@@ -14,15 +14,13 @@ teardown({
 test_that("roate_date keeps expected number of backups", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-
-  time <- as.POSIXct(as.Date("2019-01-01"))
+  date <- as.Date("2019-01-01")
 
   for (i in 1:10) {
     backup_date(
       tf,
       max_backups = 5,
-      format = "%Y%m%dT%H%M%S",
-      time = time + i * 5
+      date = date + i * 5
     )
   }
 
@@ -32,11 +30,11 @@ test_that("roate_date keeps expected number of backups", {
 
   expect_identical(
     basename(res),
-    c("test.20190101T010030.log",
-      "test.20190101T010035.log",
-      "test.20190101T010040.log",
-      "test.20190101T010045.log",
-      "test.20190101T010050.log"
+    c("test.2019-01-31.log",
+      "test.2019-02-05.log",
+      "test.2019-02-10.log",
+      "test.2019-02-15.log",
+      "test.2019-02-20.log"
     )
   )
 
@@ -51,14 +49,13 @@ test_that("roate_date keeps expected number of backups", {
 test_that("compressed roate_date works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  time <- as.POSIXct(as.Date("2019-01-01"))
+  date <- as.Date("2019-01-01")
 
   for (i in 1:10) {
     backup_date(
       tf,
       max_backups = 5,
-      format = "%Y%m%dT%H%M%S",
-      time = time + i * 5
+      date = date + i * 5
     )
   }
   expect_length(find_backups(tf), 5)
@@ -67,8 +64,7 @@ test_that("compressed roate_date works as expected", {
     backup_date(
       tf,
       max_backups = 10,
-      format = "%Y%m%dT%H%M%S",
-      time = time + 60 + i * 5,
+      date = date + 60 + i * 5,
       compression = "zip"
     )
   }
@@ -79,12 +75,23 @@ test_that("compressed roate_date works as expected", {
     c(rep("log", 3), rep("zip", 7))
   )
 
-  expect_identical(last(basename(r)), "test.20190101T010135.log.zip")
-  expect_identical(first(basename(r)), "test.20190101T010040.log")
+  expect_identical(last(basename(r)), "test.2019-04-06.log.zip")
+  expect_identical(first(basename(r)), "test.2019-02-10.log")
 
 
   # cleanup
   file.remove(find_backups(tf))
   file.remove(tf)
   expect_length(list.files(td), 0)
+})
+
+
+
+
+test_that("parse_date works as expected", {
+  expect_identical(parse_date("2018-12-01"), as.Date("2018-12-01"))
+  expect_identical(parse_date("20181201"), as.Date("2018-12-01"))
+  expect_identical(parse_date("2018-02"), as.Date("2018-02-01"))
+  expect_identical(parse_date("201802"), as.Date("2018-02-01"))
+  expect_identical(parse_date("2018"), as.Date("2018-01-01"))
 })

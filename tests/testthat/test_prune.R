@@ -36,9 +36,9 @@ test_that("prune_bottom works as expected", {
   setwd(td)
 
   file.create("foo.log")
-  backup_date("foo.log", time = as.Date("2019-01-01"))
-  backup_date("foo.log", time = as.Date("2019-01-02"))
-  backup_date("foo.log", time = as.Date("2019-01-03"))
+  backup_date("foo.log", date = as.Date("2019-01-01"))
+  backup_date("foo.log", date = as.Date("2019-01-02"))
+  backup_date("foo.log", date = as.Date("2019-01-03"))
 
   find_backups("foo.log")
 

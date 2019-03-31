@@ -87,10 +87,7 @@ invisible(file.remove(find_backups(tf)))  # cleanup
 
 
 
-Instead of adding an index, you can also add a timestamp. The format of the
-timestamp can be arbitrary (see `?format.POSIXct`), but it must be lexically 
-sortable so that `max_backups` does the right thing; i.e. `2019-02-18` is good, 
-but `18-02-2019` is not.
+Instead of adding an index, you can also add a timestamp. 
 
 ```{r timestamp}
 backup_date(tf)
