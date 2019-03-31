@@ -36,7 +36,7 @@ get_backups <- function(
   ext  <- tools::file_ext(file)
 
   if (is_blank(ext)){
-    pat = paste0(name, "\\.[^.]+$")
+    pat = paste0(name, "\\.[^.]+(\\..*){0,1}$")
 
   } else {
     pat <- sprintf("^%s\\..*\\.%s\\.*", name, ext)
