@@ -13,7 +13,7 @@ teardown({
 
 
 
-test_that("prune_head works as expected", {
+test_that("prune_backups_head works as expected", {
   setwd(td)
 
   file.create("foo.log")
@@ -21,7 +21,7 @@ test_that("prune_head works as expected", {
   backup("foo.log")
   backup("foo.log")
 
-  r <- prune_tail("foo.log", 2)
+  r <- prune_backups_tail("foo.log", 2)
 
   expect_identical(r,  c("foo.1.log", "foo.2.log"))
   file.remove(r)
@@ -32,7 +32,7 @@ test_that("prune_head works as expected", {
 
 
 
-test_that("prune_bottom works as expected", {
+test_that("prune_backups_bottom works as expected", {
   setwd(td)
 
   file.create("foo.log")
@@ -42,10 +42,31 @@ test_that("prune_bottom works as expected", {
 
   find_backups("foo.log")
 
-  r <- prune_head("foo.log", 2)
+  r <- prune_backups_head("foo.log", 2)
 
   expect_identical(r,  c("foo.2019-01-02.log", "foo.2019-01-03.log"))
   file.remove(r)
   file.remove("foo.log")
   expect_length(list.files(td), 0)
+})
+
+
+
+
+test_that("prune_backups fails on non-existing files", {
+  setwd(td)
+
+  file.create("foo.log")
+  backup_date("foo.log", date = as.Date("2019-01-01"))
+  backup_date("foo.log", date = as.Date("2019-01-02"))
+  backup_date("foo.log", date = as.Date("2019-01-03"))
+
+  find_backups("foo.log")
+
+  expect_error(
+    prune_backups_head("foo.log", 2, backups = c(find_backups("foo.log"), "blah", "blubb")),
+    "blubb.*blah"
+  )
+
+  file.remove("foo.log")
 })

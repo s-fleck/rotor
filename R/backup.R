@@ -35,7 +35,7 @@ backup <- function(
     file.rename(rev(backups), rev(backups_new))
 
     if (length(backups_new) >= max_backups){
-      backups_new <- prune_tail(file, max_backups, backups = backups_new)
+      backups_new <- prune_backups_tail(file, max_backups, backups = backups_new)
       pad_backup_index(file, backups = backups_new)
     }
   }

@@ -18,7 +18,7 @@
 #' backup("foo.log")
 #'
 #' find_backups("foo.log")
-#' prune_tail("foo.log", 2)
+#' prune_backups_tail("foo.log", 2)
 #'
 #' # cleanup
 #' invisible(file.remove(find_backups("foo.log")))
@@ -30,7 +30,7 @@
 #' backup_date("foo.log", time = as.Date("2019-01-02"))
 #' backup_date("foo.log", time = as.Date("2019-01-03"))
 #' find_backups("foo.log")
-#' prune_head("foo.log", 2)
+#' prune_backups_head("foo.log", 2)
 #'
 #'
 #' # cleanup
@@ -38,7 +38,7 @@
 #' invisible(file.remove("foo.log"))
 #' if (!length(list.files(td)) unlink(td, recursive = TRUE)
 #' setwd(owd)
-prune_head <- function(
+prune_backups_head <- function(
   file,
   max_backups,
   backups = find_backups(file)
@@ -63,7 +63,7 @@ prune_head <- function(
 #' @export
 #'
 #' @examples
-prune_tail <- function(
+prune_backups_tail <- function(
   file,
   max_backups,
   backups = find_backups(file)
@@ -91,6 +91,14 @@ prune_backups <- function(
   max_backups,
   backups
 ){
+  assert(is_scalar_character(file) && file.exists(file))
+  assert(is_scalar_integerish(max_backups) && !is.na(max_backups))
+  assert(
+    all(file.exists(backups)),
+    "Cannot prune backups because the following files do not exist: \n",
+    paste(" -", backups[!file.exists(backups)], collapse = "\n")
+  )
+
   to_remove <- backups[(max_backups + 1):length(backups)]
   file.remove(to_remove)
   backups[1:max_backups]

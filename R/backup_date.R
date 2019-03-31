@@ -46,7 +46,7 @@ backup_date <- function(
   # prune backups
   backups <- find_backups(file)
   if (length(backups) > max_backups){
-    prune_head(file, max_backups, backups = backups)
+    prune_backups_head(file, max_backups, backups = backups)
   }
 
   invisible(name_new)
