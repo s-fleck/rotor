@@ -8,7 +8,7 @@
 #'   so 1 kilobyte is 1024 bytes, 1 megabyte is 1024 kilobytes, etc.. .
 #' @param age
 #' @param max_backups
-#' @param compress
+#' @param compression
 #' @param postrotate
 #' @param postrotate_args
 #' @param prerotate
@@ -24,24 +24,51 @@ rotate_size <- function(
   file,
   size,
   age,
-  max_backups,
-  compress,
-  postrotate,
-  postrotate_args,
-  prerotate,
-  prerotate_args,
-  dry_run,
-  verbose
+  max_backups = Inf,
+  compression = FALSE,
+  prerotate = NULL,
+  prerotate_args = NULL,
+  postrotate = NULL,
+  postrotate_args = NULL,
+  dry_run = FALSE,
+  verbose = FALSE
 ){
+  stopifnot(
+    is_scalar_character(file) && file.exists(file)
+  )
   size <- parse_size(size)
 
+  if (file.size(file) < size){
+    if (verbose) {
+      message(sprintf(
+        "Not rotating '%s': Filesize (%s) is less than the limit (%s)",
+        basename(file),
+        fmt_bytes(file.size(file)),
+        fmt_bytes(size)
+      ))
+    }
+    return(character())
+  } else {
+    res <- backup(file, max_backups = max_backups, compression = compression)
+    if (verbose) message(sprintf("Rotated '%s' to '%s'", file, res))
+  }
+
+  unlink(file)
+  file.create(file)
+
+  res
 }
 
 
 
+fmt_bytes <- function(x){
+  format(structure(x, class = "object_size"), "auto")
+}
+
 
 parse_size <- function(x){
   assert(is_scalar(x) && !is.na(x))
+
 
   if (is_integerish(x)){
     return(as.integer(x))
