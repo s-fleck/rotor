@@ -20,10 +20,9 @@
 #' @export
 #'
 #' @examples
-rotate_size <- function(
+rotate_interval <- function(
   file,
-  size,
-  age,
+  interval,
   max_backups = Inf,
   compression = FALSE,
   prerotate = NULL,
@@ -62,57 +61,30 @@ rotate_size <- function(
 
 
 
-fmt_bytes <- function(x){
-  format(structure(x, class = "object_size"), "auto")
-}
 
-
-
-
-parse_size <- function(x){
+parse_interval <- function(x){
   assert(is_scalar(x) && !is.na(x))
 
-
   if (is_integerish(x)){
-    return(as.integer(x))
+    return(
+      list(value = as.integer(x), unit = "day")
+    )
   } else {
     assert(is.character(x))
   }
 
-  num  <- as.integer(substr(x, nchar(x) -1L, nchar(x) -1L))
-  unit <- parse_info_unit(substr(x, nchar(x), nchar(x)))
+  splt <- strsplit(x, "\\s")[[1]]
+  assert(identical(length(splt), 2L))
 
-  res <- as.integer(num * unit)
-  assert(is_scalar(res) && !is.na(res) && is.integer(res))
-  res
+  value <- splt[[1]]
+  unit  <- splt[[2]]
+
+  valid_units <- c("day", "week", "month", "quarter", "year")
+  unit <- gsub("s$", "", tolower(trimws(unit)))
+
+  assert(unit %in% valid_units)
+
+
+  list(value = as.integer(value), unit = unit)
 }
 
-
-
-
-parse_info_unit <- function(x){
-  assert(is_scalar_character(x))
-  valid_units <- c("k", "m", "g", "t")
-
-  assert(
-    x %in% valid_units,
-    "'", x, "' is not one of the following valid file size units: ",
-    paste(valid_units, collapse = ", ")
-  )
-
-  res <- switch(
-    tolower(x),
-    k = 2^10,
-    m = 2^20,
-    g = 2^30,
-    t = 2^40,
-    NULL
-  )
-
-  assert(
-    !is.null(res),
-    "Something went wrong when parsing the unit of information. ",
-    "Please file a bug report"
-  )
-  res
-}
