@@ -11,13 +11,13 @@
 backup <- function(
   file,
   max_backups = Inf,
-  compression = "none"
+  compression = FALSE
 ){
   stopifnot(
     is_scalar_character(file),
     file.exists(file),
     is.infinite(max_backups) || is_scalar_integerish(max_backups),
-    is_scalar_character(compression)
+    is_scalar_logical(compression) || is_scalar_character(compression)
   )
 
   backups <- find_backups(file)

@@ -11,17 +11,27 @@
 #'
 compress_and_remove <- function(
   file,
-  compression  = if (requireNamespace("zip", quietly = TRUE)) "zip" else "zip_base",
+  compression  = TRUE,
   compression_level = 9,
   remove = TRUE
 ){
   stopifnot(
     is_scalar_character(file),
     file.exists(file),
-    is_scalar_character(compression),
+    is_scalar_character(compression) || is_scalar_logical(compression),
     is_scalar_integerish(compression_level),
     is_scalar_logical(remove)
   )
+
+  if (isFALSE(compression)){
+    return(file)
+  }
+
+  if (isTRUE(compression)){
+    compression <- {
+      if (requireNamespace("zip", quietly = TRUE)) "zip" else "zip_base"
+    }
+  }
 
   if (identical(compression, "zip")){
     assert_namespace("zip")
