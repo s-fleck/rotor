@@ -92,13 +92,43 @@ test_that("BackupTrailDate works as expected for files with extension", {
   on.exit(file.remove(noback))
 
   expect_identical(
-    bt$backups,
+    basename(bt$backups),
     c(
-      "/tmp/RtmplsgPcI/rotor/test.2019-02-20.log",
-      "/tmp/RtmplsgPcI/rotor/test.2019-04.log",
-      "/tmp/RtmplsgPcI/rotor/test.2019.log",
-      "/tmp/RtmplsgPcI/rotor/test.20190411.log",
-      "/tmp/RtmplsgPcI/rotor/test.201905.log"
+      "test.2019-02-20.log",
+      "test.2019-04.log",
+      "test.2019.log",
+      "test.20190411.log",
+      "test.201905.log"
     )
   )
+
+  bt$prune(0)
+  file.remove(tf)
+})
+
+
+
+
+test_that("BackupTrail works as expected for files with extension", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bt <- BackupTrailIndexed$new(tf)
+
+  # finding and pruning backups works
+  expect_identical(bt$backups, character(0))
+  bus <- paste0(tools::file_path_sans_ext(tf), c(".1.log.zip", ".2.log.tar.gz", ".3.log"))
+  file.create(bus)
+  expect_identical(bt$backups, bus)
+  expect_identical(bt$backup_matrix[, "sfx"], as.character(1:3))
+  bt$prune(0)
+  expect_length(bt$backups, 0)
+
+  # finding and pruning backups works
+  bt <- BackupTrailDate$new(tf)
+  expect_identical(bt$backups, character(0))
+  bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
+  file.create(bus)
+  expect_identical(bt$backup_matrix[, "sfx"], c("2019-01-03", "2019-01-02", "2019-01-01"))
+  bt$prune(0)
+  file.remove(tf)
 })
