@@ -19,6 +19,14 @@ BackupTrail <- R6::R6Class(
 BackupTrailIndexed <- R6::R6Class(
   "BackupTrail",
   inherit = BackupTrail,
+  public = list(
+    prune = function(max_backups){
+      to_remove <- self$backups[(max_backups + 1):length(self$backups)]
+      file.remove(to_remove)
+      self
+    }
+  ),
+
   active = list(
     backups = function(){
       potential_backups <-
@@ -28,10 +36,10 @@ BackupTrailIndexed <- R6::R6Class(
       ext  <- tools::file_ext(self$file)
 
       if (is_blank(ext)){
-        pat = paste0(name, "\\.[^.]+(\\..*){0,1}$")
+        pat = paste0(name, "\\.\\d+(\\..*){0,1}$")
 
       } else {
-        pat <- sprintf("^%s\\..*\\.%s\\.*", name, ext)
+        pat <- sprintf("^%s\\.\\d+\\.%s\\.*", name, ext)
       }
 
       sort(grep(pat, potential_backups, value = TRUE))
