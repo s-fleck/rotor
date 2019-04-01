@@ -57,7 +57,7 @@ backup_date <- function(
 
 is_valid_date_format <- function(x){
   is_scalar_character(x) &&
-  x %in% c("%Y-%m-%d", "%Y%m%d", "%Y-%m", "%Y%m", "Y")
+  x %in% c("%Y-%m-%d", "%Y%m%d", "%Y-%m", "%Y%m", "%Y")
 }
 
 

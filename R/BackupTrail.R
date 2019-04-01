@@ -51,53 +51,42 @@ BackupTrailIndexed <- R6::R6Class(
 
 
 
-#' Find backups of `file`
-#'
-#' @inheritParams get_name_components
-#' @export
-find_backups <- function(
-  file
-){
-  stopifnot(
-    is_scalar_character(file),
-    dir.exists(dirname(file))
+BackupTrailDate <- R6::R6Class(
+  "BackupTrail",
+  inherit = BackupTrail,
+  public = list(
+    prune = function(max_backups){
+      to_remove <- self$backups[(max_backups + 1):length(self$backups)]
+      file.remove(to_remove)
+      self
+    }
+  ),
+
+  active = list(
+    backups = function(){
+      potential_backups <-
+        list.files(self$backup_dir, full.names = self$backup_dir != ".")
+
+      name <- tools::file_path_sans_ext(self$file)
+      ext  <- tools::file_ext(self$file)
+      date_patterns <- c(
+        "\\d{4}-\\d{2}-\\d{2}",
+        "\\d{4}-\\d{2}",
+        "\\d{8}",
+        "\\d{6}",
+        "\\d{4}"
+      )
+      date_patterns <- paste0("(", date_patterns, ")", collapse = "|")
+
+
+      if (is_blank(ext)){
+        pat = paste0(name, "^\\.$s(\\..*){0,1}$", date_patterns)
+
+      } else {
+        pat <- sprintf("^%s\\.%s\\.%s\\.*", name, date_patterns, ext)
+      }
+
+      sort(grep(pat, potential_backups, value = TRUE))
+    }
   )
-
-
-
-
-
-  get_backups(
-    file,
-    list.files(dirname(file), full.names = dirname(file) != ".")
-  )
-}
-
-
-
-
-#' Identify which files are backups of `file`
-#'
-#' @inheritParams get_name_components
-#' @noRd
-get_backups <- function(
-  file,
-  potential_backups
-){
-  stopifnot(
-    is_scalar_character(file),
-    is.character(potential_backups)
-  )
-
-  name <- tools::file_path_sans_ext(file)
-  ext  <- tools::file_ext(file)
-
-  if (is_blank(ext)){
-    pat = paste0(name, "\\.[^.]+(\\..*){0,1}$")
-
-  } else {
-    pat <- sprintf("^%s\\..*\\.%s\\.*", name, ext)
-  }
-
-  sort(grep(pat, potential_backups, value = TRUE))
-}
+)
