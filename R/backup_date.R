@@ -64,24 +64,28 @@ is_valid_date_format <- function(x){
 
 
 parse_date <- function(x){
-  if (identical(nchar(x), 4L)){
-    x <- paste0(x, "-01-01")
+
+  prep_string <- function(.x){
+    if (identical(nchar(.x), 4L))
+      .x <- paste0(.x, "-01-01")
+
+    else if (identical(nchar(.x), 6L))
+      .x <- paste(substr(.x, 1 , 4), substr(.x, 5, 6), "01", sep = "-")
+
+    else if (identical(nchar(.x), 7L))
+      .x <- paste0(.x, "-01")
+
+    else if (identical(nchar(.x), 8L))
+      .x <- paste(substr(.x, 1 ,4), substr(.x, 5, 6), substr(.x, 7, 8), sep = "-")
+
+    else if (identical(nchar(.x), 10L))
+      return(.x)
+
+    else
+      stop("Cannot parse Date from'", x, "'")
   }
 
-  if (identical(nchar(x), 6L)){
-    x <- paste(substr(x, 1 , 4), substr(x, 5, 6), "01", sep = "-")
-  }
-
-  if (identical(nchar(x), 7L)){
-    x <- paste0(x, "-01")
-  }
-
-  if (identical(nchar(x), 8L))
-    x <- paste(substr(x, 1 ,4), substr(x, 5, 6), substr(x, 7, 8), sep = "-")
-
-  if (identical(nchar(x), 10L))
-    return(as.Date(x))
-
-  stop("Cannot parse Date from'", x, "'")
-
+  res <- as.Date(vapply(x, prep_string, character(1)))
+  assert(!anyNA(res))
+  res
 }

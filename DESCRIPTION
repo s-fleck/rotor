@@ -13,7 +13,9 @@ Description: Rotate or backup files based on size or date.
     Inspired the unix program logrotate
 License: MIT + file LICENSE
 Imports:
-    tools
+    tools,
+    R6,
+    dint
 Suggests: 
     testthat
 Encoding: UTF-8

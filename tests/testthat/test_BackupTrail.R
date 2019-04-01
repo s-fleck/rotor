@@ -132,3 +132,139 @@ test_that("BackupTrail works as expected for files with extension", {
   bt$prune(0)
   file.remove(tf)
 })
+
+
+
+
+test_that("Prune BackupTrailDate based on date", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bt <- BackupTrailDate$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(
+    ".2019-01-01.log.zip",
+    ".2019-01-02.log.tar.gz",
+    ".2019-01-03.log",
+    ".2020-01-03.log"
+  ))
+  file.create(bus)
+  bt$prune(as.Date("2019-01-02"))
+
+  expect_identical(
+    basename(bt$backups),
+    c(
+      "test.2019-01-02.log.tar.gz",
+      "test.2019-01-03.log",
+      "test.2020-01-03.log"
+    )
+  )
+  bt$prune(0)
+  file.remove(tf)
+})
+
+
+
+
+
+test_that("Prune BackupTrailDate based on year interval", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bt <- BackupTrailDate$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(
+    ".2019-01-01.log.zip",
+    ".2019-02-02.log.tar.gz",
+    ".2019-03-03.log",
+    ".2020-01-03.log",
+    ".2021-01-03.log",
+    ".2022-01-03.log"
+  ))
+  file.create(bus)
+
+  bt$prune("2 years")
+  expect_identical(
+    basename(bt$backups),
+    c(
+      "test.2021-01-03.log",
+      "test.2022-01-03.log"
+    )
+  )
+  bt$prune(0)
+  file.remove(tf)
+})
+
+
+
+test_that("Prune BackupTrailDate based on month interval", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bt <- BackupTrailDate$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(
+    ".2019-01-01.log.zip",
+    ".2019-02-02.log.tar.gz",
+    ".2019-03-03.log",
+    ".2019-04-03.log"
+  ))
+  file.create(bus)
+
+  bt$prune("2 months")
+  expect_identical(
+    basename(bt$backups),
+    c(
+      "test.2019-03-03.log",
+      "test.2019-04-03.log")
+  )
+  bt$prune(0)
+  file.remove(tf)
+})
+
+
+
+test_that("Prune BackupTrailDate based on week interval", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bt <- BackupTrailDate$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(
+    ".2019-04-07.log.zip",
+    ".2019-04-08.log.tar.gz",
+    ".2019-04-15.log"
+  ))
+  file.create(bus)
+
+  bt$prune("2 weeks")
+  expect_identical(
+    basename(bt$backups),
+    c(
+      "test.2019-04-08.log.tar.gz",
+      "test.2019-04-15.log"
+    )
+  )
+  bt$prune(0)
+  file.remove(tf)
+})
+
+
+
+
+test_that("Prune BackupTrailDate based on week interval", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bt <- BackupTrailDate$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(
+    ".2019-04-07.log.zip",
+    ".2019-04-08.log.tar.gz",
+    ".2019-04-09.log"
+  ))
+  file.create(bus)
+
+  bt$prune("2 days")
+  expect_identical(
+    basename(bt$backups),
+    c(
+      "test.2019-04-08.log.tar.gz",
+      "test.2019-04-09.log"
+    )
+  )
+  bt$prune(0)
+  file.remove(tf)
+})
+
+

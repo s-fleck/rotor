@@ -88,9 +88,51 @@ BackupTrailDate <- R6::R6Class(
   "BackupTrail",
   inherit = BackupTrail,
   public = list(
-    prune = function(max_backups){
-      to_remove <- self$backups[(max_backups + 1):length(self$backups)]
+    prune = function(
+      max_backups
+    ){
+      assert(is_scalar(max_backups))
+
+      if (is_integerish(max_backups)){
+        backups <- rev(sort(self$backups))
+        to_remove <- backups[(max_backups + 1):length(backups)]
+
+      } else if (is_Date(max_backups)){
+        sel <- which(parse_date(self$backup_matrix[, "sfx", drop = FALSE]) < max_backups)
+        to_remove <- apply(self$backup_matrix[sel, , drop = FALSE], 1, paste, collapse = ".")
+
+      } else if (is.character(max_backups)){
+        dates    <- parse_date(self$backup_matrix[, "sfx", drop = FALSE])
+        interval <- parse_interval(max_backups)
+
+        if (identical(interval[["unit"]], "year")){
+          limit <- dint::first_of_year(dint::get_year(max(dates)) - interval$value + 1L)
+          sel <- dates < limit
+
+        } else if (identical(interval[["unit"]], "month")) {
+          limit <- dint::first_of_month(dint::as_date_ym(max(dates)) - interval$value + 1L)
+          sel <- dates < limit
+
+        } else if (identical(interval[["unit"]], "week")){
+          limit <- dint::first_of_isoweek(dint::as_date_yw(max(dates)) - interval$value + 1L)
+          sel <- dates < limit
+
+        } else if (identical(interval[["unit"]], "day")){
+          limit <- max(dates) - interval$value + 1L
+          sel <- dates < limit
+        }
+
+        to_remove <- apply(self$backup_matrix[sel, , drop = FALSE], 1, paste, collapse = ".")
+
+      } else {
+
+        stop("Invalid 'max backups'")
+      }
+
+
       file.remove(to_remove)
+
+
       self
     }
   ),
@@ -131,3 +173,15 @@ BackupTrailDate <- R6::R6Class(
     }
   )
 )
+
+
+
+get_year <- function(x){
+    as.POSIXlt(x, tz = tz(x))$year + 1900L
+}
+
+
+
+get_month <- function(x){
+  as.POSIXlt(x, tz = tz(x))$mon + 1L
+}
