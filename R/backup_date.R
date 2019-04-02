@@ -1,7 +1,7 @@
 #' Title
 #'
 #' @param file
-#' @param max_backups
+#' @param n_backups
 #' @param format `character` scalar. Only the following date formats are
 #'   supported by rotor: `"%Y-%m-%d"`, `"%Y%m%d"`, `"%Y-%m"`, `"%Y%m"`, `"%Y"`
 #' @param compression
@@ -14,7 +14,7 @@
 #' @examples
 backup_date <- function(
   file,
-  max_backups = Inf,
+  n_backups = Inf,
   format = "%Y-%m-%d",
   compression = "none",
   date = Sys.Date()
@@ -22,7 +22,7 @@ backup_date <- function(
   stopifnot(
     is_scalar_character(file),
     file.exists(file),
-    is.infinite(max_backups) || is_scalar_integerish(max_backups),
+    is.infinite(n_backups) || is_scalar_integerish(n_backups),
     is_scalar_character(compression),
     assert(is_valid_date_format(format))
   )
@@ -45,8 +45,8 @@ backup_date <- function(
 
   # prune backups
   backups <- find_backups(file)
-  if (length(backups) > max_backups){
-    prune_backups_head(file, max_backups, backups = backups)
+  if (length(backups) > n_backups){
+    prune_backups_head(file, n_backups, backups = backups)
   }
 
   invisible(name_new)

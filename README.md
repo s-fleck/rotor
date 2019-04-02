@@ -69,23 +69,23 @@ backup(tf)
 backup(tf, compression = "zip")  # backup and rotate also support compression
 
 find_backups(tf)  # returns all backups of a file
-#> [1] "/tmp/RtmpbVXsKq/rotor/test.1.log.zip"
-#> [2] "/tmp/RtmpbVXsKq/rotor/test.2.log"    
-#> [3] "/tmp/RtmpbVXsKq/rotor/test.3.log"
+#> [1] "/tmp/RtmpmcJUrE/rotor/test.1.log.zip"
+#> [2] "/tmp/RtmpmcJUrE/rotor/test.2.log"    
+#> [3] "/tmp/RtmpmcJUrE/rotor/test.3.log"
 ```
 
 You can also set a maximum number of backups to be kept
 
 ``` r
-backup(tf, max_backups = 4)
-backup(tf, max_backups = 4)
-backup(tf, max_backups = 4)
+backup(tf, n_backups = 4)
+backup(tf, n_backups = 4)
+backup(tf, n_backups = 4)
 
 find_backups(tf)
-#> [1] "/tmp/RtmpbVXsKq/rotor/test.1.log"    
-#> [2] "/tmp/RtmpbVXsKq/rotor/test.2.log"    
-#> [3] "/tmp/RtmpbVXsKq/rotor/test.3.log"    
-#> [4] "/tmp/RtmpbVXsKq/rotor/test.4.log.zip"
+#> [1] "/tmp/RtmpmcJUrE/rotor/test.1.log"    
+#> [2] "/tmp/RtmpmcJUrE/rotor/test.2.log"    
+#> [3] "/tmp/RtmpmcJUrE/rotor/test.3.log"    
+#> [4] "/tmp/RtmpmcJUrE/rotor/test.4.log.zip"
 ```
 
 ``` r
@@ -97,7 +97,7 @@ Instead of adding an index, you can also add a timestamp.
 ``` r
 backup_date(tf)
 find_backups(tf)
-#> [1] "/tmp/RtmpbVXsKq/rotor/test.2019-03-31.log"
+#> [1] "/tmp/RtmpmcJUrE/rotor/test.2019-04-02.log"
 ```
 
 ``` r

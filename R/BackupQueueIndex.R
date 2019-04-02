@@ -2,18 +2,18 @@ BackupQueueIndex <- R6::R6Class(
   "BackupQueue",
   inherit = BackupQueue,
   public = list(
-    prune = function(max_backups){
-      to_keep   <- self$backups[seq_len(max_backups)]
+    prune = function(n_backups){
+      to_keep   <- self$backups[seq_len(n_backups)]
       to_remove <- setdiff(self$backups, to_keep)
       assert(all(file.remove(to_remove)))
       self$pad_index()
     },
 
 
-    backup = function(
+    push_backup = function(
       compression = FALSE
     ){
-      self$push_index()
+      self$increment_index()
 
       # generate new filename
       name <- tools::file_path_sans_ext(self$file)
@@ -48,7 +48,7 @@ BackupQueueIndex <- R6::R6Class(
     },
 
 
-    push_index = function(n = 1){
+    increment_index = function(n = 1){
       backups_new <- self$backup_matrix
       assert(is.matrix(backups_new))
 

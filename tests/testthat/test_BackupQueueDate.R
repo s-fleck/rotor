@@ -36,7 +36,7 @@ test_that("BackupQueueDate works as expected for files with extension", {
   for (i in 1:10) {
     backup_date(
       tf,
-      max_backups = 5,
+      n_backups = 5,
       date = date + i * 5
     )
   }
@@ -45,7 +45,7 @@ test_that("BackupQueueDate works as expected for files with extension", {
   backup_date(tf, date = date  + 100, format = "%Y%m%d")
   backup_date(tf, date = date  + 110, format = "%Y-%m")
   backup_date(tf, date = date  + 120, format = "%Y%m")
-  backup_date(tf, date = date  + 130, format = "%Y", max_backups = 5)
+  backup_date(tf, date = date  + 130, format = "%Y", n_backups = 5)
   expect_length(bt$backups, 5)
 
   noback <- file.path(dirname(tf), ".2019-a2-20.log")

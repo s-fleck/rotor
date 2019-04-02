@@ -1,7 +1,7 @@
 #' Title
 #'
 #' @param file
-#' @param max_backups
+#' @param n_backups
 #' @param compression
 #'
 #' @return
@@ -10,13 +10,13 @@
 #' @examples
 backup <- function(
   file,
-  max_backups = Inf,
+  n_backups = Inf,
   compression = FALSE
 ){
   stopifnot(
     is_scalar_character(file),
     file.exists(file),
-    is.infinite(max_backups) || is_scalar_integerish(max_backups),
+    is.infinite(n_backups) || is_scalar_integerish(n_backups),
     is_scalar_logical(compression) || is_scalar_character(compression)
   )
 
@@ -34,8 +34,8 @@ backup <- function(
     backups_new <- apply(backups_new, 1, paste, collapse = ".")
     file.rename(rev(backups), rev(backups_new))
 
-    if (length(backups_new) >= max_backups){
-      backups_new <- prune_backups_tail(file, max_backups, backups = backups_new)
+    if (length(backups_new) >= n_backups){
+      backups_new <- prune_backups_tail(file, n_backups, backups = backups_new)
       pad_backup_index(file, backups = backups_new)
     }
   }

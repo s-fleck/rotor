@@ -15,10 +15,10 @@ test_that("roate keeps expected number of backups", {
   tf <- file.path(td, "test.log")
   file.create(tf)
 
-  for (i in 1:10)  backup(tf, max_backups = 5)
+  for (i in 1:10)  backup(tf, n_backups = 5)
   expect_length(find_backups(tf), 5)
 
-  for (i in 1:50)  backup(tf, max_backups = 12)
+  for (i in 1:50)  backup(tf, n_backups = 12)
   expect_length(find_backups(tf), 12)
 
   # cleanup
@@ -34,11 +34,11 @@ test_that("compressed rotate works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
 
-  for (i in 1:10)  backup(tf, max_backups = 10)
+  for (i in 1:10)  backup(tf, n_backups = 10)
     expect_length(find_backups(tf), 10)
 
   for (i in 1:7)
-    x <- backup(tf, max_backups = 10, compression = "zip")
+    x <- backup(tf, n_backups = 10, compression = "zip")
 
   r <- find_backups(tf)
 
@@ -64,10 +64,10 @@ test_that("roate file without extension", {
   tf <- file.path(td, "test")
   file.create(tf)
 
-  for (i in 1:10)  backup(tf, max_backups = 5)
+  for (i in 1:10)  backup(tf, n_backups = 5)
   expect_length(find_backups(tf), 5)
 
-  for (i in 1:50)  backup(tf, max_backups = 12)
+  for (i in 1:50)  backup(tf, n_backups = 12)
   expect_length(find_backups(tf), 12)
 
   # cleanup

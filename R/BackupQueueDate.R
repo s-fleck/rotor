@@ -7,21 +7,21 @@ BackupQueueDate <- R6::R6Class(
   inherit = BackupQueue,
   public = list(
     prune = function(
-      max_backups
+      n_backups
     ){
-      assert(is_scalar(max_backups))
+      assert(is_scalar(n_backups))
 
-      if (is_integerish(max_backups)){
+      if (is_integerish(n_backups)){
         backups <- rev(sort(self$backups))
-        to_remove <- backups[(max_backups + 1):length(backups)]
+        to_remove <- backups[(n_backups + 1):length(backups)]
 
-      } else if (is_Date(max_backups)){
-        sel <- which(parse_date(self$backup_matrix[, "sfx", drop = FALSE]) < max_backups)
+      } else if (is_Date(n_backups)){
+        sel <- which(parse_date(self$backup_matrix[, "sfx", drop = FALSE]) < n_backups)
         to_remove <- apply(self$backup_matrix[sel, , drop = FALSE], 1, paste, collapse = ".")
 
-      } else if (is.character(max_backups)){
+      } else if (is.character(n_backups)){
         dates    <- parse_date(self$backup_matrix[, "sfx", drop = FALSE])
-        interval <- parse_interval(max_backups)
+        interval <- parse_interval(n_backups)
 
         if (identical(interval[["unit"]], "year")){
           limit <- dint::first_of_year(dint::get_year(max(dates)) - interval$value + 1L)

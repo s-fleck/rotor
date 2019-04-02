@@ -74,9 +74,9 @@ find_backups(tf)  # returns all backups of a file
 
 You can also set a maximum number of backups to be kept
 ```{r}
-backup(tf, max_backups = 4)
-backup(tf, max_backups = 4)
-backup(tf, max_backups = 4)
+backup(tf, n_backups = 4)
+backup(tf, n_backups = 4)
+backup(tf, n_backups = 4)
 
 find_backups(tf)
 ```

@@ -102,7 +102,7 @@ test_that("BackupQueue$pad_index works as expected", {
 
 
 
-test_that("BackupQueue$push_index works as expected", {
+test_that("BackupQueue$increment_index works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:9, ".log")
@@ -111,7 +111,7 @@ test_that("BackupQueue$push_index works as expected", {
 
   bt <- BackupQueueIndex$new(tf)
   expect_setequal(bt$backups, bus)
-  expect_identical(bt$push_index()$backups, pushed_bus)
+  expect_identical(bt$increment_index()$backups, pushed_bus)
 
   expect_length(bt$prune(0)$backups, 0)
   file.remove(tf)
@@ -120,7 +120,7 @@ test_that("BackupQueue$push_index works as expected", {
 
 
 
-test_that("BackupQueue$backup() works as expected", {
+test_that("BackupQueue$push_backup() works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:9, ".log")
@@ -130,10 +130,10 @@ test_that("BackupQueue$backup() works as expected", {
   file.create(bus)
 
   bt <- BackupQueueIndex$new(tf)
-  bt$backup()
+  bt$push_backup()
   expect_length(bt$backups, 10)
 
-  bt$backup(compression = TRUE)
+  bt$push_backup(compression = TRUE)
   expect_length(bt$backups, 11)
   expect_identical(tools::file_ext(bt$backups[[1]]), "zip")
   expect_setequal(tools::file_ext(bt$backups[2:11]), "log")

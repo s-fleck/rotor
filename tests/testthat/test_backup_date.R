@@ -19,7 +19,7 @@ test_that("roate_date keeps expected number of backups", {
   for (i in 1:10) {
     backup_date(
       tf,
-      max_backups = 5,
+      n_backups = 5,
       date = date + i * 5
     )
   }
@@ -54,7 +54,7 @@ test_that("compressed roate_date works as expected", {
   for (i in 1:10) {
     backup_date(
       tf,
-      max_backups = 5,
+      n_backups = 5,
       date = date + i * 5
     )
   }
@@ -63,7 +63,7 @@ test_that("compressed roate_date works as expected", {
   for (i in 1:7) {
     backup_date(
       tf,
-      max_backups = 10,
+      n_backups = 10,
       date = date + 60 + i * 5,
       compression = "zip"
     )
