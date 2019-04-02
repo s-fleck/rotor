@@ -24,6 +24,7 @@ test_that("BackupQueueIndex can find and prune backup trails", {
   bus <- paste0(tools::file_path_sans_ext(tf), c(".1.log.zip", ".2.log.tar.gz", ".3.log"))
   file.create(bus)
   expect_identical(bt$backups, bus)
+  bt
 
   # multiple pruning with the same settings does not change anything
   expect_identical(bt$prune(2)$backups, bus[1:2])

@@ -12,20 +12,29 @@ BackupQueue <- R6::R6Class(
     file = NULL,
     backup_dir = NULL,
 
-
     print = function(){
       cat(fmt_class(class(self)[[1]]), "\n\n")
 
-      cat(self$file, "\n")
-      bu <- self$backup_matrix
+      ori <- file.info(self$file)
+      bus <- file.info(self$backups)
+      info <- data.frame(
+        file = c(row.names(ori), row.names(bus)),
+        size = c(ori$size, bus$size)
+      )
 
-      if (length(bu)){
-        bu[, colnames(bu) != "sfx"] <- apply(bu[, colnames(bu) != "sfx"], 1:2, style_subtle)
-        bu[, "sfx"] <- style_warning(bu[, "sfx"])
-        cat(apply(bu, 1, paste, collapse = style_subtle(".")), sep = "\n")
-      }
+      dd <- as.matrix(info)
+      dd <- rbind(
+        dd,
+        c(paste(nrow(dd), "files total"), sum(as.integer(dd[, "size"])))
+      )
 
-      self
+      dd[, "file"] <- pad_right(dd[, "file"])
+      dd[, "size"] <- pad_left(readable_size(dd[, "size"]))
+
+      dd[2:(nrow(dd) - 1), ] <-  apply(dd[2:(nrow(dd) - 1), ], 1:2, style_subtle)
+      dd <- apply(dd, 1, cat, "\n")
+
+      invisible(self)
     }
   ),
 
@@ -74,3 +83,19 @@ BackupQueue <- R6::R6Class(
       }
   )
 )
+
+
+
+readable_size <- function(
+  x
+){
+  utils:::format.object_size(as.numeric(x), "auto")
+}
+
+
+# public static String readableFileSize(long size) {
+#   if(size <= 0) return "0";
+#   final String[] units = new String[] { "B", "kB", "MB", "GB", "TB" };
+#   int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
+#   return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
+# }
