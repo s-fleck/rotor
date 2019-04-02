@@ -24,3 +24,20 @@ test_that("BackupTrail works as expected", {
   expect_identical(bt$backup_dir, dirname(tf))
   file.remove(tf)
 })
+
+
+
+
+test_that("BackupTrail$backup_matrix works as expected", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bt <- BackupTrail$new(tf)
+
+  sfxs <-c(1:12, "2019-12-31")
+  bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs, ".log")
+  file.create(bus)
+
+  expect_setequal(bt$backups, bus)
+  expect_setequal(bt$backup_matrix[, "sfx"], sfxs)
+  expect_setequal(bt$backup_matrix[, "ext"], "log")
+})
