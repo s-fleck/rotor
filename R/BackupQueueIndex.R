@@ -1,6 +1,6 @@
-BackupTrailIndex <- R6::R6Class(
-  "BackupTrail",
-  inherit = BackupTrail,
+BackupQueueIndex <- R6::R6Class(
+  "BackupQueue",
+  inherit = BackupQueue,
   public = list(
     prune = function(max_backups){
       to_keep   <- self$backups[seq_len(max_backups)]

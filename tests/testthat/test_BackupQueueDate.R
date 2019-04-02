@@ -1,4 +1,4 @@
-context("BackupTrailDate")
+context("BackupQueueDate")
 
 
 
@@ -13,10 +13,10 @@ teardown({
 
 
 
-test_that("BackupTrailDate can find and prune backup trails", {
+test_that("BackupQueueDate can find and prune backup trails", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupTrailDate$new(tf)
+  bt <- BackupQueueDate$new(tf)
 
   expect_identical(bt$backups, character(0))
   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
@@ -26,12 +26,12 @@ test_that("BackupTrailDate can find and prune backup trails", {
   file.remove(tf)
 })
 
-test_that("BackupTrailDate works as expected for files with extension", {
+test_that("BackupQueueDate works as expected for files with extension", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   date <- as.Date("2019-01-01")
 
-  bt <- BackupTrailDate$new(tf)
+  bt <- BackupQueueDate$new(tf)
   expect_identical(bt$backups, character(0))
   for (i in 1:10) {
     backup_date(
@@ -72,10 +72,10 @@ test_that("BackupTrailDate works as expected for files with extension", {
 
 
 
-test_that("Prune BackupTrailDate based on date", {
+test_that("Prune BackupQueueDate based on date", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupTrailDate$new(tf)
+  bt <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-01-01.log.zip",
     ".2019-01-02.log.tar.gz",
@@ -100,10 +100,10 @@ test_that("Prune BackupTrailDate based on date", {
 
 
 
-test_that("Prune BackupTrailDate based on year interval", {
+test_that("Prune BackupQueueDate based on year interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupTrailDate$new(tf)
+  bt <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-01-01.log.zip",
     ".2019-02-02.log.tar.gz",
@@ -129,10 +129,10 @@ test_that("Prune BackupTrailDate based on year interval", {
 
 
 
-test_that("Prune BackupTrailDate based on month interval", {
+test_that("Prune BackupQueueDate based on month interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupTrailDate$new(tf)
+  bt <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-01-01.log.zip",
     ".2019-02-02.log.tar.gz",
@@ -155,10 +155,10 @@ test_that("Prune BackupTrailDate based on month interval", {
 
 
 
-test_that("Prune BackupTrailDate based on week interval", {
+test_that("Prune BackupQueueDate based on week interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupTrailDate$new(tf)
+  bt <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-04-07.log.zip",
     ".2019-04-08.log.tar.gz",
@@ -181,10 +181,10 @@ test_that("Prune BackupTrailDate based on week interval", {
 
 
 
-test_that("Prune BackupTrailDate based on week interval", {
+test_that("Prune BackupQueueDate based on week interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupTrailDate$new(tf)
+  bt <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-04-07.log.zip",
     ".2019-04-08.log.tar.gz",

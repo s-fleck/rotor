@@ -2,9 +2,9 @@
 
 
 
-BackupTrailDate <- R6::R6Class(
-  "BackupTrail",
-  inherit = BackupTrail,
+BackupQueueDate <- R6::R6Class(
+  "BackupQueue",
+  inherit = BackupQueue,
   public = list(
     prune = function(
       max_backups

@@ -1,4 +1,4 @@
-context("BackupTrailIndex")
+context("BackupQueueIndex")
 
 
 
@@ -14,10 +14,10 @@ teardown({
 
 
 
-test_that("BackupTrailIndex can find and prune backup trails", {
+test_that("BackupQueueIndex can find and prune backup trails", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupTrailIndex$new(tf)
+  bt <- BackupQueueIndex$new(tf)
 
   # finding and pruning backups works
   expect_identical(bt$backups, character(0))
@@ -42,10 +42,10 @@ test_that("BackupTrailIndex can find and prune backup trails", {
 
 
 
-test_that("BackupTrail pruning works as expected for files without extension", {
+test_that("BackupQueue pruning works as expected for files without extension", {
   tf <- file.path(td, "test")
   file.create(tf)
-  bt <- BackupTrailIndex$new(tf)
+  bt <- BackupQueueIndex$new(tf)
 
   # finding and pruning backups works
   expect_identical(bt$backups, character(0))
@@ -63,10 +63,10 @@ test_that("BackupTrail pruning works as expected for files without extension", {
 
 
 
-test_that("BackupTrail works as expected for files with extension", {
+test_that("BackupQueue works as expected for files with extension", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupTrailIndex$new(tf)
+  bt <- BackupQueueIndex$new(tf)
 
   # finding and pruning backups works
   expect_identical(bt$backups, character(0))
@@ -82,7 +82,7 @@ test_that("BackupTrail works as expected for files with extension", {
 
 
 
-test_that("BackupTrail$pad_index works as expected", {
+test_that("BackupQueue$pad_index works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:12, ".log")
@@ -91,7 +91,7 @@ test_that("BackupTrail$pad_index works as expected", {
   ))
   file.create(bus)
 
-  bt <- BackupTrailIndex$new(tf)
+  bt <- BackupQueueIndex$new(tf)
   expect_setequal(bt$backups, bus)
   expect_identical(bt$pad_index()$backups, padded_bus)
   expect_identical(bt$prune(9)$backups, bus[1:9])
@@ -102,14 +102,14 @@ test_that("BackupTrail$pad_index works as expected", {
 
 
 
-test_that("BackupTrail$push_index works as expected", {
+test_that("BackupQueue$push_index works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:9, ".log")
   pushed_bus <- paste0(tools::file_path_sans_ext(tf), ".", pad_left(2:10, pad = "0"), ".log")
   file.create(bus)
 
-  bt <- BackupTrailIndex$new(tf)
+  bt <- BackupQueueIndex$new(tf)
   expect_setequal(bt$backups, bus)
   expect_identical(bt$push_index()$backups, pushed_bus)
 
@@ -120,7 +120,7 @@ test_that("BackupTrail$push_index works as expected", {
 
 
 
-test_that("BackupTrail$backup() works as expected", {
+test_that("BackupQueue$backup() works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:9, ".log")
@@ -129,7 +129,7 @@ test_that("BackupTrail$backup() works as expected", {
   ))
   file.create(bus)
 
-  bt <- BackupTrailIndex$new(tf)
+  bt <- BackupQueueIndex$new(tf)
   bt$backup()
   expect_length(bt$backups, 10)
 

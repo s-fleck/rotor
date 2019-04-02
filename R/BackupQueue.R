@@ -1,5 +1,5 @@
-BackupTrail <- R6::R6Class(
-  "BackupTrail",
+BackupQueue <- R6::R6Class(
+  "BackupQueue",
   public = list(
     initialize = function(
       file,

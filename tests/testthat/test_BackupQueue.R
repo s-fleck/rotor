@@ -1,4 +1,4 @@
-context("BackupTrail")
+context("BackupQueue")
 
 
 
@@ -15,11 +15,11 @@ teardown({
 
 
 
-test_that("BackupTrail works as expected", {
+test_that("BackupQueue works as expected", {
   tf <- file.path(td, "test")
   file.create(tf)
 
-  bt <- BackupTrail$new(tf)
+  bt <- BackupQueue$new(tf)
   expect_identical(bt$file, tf)
   expect_identical(bt$backup_dir, dirname(tf))
   file.remove(tf)
@@ -28,10 +28,10 @@ test_that("BackupTrail works as expected", {
 
 
 
-test_that("BackupTrail$backup_matrix works as expected", {
+test_that("BackupQueue$backup_matrix works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupTrail$new(tf)
+  bt <- BackupQueue$new(tf)
 
   sfxs <-c(1:12, "2019-12-31")
   bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs, ".log")
