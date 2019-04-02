@@ -51,6 +51,8 @@ BackupTrail <- R6::R6Class(
           res <- a
           colnames(res) <- c("name", "sfx")
         }
+
+        assert(is.matrix(res))
         res
       }
   )

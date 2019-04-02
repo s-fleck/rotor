@@ -13,6 +13,19 @@ teardown({
 
 
 
+test_that("BackupTrailDate can find and prune backup trails", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bt <- BackupTrailDate$new(tf)
+
+  expect_identical(bt$backups, character(0))
+  bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
+  file.create(bus)
+  expect_identical(bt$backup_matrix[, "sfx"], c("2019-01-03", "2019-01-02", "2019-01-01"))
+  bt$prune(0)
+  file.remove(tf)
+})
+
 test_that("BackupTrailDate works as expected for files with extension", {
   tf <- file.path(td, "test.log")
   file.create(tf)

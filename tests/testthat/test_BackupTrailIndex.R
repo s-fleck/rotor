@@ -14,7 +14,7 @@ teardown({
 
 
 
-test_that("BackupTrailIndex works as expected for files with extension", {
+test_that("BackupTrailIndex can find and prune backup trails", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bt <- BackupTrailIndex$new(tf)
@@ -24,24 +24,25 @@ test_that("BackupTrailIndex works as expected for files with extension", {
   bus <- paste0(tools::file_path_sans_ext(tf), c(".1.log.zip", ".2.log.tar.gz", ".3.log"))
   file.create(bus)
   expect_identical(bt$backups, bus)
-  expect_identical(bt$backup_matrix[, "sfx"], as.character(1:3))
-  bt$prune(0)
-  expect_length(bt$backups, 0)
 
-  # finding and pruning backups works
-  bt <- BackupTrailDate$new(tf)
-  expect_identical(bt$backups, character(0))
-  bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
-  file.create(bus)
-  expect_identical(bt$backup_matrix[, "sfx"], c("2019-01-03", "2019-01-02", "2019-01-01"))
-  bt$prune(0)
-  file.remove(tf)
+  # multiple pruning with the same settings does not change anything
+  expect_identical(bt$prune(2)$backups, bus[1:2])
+  expect_identical(bt$prune(2)$backups, bus[1:2])
+  expect_identical(bt$prune(2)$backups, bus[1:2])
+
+  # pruning with higher prune number than number of backups does not change anything
+  expect_identical(bt$prune(1)$backups, bus[1])
+  expect_identical(bt$prune(2)$backups, bus[1])
+
+  #cleanup
+  expect_length(bt$prune(0)$backups, 0)
+  expect_length(bt$prune(0)$backups, 0)
 })
 
 
 
 
-test_that("BackupTrail works as expected for files without extension", {
+test_that("BackupTrail pruning works as expected for files without extension", {
   tf <- file.path(td, "test")
   file.create(tf)
   bt <- BackupTrailIndex$new(tf)
@@ -53,8 +54,9 @@ test_that("BackupTrail works as expected for files without extension", {
   expect_identical(bt$backups, bus)
   bt$prune(2)
   expect_identical(bt$backups, bus[1:2])
-  bt$prune(0)
-  expect_identical(bt$backups, character(0))
+  bt$prune(2)
+  expect_identical(bt$backups, bus[1:2])
+  expect_length(bt$prune(0)$backups, 0)
   file.remove(tf)
 })
 
@@ -73,8 +75,69 @@ test_that("BackupTrail works as expected for files with extension", {
   expect_identical(bt$backups, bus)
   bt$prune(2)
   expect_identical(bt$backups, bus[1:2])
-  bt$prune(0)
-  expect_identical(bt$backups, character(0))
+  expect_length(bt$prune(0)$backups, 0)
   file.remove(tf)
 })
 
+
+
+
+test_that("BackupTrail$pad_index works as expected", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:12, ".log")
+  padded_bus <- sort(paste0(
+    tools::file_path_sans_ext(tf), ".", pad_left(1:12, pad = 0), ".log"
+  ))
+  file.create(bus)
+
+  bt <- BackupTrailIndex$new(tf)
+  expect_setequal(bt$backups, bus)
+  expect_identical(bt$pad_index()$backups, padded_bus)
+  expect_identical(bt$prune(9)$backups, bus[1:9])
+
+  expect_length(bt$prune(0)$backups, 0)
+  file.remove(tf)
+})
+
+
+
+test_that("BackupTrail$push_index works as expected", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:9, ".log")
+  pushed_bus <- paste0(tools::file_path_sans_ext(tf), ".", pad_left(2:10, pad = "0"), ".log")
+  file.create(bus)
+
+  bt <- BackupTrailIndex$new(tf)
+  expect_setequal(bt$backups, bus)
+  expect_identical(bt$push_index()$backups, pushed_bus)
+
+  expect_length(bt$prune(0)$backups, 0)
+  file.remove(tf)
+})
+
+
+
+
+test_that("BackupTrail$backup() works as expected", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:9, ".log")
+  padded_bus <- sort(paste0(
+    tools::file_path_sans_ext(tf), ".", pad_left(1:10, pad = 0), ".log"
+  ))
+  file.create(bus)
+
+  bt <- BackupTrailIndex$new(tf)
+  bt$backup()
+  expect_length(bt$backups, 10)
+
+  bt$backup(compression = TRUE)
+  expect_length(bt$backups, 11)
+  expect_identical(tools::file_ext(bt$backups[[1]]), "zip")
+  expect_setequal(tools::file_ext(bt$backups[2:11]), "log")
+
+  expect_length(bt$prune(0)$backups, 0)
+  file.remove(tf)
+})
