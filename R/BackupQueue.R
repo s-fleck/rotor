@@ -10,8 +10,25 @@ BackupQueue <- R6::R6Class(
       self
     },
     file = NULL,
-    backup_dir = NULL
+    backup_dir = NULL,
+
+
+    print = function(){
+      cat(fmt_class(class(self)[[1]]), "\n\n")
+
+      cat(self$file, "\n")
+      bu <- self$backup_matrix
+
+      if (length(bu)){
+        bu[, colnames(bu) != "sfx"] <- apply(bu[, colnames(bu) != "sfx"], 1:2, style_subtle)
+        bu[, "sfx"] <- style_warning(bu[, "sfx"])
+        cat(apply(bu, 1, paste, collapse = style_subtle(".")), sep = "\n")
+      }
+
+      self
+    }
   ),
+
 
   active = list(
     backups = function(){
