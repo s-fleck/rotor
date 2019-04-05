@@ -25,9 +25,6 @@ test_that("rotate_interval works as expected for years", {
 
   # ensure rotate_interval believes it is 2019-01-01
   mockery::stub(rotate_interval, "Sys.Date",    as.Date("2019-01-01"))
-  mockery::stub(rotate_interval, "Sys.date_ym", dint::date_ym(2019, 1))
-  mockery::stub(rotate_interval, "Sys.date_yq", dint::date_yq(2019, 1))
-  mockery::stub(rotate_interval, "Sys.date_yw", dint::date_yw(2019, 1))
 
   # no backup because last backup is less than a year old
   file.create(file.path(td, "test.2019-12-31.log"))
@@ -52,21 +49,28 @@ test_that("rotate_interval works as expected for years", {
 test_that("rotate_interval works as expected for quarters", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
+  bq <- BackupQueueDate$new(tf)
 
   # no backup younger than 1 quarter exists, so rotate
   bu <- rotate_interval(tf, "1 quarter")
   expect_true(file.size(bu) > 1)
+  expect_true(length(bq$backups) == 1)
+  bq$prune(0)
 
-  bq <- BackupQueueDate$new(tf)
-  expect_true(bq$has_backups)
+  # ensure rotate_interval believes it is 2019-01-01
+  mockery::stub(rotate_interval, "Sys.Date",    as.Date("2019-04-01"))
+  mockery::stub(rotate_interval, "Sys.date_yq", dint::date_yq(2019, 2))
+
 
   # no backup because last backup is less than a quarter old
+  file.create(file.path(td, "test.2019-06-21.log"))
   bu <- rotate_interval(tf, "1 quarter")
   expect_true(length(bq$backups) == 1)
+  bq$prune(0)
 
-  # no backup because last backup is less than 2 quarters old
-  replace_date_stamp(bq$backups, -93)
-  bu <- rotate_interval(tf, "3 quarter")
+  # no backup because last backup is less than 1 quarter old
+  file.create(file.path(td, "test.2019-01-01.log"))
+  bu <- rotate_interval(tf, "2 quarter")
   expect_true(length(bq$backups) == 1)
 
   # backup because last backup is more than 1 quarter old
@@ -89,6 +93,9 @@ test_that("rotate_interval works as expected for months", {
 
   bq <- BackupQueueDate$new(tf)
   expect_true(bq$has_backups)
+
+  mockery::stub(rotate_interval, "Sys.Date",    as.Date("2019-04-01"))
+  mockery::stub(rotate_interval, "Sys.date_ym", dint::date_yq(2019, 2))
 
   # no backup because last backup is less than a month old
   bu <- rotate_interval(tf, "1 month")
@@ -121,6 +128,8 @@ test_that("rotate_interval works as expected", {
   bq <- BackupQueueDate$new(tf)
   expect_true(bq$has_backups)
 
+  mockery::stub(rotate_interval, "Sys.Date",    as.Date("2019-04-01"))
+  mockery::stub(rotate_interval, "Sys.date_yw", dint::date_yw(2019, 1))
   # no backup because last backup is less than a week old
   bu <- rotate_interval(tf, "1 week")
   expect_true(length(bq$backups) == 1)
