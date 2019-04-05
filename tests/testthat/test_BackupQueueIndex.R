@@ -33,6 +33,7 @@ test_that("BackupQueueIndex can find and prune backup trails", {
 
   # pruning with higher prune number than number of backups does not change anything
   expect_identical(bt$prune(1)$backups, bus[1])
+  expect_is(bt$backup_matrix, "matrix")
   expect_identical(bt$prune(2)$backups, bus[1])
 
   #cleanup

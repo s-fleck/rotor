@@ -22,9 +22,16 @@ test_that("BackupQueueDate can find and prune backup trails", {
   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
   file.create(bus)
   expect_identical(bt$backup_matrix[, "sfx"], c("2019-01-03", "2019-01-02", "2019-01-01"))
+
+  # backup_matrix stays a matrix even if it has only one row
+  bt$prune(1)
+  expect_is(bt$backup_matrix, "matrix")
+
   bt$prune(0)
   file.remove(tf)
 })
+
+
 
 test_that("BackupQueueDate works as expected for files with extension", {
   tf <- file.path(td, "test.log")

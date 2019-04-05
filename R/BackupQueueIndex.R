@@ -67,7 +67,7 @@ BackupQueueIndex <- R6::R6Class(
         return(character())
 
       res <- super$backup_matrix
-      res[order(res[, "sfx"]), ,drop = FALSE]
+      res[order(res[, "sfx"]), , drop = FALSE]
     },
 
     backups = function(){
