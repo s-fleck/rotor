@@ -12,6 +12,19 @@ BackupQueue <- R6::R6Class(
     file = NULL,
     backup_dir = NULL,
 
+    prune = function(n_backups){
+      if (n_backups > 0){
+        warning(
+          "Pruning a generic BackupQueue with `n_backups > 0` is not",
+          "recommended, because it is not defined which backups will be",
+          "deleted. Use BackupQueueIndex or BackupQueueDate instead.")
+      }
+      to_keep   <- self$backups[seq_len(n_backups)]
+      to_remove <- setdiff(self$backups, to_keep)
+      assert(all(file.remove(to_remove)))
+      self
+    },
+
     print = function(){
       cat(fmt_class(class(self)[[1]]), "\n\n")
 
