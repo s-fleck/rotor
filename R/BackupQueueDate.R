@@ -6,6 +6,31 @@ BackupQueueDate <- R6::R6Class(
   "BackupQueue",
   inherit = BackupQueue,
   public = list(
+    push_backup = function(
+      format = "%Y-%m-%d",
+      compression = FALSE,
+      overwrite = FALSE
+    ){
+      # generate new filename
+      name <- tools::file_path_sans_ext(self$file)
+      ext  <- tools::file_ext(self$file)
+      sfx <- format(Sys.Date(), format = format)
+
+      if (is_blank(ext)) {
+        name_new <- paste(name, sfx, sep = ".")
+      } else {
+        name_new <- paste(name, sfx, ext, sep = ".")
+      }
+
+      if (file.exists(name_new) && !overwrite){
+        stop("Backup exists and `overwrite == FALSE`")
+      }
+
+      file.copy(self$file, name_new, overwrite = FALSE)
+      name_new <- compress_and_remove(name_new, compression = compression)
+      self
+    },
+
     prune = function(
       n_backups
     ){
@@ -47,10 +72,7 @@ BackupQueueDate <- R6::R6Class(
         stop("Invalid 'max backups'")
       }
 
-
       file.remove(to_remove)
-
-
       self
     }
   ),
@@ -61,7 +83,7 @@ BackupQueueDate <- R6::R6Class(
         return(character())
 
       res <- super$backup_matrix
-      res[order(res[, "sfx"],  decreasing = TRUE), ]
+      res[order(res[, "sfx"],  decreasing = TRUE), , drop = FALSE]
     },
 
     backups = function(){
