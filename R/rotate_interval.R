@@ -35,27 +35,49 @@ rotate_interval <- function(
   stopifnot(
     is_scalar_character(file) && file.exists(file)
   )
-  size <- parse_size(size)
 
-  if (file.size(file) < size){
-    if (verbose) {
-      message(sprintf(
-        "Not rotating '%s': Filesize (%s) is less than the limit (%s)",
-        basename(file),
-        fmt_bytes(file.size(file)),
-        fmt_bytes(size)
-      ))
-    }
-    return(character())
+  idx <- BackupQueueIndex$new(file)
+  if (length(idx$backups)){
+    warning(
+      "Rotating by interval '", interval, "', but indexed backups exist:\n",
+      paste("-", idx$backups, "\n"), call. = FALSE)
   } else {
-    res <- backup(file, n_backups = n_backups, compression = compression)
-    if (verbose) message(sprintf("Rotated '%s' to '%s'", file, res))
+    rm(idx)
   }
 
-  unlink(file)
-  file.create(file)
+  bq <- BackupQueueDate$new(file)
 
-  res
+
+  if (bq$has_backups){
+    iv <- parse_interval(interval)
+
+    if (identical(iv$unit, "week")){
+      weeks <- dint::as_date_yw(parse_date(bq$backup_matrix[, "sfx"]))
+      do_backup <- dint::Sys.date_yw() >= max(weeks) + 1 * iv$value
+
+    } else if (identical(iv$unit, "month")){
+      months    <- dint::as_date_ym(parse_date(bq$backup_matrix[, "sfx"]))
+      do_backup <- dint::Sys.date_ym() >= max(months) + 1 * iv$value
+
+    } else if (identical(iv$unit, "quarter")){
+      quarters    <- dint::as_date_yq(parse_date(bq$backup_matrix[, "sfx"]))
+      do_backup <- dint::Sys.date_yq() >= max(quarters) + 1 * iv$value
+
+    } else if (identical(iv$unit, "year")){
+      years     <- dint::get_year(parse_date(bq$backup_matrix[, "sfx"]))
+      do_backup <- dint::get_year(Sys.Date()) >= max(years) + 1 * iv$value
+    }
+
+  } else {
+    do_backup <- TRUE
+  }
+
+  if (do_backup){
+    bq$push_backup()
+  }
+
+
+  bq$backups[[1]]
 }
 
 
