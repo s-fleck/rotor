@@ -36,23 +36,44 @@ BackupQueue <- R6::R6Class(
       )
 
       dd <- as.matrix(info)
-      dd <- rbind(
-        dd,
-        c(paste(nrow(dd), "files total"), sum(as.integer(dd[, "size"])))
-      )
 
-      dd[, "file"] <- pad_right(dd[, "file"])
-      dd[, "size"] <- pad_left(readable_size(dd[, "size"]))
 
-      dd[2:(nrow(dd) - 1), ] <-  apply(dd[2:(nrow(dd) - 1), ], 1:2, style_subtle)
-      dd <- apply(dd, 1, cat, "\n")
+      if (nrow(dd) == 1){
+        dd[, "size"] <- readable_size(dd[, "size"])
+        dd <- rbind(
+          dd,
+          c("[no backups]", "")
+        )
+        dd[, "size"] <- pad_left(dd[, "size"], max(nchar(dd[, "size"])) + 2)
+        dd[, "file"] <- pad_right(dd[, "file"])
+        assert(nrow(dd) == 2)
+        dd[2, ] <-  apply(dd[2, ,drop = FALSE], 1:2, style_subtle)
 
+      } else if (nrow(dd) > 1){
+        dd <- rbind(
+          dd,
+          c(paste(nrow(dd), "files total"), sum(as.integer(dd[, "size"])))
+        )
+        dd[, "size"] <- pad_left(readable_size(dd[, "size"]))
+        dd[, "file"] <- pad_right(dd[, "file"])
+        assert(nrow(dd) >= 3)
+        sel <- 2:(nrow(dd) - 1)
+        dd[sel, ] <-  apply(dd[sel, ,drop = FALSE], 1:2, style_subtle)
+      } else {
+        stop("Error while printing backup queue. Please file an issue.")
+      }
+
+      apply(dd, 1, cat, "\n")
       invisible(self)
     }
   ),
 
 
   active = list(
+    has_backups = function(){
+      length(self$backups) > 0
+    },
+
     backups = function(){
       potential_backups <-
         list.files(self$backup_dir, full.names = self$backup_dir != ".")
@@ -102,7 +123,7 @@ BackupQueue <- R6::R6Class(
 readable_size <- function(
   x
 ){
-  utils:::format.object_size(as.numeric(x), "auto")
+  sapply(as.numeric(x), utils:::format.object_size, "auto")
 }
 
 
