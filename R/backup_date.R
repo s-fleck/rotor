@@ -63,6 +63,16 @@ is_valid_date_format <- function(x){
 
 
 
+is_parsable_date <- function(x){
+  tryCatch(
+    {parse_date(x); TRUE},
+    error = function(...) FALSE
+  )
+}
+
+
+
+
 parse_date <- function(x){
 
   prep_string <- function(.x){
