@@ -21,22 +21,25 @@ test_that("rotate_interval works as expected for years", {
 
   bq <- BackupQueueDate$new(tf)
   expect_true(bq$has_backups)
+  bq$prune(0)
 
-  # no backup because last backup is less than a year old
-  bu <- rotate_interval(tf, "1 year")
-  expect_true(length(bq$backups) == 1)
-
-  # no backup because last backup is less than 2 years old
+  # ensure rotate_interval believes it is 2019-01-01
+  mockery::stub(rotate_interval, "Sys.Date",    as.Date("2019-01-01"))
   mockery::stub(rotate_interval, "Sys.date_ym", dint::date_ym(2019, 1))
   mockery::stub(rotate_interval, "Sys.date_yq", dint::date_yq(2019, 1))
   mockery::stub(rotate_interval, "Sys.date_yw", dint::date_yw(2019, 1))
 
-  replace_date_stamp(bq$backups, replace = "2018-01-01")
-  bu <- rotate_interval(tf, "2 year")
-  expect_true(length(bq$backups) == 1)
-
-  # backup because last backup is more than 1 year old
+  # no backup because last backup is less than a year old
+  file.create(file.path(td, "test.2019-12-31.log"))
   bu <- rotate_interval(tf, "1 year")
+  expect_true(length(bq$backups) == 1)
+  bq$prune(0)
+
+  # roate because backup is from last year
+  file.create(file.path(td, "test.2018-12-31.log"))
+  bu <- rotate_interval(tf, "2 year")  #dont rotate
+  expect_true(length(bq$backups) == 1)
+  bu <- rotate_interval(tf, "1 year")  #rotate
   expect_true(length(bq$backups) == 2)
 
   bq$prune(0)
@@ -138,6 +141,8 @@ test_that("rotate_interval works as expected", {
 })
 
 
+
+
 test_that("rotate_interval works as expected", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
@@ -160,11 +165,11 @@ test_that("rotate_interval works as expected", {
 
 
 
-test_that("parse interval", {
 
+test_that("parse interval", {
   expect_identical(parse_interval(9)$unit, "day")
   expect_identical(parse_interval("1 week")$unit, "week")
   expect_identical(parse_interval("2 months")$unit, "month")
-
-
+  expect_identical(parse_interval("3 quarters")$unit, "quarter")
+  expect_identical(parse_interval("4 years")$unit, "year")
 })
