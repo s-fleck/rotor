@@ -13,7 +13,16 @@ first <- function(x){
 
 # rename a file by incrementing a timestamp in the filename. very narrow function
 # only used during unit tests
-increment_date_stamp <- function(x, increment){
+replace_date_stamp <- function(
+  x,
+  increment = NULL,
+  replace = NULL
+){
+  if (is.character(replace)) replace <- as.Date(replace)
+  assert(is.null(increment) || is_scalar_integerish(increment))
+  assert(is.null(replace)   || is_scalar_Date(replace))
+  assert(is.null(increment) + is.null(replace) == 1)
+
   splt <- strsplit(x, ".", fixed = TRUE)
 
   assert(all(sapply(splt, length) == 3))
@@ -29,7 +38,14 @@ increment_date_stamp <- function(x, increment){
   })
 
   splt <- do.call(rbind, splt)
-  splt$sfx <- splt$sfx + increment
+
+  if (!is.null(increment)){
+    splt$sfx <- splt$sfx + increment
+
+  } else if (!is.null(replace)){
+    splt$sfx <- replace
+  }
+
   new_name <- apply(splt, 1, paste, collapse = ".")
 
   assert(all(file.exists(x)))

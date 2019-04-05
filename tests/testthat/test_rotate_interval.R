@@ -27,8 +27,12 @@ test_that("rotate_interval works as expected for years", {
   expect_true(length(bq$backups) == 1)
 
   # no backup because last backup is less than 2 years old
-  increment_date_stamp(bq$backups, -366)
-  bu <- rotate_interval(tf, "3 year")
+  mockery::stub(rotate_interval, "Sys.date_ym", dint::date_ym(2019, 1))
+  mockery::stub(rotate_interval, "Sys.date_yq", dint::date_yq(2019, 1))
+  mockery::stub(rotate_interval, "Sys.date_yw", dint::date_yw(2019, 1))
+
+  replace_date_stamp(bq$backups, replace = "2018-01-01")
+  bu <- rotate_interval(tf, "2 year")
   expect_true(length(bq$backups) == 1)
 
   # backup because last backup is more than 1 year old
@@ -58,7 +62,7 @@ test_that("rotate_interval works as expected for quarters", {
   expect_true(length(bq$backups) == 1)
 
   # no backup because last backup is less than 2 quarters old
-  increment_date_stamp(bq$backups, -93)
+  replace_date_stamp(bq$backups, -93)
   bu <- rotate_interval(tf, "3 quarter")
   expect_true(length(bq$backups) == 1)
 
@@ -88,7 +92,7 @@ test_that("rotate_interval works as expected for months", {
   expect_true(length(bq$backups) == 1)
 
   # no backup because last backup is less than 2 months old
-  increment_date_stamp(bq$backups, -31)
+  replace_date_stamp(bq$backups, -31)
   bu <- rotate_interval(tf, "2 month")
   expect_true(length(bq$backups) == 1)
 
@@ -119,7 +123,7 @@ test_that("rotate_interval works as expected", {
   expect_true(length(bq$backups) == 1)
 
   # no backup because last backup is less than 2 weeks old
-  increment_date_stamp(bq$backups, -7)
+  replace_date_stamp(bq$backups, -7)
   bu <- rotate_interval(tf, "2 week")
   expect_true(length(bq$backups) == 1)
 
