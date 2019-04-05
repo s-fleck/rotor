@@ -1,7 +1,3 @@
-
-
-
-
 BackupQueueDate <- R6::R6Class(
   "BackupQueue",
   inherit = BackupQueue,
@@ -36,7 +32,13 @@ BackupQueueDate <- R6::R6Class(
     ){
       assert(is_scalar(n_backups))
 
-      if (is_integerish(n_backups)){
+      if (is.infinite(n_backups) || is.na(n_backups))
+        return(self)
+
+      if (is.character(n_backups) && is_parsable_date(n_backups))
+        n_backups <- parse_date(n_backups)
+
+      if (is_integerish(n_backups) && is.finite(n_backups)){
         backups <- rev(sort(self$backups))
         to_remove <- backups[(n_backups + 1):length(backups)]
 
