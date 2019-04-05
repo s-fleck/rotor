@@ -1,13 +1,15 @@
 #' Title
 #'
-#' @param file
-#' @param size scalar `integer` or `character`. Integers are interpretet as
-#'   bytes. You can pass `character` vectors that contain a file size suffix
-#'   like `1k` (kilobytes), `3M` (megabytes), `4G` (gigabytes),
-#'   `5T`` (terabytes). Please note that those use the binary definitions,
-#'   so 1 kilobyte is 1024 bytes, 1 megabyte is 1024 kilobytes, etc.. .
-#' @param age
-#' @param n_backups
+#' @param file file to back up/rotate
+#' @param n_backups understands scalars of different types
+#'   - an `integer` scalar: Maximum number of backups to keep
+#'   - a `Date` scalar: Remove all backups before this date
+#'   - a `character` scalar representing a Date in ISO format
+#'     (e.g. `"2019-12-31"`)
+#'   - a `character` scalar representing an Interval in the form
+#'     `"<number> <interval>"` (e.g. `"2 weeks"`, `"1 year"`).
+#'     Possible intervals are
+#'     `"day(s)"`, `"week(s)"`, `"month(s)"`, `"quarter(s)"`, `"year(s)"`.
 #' @param compression
 #' @param postrotate
 #' @param postrotate_args
@@ -15,16 +17,21 @@
 #' @param prerotate_args
 #' @param dry_run
 #' @param verbose
+#' @param interval
+#' @param min_size
+#' @param create_file
 #'
 #' @return
 #' @export
 #'
 #' @examples
-rotate_interval <- function(
+backup_interval <- function(
   file,
   interval,
+  min_size = 1,
   n_backups = Inf,
   compression = FALSE,
+  create_file = FALSE,
   prerotate = NULL,
   prerotate_args = NULL,
   postrotate = NULL,
@@ -77,7 +84,7 @@ rotate_interval <- function(
   }
 
 
-  bq$backups[[1]]
+  bq$prune(n_backups)$backups[[1]]
 }
 
 
