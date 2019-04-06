@@ -11,10 +11,10 @@ get_backups <- function(
   sfx_patterns <- paste0("(", sfx_patterns, ")", collapse = "|")
 
   if (is_blank(ext)){
-    pat <- paste0(name, "^\\.$s(\\..*){0,1}$", sfx_patterns)
+    pat <- sprintf("^%s\\.%s\\.*$", name, sfx_patterns)
 
   } else {
-    pat <- sprintf("^%s\\.%s\\.%s\\.*", name, sfx_patterns, ext)
+    pat <- sprintf("^%s\\.%s\\.%s\\.*$", name, sfx_patterns, ext)
   }
 
   sort(grep(pat, potential_backups, value = TRUE))
@@ -42,8 +42,8 @@ filenames_as_matrix <- function(
     res <- cbind(a[, 1], b)
     colnames(res) <- c("name", "sfx", "ext")
   } else {
-    res <- a
-    colnames(res) <- c("name", "sfx")
+    res <- cbind(a, "")
+    colnames(res) <- c("name", "sfx", "ext")
   }
 
   assert(is.matrix(res))

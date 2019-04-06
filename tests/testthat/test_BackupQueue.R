@@ -19,26 +19,42 @@ test_that("BackupQueue works as expected", {
   tf <- file.path(td, "test")
   file.create(tf)
 
-  bt <- BackupQueue$new(tf)
-  expect_identical(bt$file, tf)
-  expect_identical(bt$backup_dir, dirname(tf))
+  bq <- BackupQueue$new(tf)
+  expect_identical(bq$file, tf)
+  expect_identical(bq$backup_dir, dirname(tf))
   file.remove(tf)
 })
 
 
 
 
-test_that("BackupQueue$backup_matrix works as expected", {
+test_that("BackupQueue finding backups works as expected for files with extension", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupQueue$new(tf)
-  bt
+  bq <- BackupQueue$new(tf)
 
   sfxs <-c(1:12, "2019-12-31")
   bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs, ".log")
   file.create(bus)
 
-  expect_setequal(bt$backups$path, bus)
-  expect_setequal(bt$backups$sfx, sfxs)
-  expect_setequal(bt$backups$ext, "log")
+  expect_setequal(bq$backups$path, bus)
+  expect_setequal(bq$backups$sfx, sfxs)
+  expect_setequal(bq$backups$ext, "log")
+  bq$prune(0)
+})
+
+
+
+test_that("BackupQueue finding backups works as expected for files without extension", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+  bq <- BackupQueue$new(tf)
+
+  sfxs <-c(1:12, "2019-12-31")
+  bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs)
+  file.create(bus)
+
+  expect_setequal(bq$backups$path, bus)
+  expect_setequal(bq$backups$sfx, sfxs)
+  expect_setequal(bq$backups$ext, "log")
 })

@@ -102,10 +102,10 @@ BackupQueue <- R6::R6Class(
 
       fname_matrix <- filenames_as_matrix(self$file, backups = backup_files)
       fname_df <- data.frame(
-        dir      = dirname(fname_matrix[, "name"]),
-        basename = basename(fname_matrix[, "name"]),
-        sfx      = fname_matrix[, "sfx"],
-        ext      = fname_matrix[, "ext"],
+        dir   = dirname(fname_matrix[, "name"]),
+        name  = basename(fname_matrix[, "name"]),
+        sfx   = fname_matrix[, "sfx"],
+        ext   = fname_matrix[, "ext"],
         stringsAsFactors = FALSE
       )
       finfo <- file.info(backup_files)

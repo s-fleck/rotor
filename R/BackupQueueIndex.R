@@ -3,8 +3,11 @@ BackupQueueIndex <- R6::R6Class(
   inherit = BackupQueue,
   public = list(
     prune = function(n_backups){
-      to_keep   <- self$backups[seq_len(n_backups)]
-      to_remove <- setdiff(self$backups, to_keep)
+      if (self$n_backups < 1)
+        return(self)
+
+      to_keep   <- self$backups$path[seq_len(n_backups)]
+      to_remove <- setdiff(self$backups$path, to_keep)
       assert(all(file.remove(to_remove)))
       self$pad_index()
     },
@@ -32,59 +35,55 @@ BackupQueueIndex <- R6::R6Class(
 
 
     pad_index = function(){
-      if (!length(self$backups))
+      if (!length(self$backups$path))
         return(self)
 
-      backups_new <- self$backup_matrix
-      assert(is.matrix(backups_new))
+      backups <- self$backups
+      backups$sfx_new <- pad_left(backups$index, pad = "0")
+      backups$path_new <-
+        paste(file.path(backups$dir, backups$name), backups$sfx_new, backups$ext, sep = ".")
 
-      backups_new[, "sfx"] <- as.integer(backups_new[, "sfx"])
-      backups_new[, "sfx"] <- pad_left(backups_new[, "sfx"], pad = "0")
-      backups_new <- apply(backups_new, 1, paste, collapse = ".")
-      backups_old <- apply(self$backup_matrix, 1, paste, collapse = ".")
+      backups$path_new <- gsub("\\.$", "", backups$path_new)
 
-      file.rename(backups_old, backups_new)
+      file.rename(backups$path, backups$path_new)
       self
     },
 
 
     increment_index = function(n = 1){
-      backups_new <- self$backup_matrix
-      assert(is.matrix(backups_new))
+      assert(self$n_backups > 0)
+      assert(is_scalar_integerish(n))
 
-      backups_new[, "sfx"] <- as.integer(backups_new[, "sfx"]) + n
-      backups_new <- apply(backups_new, 1, paste, collapse = ".")
-      file.rename(rev(self$backups), rev(backups_new))
+      backups <- self$backups
 
-      self$pad_index()
+      backups$index <- backups$index + as.integer(n)
+      backups$path_new <- paste(
+        file.path(backups$dir, backups$name),
+        pad_left(backups$index, pad = "0"),
+        backups$ext,
+        sep = "."
+      )
+      backups$path_new <- gsub("\\.$", "", backups$path_new)
+      file.rename(rev(backups$path), rev(backups$path_new))
+
+      self
     }
 
   ),
 
   active = list(
-    backup_matrix = function(){
-      if (!length(self$backups))
-        return(character())
-
-      res <- super$backup_matrix
-      res[order(res[, "sfx"]), , drop = FALSE]
-    },
 
     backups = function(){
-      potential_backups <-
-        list.files(self$backup_dir, full.names = self$backup_dir != ".")
+      res <- super$backups
 
-      name <- tools::file_path_sans_ext(self$file)
-      ext  <- tools::file_ext(self$file)
-
-      if (is_blank(ext)){
-        pat = paste0(name, "\\.\\d+(\\..*){0,1}$")
-
-      } else {
-        pat <- sprintf("^%s\\.\\d+\\.%s\\.*", name, ext)
+      if (nrow(res) < 1){
+        return(data.frame())
       }
 
-      sort(grep(pat, potential_backups, value = TRUE))
+      res <- res[grep("\\d+", res$sfx), ]
+      res$index <- as.integer(res$sfx)
+
+      res[order(res$sfx, decreasing = FALSE), ]
     }
   )
 )
