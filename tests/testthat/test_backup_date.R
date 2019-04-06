@@ -110,3 +110,42 @@ test_that("is_parsable_date works as expected", {
   expect_false(is_parsable_date("1 week"))
   expect_false(is_parsable_date("2 years"))
 })
+
+
+
+
+test_that("backup_time works", {
+  skip("needs rewrite")
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  date <- as.Date("2019-01-01")
+
+  bq <- BackupQueueDate$new(tf)
+  expect_identical(bq$n_backups, 0L)
+
+  mockery::stub(bq$push_backup, "Sys.Date", date + i * 5)
+  backup_time(tf, date = date  + 100, format = "%Y%m%d")
+  backup_time(tf, date = date  + 110, format = "%Y-%m")
+  backup_time(tf, date = date  + 120, format = "%Y%m")
+  backup_time(tf, date = date  + 130, format = "%Y", n_backups = 5)
+  expect_length(bq$backups$path, 5)
+
+  noback <- file.path(dirname(tf), ".2019-a2-20.log")
+  file.create(noback)
+  on.exit(file.remove(noback))
+
+  expect_identical(
+    basename(bq$backups$path),
+    c(
+      "test.2019-02-20.log",
+      "test.2019-04.log",
+      "test.2019.log",
+      "test.20190411.log",
+      "test.201905.log"
+    )
+  )
+
+  bq$prune(0)
+  file.remove(tf)
+})
+
