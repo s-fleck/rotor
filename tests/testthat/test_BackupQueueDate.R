@@ -16,73 +16,73 @@ teardown({
 test_that("BackupQueueDate can find and prune backup trails", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf)
 
-  expect_identical(bt$backups, character(0))
-  bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
+  expect_identical(bq$n_backups, 0L)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log", ".12.log"))
   file.create(bus)
-  expect_identical(bt$backup_matrix[, "sfx"], c("2019-01-03", "2019-01-02", "2019-01-01"))
+  expect_identical(bq$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
 
   # backup_matrix stays a matrix even if it has only one row
-  bt$prune(1)
-  expect_is(bt$backup_matrix, "matrix")
+  bq$prune(1)
+  expect_identical(bq$n_backups, 1L)
 
-  bt$prune(0)
+  bq <- BackupQueue$new(tf)
+  bq$prune(0)
+  expect_identical(bq$n_backups, 0L)
   file.remove(tf)
 })
 
 
 
-test_that("BackupQueueDate works as expected for files with extension", {
+test_that("BackupQueueDate works with supported datestamp formats", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   date <- as.Date("2019-01-01")
 
-  bt <- BackupQueueDate$new(tf)
-  expect_identical(bt$backups, character(0))
+  bq <- BackupQueueDate$new(tf)
+  expect_identical(bq$n_backups, 0L)
   for (i in 1:10) {
-    backup_date(
-      tf,
-      n_backups = 5,
-      date = date + i * 5
-    )
+    mockery::stub(bq$push_backup, "Sys.Date", date + i * 5)
+    bq$push_backup()
   }
-  expect_length(bt$backups, 5)
+  bq$prune(5)
+  expect_length(bq$backups$path, 5)
 
-  backup_date(tf, date = date  + 100, format = "%Y%m%d")
-  backup_date(tf, date = date  + 110, format = "%Y-%m")
-  backup_date(tf, date = date  + 120, format = "%Y%m")
-  backup_date(tf, date = date  + 130, format = "%Y", n_backups = 5)
-  expect_length(bt$backups, 5)
+  file.create(file.path(td, "test.2019-02-20.log"))
+  file.create(file.path(td, "test.2019-04.log"))
+  file.create(file.path(td, "test.2019.log"))
+  file.create(file.path(td, "test.20200411.log"))
+  file.create(file.path(td, "test.201905.log"))
+  bq$prune(5)
+
+  expect_length(bq$backups$path, 5)
 
   noback <- file.path(dirname(tf), ".2019-a2-20.log")
   file.create(noback)
   on.exit(file.remove(noback))
 
   expect_identical(
-    basename(bt$backups),
+    basename(bq$backups$path),
     c(
-      "test.2019-02-20.log",
+      "test.20200411.log",
+      "test.201905.log",
       "test.2019-04.log",
-      "test.2019.log",
-      "test.20190411.log",
-      "test.201905.log"
+      "test.2019-02-20.log",
+      "test.2019.log"
     )
   )
 
-  bt$prune(0)
+  bq$prune(0)
   file.remove(tf)
 })
-
-
-
 
 
 
 test_that("Prune BackupQueueDate based on date", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-01-01.log.zip",
     ".2019-01-02.log.tar.gz",
@@ -90,17 +90,17 @@ test_that("Prune BackupQueueDate based on date", {
     ".2020-01-03.log"
   ))
   file.create(bus)
-  bt$prune(as.Date("2019-01-02"))
+  bq$prune(as.Date("2019-01-02"))
 
   expect_identical(
-    basename(bt$backups),
+    basename(bq$backups$path),
     c(
-      "test.2019-01-02.log.tar.gz",
+      "test.2020-01-03.log",
       "test.2019-01-03.log",
-      "test.2020-01-03.log"
+      "test.2019-01-02.log.tar.gz"
     )
   )
-  bt$prune(0)
+  bq$prune(0)
   file.remove(tf)
 })
 
@@ -110,7 +110,7 @@ test_that("Prune BackupQueueDate based on date", {
 test_that("Prune BackupQueueDate based on year interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-01-01.log.zip",
     ".2019-02-02.log.tar.gz",
@@ -121,15 +121,15 @@ test_that("Prune BackupQueueDate based on year interval", {
   ))
   file.create(bus)
 
-  bt$prune("2 years")
+  bq$prune("2 years")
   expect_identical(
-    basename(bt$backups),
+    basename(bq$backups$path),
     c(
-      "test.2021-01-03.log",
-      "test.2022-01-03.log"
+      "test.2022-01-03.log",
+      "test.2021-01-03.log"
     )
   )
-  bt$prune(0)
+  bq$prune(0)
   file.remove(tf)
 })
 
@@ -139,7 +139,7 @@ test_that("Prune BackupQueueDate based on year interval", {
 test_that("Prune BackupQueueDate based on month interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-01-01.log.zip",
     ".2019-02-02.log.tar.gz",
@@ -148,14 +148,15 @@ test_that("Prune BackupQueueDate based on month interval", {
   ))
   file.create(bus)
 
-  bt$prune("2 months")
+  bq$prune("2 months")
   expect_identical(
-    basename(bt$backups),
+    basename(bq$backups$path),
     c(
-      "test.2019-03-03.log",
-      "test.2019-04-03.log")
+      "test.2019-04-03.log",
+      "test.2019-03-03.log"
+    )
   )
-  bt$prune(0)
+  bq$prune(0)
   file.remove(tf)
 })
 
@@ -165,23 +166,23 @@ test_that("Prune BackupQueueDate based on month interval", {
 test_that("Prune BackupQueueDate based on week interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
-    ".2019-04-07.log.zip",
+    ".2019-04-15.log",
     ".2019-04-08.log.tar.gz",
-    ".2019-04-15.log"
+    ".2019-04-07.log.zip"
   ))
   file.create(bus)
 
-  bt$prune("2 weeks")
+  bq$prune("2 weeks")
   expect_identical(
-    basename(bt$backups),
+    basename(bq$backups$path),
     c(
-      "test.2019-04-08.log.tar.gz",
-      "test.2019-04-15.log"
+      "test.2019-04-15.log",
+      "test.2019-04-08.log.tar.gz"
     )
   )
-  bt$prune(0)
+  bq$prune(0)
   file.remove(tf)
 })
 
@@ -191,7 +192,7 @@ test_that("Prune BackupQueueDate based on week interval", {
 test_that("Prune BackupQueueDate based on week interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bt <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-04-07.log.zip",
     ".2019-04-08.log.tar.gz",
@@ -199,14 +200,35 @@ test_that("Prune BackupQueueDate based on week interval", {
   ))
   file.create(bus)
 
-  bt$prune("2 days")
+  bq$prune("2 days")
   expect_identical(
-    basename(bt$backups),
+    basename(bq$backups$path),
     c(
-      "test.2019-04-08.log.tar.gz",
-      "test.2019-04-09.log"
+      "test.2019-04-09.log",
+      "test.2019-04-08.log.tar.gz"
     )
   )
-  bt$prune(0)
+  bq$prune(0)
+  file.remove(tf)
+})
+
+
+
+test_that("BackupQueueDate $last_date", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bq <- BackupQueueDate$new(tf)
+  bq$backups
+
+  expect_identical(bq$n_backups, 0L)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
+  file.create(bus)
+  expect_identical(bq$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
+
+
+  bq$last_backup
+
+
+  bq$prune(0)
   file.remove(tf)
 })

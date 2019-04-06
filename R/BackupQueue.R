@@ -12,6 +12,7 @@ BackupQueue <- R6::R6Class(
     file = NULL,
     backup_dir = NULL,
 
+
     prune = function(n_backups){
       if (n_backups > 0){
         warning(
@@ -19,19 +20,21 @@ BackupQueue <- R6::R6Class(
           "recommended, because it is not defined which backups will be",
           "deleted. Use BackupQueueIndex or BackupQueueDate instead.")
       }
-      to_keep   <- self$backups[seq_len(n_backups)]
-      to_remove <- setdiff(self$backups, to_keep)
+      to_keep   <- self$backups$path[seq_len(n_backups)]
+      to_remove <- setdiff(self$backups$path, to_keep)
       assert(all(file.remove(to_remove)))
       self
     },
+
 
     print = function(){
       cat(fmt_class(class(self)[[1]]), "\n\n")
 
       ori <- file.info(self$file)
-      bus <- file.info(self$backups)
+      bus <- self$backups
+
       info <- data.frame(
-        file = c(row.names(ori), row.names(bus)),
+        file = c(row.names(ori), bus$path),
         size = c(ori$size, bus$size)
       )
 
@@ -71,50 +74,51 @@ BackupQueue <- R6::R6Class(
 
   active = list(
     has_backups = function(){
-      length(self$backups) > 0
+      self$n_backups > 0
     },
+
+
+    n_backups = function(){
+      nrow(self$backups)
+    },
+
 
     backups = function(){
-      potential_backups <-
-        list.files(self$backup_dir, full.names = self$backup_dir != ".")
+      backup_files <- get_backups(
+        file = self$file,
+        potential_backups =
+          list.files(self$backup_dir, full.names = self$backup_dir != "."),
+        sfx_patterns = c(
+          "\\d+",
+          "\\d{4}-\\d{2}-\\d{2}",
+          "\\d{4}-\\d{2}"
+        )
+      )
 
-      name <- tools::file_path_sans_ext(self$file)
-      ext  <- tools::file_ext(self$file)
-
-      if (is_blank(ext)){
-        pat = paste0(name, "\\.[^.]+(\\..*){0,1}$")
-
-      } else {
-        pat <- sprintf("^%s\\..*\\.%s\\.*", name, ext)
+      # parse to df
+      if (!length(backup_files)){
+        return(data.frame())
       }
 
-      sort(grep(pat, potential_backups, value = TRUE))
-    },
+      fname_matrix <- filenames_as_matrix(self$file, backups = backup_files)
+      fname_df <- data.frame(
+        dir      = dirname(fname_matrix[, "name"]),
+        basename = basename(fname_matrix[, "name"]),
+        sfx      = fname_matrix[, "sfx"],
+        ext      = fname_matrix[, "ext"],
+        stringsAsFactors = FALSE
+      )
+      finfo <- file.info(backup_files)
 
-    backup_matrix = function(){
-        if (!length(self$backups))
-          return(character())
+      res <- cbind(
+        data.frame(path = row.names(finfo), stringsAsFactors = FALSE),
+        fname_df,
+        finfo
+      )
+      row.names(res) <- NULL
 
-        name <- tools::file_path_sans_ext(self$file)
-        ext  <- tools::file_ext(self$file)
-
-      # identify name parts
-        name_end <- attr(gregexpr(name, self$backups[[1]])[[1]], "match.length") + 1L
-        a <- strsplit_at_pos(self$backups, name_end)
-
-        if (!is_blank(ext)){
-          ext_start <- unlist(gregexpr(ext, a[, 2]))
-          b <- strsplit_at_pos(a[, 2], ext_start - 1L)
-          res <- cbind(a[, 1], b)
-          colnames(res) <- c("name", "sfx", "ext")
-        } else {
-          res <- a
-          colnames(res) <- c("name", "sfx")
-        }
-
-        assert(is.matrix(res))
-        res
-      }
+      res
+    }
   )
 )
 
