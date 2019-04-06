@@ -43,6 +43,31 @@ test_that("BackupQueueIndex can find and prune backup trails", {
 
 
 
+test_that("BackupQueueIndex only shows indexed backups", {
+  tf <- file.path(td, "test.log")
+
+  file.create(c(
+    tf,
+    file.path(td, "test.1.log"),
+    file.path(td, "test.2.log"),
+    file.path(td, "test.2017.log"),
+    file.path(td, "test.201701.log"),
+    file.path(td, "test.20170201.log"),
+    file.path(td, "test.2017-03.log"),
+    file.path(td, "test.2017-04-01.log")
+  ))
+
+  bq <- BackupQueueIndex$new(tf)
+
+  bq$backups
+
+
+  bq$prune(0)
+  file.remove(tf)
+})
+
+
+
 test_that("BackupQueue pruning works as expected for files without extension", {
   tf <- file.path(td, "test")
   file.create(tf)

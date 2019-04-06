@@ -72,15 +72,13 @@ BackupQueueIndex <- R6::R6Class(
   ),
 
   active = list(
-
     backups = function(){
       res <- super$backups
 
       if (nrow(res) < 1){
         return(data.frame())
       }
-
-      res <- res[grep("\\d+", res$sfx), ]
+      res <- res[grep("^\\d+$", res$sfx), ]
       res$index <- as.integer(res$sfx)
 
       res[order(res$sfx, decreasing = FALSE), ]
