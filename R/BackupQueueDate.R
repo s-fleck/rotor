@@ -5,12 +5,13 @@ BackupQueueDate <- R6::R6Class(
     push_backup = function(
       format = "%Y-%m-%d",
       compression = FALSE,
-      overwrite = FALSE
+      overwrite = FALSE,
+      now = Sys.Date()
     ){
       # generate new filename
       name <- tools::file_path_sans_ext(self$file)
       ext  <- tools::file_ext(self$file)
-      sfx <- format(Sys.Date(), format = format)
+      sfx <- format(now, format = format)
 
       if (is_blank(ext)) {
         name_new <- paste(name, sfx, sep = ".")

@@ -39,6 +39,47 @@ test_that("backup_time warns if indexed backups exist", {
 
 
 
+test_that("backup_time examples from documentation", {
+  #' When rotating/backing up `"1 months"` means "make a new backup if the last
+  #' backup is from the preceeding month". E.g if the last backup of `myfile`
+  #' is from `2019-02-01` then `backup_time(myfile, age = "1 month")` will only
+  #' create a backup if the current date is at least `2019-03-01`.
+  tf <- file.path(td, "test.log")
+  file.create(
+    tf,
+    file.path(td, "test.2019-02-01.log")
+  )
+
+  mockery::stub(backup_time, "Sys.Date", as.Date("2019-02-28"))
+  backup_time(tf, age = "1 month")
+  bq <- BackupQueueDate$new(tf)
+  expect_identical(bq$n_backups, 1L)
+
+  mockery::stub(backup_time, "Sys.Date", as.Date("2019-03-01"))
+  backup_time(tf, age = "1 month")
+  bq <- BackupQueueDate$new(tf)
+  expect_identical(bq$n_backups, 2L)
+
+  #' When pruning/limiting backup queues, `"1 year"` means "keep at least most
+  #' one year worth of backups". So if you call
+  #' `backup_time(myfile, n_backups = "1 year")` on `2019-03-01`, it will create
+  #' a backup and then remove all backups of `myfile` before `2019-01-01`.
+  mockery::stub(backup_time, "Sys.Date", as.Date("2019-03-02"))
+  file.create(file.path(td, "test.2019-01-01.log"))
+  file.create(file.path(td, "test.2018-12-31.log"))
+  expect_identical(bq$n_backups, 4L)
+  backup_time(tf, n_backups = "1 year")
+  expect_identical(bq$n_backups, 4L)
+  expect_identical(bq$last_backup, as.Date("2019-03-02"))
+  expect_identical(min(bq$backups$date), as.Date("2019-01-01"))
+
+  BackupQueue$new(tf)$prune(0)
+  file.remove(tf)
+})
+
+
+
+
 test_that("backup_time works as expected for years", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
@@ -181,7 +222,7 @@ test_that("backup_time works as expected for weeks", {
 
 
 
-test_that("parse interval", {
+test_that("parse_interval", {
   expect_identical(parse_interval(9)$unit, "day")
   expect_identical(parse_interval("1 week")$unit, "week")
   expect_identical(parse_interval("2 months")$unit, "month")
@@ -190,6 +231,35 @@ test_that("parse interval", {
 })
 
 
+
+test_that("check_backup_interval", {
+
+  expect_false(
+    check_backup_interval("1 week", as.Date("2019-04-01"), as.Date("2019-04-07"))  # 2019-W14
+  )
+  expect_true(
+    check_backup_interval("1 week", as.Date("2019-04-01"), as.Date("2019-04-08"))  # 2019-W14
+  )
+  expect_false(
+    check_backup_interval("6 week", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
+  )
+  expect_true(
+    check_backup_interval("5 weeks", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
+  )
+
+  expect_false(
+    check_backup_interval("1 month", as.Date("2019-04-01"), as.Date("2019-04-30"))  # 2019-W14
+  )
+  expect_true(
+    check_backup_interval("1 month", as.Date("2019-04-01"), as.Date("2019-05-01"))  # 2019-W14
+  )
+  expect_false(
+    check_backup_interval("6 month", as.Date("2019-04-01"),  as.Date("2019-09-01")) # 2019-W19
+  )
+  expect_true(
+    check_backup_interval("5 months", as.Date("2019-04-01"),  as.Date("2019-09-06")) # 2019-W19
+  )
+})
 
 
 
@@ -335,4 +405,7 @@ test_that("backup_time works", {
   bq$prune(0)
   file.remove(tf)
 })
+
+
+
 
