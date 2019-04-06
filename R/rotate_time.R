@@ -32,8 +32,6 @@
 #'     `"<number> <interval>"` (see section Intervals).
 #'     Backup/rotate if the last backup is older than
 #'     that (e.g. `"2 months"`). See examples
-#'
-#'
 #'   - a `Date` or a `character` scalar [representing a Date][parse_date].
 #'     Backup/rotate if the last backup was before that date
 #' @param n_backups understands scalars of different types
@@ -44,17 +42,20 @@
 #'   - a `character` scalar representing an Interval in the form
 #'     `"<number> <interval>"`
 #' @param compression
-#' @param postrotate
-#' @param postrotate_args
-#' @param prerotate
-#' @param prerotate_args
-#' @param dry_run
-#' @param verbose
-#' @param interval
-#' @param min_size
-#' @param create_file
+#' @param prerotate,postrotate a `function` with a single argument (a file path
+#'   as `character` scalar). `preorate()` and `postrotate()` are
+#'   called before/after the backup is rotated.
+#' @param dry_run `logical` scalar. If `TRUE` no changes are applied to the
+#'   file system (no files are created or deleted)
+#' @param verbose `logical` scalar. If `TRUE` additional informative `messages`
+#'   are printed
 #'
 #' @return
+#'  If a creating a backup is triggered and `postrotate` is `NULL`, the path to
+#'  the newly created file is  returned as a `character` scalar. If `postrotate`
+#'  is a function, whatever `postrotate()` returns is returned.
+#'
+#'  If no backup is created, an empty `character()` vector is returned.
 #' @export
 #'
 #' @examples
@@ -68,7 +69,6 @@ backup_time <- function(
   min_size = 1,
   n_backups = Inf,
   compression = FALSE,
-  create_file = FALSE,
   prerotate = NULL,
   postrotate = NULL,
   overwrite = FALSE,
@@ -117,11 +117,15 @@ backup_time <- function(
 
 
   if (do_backup){
-    bq$push_backup(now = now)
+    prerotate(bq$file)
+    bq$push_backup(now = now, compression = compression)
+    res <- postrotate(bq$backups$path[[1]])
+  } else {
+    res <- character()
   }
 
-
-  bq$prune(n_backups)$backups$path[[1]]
+  bq$prune(n_backups)
+  res
 }
 
 
