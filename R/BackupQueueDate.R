@@ -6,12 +6,23 @@ BackupQueueDate <- R6::R6Class(
       format = "%Y-%m-%d",
       compression = FALSE,
       overwrite = FALSE,
-      now = Sys.Date()
+      now = Sys.Date(),
+      dry_run = getOption("rotor.dry_run", FALSE),
+      verbose = getOption("rotor.dry_run", dry_run)
     ){
+      stopifnot(
+        is_scalar_character(format),
+        is_scalar_logical(compression),
+        is_scalar_logical(overwrite),
+        is_scalar_Date(now),
+        is_scalar_logical(dry_run),
+        is_scalar_logical(verbose)
+      )
+
       # generate new filename
       name <- tools::file_path_sans_ext(self$file)
       ext  <- tools::file_ext(self$file)
-      sfx <- format(now, format = format)
+      sfx  <- format(now, format = format)
 
       if (is_blank(ext)) {
         name_new <- paste(name, sfx, sep = ".")
@@ -23,8 +34,19 @@ BackupQueueDate <- R6::R6Class(
         stop("Backup exists and `overwrite == FALSE`")
       }
 
-      file.copy(self$file, name_new, overwrite = FALSE)
-      name_new <- compress_and_remove(name_new, compression = compression)
+      if (verbose)
+        message("'", self$file, "' -> ", basename(name_new))
+
+      if (!dry_run){
+        file.copy(self$file, name_new, overwrite = FALSE)
+      }
+
+      name_new <- compress_and_remove(
+        name_new,
+        compression = compression,
+        dry_run = dry_run,
+        verbose = verbose
+      )
       self
     },
 

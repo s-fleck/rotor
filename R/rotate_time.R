@@ -88,42 +88,42 @@ backup_time <- function(
     is_scalar_logical(verbose)
   )
 
-  bq <- BackupQueue$new(file)
-  bd <- BackupQueueDate$new(file)
+  bq <- BackupQueueDate$new(file)
 
-  if (bq$has_backups){
-    # Warn if indexed backups exist
+  # Warn if indexed backups exist
+  if (BackupQueue$new(file)$has_backups){
     bi <- BackupQueueIndex$new(file)
-    idx_backups <- paste(setdiff(bi$backups$path, bd$backups$path))
-    if (length(idx_backups)){
-      warning(
-        "Backing up by timestamp, but indexed backups exist already:\n",
-        paste("-", setdiff(bi$backups$path, bd$backups$path), collapse = "\n"),
-        call. = FALSE
-      )
-    }
+    idx_backups <- paste(setdiff(bi$backups$path, bq$backups$path))
+    if (length(idx_backups)){warning(
+      "Backing up by timestamp, but indexed backups exist already:\n",
+      paste("-", setdiff(bi$backups$path, bq$backups$path), collapse = "\n"),
+      call. = FALSE
+    )}
   }
-  rm(bq)
 
-  bd <- BackupQueueDate$new(file)
   now <- Sys.Date()
 
   do_backup <-
     is.null(age) ||
-    !bd$has_backups ||
-    check_backup_interval(age, bd$last_backup, now) ||
-    check_backup_date(age, bd$last_backup)
+    !bq$has_backups ||
+    check_backup_interval(age, bq$last_backup, now) ||
+    check_backup_date(age, bq$last_backup)
 
 
   if (do_backup){
     prerotate(bq$file)
-    bq$push_backup(now = now, compression = compression)
+    bq$push_backup(
+      now = now,
+      compression = compression,
+      dry_run = dry_run,
+      verbose = verbose
+    )
     res <- postrotate(bq$backups$path[[1]])
   } else {
     res <- character()
   }
 
-  bq$prune(n_backups)
+  bq$prune(n_backups, dry_run = dry_run, verbose = verbose)
   res
 }
 

@@ -69,9 +69,16 @@ fmt_bytes <- function(x){
 
 
 
+#' Title
+#'
+#' @param x `character` scalar (`1k`, `1.5g`) etc
+#'
+#' @return a `numeric` scalar (can be `double` or `integer`)
+#' @noRd
+#'
+#' @examples
 parse_size <- function(x){
   assert(is_scalar(x) && !is.na(x))
-
 
   if (is_integerish(x)){
     return(as.integer(x))
@@ -79,11 +86,11 @@ parse_size <- function(x){
     assert(is.character(x))
   }
 
-  num  <- as.integer(substr(x, nchar(x) -1L, nchar(x) -1L))
+  num  <- as.numeric(substr(x, 1, nchar(x) -1L))
   unit <- parse_info_unit(substr(x, nchar(x), nchar(x)))
 
-  res <- as.integer(num * unit)
-  assert(is_scalar(res) && !is.na(res) && is.integer(res))
+  res <- num * unit
+  assert(is_scalar(res) && !is.na(res) && is_scalar_numeric(res))
   res
 }
 

@@ -13,14 +13,18 @@ compress_and_remove <- function(
   file,
   compression  = TRUE,
   compression_level = 9,
-  remove = TRUE
+  remove = TRUE,
+  dry_run = getOption("rotor.dry_run", FALSE),
+  verbose = getOption("rotor.dry_run", dry_run)
 ){
   stopifnot(
     is_scalar_character(file),
     file.exists(file),
     is_scalar_character(compression) || is_scalar_logical(compression),
     is_scalar_integerish(compression_level),
-    is_scalar_logical(remove)
+    is_scalar_logical(remove),
+    is_scalar_logical(dry_run),
+    is_scalar_logical(verbose)
   )
 
   if (isFALSE(compression)){
@@ -33,20 +37,23 @@ compress_and_remove <- function(
     }
   }
 
+  # zip
+  out <- paste0(file, ".zip")
+  assert(!file.exists(out))
+  if (verbose)   message("'", file, "' -> '", out, "'")
+
   if (identical(compression, "zip")){
     assert_namespace("zip")
-    out <- paste0(file, ".zip")
-    zip::zipr(out, file, compression_level = compression_level)
+    if (!dry_run)  zip::zipr(out, file, compression_level = compression_level)
 
   } else if (identical(compression, "zip_base")){
-    out <- paste0(file, ".zip")
-    assert(!file.exists(out))
     owd <- setwd(dir = dirname(file))
     on.exit(setwd(owd))
     utils::zip(basename(out), files = basename(file), flags="-q")
   }
 
-  if (remove){
+  if (remove && !dry_run){
+    if (verbose) message("removing '", file, "'")
     assert(file.exists(out))
     unlink(file, recursive = TRUE)
   }
