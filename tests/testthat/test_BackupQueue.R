@@ -56,5 +56,24 @@ test_that("BackupQueue finding backups works as expected for files without exten
 
   expect_setequal(bq$backups$path, bus)
   expect_setequal(bq$backups$sfx, sfxs)
-  expect_setequal(bq$backups$ext, "log")
+  expect_setequal(bq$backups$ext, "")
+})
+
+
+
+test_that("drurun/verbose prune", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+  bq <- BackupQueue$new(tf)
+
+  sfxs <-c(1:12, "2019-12-31")
+  bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs)
+  file.create(bus)
+
+  expect_message(invisible(bq$prune(0, dryrun = TRUE)), "dryrun")
+  expect_identical(bq$n_backups, length(sfxs))
+
+  expect_message(bq$prune(0, verbose = TRUE), "prun")
+  expect_message(bq$prune(0, verbose = TRUE), "Nothing")
+  expect_identical(bq$n_backups, 0L)
 })

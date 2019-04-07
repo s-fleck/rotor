@@ -13,16 +13,36 @@ BackupQueue <- R6::R6Class(
     backup_dir = NULL,
 
 
-    prune = function(n_backups){
-      if (n_backups > 0){
-        warning(
-          "Pruning a generic BackupQueue with `n_backups > 0` is not",
-          "recommended, because it is not defined which backups will be",
-          "deleted. Use BackupQueueIndex or BackupQueueDate instead.")
+    prune = function(
+      n_backups,
+      dryrun = FALSE,
+      verbose = dryrun
+    ){
+      assert(is_scalar_logical(dryrun))
+      assert(is_scalar_logical(verbose))
+
+      if (!self$has_backups){
+        if (verbose) message("Nothing to prune; no backups found for '", self$file, "'")
+        return(self)
       }
+
+      if (n_backups > 0){ warning(
+        "Pruning a generic BackupQueue with `n_backups > 0` is not",
+        "recommended, because it is not defined which backups will be",
+        "deleted. Use BackupQueueIndex or BackupQueueDate instead."
+      )}
       to_keep   <- self$backups$path[seq_len(n_backups)]
       to_remove <- setdiff(self$backups$path, to_keep)
-      assert(all(file.remove(to_remove)))
+
+      if (verbose){ message(
+        "[dryrun] "[dryrun], "pruning backups for '", self$file, "':\n",
+        paste0("[dryrun] "[dryrun], "- ", to_remove, collapse = "\n")
+      )}
+
+      if (!dryrun){
+        assert(all(file.remove(to_remove)))
+      }
+
       self
     },
 
