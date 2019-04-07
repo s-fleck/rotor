@@ -29,6 +29,7 @@ test_that("BackupQueueDate can find and prune backup trails", {
 
   bq <- BackupQueue$new(tf)
   bq$prune(0)
+  bq$prune(0)
   expect_identical(bq$n_backups, 0L)
   file.remove(tf)
 })

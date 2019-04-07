@@ -34,10 +34,7 @@ BackupQueue <- R6::R6Class(
       to_keep   <- self$backups$path[seq_len(n_backups)]
       to_remove <- setdiff(self$backups$path, to_keep)
 
-      if (verbose){ message(
-        "[dry_run] "[dry_run], "pruning backups for '", self$file, "':\n",
-        paste0("[dry_run] "[dry_run], "- ", to_remove, collapse = "\n")
-      )}
+      msg_prune_backups(self$file, to_remove, dry_run, verbose)
 
       if (!dry_run){
         assert(all(file.remove(to_remove)))
@@ -151,9 +148,23 @@ readable_size <- function(
 }
 
 
+
+msg_prune_backups <- function(file, to_remove, dry_run, verbose){
+  assert(is_scalar_character(file))
+  assert(is.character(to_remove))
+  assert(is_scalar_logical(verbose))
+  assert(is_scalar_logical(dry_run))
+
+  if (verbose){ message(
+    "[dry_run] "[dry_run], "pruning backups for '", file, "':\n",
+    paste0("[dry_run] "[dry_run], "- ", to_remove, collapse = "\n")
+  )}
+}
+
 # public static String readableFileSize(long size) {
 #   if(size <= 0) return "0";
 #   final String[] units = new String[] { "B", "kB", "MB", "GB", "TB" };
 #   int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
 #   return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
 # }
+

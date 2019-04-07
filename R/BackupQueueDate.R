@@ -30,13 +30,23 @@ BackupQueueDate <- R6::R6Class(
 
 
     prune = function(
-      n_backups  # minimum date/interval is the minimum date/interval to keep
+      n_backups,  # minimum date/interval is the minimum date/interval to keep
+      dry_run  = getOption("rotor.dry_run", FALSE),
+      verbose = getOption("rotor.verbose", dry_run)
     ){
       assert(is_scalar(n_backups))
 
       # no backups -> do nothing
-      if (is.infinite(n_backups) || is.na(n_backups))
+      if (!self$has_backups){
+        if (verbose) message("Nothing to prune; no backups found for '", self$file, "'")
         return(self)
+      }
+
+      if (is.infinite(n_backups) || is.na(n_backups)){
+        if (verbose) message("Nothing to prune; `n_backups` is set to", format(n_backups))
+        return(self)
+      }
+
 
       if (is_integerish(n_backups) && is.finite(n_backups)){
         # prune based on number of backups
@@ -76,10 +86,15 @@ BackupQueueDate <- R6::R6Class(
       to_remove <- self$backups$path[self$backups$date < limit]
     }
 
-    file.remove(to_remove)
-    self
+    msg_prune_backups(self$file, to_remove, dry_run, verbose)
+
+    if (dry_run){
+      self
+    } else {
+      assert(all(file.remove(to_remove)))
+      self
     }
-  ),
+  }),
 
   active = list(
 

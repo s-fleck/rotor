@@ -69,8 +69,8 @@ backup_time <- function(
   min_size = 1,
   n_backups = Inf,
   compression = FALSE,
-  prerotate = NULL,
-  postrotate = NULL,
+  prerotate = identity,
+  postrotate = identity,
   overwrite = FALSE,
   dry_run = FALSE,
   verbose = dry_run
@@ -81,9 +81,8 @@ backup_time <- function(
     is_scalar_integerish(min_size),
     is.infinite(n_backups) || is_n(n_backups) || is.character(n_backups) || is_Date(n_backups),
     is_scalar_logical(compression),
-    is_scalar_logical(create_file),
-    is.null(prerotate)  || is.function(prerotate),
-    is.null(postrotate) || is.function(postrotate),
+    is.function(prerotate),
+    is.function(postrotate),
     is_scalar_logical(overwrite),
     is_scalar_logical(dry_run),
     is_scalar_logical(verbose)

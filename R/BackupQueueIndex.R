@@ -2,14 +2,26 @@ BackupQueueIndex <- R6::R6Class(
   "BackupQueue",
   inherit = BackupQueue,
   public = list(
-    prune = function(n_backups){
-      if (self$n_backups < 1)
+    prune = function(
+      n_backups,
+      dry_run  = getOption("rotor.dry_run", FALSE),
+      verbose = getOption("rotor.verbose", dry_run)
+    ){
+      if (!self$has_backups){
+        if (verbose) message("Nothing to prune; no backups found for '", self$file, "'")
         return(self)
+      }
 
       to_keep   <- self$backups$path[seq_len(n_backups)]
       to_remove <- setdiff(self$backups$path, to_keep)
-      assert(all(file.remove(to_remove)))
-      self$pad_index()
+      msg_prune_backups(self$file, to_remove, dry_run, verbose)
+
+      if (dry_run){
+        return(self)
+      } else {
+        assert(all(file.remove(to_remove)))
+        self$pad_index()
+      }
     },
 
 
