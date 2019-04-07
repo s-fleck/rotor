@@ -70,7 +70,16 @@ test_that("drurun/verbose prune", {
   bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs)
   file.create(bus)
 
-  expect_message(invisible(bq$prune(0, dryrun = TRUE)), "dryrun")
+  # testing the option tests the function argument at the same time
+  withr::with_options(
+    list(rotor.dry_run = TRUE),
+    expect_message(invisible(bq$prune(0)))
+  )
+  withr::with_options(
+    list(rotor.dry_run = TRUE, rotor.verbose = FALSE),
+    expect_silent(invisible(bq$prune(0)))
+  )
+
   expect_identical(bq$n_backups, length(sfxs))
 
   expect_message(bq$prune(0, verbose = TRUE), "prun")

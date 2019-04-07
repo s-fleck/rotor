@@ -15,10 +15,10 @@ BackupQueue <- R6::R6Class(
 
     prune = function(
       n_backups,
-      dryrun = FALSE,
-      verbose = dryrun
+      dry_run  = getOption("rotor.dry_run", FALSE),
+      verbose = getOption("rotor.verbose", dry_run)
     ){
-      assert(is_scalar_logical(dryrun))
+      assert(is_scalar_logical(dry_run))
       assert(is_scalar_logical(verbose))
 
       if (!self$has_backups){
@@ -35,11 +35,11 @@ BackupQueue <- R6::R6Class(
       to_remove <- setdiff(self$backups$path, to_keep)
 
       if (verbose){ message(
-        "[dryrun] "[dryrun], "pruning backups for '", self$file, "':\n",
-        paste0("[dryrun] "[dryrun], "- ", to_remove, collapse = "\n")
+        "[dry_run] "[dry_run], "pruning backups for '", self$file, "':\n",
+        paste0("[dry_run] "[dry_run], "- ", to_remove, collapse = "\n")
       )}
 
-      if (!dryrun){
+      if (!dry_run){
         assert(all(file.remove(to_remove)))
       }
 
