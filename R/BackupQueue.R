@@ -138,33 +138,3 @@ BackupQueue <- R6::R6Class(
     }
   )
 )
-
-
-
-readable_size <- function(
-  x
-){
-  sapply(as.numeric(x), utils:::format.object_size, "auto")
-}
-
-
-
-msg_prune_backups <- function(file, to_remove, dry_run, verbose){
-  assert(is_scalar_character(file))
-  assert(is.character(to_remove))
-  assert(is_scalar_logical(verbose))
-  assert(is_scalar_logical(dry_run))
-
-  if (verbose){ message(
-    "[dry_run] "[dry_run], "pruning backups for '", file, "':\n",
-    paste0("[dry_run] "[dry_run], "- ", to_remove, collapse = "\n")
-  )}
-}
-
-# public static String readableFileSize(long size) {
-#   if(size <= 0) return "0";
-#   final String[] units = new String[] { "B", "kB", "MB", "GB", "TB" };
-#   int digitGroups = (int) (Math.log10(size)/Math.log10(1024));
-#   return new DecimalFormat("#,##0.#").format(size/Math.pow(1024, digitGroups)) + " " + units[digitGroups];
-# }
-
