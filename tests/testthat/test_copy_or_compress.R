@@ -1,4 +1,4 @@
-context("utils-compress")
+context("copy_or_compress")
 
 dr <- tempdir()
 td <- file.path(dr, "rotor")
@@ -9,17 +9,19 @@ teardown({
 })
 
 
-test_that("utils-compress works as expected", {
+
+
+test_that("copy_or_compress works as expected", {
   tf <- file.path(td, "compresstest.log")
   saveRDS(iris, file = tf, compress = FALSE)
 
-  r <- compress_and_remove(tf, remove = FALSE)
+  r <- copy_or_compress(tf, tf, compression = TRUE)
   expect_true(file.exists(r))
   expect_identical(zip::zip_list(r)[1, ]$filename, "compresstest.log")
   unlink(r)
 
-  r <- compress_and_remove(tf, compression = "zip_base")
+  r <- copy_or_compress(tf, tf, compression = "base::zip")
   expect_true(file.exists(r))
   expect_identical(zip::zip_list(r)[1, ]$filename, "compresstest.log")
-  expect_false(file.exists(tf))
+  expect_true(file.remove(tf))
 })
