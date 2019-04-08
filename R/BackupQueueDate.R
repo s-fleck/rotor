@@ -30,23 +30,15 @@ BackupQueueDate <- R6::R6Class(
         name_new <- paste(name, sfx, ext, sep = ".")
       }
 
-      if (file.exists(name_new) && !overwrite){
-        stop("Backup exists and `overwrite == FALSE`")
-      }
-
-      if (verbose)
-        message("'", self$file, "' -> ", basename(name_new))
-
-      if (!dry_run){
-        file.copy(self$file, name_new, overwrite = FALSE)
-      }
-
-      name_new <- compress_and_remove(
-        name_new,
-        compression = compression,
+      copy_or_compress(
+        self$file,
+        outname = name_new,
+        add_ext = TRUE,
+        overwrite = overwrite,
         dry_run = dry_run,
         verbose = verbose
       )
+
       self
     },
 

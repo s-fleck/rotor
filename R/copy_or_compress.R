@@ -2,17 +2,22 @@
 #'
 #' Internal helper function used in [backup()]
 #'
-#' @param file
-#' @param compression
-#' @param compression_level
-#' @param remove_file
+#' @param file `character` scalar. File to copy/compress
+#' @param compression `logical` or `character` scalar. Valid values are
+#'   `TRUE`, `FALSE`, `"zip"` for [zip::zipr()] or `"base::zip"` for [base::zip()]
+#' @param outname `scalar` `character` scalar. name of the target file.
+#' @param add_ext `logical` scalar. add `.zip` extensions to `outname` when
+#'   compressing
+#' @param compression_level passed on to [zip::zipr()] (not if using [base::zip()])
+#'
+#' @noRd
 #'
 #' @return `character` scalar: path to the compressed file
 #'
 copy_or_compress <- function(
   file,
   outname,
-  compression  = TRUE,
+  compression  = FALSE,
   compression_level = 9,
   add_ext = TRUE,
   overwrite = overwrite,
@@ -33,7 +38,7 @@ copy_or_compress <- function(
   # init
     if (isTRUE(compression)){
       compression <-
-        {if (requireNamespace("zip", quietly = TRUE)) "zip" else "zip_base"}
+        {if (requireNamespace("zip", quietly = TRUE)) "zip" else "base::zip"}
     }
 
     if (!isFALSE(compression))
@@ -48,7 +53,7 @@ copy_or_compress <- function(
       }
     }
 
-    msg_file_copy(self$file, outname, dry_run, verbose)
+    msg_file_copy(file, outname, dry_run, verbose)
 
   # copy
     if (isFALSE(compression) && !dry_run){
@@ -59,9 +64,9 @@ copy_or_compress <- function(
   # zip
     if (identical(compression, "zip")){
       assert_namespace("zip")
-      if (!dry_run)  zip::zipr(outname, file, compression_level = compression_level)
+      if (!dry_run) zip::zipr(outname, file, compression_level = compression_level)
 
-    } else if (identical(compression, "zip_base")){
+    } else if (identical(compression, "base::zip")){
       owd <- setwd(dir = dirname(file))
       on.exit(setwd(owd))
       utils::zip(basename(outname), files = basename(file), flags="-q")
