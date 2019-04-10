@@ -266,6 +266,7 @@ test_that("check_backup_interval", {
 
 
 test_that("dry_run does not modify the file systen", {
+  expect_length(list.files(td), 0)
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
   mockery::stub(backup_time, "Sys.Date", as.Date("2017-05-01"))
@@ -279,9 +280,12 @@ test_that("dry_run does not modify the file systen", {
     file.path(td, "test.2017-04-01.log")
   ))
 
-  utils::fileSnapshot(td, md5sum = TRUE)
+  snap <- utils::fileSnapshot(td, md5sum = TRUE)
 
   mockery::stub(backup_time, "Sys.Date", as.Date("2017-05-02"))
   backup_time(tf, dry_run = TRUE)
+
+  expect_identical(snap, utils::fileSnapshot(td, md5sum = TRUE))
+
 
 })
