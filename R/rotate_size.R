@@ -27,6 +27,37 @@ rotate_size <- function(
   n_backups = Inf,
   compression = FALSE,
   prerotate = NULL,
+  postrotate = NULL,
+  dry_run = FALSE,
+  verbose = FALSE
+){
+  backup_size(
+    file,
+    size = size,
+    age = age,
+    n_backups = n_backups,
+    compression = compression,
+    prerotate = prerotate,
+    postrotate = postrotate,
+    dry_run = dry_run,
+    verbose = verbose
+  )
+
+  unlink(file)
+  file.create(file)
+
+  res
+}
+
+
+
+backup_size <- function(
+  file,
+  size,
+  age,
+  n_backups = Inf,
+  compression = FALSE,
+  prerotate = NULL,
   prerotate_args = NULL,
   postrotate = NULL,
   postrotate_args = NULL,
@@ -53,12 +84,8 @@ rotate_size <- function(
     if (verbose) message(sprintf("Rotated '%s' to '%s'", file, res))
   }
 
-  unlink(file)
-  file.create(file)
-
   res
 }
-
 
 
 

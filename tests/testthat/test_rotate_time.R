@@ -233,7 +233,7 @@ test_that("parse_interval", {
 
 
 test_that("check_backup_interval", {
-
+  # week
   expect_false(
     check_backup_interval("1 week", as.Date("2019-04-01"), as.Date("2019-04-07"))  # 2019-W14
   )
@@ -247,6 +247,7 @@ test_that("check_backup_interval", {
     check_backup_interval("5 weeks", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
   )
 
+  # month
   expect_false(
     check_backup_interval("1 month", as.Date("2019-04-01"), as.Date("2019-04-30"))  # 2019-W14
   )
@@ -259,4 +260,28 @@ test_that("check_backup_interval", {
   expect_true(
     check_backup_interval("5 months", as.Date("2019-04-01"),  as.Date("2019-09-06")) # 2019-W19
   )
+})
+
+
+
+
+test_that("dry_run does not modify the file systen", {
+  tf <- file.path(td, "test.log")
+  saveRDS(iris, tf)
+  mockery::stub(backup_time, "Sys.Date", as.Date("2017-05-01"))
+  backup_time(tf)
+
+  file.create(c(
+    file.path(td, "test.2017.log"),
+    file.path(td, "test.201701.log"),
+    file.path(td, "test.20170201.log"),
+    file.path(td, "test.2017-03.log"),
+    file.path(td, "test.2017-04-01.log")
+  ))
+
+  utils::fileSnapshot(td, md5sum = TRUE)
+
+  mockery::stub(backup_time, "Sys.Date", as.Date("2017-05-02"))
+  backup_time(tf, dry_run = TRUE)
+
 })

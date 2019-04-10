@@ -38,3 +38,36 @@ msg_file_remove <- function(file, dry_run, verbose){
 
   message("[dry_run] "[dry_run], "deleting '", file, "'")
 }
+
+
+
+
+
+should_prune <- function(
+  obj,
+  n_backups,
+  dry_run,
+  verbose
+){
+  assert(is_scalar_logical(dry_run))
+  assert(is_scalar_logical(verbose))
+  do_msg <- {if (verbose) message else function(...) NULL}
+
+  if (!obj$has_backups){
+    do_msg(
+      "[dry_run] "[dry_run],
+      "Nothing to prune; no backups found for '", obj$file, "'"
+    )
+    return(FALSE)
+  }
+
+  if (is.infinite(n_backups) || is.na(n_backups)){
+    do_msg(
+      "[dry_run] "[dry_run],
+      "Nothing to prune; `n_backups` is set to '", format(n_backups), "'"
+    )
+    return(FALSE)
+  }
+
+  TRUE
+}

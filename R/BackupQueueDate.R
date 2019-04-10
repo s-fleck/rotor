@@ -50,16 +50,8 @@ BackupQueueDate <- R6::R6Class(
     ){
       assert(is_scalar(n_backups))
 
-      # no backups -> do nothing
-      if (!self$has_backups){
-        if (verbose) message("Nothing to prune; no backups found for '", self$file, "'")
+      if (!should_prune(self, n_backups, dry_run, verbose))
         return(self)
-      }
-
-      if (is.infinite(n_backups) || is.na(n_backups)){
-        if (verbose) message("Nothing to prune; `n_backups` is set to", format(n_backups))
-        return(self)
-      }
 
 
       if (is_integerish(n_backups) && is.finite(n_backups)){

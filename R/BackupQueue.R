@@ -18,13 +18,8 @@ BackupQueue <- R6::R6Class(
       dry_run  = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.verbose", dry_run)
     ){
-      assert(is_scalar_logical(dry_run))
-      assert(is_scalar_logical(verbose))
-
-      if (!self$has_backups){
-        if (verbose) message("Nothing to prune; no backups found for '", self$file, "'")
+      if (!should_prune(self, n_backups, dry_run, verbose))
         return(self)
-      }
 
       if (n_backups > 0){ warning(
         "Pruning a generic BackupQueue with `n_backups > 0` is not",
