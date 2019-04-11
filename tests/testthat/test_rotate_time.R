@@ -280,12 +280,28 @@ test_that("dry_run does not modify the file systen", {
     file.path(td, "test.2017-04-01.log")
   ))
 
+  expect_snapshot_unchanged <- function(snap){
+    expect_true(!any(utils::changedFiles(snap)$changes))
+  }
+
   snap <- utils::fileSnapshot(td, md5sum = TRUE)
-
   mockery::stub(backup_time, "Sys.Date", as.Date("2017-05-02"))
-  backup_time(tf, dry_run = TRUE)
+  expect_message(backup_time(tf, dry_run = TRUE), "2017-05-02")
+  expect_message(backup_time(tf, dry_run = TRUE), "dry_run")
+  expect_snapshot_unchanged(snap)
 
-  expect_identical(snap, utils::fileSnapshot(td, md5sum = TRUE))
+  expect_message(backup_time(tf, dry_run = TRUE, n_backups = 0), "dry_run")
+  expect_message(backup_time(tf, dry_run = TRUE, n_backups = 0), "pruning")
+  expect_message(backup_time(tf, dry_run = TRUE, n_backups = 0), "2017-03")
+  expect_snapshot_unchanged(snap)
 
+  expect_message(
+    backup_time(tf, dry_run = TRUE, n_backups = 0, compression = TRUE),
+    "zip"
+  )
+  expect_snapshot_unchanged(snap)
 
+  BackupQueue$new(tf)$prune(0)
+  unlink(tf)
+  expect_length(list.files(td), 0)
 })

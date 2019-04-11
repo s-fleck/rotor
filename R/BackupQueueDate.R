@@ -33,6 +33,7 @@ BackupQueueDate <- R6::R6Class(
       copy_or_compress(
         self$file,
         outname = name_new,
+        compression = compression,
         add_ext = TRUE,
         overwrite = overwrite,
         dry_run = dry_run,

@@ -79,7 +79,7 @@ backup_time <- function(
     is_scalar_character(file) && file.exists(file),
     is.null(age) || is_scalar(age),
     is_scalar_integerish(min_size),
-    is.infinite(n_backups) || is_n(n_backups) || is.character(n_backups) || is_Date(n_backups),
+    is.infinite(n_backups) || is_n0(n_backups) || is.character(n_backups) || is_Date(n_backups),
     is_scalar_logical(compression),
     is.function(prerotate),
     is.function(postrotate),
