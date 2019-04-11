@@ -78,6 +78,7 @@ backup_time <- function(
   stopifnot(
     is_scalar_character(file) && file.exists(file),
     is.null(age) || is_scalar(age),
+    is_valid_date_format(format),
     is_scalar_integerish(min_size),
     is.infinite(n_backups) || is_n0(n_backups) || is.character(n_backups) || is_Date(n_backups),
     is_scalar_logical(compression),
@@ -103,17 +104,11 @@ backup_time <- function(
 
   now <- Sys.Date()
 
-  do_backup <-
-    is.null(age) ||
-    !bq$has_backups ||
-    check_backup_interval(age, bq$last_backup, now) ||
-    check_backup_date(age, bq$last_backup)
-
-
-  if (do_backup){
+  if (is_backup_time_necessary(bq, age, now)){
     prerotate(bq$file)
     bq$push_backup(
       now = now,
+      format = format,
       compression = compression,
       dry_run = dry_run,
       verbose = verbose
@@ -130,140 +125,15 @@ backup_time <- function(
 
 
 
-check_backup_date <- function(
-  x,
-  last_backup
+is_backup_time_necessary <- function(
+  bq, age, now
 ){
-  assert(is_scalar_Date(last_backup))
-  if (!is_parsable_date(x)){
-    return(FALSE)
-  }
-  last_backup < parse_date(x)
-}
+  if (is.null(age) || !bq$has_backups)
+    return(TRUE)
 
+  if (is_parsable_date(age))
+    is_backup_older_than_date(bq$last_backup, age)
 
-
-
-#' Title
-#'
-#' @param x an `interval`
-#' @param last_backup
-#' @param now
-#'
-#' @return
-#' @export
-#'
-#' @examples
-check_backup_interval <- function(
-  x,
-  last_backup,
-  now
-){
-  assert(is_scalar_Date(last_backup))
-  assert(is_scalar_Date(now))
-  if (!is_parsable_interval(x)){
-    return(FALSE)
-  }
-
-  iv <- parse_interval(x)
-
-  as_period <- switch(
-    iv$unit,
-    week    = dint::as_date_yw,
-    month   = dint::as_date_ym,
-    quarter = dint::as_date_yq,
-    year    = dint::get_year
-  )
-
-  as_period(last_backup) + 1L * iv$value <= as_period(now)
-}
-
-
-
-
-is_parsable_interval <- function(x){
-  tryCatch(
-    {parse_interval(x); TRUE},
-    error = function(e) FALSE
-  )
-}
-
-
-
-
-parse_interval <- function(x){
-  assert(is_scalar(x) && !is.na(x))
-
-  if (is_integerish(x)){
-    return(
-      list(value = as.integer(x), unit = "day")
-    )
-  } else {
-    assert(is.character(x))
-  }
-
-  splt <- strsplit(x, "\\s")[[1]]
-  assert(identical(length(splt), 2L))
-
-  value <- splt[[1]]
-  unit  <- splt[[2]]
-
-  valid_units <- c("day", "week", "month", "quarter", "year")
-  unit <- gsub("s$", "", tolower(trimws(unit)))
-
-  assert(unit %in% valid_units)
-
-
-  list(value = as.integer(value), unit = unit)
-}
-
-
-
-
-is_valid_date_format <- function(x){
-  is_scalar_character(x) &&
-    x %in% c("%Y-%m-%d", "%Y%m%d", "%Y-%m", "%Y%m", "%Y")
-}
-
-
-
-
-is_parsable_date <- function(x){
-  tryCatch(
-    {parse_date(x); TRUE},
-    error = function(...) FALSE
-  )
-}
-
-
-
-
-parse_date <- function(x){
-
-  if (is_Date(x))
-    return(x)
-
-  prep_string <- function(.x){
-    if (identical(nchar(.x), 4L))
-      .x <- paste0(.x, "-01-01")
-
-    else if (identical(nchar(.x), 6L))
-      .x <- paste(substr(.x, 1 , 4), substr(.x, 5, 6), "01", sep = "-")
-
-    else if (identical(nchar(.x), 7L))
-      .x <- paste0(.x, "-01")
-
-    else if (identical(nchar(.x), 8L))
-      .x <- paste(substr(.x, 1 ,4), substr(.x, 5, 6), substr(.x, 7, 8), sep = "-")
-
-    else if (identical(nchar(.x), 10L))
-      return(.x)
-
-    else
-      stop("Cannot parse Date from'", x, "'")
-  }
-
-  res <- as.Date(vapply(x, prep_string, character(1)))
-  assert(!anyNA(res))
-  res
+  if (is_parsable_interval(age))
+    is_backup_older_than_interval(bq$last_backup, age, now)
 }

@@ -232,33 +232,33 @@ test_that("parse_interval", {
 
 
 
-test_that("check_backup_interval", {
+test_that("is_backup_older_than_interval", {
   # week
   expect_false(
-    check_backup_interval("1 week", as.Date("2019-04-01"), as.Date("2019-04-07"))  # 2019-W14
+    is_backup_older_than_interval(interval = "1 week", as.Date("2019-04-01"), as.Date("2019-04-07"))  # 2019-W14
   )
   expect_true(
-    check_backup_interval("1 week", as.Date("2019-04-01"), as.Date("2019-04-08"))  # 2019-W14
+    is_backup_older_than_interval(interval = "1 week", as.Date("2019-04-01"), as.Date("2019-04-08"))  # 2019-W14
   )
   expect_false(
-    check_backup_interval("6 week", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
+    is_backup_older_than_interval(interval = "6 week", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
   )
   expect_true(
-    check_backup_interval("5 weeks", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
+    is_backup_older_than_interval(interval = "5 weeks", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
   )
 
   # month
   expect_false(
-    check_backup_interval("1 month", as.Date("2019-04-01"), as.Date("2019-04-30"))  # 2019-W14
+    is_backup_older_than_interval(interval = "1 month", as.Date("2019-04-01"), as.Date("2019-04-30"))  # 2019-W14
   )
   expect_true(
-    check_backup_interval("1 month", as.Date("2019-04-01"), as.Date("2019-05-01"))  # 2019-W14
+    is_backup_older_than_interval(interval = "1 month", as.Date("2019-04-01"), as.Date("2019-05-01"))  # 2019-W14
   )
   expect_false(
-    check_backup_interval("6 month", as.Date("2019-04-01"),  as.Date("2019-09-01")) # 2019-W19
+    is_backup_older_than_interval(interval = "6 month", as.Date("2019-04-01"),  as.Date("2019-09-01")) # 2019-W19
   )
   expect_true(
-    check_backup_interval("5 months", as.Date("2019-04-01"),  as.Date("2019-09-06")) # 2019-W19
+    is_backup_older_than_interval(interval = "5 months", as.Date("2019-04-01"),  as.Date("2019-09-06")) # 2019-W19
   )
 })
 

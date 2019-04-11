@@ -11,7 +11,7 @@ BackupQueueDate <- R6::R6Class(
       verbose = getOption("rotor.dry_run", dry_run)
     ){
       stopifnot(
-        is_scalar_character(format),
+        is_valid_date_format(format),
         is_scalar_logical(compression),
         is_scalar_logical(overwrite),
         is_scalar_Date(now),
@@ -132,3 +132,70 @@ BackupQueueDate <- R6::R6Class(
     }
   )
 )
+
+
+
+
+
+
+
+
+parse_interval <- function(x){
+  assert(is_scalar(x) && !is.na(x))
+
+  if (is_integerish(x)){
+    return(
+      list(value = as.integer(x), unit = "day")
+    )
+  } else {
+    assert(is.character(x))
+  }
+
+  splt <- strsplit(x, "\\s")[[1]]
+  assert(identical(length(splt), 2L))
+
+  value <- splt[[1]]
+  unit  <- splt[[2]]
+
+  valid_units <- c("day", "week", "month", "quarter", "year")
+  unit <- gsub("s$", "", tolower(trimws(unit)))
+
+  assert(unit %in% valid_units)
+
+
+  list(value = as.integer(value), unit = unit)
+}
+
+
+
+
+parse_date <- function(x){
+
+  if (is_Date(x))
+    return(x)
+
+  prep_string <- function(.x){
+    if (identical(nchar(.x), 4L))
+      .x <- paste0(.x, "-01-01")
+
+    else if (identical(nchar(.x), 6L))
+      .x <- paste(substr(.x, 1 , 4), substr(.x, 5, 6), "01", sep = "-")
+
+    else if (identical(nchar(.x), 7L))
+      .x <- paste0(.x, "-01")
+
+    else if (identical(nchar(.x), 8L))
+      .x <- paste(substr(.x, 1 ,4), substr(.x, 5, 6), substr(.x, 7, 8), sep = "-")
+
+    else if (identical(nchar(.x), 10L))
+      return(.x)
+
+    else
+      stop("Cannot parse Date from'", x, "'")
+  }
+
+  res <- as.Date(vapply(x, prep_string, character(1)))
+  assert(!anyNA(res))
+  res
+}
+
