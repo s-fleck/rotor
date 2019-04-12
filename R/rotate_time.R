@@ -1,4 +1,4 @@
-#' Title
+#' Rotate or Backup Files with Timestamps
 #'
 #'
 #' @section Intervals:
@@ -45,6 +45,8 @@
 #' @param prerotate,postrotate a `function` with a single argument (a file path
 #'   as `character` scalar). `preorate()` and `postrotate()` are
 #'   called before/after the backup is rotated.
+#' @param create_file `logical` scalar. If `TRUE` create an empty file in place
+#'   of `file`.
 #' @param dry_run `logical` scalar. If `TRUE` no changes are applied to the
 #'   file system (no files are created or deleted)
 #' @param verbose `logical` scalar. If `TRUE` additional informative `messages`
@@ -59,9 +61,54 @@
 #' @export
 #'
 #' @examples
-#'
-#'
-#'
+rotate_time <- function(
+  file,
+  age = NULL,
+  format = "%Y-%m-%d",
+  min_size = 1,
+  n_backups = Inf,
+  compression = FALSE,
+  prerotate = identity,
+  postrotate = identity,
+  overwrite = FALSE,
+  create_file = TRUE,
+  dry_run = getOption("rotor.dry_run", FALSE),
+  verbose = getOption("rotor.dry_run", dry_run)
+){
+  assert(is_scalar_logical(create_file))
+
+  res <- backup_time(
+    file = file,
+    age = age,
+    format = format,
+    min_size = min_size,
+    n_backups = n_backups,
+    compression = compression,
+    prerotate = prerotate,
+    postrotate = postrotate,
+    overwrite = overwrite,
+    dry_run = dry_run,
+    verbose = verbose
+  )
+
+  if (!dry_run){
+    msg_file_remove(file, dry_run, verbose)
+    unlink(file)
+  }
+
+  if (create_file && !dry_run){
+    msg_file_create(file, dry_run, verbose)
+    file.create(file)
+  }
+
+  res
+}
+
+
+
+
+#' @rdname rotate_time
+#' @export
 backup_time <- function(
   file,
   age = NULL,
@@ -72,8 +119,8 @@ backup_time <- function(
   prerotate = identity,
   postrotate = identity,
   overwrite = FALSE,
-  dry_run = FALSE,
-  verbose = dry_run
+  dry_run = getOption("rotor.dry_run", FALSE),
+  verbose = getOption("rotor.dry_run", dry_run)
 ){
   stopifnot(
     is_scalar_character(file) && file.exists(file),

@@ -222,6 +222,23 @@ test_that("backup_time works as expected for weeks", {
 
 
 
+test_that("rotate_time works as expected", {
+  tf <- file.path(td, "test.log")
+  saveRDS(iris, tf)
+  checksum <- tools::md5sum(tf)
+
+  # ensure backup_time believes it is 2019-01-01
+  backup <- rotate_time(tf)
+  expect_identical(unname(checksum), unname(tools::md5sum(backup)))
+  expect_equal(file.size(tf), 0)
+
+  BackupQueueDate$new(tf)$prune(0)
+  file.remove(tf)
+})
+
+
+
+
 test_that("parse_interval", {
   expect_identical(parse_interval(9)$unit, "day")
   expect_identical(parse_interval("1 week")$unit, "week")
