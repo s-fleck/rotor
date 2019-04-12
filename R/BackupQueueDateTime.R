@@ -169,21 +169,26 @@ parse_interval <- function(x){
 
 
 
-parse_date <- function(x){
+parse_datetime <- function(x){
 
-  if (is_Date(x))  return(x)
+  if (is_POSIXt(x))  return(as.POSIXct(x))
 
-  x <- gsub("-", "", x)  # - seperators have no meaning and can be removed
+  x <- gsub("(-|T)", "", x)  # - seperators have no meaning and can be removed
 
-  prep_ymd <- function(.x){
-    assert(all(nchar(.x) %in% c(8, 6, 4)))
-    y <- substr(.x, 1, 4)
-    m <- ifelse(nchar(.x) > 4, substr(.x, 5, 6), "01")
-    d <- ifelse(nchar(.x) > 6, substr(.x, 7, 8), "01")
-    paste(y, m, d, sep = "-")
+  prep_hms <- function(.x){
+    assert(all(nchar(.x) %in% c(2, 4, 6)))
+    h <- substr(.x, 1, 2)
+    m <- ifelse(nchar(.x) > 2, substr(.x, 3, 4), "00")
+    s <- ifelse(nchar(.x) > 4, substr(.x, 5, 6), "00")
+    paste(h, m, s, sep = ":")
   }
 
-  res <- as.Date(prep_ymd(x))
+  dd <- strsplit_at_pos(x, 8)
+
+  dd[, 1] <- as.character(parse_date(dd[, 1]))
+  dd[, 2] <- prep_hms(dd[, 2])
+
+  res <- as.POSIXct(paste(dd[, 1], dd[, 2]))
   assert(!anyNA(res))
   res
 }

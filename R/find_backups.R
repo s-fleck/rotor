@@ -34,11 +34,11 @@ filenames_as_matrix <- function(
   name <- tools::file_path_sans_ext(file)
   ext  <- tools::file_ext(file)
   name_end <- attr(gregexpr(name, backups[[1]])[[1]], "match.length") + 1L
-  a <- strsplit_at_pos(backups, name_end)
+  a <- strsplit_at_seperator_pos(backups, name_end)
 
   if (!is_blank(ext)){
     ext_start <- unlist(gregexpr(ext, a[, 2]))
-    b <- strsplit_at_pos(a[, 2], ext_start - 1L)
+    b <- strsplit_at_seperator_pos(a[, 2], ext_start - 1L)
     res <- cbind(a[, 1], b)
     colnames(res) <- c("name", "sfx", "ext")
   } else {
@@ -59,10 +59,21 @@ filenames_as_matrix <- function(
 #' @param pos an `integer` vector
 #'
 #' @noRd
+strsplit_at_seperator_pos <- function(
+  x,
+  pos,
+  seps = "."
+){
+  assert(all(substr(x, pos, pos) %in% seps))
+  matrix(data = c(substr(x, 1, pos - 1L), substr(x, pos + 1L, nchar(x))), ncol = 2)
+}
+
+
+
+
 strsplit_at_pos <- function(
   x,
   pos
 ){
-  assert(all(substr(x, pos, pos) == "."))
-  matrix(data = c(substr(x, 1, pos - 1L), substr(x, pos + 1L, nchar(x))), ncol = 2)
+  matrix(data = c(substr(x, 1, pos), substr(x, pos + 1L, nchar(x))), ncol = 2)
 }
