@@ -1,5 +1,5 @@
-BackupQueueDate <- R6::R6Class(
-  "BackupQueue",
+BackupQueueDateTime <- R6::R6Class(
+  "BackupQueueDateTime",
   inherit = BackupQueue,
   public = list(
     push_backup = function(
@@ -11,7 +11,7 @@ BackupQueueDate <- R6::R6Class(
       verbose = getOption("rotor.dry_run", dry_run)
     ){
       stopifnot(
-        is_valid_date_format(format),
+        is_valid_datetime_format(format),
         is_scalar_logical(compression),
         is_scalar_logical(overwrite),
         is_scalar_Date(now),
@@ -136,10 +136,6 @@ BackupQueueDate <- R6::R6Class(
 
 
 
-
-
-
-
 parse_interval <- function(x){
   assert(is_scalar(x) && !is.na(x))
 
@@ -192,4 +188,3 @@ parse_datetime <- function(x){
   assert(!anyNA(res))
   res
 }
-

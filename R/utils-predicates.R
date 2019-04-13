@@ -13,7 +13,34 @@ is_parsable_interval <- function(x){
 
 is_valid_date_format <- function(x){
   is_scalar_character(x) &&
-    x %in% c("%Y-%m-%d", "%Y%m%d", "%Y-%m", "%Y%m", "%Y")
+    x %in% c(
+      "%Y-%m-%d",
+      "%Y-%m",
+      "%Y%m%d",
+      "%Y%m",
+      "%Y"
+    )
+}
+
+
+
+
+is_valid_datetime_format <- function(x){
+  if (!is_scalar_character(x)) &&
+  x %in% c(
+    "%Y-%m-%dT%H-%M-%S",
+    "%Y-%m-%dT%H-%M",
+    "%Y-%m-%dT%H",
+    "%Y-%m-%dT%H%M%S",
+    "%Y-%m-%dT%H%M",
+    "%Y-%m-%dT%H",
+    "%Y%m%dT%H%M%S",
+    "%Y%m%dT%H%M",
+    "%Y%m%dT%H",
+    "%Y%m%d%H%M%S",
+    "%Y%m%d%H%M",
+    "%Y%m%d%H"
+  )
 }
 
 
