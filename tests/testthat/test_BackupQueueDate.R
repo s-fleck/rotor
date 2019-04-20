@@ -190,7 +190,7 @@ test_that("Prune BackupQueueDate based on week interval", {
 
 
 
-test_that("Prune BackupQueueDate based on week interval", {
+test_that("Prune BackupQueueDate based on dayss interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bq <- BackupQueueDate$new(tf)
@@ -226,9 +226,7 @@ test_that("BackupQueueDate $last_date", {
   file.create(bus)
   expect_identical(bq$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
 
-
-  bq$last_backup
-
+  expect_identical(bq$last_backup, as.Date("2019-01-03"))
 
   bq$prune(0)
   file.remove(tf)

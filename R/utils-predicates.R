@@ -26,7 +26,7 @@ is_valid_date_format <- function(x){
 
 
 is_valid_datetime_format <- function(x){
-  if (!is_scalar_character(x)) &&
+  !is_scalar_character(x) &&
   x %in% c(
     "%Y-%m-%dT%H-%M-%S",
     "%Y-%m-%dT%H-%M",
