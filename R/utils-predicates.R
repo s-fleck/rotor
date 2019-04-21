@@ -24,9 +24,17 @@ is_valid_date_format <- function(x){
 
 
 
+assert_valid_datetime_format <- function(x){
+  xdep <- deparse(substitute(x))
+  if (!is_valid_datetime_format(x))
+    stop("`", xdep, "` is not a valid datimetime format but ", preview_object(x))
+  else
+    TRUE
+}
+
 
 is_valid_datetime_format <- function(x){
-  !is_scalar_character(x) &&
+  is_scalar_character(x) &&
   x %in% c(
     "%Y-%m-%dT%H-%M-%S",
     "%Y-%m-%dT%H-%M",

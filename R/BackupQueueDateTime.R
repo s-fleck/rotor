@@ -3,18 +3,18 @@ BackupQueueDateTime <- R6::R6Class(
   inherit = BackupQueue,
   public = list(
     push_backup = function(
-      format = "%Y-%m-%d",
+      format = "%Y-%m-%dT%H-%M-%S",
       compression = FALSE,
       overwrite = FALSE,
-      now = Sys.Date(),
+      now = Sys.time(),
       dry_run = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.dry_run", dry_run)
     ){
+      assert_valid_datetime_format(format)
       stopifnot(
-        is_valid_datetime_format(format),
         is_scalar_logical(compression),
         is_scalar_logical(overwrite),
-        is_scalar_Date(now),
+        is_scalar_POSIXct(now),
         is_scalar_logical(dry_run),
         is_scalar_logical(verbose)
       )

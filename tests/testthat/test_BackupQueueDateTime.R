@@ -73,49 +73,52 @@ test_that("BackupQueueDate can find and prune backup trails", {
 })
 
 
-#
-#
-# test_that("BackupQueueDate works with supported datestamp formats", {
-#   tf <- file.path(td, "test.log")
-#   file.create(tf)
-#   date <- as.Date("2019-01-01")
-#
-#   bq <- BackupQueueDate$new(tf)
-#   expect_identical(bq$n_backups, 0L)
-#   for (i in 1:10) {
-#     mockery::stub(bq$push_backup, "Sys.Date", date + i * 5)
-#     bq$push_backup()
-#   }
-#   bq$prune(5)
-#   expect_length(bq$backups$path, 5)
-#
-#   file.create(file.path(td, "test.2019-02-20.log"))
-#   file.create(file.path(td, "test.2019-04.log"))
-#   file.create(file.path(td, "test.2019.log"))
-#   file.create(file.path(td, "test.20200411.log"))
-#   file.create(file.path(td, "test.201905.log"))
-#   bq$prune(5)
-#
-#   expect_length(bq$backups$path, 5)
-#
-#   noback <- file.path(dirname(tf), ".2019-a2-20.log")
-#   file.create(noback)
-#   on.exit(file.remove(noback))
-#
-#   expect_identical(
-#     basename(bq$backups$path),
-#     c(
-#       "test.20200411.log",
-#       "test.201905.log",
-#       "test.2019-04.log",
-#       "test.2019-02-20.log",
-#       "test.2019.log"
-#     )
-#   )
-#
-#   bq$prune(0)
-#   file.remove(tf)
-# })
+
+
+test_that("BackupQueueDatetime works with supported timestamp formats", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  datetime <- as.POSIXct("2019-01-01 00:00:00")
+
+  bq <- BackupQueueDateTime$new(tf)
+  expect_identical(bq$n_backups, 0L)
+  for (i in 1:10) {
+    bq$push_backup(now = datetime + i * 5)
+  }
+  bq$prune(5)
+  expect_length(bq$backups$path, 5)
+
+  file.create(file.path(td, "test.2019-02-20.log"))
+  file.create(file.path(td, "test.2019-04-20T12-00-00.log"))
+  file.create(file.path(td, "test.2019-04-20T120000.log"))
+  file.create(file.path(td, "test.2019-04-20T1200.log"))
+  file.create(file.path(td, "test.2019-04-20T12.log"))
+  file.create(file.path(td, "test.20190420T12.log"))
+
+  bq$prune(6)
+
+  expect_identical(
+    as.character(bq$backups$date),
+    c("2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-04-20 12:00:00",
+      "2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-01-01 00:00:50"
+    )
+  )
+
+  bq$backups$date
+  noback <- file.path(dirname(tf), ".2019-a2-20.log")
+  file.create(noback)
+  on.exit(file.remove(noback))
+
+  expect_identical(
+    as.character(bq$backups$date),
+    c("2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-04-20 12:00:00",
+      "2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-01-01 00:00:50"
+    )
+  )
+
+  bq$prune(0)
+  file.remove(tf)
+})
 #
 #
 #

@@ -49,7 +49,7 @@ copy_or_compress <- function(
         msg_file_remove(outname, dry_run, verbose)
         file.remove(outname)
       } else {
-        stop("Backup exists and `overwrite == FALSE`")
+        stop(sprintf("Backup '%s' exists and `overwrite == FALSE`", outname))
       }
     }
 
