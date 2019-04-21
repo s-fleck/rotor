@@ -23,6 +23,10 @@ test_that("parse_datetime works as expected", {
 
   expect_identical(parse_datetime(d1), d1)
 
+  expect_identical(parse_datetime("2019-04-12--17-49-19"), d1)
+  expect_identical(parse_datetime("2019-04-12--17-49"), d2)
+  expect_identical(parse_datetime("2019-04-12----17"), d3)
+
   expect_identical(parse_datetime("2019-04-12T17-49-19"), d1)
   expect_identical(parse_datetime("2019-04-12T17-49"), d2)
   expect_identical(parse_datetime("2019-04-12T17"), d3)
@@ -54,7 +58,7 @@ test_that("BackupQueueDate can find and prune backup trails", {
   bq <- BackupQueueDateTime$new(tf)
 
   expect_identical(bq$n_backups, 0L)
-  bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01T22-22-22.log.zip", ".20190102T1212.log.tar.gz", ".20190103174919.log", ".12.log"))
+  bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01T22-22-22.log.zip", ".20190102---1212.log.tar.gz", ".20190103174919.log", ".12.log"))
   file.create(bus)
   expect_identical(
     bq$backups$date,
@@ -92,7 +96,7 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
   file.create(file.path(td, "test.2019-04-20T12-00-00.log"))
   file.create(file.path(td, "test.2019-04-20T120000.log"))
   file.create(file.path(td, "test.2019-04-20T1200.log"))
-  file.create(file.path(td, "test.2019-04-20T12.log"))
+  file.create(file.path(td, "test.2019-04-20--12.log"))
   file.create(file.path(td, "test.20190420T12.log"))
 
   bq$prune(6)

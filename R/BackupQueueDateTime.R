@@ -116,19 +116,8 @@ BackupQueueDateTime <- R6::R6Class(
         return(data.frame())
       }
 
-      sfx_patterns = c(
-        "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}-\\d{2}",
-        "\\d{4}-\\d{2}-\\d{2}T\\d{6}",
-        "\\d{4}-\\d{2}-\\d{2}T\\d{2}-\\d{2}",
-        "\\d{4}-\\d{2}-\\d{2}T\\d{4}",
-        "\\d{4}-\\d{2}-\\d{2}T\\d{2}",
-        "\\d{8}T{0,1}\\d{2}",
-        "\\d{8}T{0,1}\\d{4}",
-        "\\d{8}T{0,1}\\d{6}"
-      )
-      sfx_patterns <- paste0("(", sfx_patterns, ")", collapse = "|")
-
-      res <- res[grep(sfx_patterns, res$sfx), ]
+      sfx_patterns <- "\\d{8}(\\d{6}|\\d{4}|\\d{2})"
+      res <- res[grep(sfx_patterns, standardize_datetime_stamp(res$sfx)), ]
       res$date <- parse_datetime(res$sfx)
 
       res[order(res$date, decreasing = TRUE), ]
@@ -166,6 +155,10 @@ parse_interval <- function(x){
 }
 
 
+
+standardize_datetime_stamp <- function(x){
+  gsub("T|-", "", x)
+}
 
 
 parse_datetime <- function(x){

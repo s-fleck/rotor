@@ -33,18 +33,15 @@ assert_valid_datetime_format <- function(x){
 }
 
 
-is_valid_datetime_format <- function(x){
-  is_scalar_character(x) &&
+is_valid_datetime_format <- function(
+  x
+){
+  if (!is_scalar_character(x))
+    return(FALSE)
+
+  x <- gsub("(T|-)", "", x)
+
   x %in% c(
-    "%Y-%m-%dT%H-%M-%S",
-    "%Y-%m-%dT%H-%M",
-    "%Y-%m-%dT%H",
-    "%Y-%m-%dT%H%M%S",
-    "%Y-%m-%dT%H%M",
-    "%Y-%m-%dT%H",
-    "%Y%m%dT%H%M%S",
-    "%Y%m%dT%H%M",
-    "%Y%m%dT%H",
     "%Y%m%d%H%M%S",
     "%Y%m%d%H%M",
     "%Y%m%d%H"

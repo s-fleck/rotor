@@ -27,17 +27,6 @@
 #'
 #'
 #' @param file file to back up/rotate
-#' @param format a scalar `character` that can be a subset of of valid
-#'   `strftime()` formatting strings. The basic pattern is
-#'   `"%Y-%m-%dT%H-%M-%S"`. The sepparators `-` and `T` are optional.
-#'   * You can use an arbitrary number of dashes anywhere in the format, so
-#'     `"%Y-%m-%d--%H-%M-%S"` and `"%Y%m%d%H%M%S"` are both legal.
-#'   * All datetime components except `%Y` are optional. If you leave out part
-#'     of the timestamp, the first point in time in the period is assumed. For
-#'     example (assuming the current year is 2019) `%Y` is identical to
-#'     `2019-01-01T00-00-00`.
-#'   * The timestamps must be lexically sortable, so `"%Y-%m-%d"` is legal,
-#'     `"%m-%d-%Y"` and `%Y-%d` are not.
 #' @param age
 #'   - a `character` scalar representing an Interval in the form
 #'     `"<number> <interval>"` (see section Intervals).
@@ -72,10 +61,10 @@
 #' @export
 #'
 #' @examples
-rotate_time <- function(
+rotate_date <- function(
   file,
   age = NULL,
-  format = "%Y-%m-%dT%H-%M-%S",
+  format = "%Y-%m-%d",
   min_size = 1,
   n_backups = Inf,
   compression = FALSE,
@@ -120,7 +109,7 @@ rotate_time <- function(
 
 #' @rdname rotate_time
 #' @export
-backup_time <- function(
+backup_date <- function(
   file,
   age = NULL,
   format = "%Y-%m-%d",
