@@ -44,16 +44,19 @@ is_valid_datetime_format <- function(
   x %in% c(
     "%Y%m%d%H%M%S",
     "%Y%m%d%H%M",
-    "%Y%m%d%H"
+    "%Y%m%d%H",
+    "%Y%m%d",
+    "%Y%m",
+    "%Y"
   )
 }
 
 
 
 
-is_parsable_date <- function(x){
+is_parsable_datetime <- function(x){
   tryCatch(
-    {parse_date(x); TRUE},
+    {parse_datetime(x); TRUE},
     error = function(...) FALSE
   )
 }

@@ -44,7 +44,7 @@ test_that("BackupQueueDate works with supported datestamp formats", {
   bq <- BackupQueueDate$new(tf)
   expect_identical(bq$n_backups, 0L)
   for (i in 1:10) {
-    mockery::stub(bq$push_backup, "Sys.Date", date + i * 5)
+    mockery::stub(bq$push_backup, "Sys.time", as.POSIXct(date + i * 5))
     bq$push_backup()
   }
   bq$prune(5)
@@ -226,7 +226,7 @@ test_that("BackupQueueDate $last_date", {
   file.create(bus)
   expect_identical(bq$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
 
-  expect_identical(bq$last_backup, as.Date("2019-01-03"))
+  expect_identical(bq$last_backup, as.POSIXct("2019-01-03", tz = "GMT"))
 
   bq$prune(0)
   file.remove(tf)

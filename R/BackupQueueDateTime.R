@@ -2,15 +2,27 @@ BackupQueueDateTime <- R6::R6Class(
   "BackupQueueDateTime",
   inherit = BackupQueue,
   public = list(
+    initialize = function(
+      file,
+      backup_dir = dirname(file),
+      format = "%Y-%m-%dT%H-%M-%S"
+    ){
+      self$file <- file
+      self$backup_dir <- backup_dir
+      self$fmt <- format
+      self
+    },
+
+    fmt = NULL,
+
     push_backup = function(
-      format = "%Y-%m-%dT%H-%M-%S",
       compression = FALSE,
       overwrite = FALSE,
       now = Sys.time(),
       dry_run = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.dry_run", dry_run)
     ){
-      assert_valid_datetime_format(format)
+      assert_valid_datetime_format(self$fmt)
       stopifnot(
         is_scalar_logical(compression),
         is_scalar_logical(overwrite),
@@ -22,7 +34,7 @@ BackupQueueDateTime <- R6::R6Class(
       # generate new filename
       name <- tools::file_path_sans_ext(self$file)
       ext  <- tools::file_ext(self$file)
-      sfx  <- format(now, format = format)
+      sfx  <- format(now, format = self$fmt)
 
       if (is_blank(ext)) {
         name_new <- paste(name, sfx, sep = ".")
@@ -62,13 +74,9 @@ BackupQueueDateTime <- R6::R6Class(
 
       } else {
         # prune based on dates and intervals
-        if (is.character(n_backups) && is_parsable_date(n_backups)){
-          # Date like strings
-          limit <- parse_date(n_backups)
-
-        } else if (is_Date(n_backups)){
-          # true Dates
-          limit <- n_backups
+        if (is_parsable_datetime(n_backups)){
+          limit     <- parse_datetime(n_backups)
+          to_remove <- self$backups$path[self$backups$date < limit]
 
         } else if (is_parsable_interval(n_backups)){
           # interval like strings
@@ -87,11 +95,14 @@ BackupQueueDateTime <- R6::R6Class(
             limit <- dint::first_of_isoweek(dint::as_date_yw(self$last_backup) - interval$value + 1L)
 
           } else if (identical(interval[["unit"]], "day")){
-            limit <- self$last_backup - interval$value + 1L
+            limit <- as.Date(self$last_backup) - interval$value + 1L
           }
+
+          to_remove <- self$backups$path[as.Date(self$backups$date) < limit]
         }
-      to_remove <- self$backups$path[self$backups$date < limit]
     }
+
+
 
     msg_prune_backups(self$file, to_remove, dry_run, verbose)
 
@@ -116,8 +127,8 @@ BackupQueueDateTime <- R6::R6Class(
         return(data.frame())
       }
 
-      sfx_patterns <- "\\d{8}(\\d{6}|\\d{4}|\\d{2})"
-      res <- res[grep(sfx_patterns, standardize_datetime_stamp(res$sfx)), ]
+      sel <- vapply(res$sfx, is_parsable_datetime, logical(1))
+      res <- res[sel, ]
       res$date <- parse_datetime(res$sfx)
 
       res[order(res$date, decreasing = TRUE), ]
@@ -157,30 +168,84 @@ parse_interval <- function(x){
 
 
 standardize_datetime_stamp <- function(x){
-  gsub("T|-", "", x)
+  gsub("T|-", "", as.character(x))
 }
+
+
+
+
+
+parse_interval <- function(x){
+  assert(is_scalar(x) && !is.na(x))
+
+  if (is_integerish(x)){
+    return(
+      list(value = as.integer(x), unit = "day")
+    )
+  } else {
+    assert(is.character(x))
+  }
+
+  splt <- strsplit(x, "\\s")[[1]]
+  assert(identical(length(splt), 2L))
+
+  value <- splt[[1]]
+  unit  <- splt[[2]]
+
+  valid_units <- c("day", "week", "month", "quarter", "year")
+  unit <- gsub("s$", "", tolower(trimws(unit)))
+
+  assert(unit %in% valid_units)
+
+  list(value = as.integer(value), unit = unit)
+}
+
+
 
 
 parse_datetime <- function(x){
-
-  if (is_POSIXt(x))  return(as.POSIXct(x))
-
-  x <- gsub("(-|T)", "", x)  # - seperators have no meaning and can be removed
-
-  prep_hms <- function(.x){
-    assert(all(nchar(.x) %in% c(2, 4, 6)))
-    h <- substr(.x, 1, 2)
-    m <- ifelse(nchar(.x) > 2, substr(.x, 3, 4), "00")
-    s <- ifelse(nchar(.x) > 4, substr(.x, 5, 6), "00")
-    paste(h, m, s, sep = ":")
+  if (is_POSIXct(x)){
+    return(x)
+  } else if (is_Date(x) || is_POSIXlt(x)) {
+    return(as.POSIXct(x))
+  } else if (!is.character(x) && !is_integerish(x)) {
+    stop(
+      "`", deparse(substitute(x)), "` must be a character, Date, or POSIXt, ",
+      "not ", preview_object(x), call. = FALSE
+    )
   }
 
+  x <- standardize_datetime_stamp(x)
+
   dd <- strsplit_at_pos(x, 8)
+  dd[, 1] <- prep_ymd(dd[, 1])
+  dd[, 2] <- ifelse(is_blank(dd[, 2]), "", prep_hms(dd[, 2]))
 
-  dd[, 1] <- as.character(parse_date(dd[, 1]))
-  dd[, 2] <- prep_hms(dd[, 2])
-
-  res <- as.POSIXct(paste(dd[, 1], dd[, 2]))
+  res <- as.POSIXct(paste(dd[, 1], dd[, 2]), tz = "GMT")
   assert(!anyNA(res))
   res
 }
+
+
+
+
+prep_ymd <- function(.x){
+  assert(all(nchar(.x) %in% c(8, 6, 4)))
+  y <- substr(.x, 1, 4)
+  m <- ifelse(nchar(.x) > 4, substr(.x, 5, 6), "01")
+  d <- ifelse(nchar(.x) > 6, substr(.x, 7, 8), "01")
+  paste(y, m, d, sep = "-")
+}
+
+
+
+
+prep_hms <- function(.x){
+  assert(all(nchar(.x) %in% c(2, 4, 6)))
+  h <- substr(.x, 1, 2)
+  m <- ifelse(nchar(.x) >  2, substr(.x, 3, 4), "00")
+  s <- ifelse(nchar(.x) >  4, substr(.x, 5, 6), "00")
+  paste(h, m, s, sep = ":")
+}
+
+
