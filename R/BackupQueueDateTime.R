@@ -74,7 +74,11 @@ BackupQueueDateTime <- R6::R6Class(
 
       } else {
         # prune based on dates and intervals
-        if (is_parsable_datetime(n_backups)){
+        if (is_parsable_date(n_backups)){
+          limit     <- parse_date(n_backups)
+          to_remove <- self$backups$path[as.Date(as.character(self$backups$date)) < limit]
+
+        } else if (is_parsable_datetime(n_backups)){
           limit     <- parse_datetime(n_backups)
           to_remove <- self$backups$path[self$backups$date < limit]
 
@@ -82,27 +86,27 @@ BackupQueueDateTime <- R6::R6Class(
           # interval like strings
           interval <- parse_interval(n_backups)
 
+          last_backup <- as.Date(as.character(self$last_backup))
+
           if (identical(interval[["unit"]], "year")){
-            limit <- dint::first_of_year(dint::get_year(self$last_backup) - interval$value + 1L)
+            limit <- dint::first_of_year(dint::get_year(last_backup) - interval$value + 1L)
 
           } else if (identical(interval[["unit"]], "quarter")){
-            limit <- dint::first_of_quarter(dint::as_date_yq(self$last_backup) - interval$value + 1L)
+              limit <- dint::first_of_quarter(dint::as_date_yq(last_backup) - interval$value + 1L)
 
           } else if (identical(interval[["unit"]], "month")) {
-            limit <- dint::first_of_month(dint::as_date_ym(self$last_backup) - interval$value + 1L)
+              limit <- dint::first_of_month(dint::as_date_ym(last_backup) - interval$value + 1L)
 
           } else if (identical(interval[["unit"]], "week")){
-            limit <- dint::first_of_isoweek(dint::as_date_yw(self$last_backup) - interval$value + 1L)
+              limit <- dint::first_of_isoweek(dint::as_date_yw(last_backup) - interval$value + 1L)
 
           } else if (identical(interval[["unit"]], "day")){
-            limit <- as.Date(self$last_backup) - interval$value + 1L
+              limit <- as.Date(last_backup) - interval$value + 1L
           }
 
-          to_remove <- self$backups$path[as.Date(self$backups$date) < limit]
-        }
+          to_remove <- self$backups$path[as.Date(as.character(self$backups$date)) < limit]
+       }
     }
-
-
 
     msg_prune_backups(self$file, to_remove, dry_run, verbose)
 
@@ -172,6 +176,10 @@ standardize_datetime_stamp <- function(x){
 }
 
 
+standardize_date_stamp <- function(x){
+  gsub("-", "", as.character(x))
+}
+
 
 
 
@@ -221,10 +229,31 @@ parse_datetime <- function(x){
   dd[, 1] <- prep_ymd(dd[, 1])
   dd[, 2] <- ifelse(is_blank(dd[, 2]), "", prep_hms(dd[, 2]))
 
-  res <- as.POSIXct(paste(dd[, 1], dd[, 2]), tz = "GMT")
+  res <- as.POSIXct(paste(dd[, 1], dd[, 2]))
   assert(!anyNA(res))
   res
 }
+
+
+
+parse_date <- function(x){
+  if (is_Date(x)){
+    return(x)
+  } else if (!is.character(x) && !is_integerish(x)) {
+    stop(
+      "`", deparse(substitute(x)), "` must be a character or Date, ",
+      "not ", preview_object(x), call. = FALSE
+    )
+  }
+
+  x <- standardize_date_stamp(x)
+  dd <- prep_ymd(x)
+  res <- as.Date(x)
+
+  assert(!anyNA(res))
+  res
+}
+
 
 
 

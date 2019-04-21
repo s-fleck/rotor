@@ -63,6 +63,14 @@ is_parsable_datetime <- function(x){
 
 
 
+is_parsable_date <- function(x){
+  tryCatch(
+    {parse_date(x); TRUE},
+    error = function(...) FALSE
+  )
+}
+
+
 
 
 is_backup_older_than_date <- function(

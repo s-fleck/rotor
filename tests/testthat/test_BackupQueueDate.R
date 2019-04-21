@@ -219,14 +219,13 @@ test_that("BackupQueueDate $last_date", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bq <- BackupQueueDate$new(tf)
-  bq$backups
 
   expect_identical(bq$n_backups, 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
   file.create(bus)
   expect_identical(bq$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
 
-  expect_identical(bq$last_backup, as.POSIXct("2019-01-03", tz = "GMT"))
+  expect_equal(bq$last_backup, as.POSIXct("2019-01-03"))
 
   bq$prune(0)
   file.remove(tf)
