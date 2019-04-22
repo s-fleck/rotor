@@ -37,7 +37,8 @@ AppenderFileRotatingDate <- R6::R6Class(
 
     rotate = function(
       dry_run     = getOption("rotor.dry_run", FALSE),
-      verbose     = getOption("rotor.dry_run", dry_run)
+      verbose     = getOption("rotor.dry_run", dry_run),
+      now = Sys.Date()
     ){
       rotate_date(
         self$file,
@@ -50,9 +51,12 @@ AppenderFileRotatingDate <- R6::R6Class(
         postrotate  = self$postrotate,
         overwrite   = self$overwrite,
         create_file = self$create_file,
+        now = now,
         dry_run     = dry_run,
         verbose     = verbose
       )
+
+      self
     },
 
 
@@ -160,4 +164,3 @@ AppenderFileRotatingDate <- R6::R6Class(
     .create_file = NULL
   )
 )
-

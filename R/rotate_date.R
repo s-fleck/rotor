@@ -42,6 +42,11 @@
 #'   - a `character` scalar representing an Interval in the form
 #'     `"<number> <interval>"`
 #' @param compression
+#'   - `FALSE` for uncompressed backups,
+#'   - `TRUE` for zip compression; uses [zipr::zip()] if available,
+#'   - a scalar `integer` between `1` and `9` to specify a compression
+#'     level (requires [zip::zipr()], see its documentation for details)
+#'   - `"base::zip()"` or `"zip::zipr"` to force a specific zip command
 #' @param prerotate,postrotate a `function` with a single argument (a file path
 #'   as `character` scalar). `preorate()` and `postrotate()` are
 #'   called before/after the backup is rotated.
@@ -72,6 +77,7 @@ rotate_date <- function(
   postrotate = identity,
   overwrite = FALSE,
   create_file = TRUE,
+  now = Sys.Date(),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
@@ -87,6 +93,7 @@ rotate_date <- function(
     prerotate = prerotate,
     postrotate = postrotate,
     overwrite = overwrite,
+    now = now,
     dry_run = dry_run,
     verbose = verbose
   )
@@ -115,6 +122,7 @@ backup_date <- function(
   prerotate = identity,
   postrotate = identity,
   overwrite = FALSE,
+  now = Sys.Date(),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
@@ -129,7 +137,8 @@ backup_date <- function(
     is.function(postrotate),
     is_scalar_logical(overwrite),
     is_scalar_logical(dry_run),
-    is_scalar_logical(verbose)
+    is_scalar_logical(verbose),
+    is_scalar_Date(now)
   )
 
   bq <- BackupQueueDate$new(file, format = format)
@@ -144,8 +153,6 @@ backup_date <- function(
       call. = FALSE
     )}
   }
-
-  now <- Sys.Date()
 
   if (is_backup_time_necessary(bq, age, now)){
     prerotate(bq$file)
