@@ -3,14 +3,14 @@ BackupQueueIndex <- R6::R6Class(
   inherit = BackupQueue,
   public = list(
     prune = function(
-      n_backups,
+      max_backups,
       dry_run  = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.verbose", dry_run)
     ){
-      if (!should_prune(self, n_backups, dry_run, verbose))
+      if (!should_prune(self, max_backups, dry_run, verbose))
         return(self)
 
-      to_keep   <- self$backups$path[seq_len(n_backups)]
+      to_keep   <- self$backups$path[seq_len(max_backups)]
       to_remove <- setdiff(self$backups$path, to_keep)
 
       file_remove(to_remove, dry_run = dry_run, verbose = verbose)

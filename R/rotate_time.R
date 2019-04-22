@@ -22,7 +22,7 @@
 #'
 #' When pruning/limiting backup queues, `"1 year"` means "keep at least most
 #' one year worth of backups". So if you call
-#' `backup_time(myfile, n_backups = "1 year")` on `2019-03-01`, it will create
+#' `backup_time(myfile, max_backups = "1 year")` on `2019-03-01`, it will create
 #' a backup and then remove all backups of `myfile` before `2019-01-01`.
 #'
 #'
@@ -45,7 +45,7 @@
 #'     that (e.g. `"2 months"`). See examples
 #'   - a `Date` or a `character` scalar [representing a Date][parse_date].
 #'     Backup/rotate if the last backup was before that date
-#' @param n_backups understands scalars of different types
+#' @param max_backups understands scalars of different types
 #'   - an `integer` scalar: Maximum number of backups to keep
 #'   - a `Date` scalar: Remove all backups before this date
 #'   - a `character` scalar representing a Date in ISO format
@@ -77,7 +77,7 @@ rotate_time <- function(
   age = NULL,
   format = "%Y-%m-%d--%H-%M-%S",
   min_size = 1,
-  n_backups = Inf,
+  max_backups = Inf,
   compression = FALSE,
   prerotate = identity,
   postrotate = identity,
@@ -93,7 +93,7 @@ rotate_time <- function(
     age = age,
     format = format,
     min_size = min_size,
-    n_backups = n_backups,
+    max_backups = max_backups,
     compression = compression,
     prerotate = prerotate,
     postrotate = postrotate,
@@ -120,7 +120,7 @@ backup_time <- function(
   age = NULL,
   format = "%Y-%m-%d--%H-%M-%S",
   min_size = 1,
-  n_backups = Inf,
+  max_backups = Inf,
   compression = FALSE,
   now = Sys.time(),
   prerotate = identity,
@@ -134,7 +134,7 @@ backup_time <- function(
     is.null(age) || is_scalar(age),
     is_valid_datetime_format(format),
     is_scalar_integerish(min_size),
-    is.infinite(n_backups) || is_n0(n_backups) || is.character(n_backups) || is_Date(n_backups),
+    is.infinite(max_backups) || is_n0(max_backups) || is.character(max_backups) || is_Date(max_backups),
     is_scalar_logical(compression),
     is.function(prerotate),
     is.function(postrotate),
@@ -169,7 +169,7 @@ backup_time <- function(
     res <- character()
   }
 
-  bq$prune(n_backups, dry_run = dry_run, verbose = verbose)
+  bq$prune(max_backups, dry_run = dry_run, verbose = verbose)
   res
 }
 

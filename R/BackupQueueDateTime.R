@@ -61,34 +61,34 @@ BackupQueueDateTime <- R6::R6Class(
 
 
     prune = function(
-      n_backups,  # minimum date/interval is the minimum date/interval to keep
+      max_backups,  # minimum date/interval is the minimum date/interval to keep
       dry_run  = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.verbose", dry_run)
     ){
-      assert(is_scalar(n_backups))
+      assert(is_scalar(max_backups))
 
-      if (!should_prune(self, n_backups, dry_run, verbose))
+      if (!should_prune(self, max_backups, dry_run, verbose))
         return(self)
 
 
-      if (is_integerish(n_backups) && is.finite(n_backups)){
+      if (is_integerish(max_backups) && is.finite(max_backups)){
         # prune based on number of backups
         backups   <- rev(sort(self$backups$path))
-        to_remove <- backups[(n_backups + 1):length(backups)]
+        to_remove <- backups[(max_backups + 1):length(backups)]
 
       } else {
         # prune based on dates and intervals
-        if (is_parsable_date(n_backups)){
-          limit     <- parse_date(n_backups)
+        if (is_parsable_date(max_backups)){
+          limit     <- parse_date(max_backups)
           to_remove <- self$backups$path[as.Date(as.character(self$backups$timestamp)) < limit]
 
-        } else if (is_parsable_datetime(n_backups)){
-          limit     <- parse_datetime(n_backups)
+        } else if (is_parsable_datetime(max_backups)){
+          limit     <- parse_datetime(max_backups)
           to_remove <- self$backups$path[self$backups$timestamp < limit]
 
-        } else if (is_parsable_interval(n_backups)){
+        } else if (is_parsable_interval(max_backups)){
           # interval like strings
-          interval <- parse_interval(n_backups)
+          interval <- parse_interval(max_backups)
 
           last_backup <- as.Date(as.character(self$last_backup))
 

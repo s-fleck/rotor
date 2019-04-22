@@ -18,7 +18,7 @@ msg_prune_backups <- function(file, to_remove, dry_run, verbose){
 
 should_prune <- function(
   obj,
-  n_backups,
+  max_backups,
   dry_run,
   verbose
 ){
@@ -34,10 +34,10 @@ should_prune <- function(
     return(FALSE)
   }
 
-  if (is.infinite(n_backups) || is.na(n_backups)){
+  if (is.infinite(max_backups) || is.na(max_backups)){
     do_msg(
       "[dry_run] "[dry_run],
-      "Nothing to prune; `n_backups` is set to '", format(n_backups), "'"
+      "Nothing to prune; `max_backups` is set to '", format(max_backups), "'"
     )
     return(FALSE)
   }

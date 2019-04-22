@@ -31,7 +31,7 @@ test_that("backup_time common usecases", {
   file.create(file.path(td, "test.2019-01-01.log"))
   file.create(file.path(td, "test.2018-12-31.log"))
   expect_identical(bq$n_backups, 4L)
-  backup_time(tf, n_backups = "1 year", now = as.POSIXct("2019-03-01 00:00:01"))
+  backup_time(tf, max_backups = "1 year", now = as.POSIXct("2019-03-01 00:00:01"))
   expect_identical(bq$n_backups, 4L)
   expect_equal(bq$last_backup, as.POSIXct("2019-03-01 00:00:01"))
   expect_identical(
@@ -82,6 +82,6 @@ test_that("backup_time works with timestamps", {
 
 
 
-  backup_time(tf, n_backups = 0)
+  backup_time(tf, max_backups = 0)
   file.remove(tf)
 })

@@ -62,13 +62,13 @@ test_that("backup_date examples from documentation", {
 
   #' When pruning/limiting backup queues, `"1 year"` means "keep at least most
   #' one year worth of backups". So if you call
-  #' `backup_date(myfile, n_backups = "1 year")` on `2019-03-01`, it will create
+  #' `backup_date(myfile, max_backups = "1 year")` on `2019-03-01`, it will create
   #' a backup and then remove all backups of `myfile` before `2019-01-01`.
   mockery::stub(backup_date, "Sys.Date", as.Date("2019-03-02"))
   file.create(file.path(td, "test.2019-01-01.log"))
   file.create(file.path(td, "test.2018-12-31.log"))
   expect_identical(bq$n_backups, 4L)
-  backup_date(tf, n_backups = "1 year")
+  backup_date(tf, max_backups = "1 year")
   expect_identical(bq$n_backups, 4L)
   expect_identical(bq$last_backup, as.Date("2019-03-02"))
   expect_identical(as.character(min(bq$backups$timestamp)), "2019-01-01")
@@ -304,13 +304,13 @@ test_that("dry_run does not modify the file systen", {
   expect_message(backup_date(tf, dry_run = TRUE), "dry_run")
   expect_snapshot_unchanged(snap)
 
-  expect_message(backup_date(tf, dry_run = TRUE, n_backups = 0), "dry_run")
-  expect_message(backup_date(tf, dry_run = TRUE, n_backups = 0), "removing")
-  expect_message(backup_date(tf, dry_run = TRUE, n_backups = 0), "2017-03")
+  expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "dry_run")
+  expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "removing")
+  expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "2017-03")
   expect_snapshot_unchanged(snap)
 
   expect_message(
-    backup_date(tf, dry_run = TRUE, n_backups = 0, compression = TRUE),
+    backup_date(tf, dry_run = TRUE, max_backups = 0, compression = TRUE),
     "zip"
   )
   expect_snapshot_unchanged(snap)

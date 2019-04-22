@@ -7,7 +7,7 @@
 #'   `5T`` (terabytes). Please note that those use the binary definitions,
 #'   so 1 kilobyte is 1024 bytes, 1 megabyte is 1024 kilobytes, etc.. .
 #' @param age
-#' @param n_backups
+#' @param max_backups
 #' @param compression
 #' @param postrotate
 #' @param postrotate_args
@@ -24,7 +24,7 @@ rotate_size <- function(
   file,
   size,
   age,
-  n_backups = Inf,
+  max_backups = Inf,
   compression = FALSE,
   prerotate = NULL,
   postrotate = NULL,
@@ -35,7 +35,7 @@ rotate_size <- function(
     file,
     size = size,
     age = age,
-    n_backups = n_backups,
+    max_backups = max_backups,
     compression = compression,
     prerotate = prerotate,
     postrotate = postrotate,
@@ -57,7 +57,7 @@ backup_size <- function(
   file,
   size,
   age,
-  n_backups = Inf,
+  max_backups = Inf,
   compression = FALSE,
   prerotate = NULL,
   prerotate_args = NULL,
@@ -82,7 +82,7 @@ backup_size <- function(
     }
     return(character())
   } else {
-    res <- backup(file, n_backups = n_backups, compression = compression)
+    res <- backup(file, max_backups = max_backups, compression = compression)
     if (verbose) message(sprintf("Rotated '%s' to '%s'", file, res))
   }
 
