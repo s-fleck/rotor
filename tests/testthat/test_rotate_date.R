@@ -1,4 +1,4 @@
-context("backup_date")
+context("rotate_date")
 
 
 dr <- tempdir()

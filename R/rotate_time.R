@@ -123,10 +123,11 @@ rotate_time <- function(
 backup_time <- function(
   file,
   age = NULL,
-  format = "%Y-%m-%d",
+  format = "%Y-%m-%d--%H-%M-%S",
   min_size = 1,
   n_backups = Inf,
   compression = FALSE,
+  now = Sys.time(),
   prerotate = identity,
   postrotate = identity,
   overwrite = FALSE,
@@ -136,7 +137,7 @@ backup_time <- function(
   stopifnot(
     is_scalar_character(file) && file.exists(file),
     is.null(age) || is_scalar(age),
-    is_valid_date_format(format),
+    is_valid_datetime_format(format),
     is_scalar_integerish(min_size),
     is.infinite(n_backups) || is_n0(n_backups) || is.character(n_backups) || is_Date(n_backups),
     is_scalar_logical(compression),
@@ -147,7 +148,7 @@ backup_time <- function(
     is_scalar_logical(verbose)
   )
 
-  bq <- BackupQueueDate$new(file)
+  bq <- BackupQueueDateTime$new(file, format = format)
 
   # Warn if indexed backups exist
   if (BackupQueue$new(file)$has_backups){
@@ -160,13 +161,10 @@ backup_time <- function(
     )}
   }
 
-  now <- Sys.Date()
-
   if (is_backup_time_necessary(bq, age, now)){
     prerotate(bq$file)
     bq$push_backup(
       now = now,
-      format = format,
       compression = compression,
       dry_run = dry_run,
       verbose = verbose
@@ -189,8 +187,8 @@ is_backup_time_necessary <- function(
   if (is.null(age) || !bq$has_backups)
     return(TRUE)
 
-  if (is_parsable_date(age))
-    is_backup_older_than_date(bq$last_backup, age)
+  if (is_parsable_datetime(age))
+    is_backup_older_than_datetime(bq$last_backup, age)
 
   if (is_parsable_interval(age))
     is_backup_older_than_interval(bq$last_backup, age, now)

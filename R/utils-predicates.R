@@ -73,16 +73,16 @@ is_parsable_date <- function(x){
 
 
 
-is_backup_older_than_date <- function(
+is_backup_older_than_datetime <- function(
   backup_date,
-  date
+  timestamp
 ){
-  if (is_POSIXct(backup_date))
-    backup_date <- as.Date(as.character(backup_date))
+  if (is_Date(backup_date))
+    backup_date <- as.POSIXct(as.character(backup_date))
 
-  assert(is_scalar_Date(backup_date))
-  assert(is_parsable_date(date))
-  last_backup < parse_date(date)
+  assert(is_scalar_POSIXct(backup_date))
+  assert(is_parsable_datetime(date))
+  backup_date < parse_datetime(date)
 }
 
 #' Title
@@ -104,7 +104,7 @@ is_backup_older_than_interval <- function(
     backup_date <- as.Date(as.character(backup_date))
 
   if (is_POSIXct(now))
-    backup_date <- as.Date(as.character(now))
+    now <- as.Date(as.character(now))
 
   assert(is_scalar_Date(backup_date))
   assert(is_scalar_Date(now))
