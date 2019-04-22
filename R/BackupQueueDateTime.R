@@ -5,7 +5,7 @@ BackupQueueDateTime <- R6::R6Class(
     initialize = function(
       file,
       backup_dir = dirname(file),
-      format = "%Y-%m-%dT%H-%M-%S"
+      format = "%Y-%m-%d--%H-%M-%S"
     ){
       self$file <- file
       self$backup_dir <- backup_dir

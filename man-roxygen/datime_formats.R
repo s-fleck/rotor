@@ -11,7 +11,8 @@
 #' For Dates, the recommended format is `"%Y-%m-%d"`. The `%m` and `%d` are
 #' optional, as are the dashes (`-`).
 #'
-#' For Datettimes, the recommended format is `""%Y%m%dT%H%M%S"`. `%M` and
+#' For Datettimes, the recommended format is `""%Y-%m-%d--%H-%M-%S"` (for
+#' readability) or `""%Y%m%dT%H%M%S"` (ISO compatible). `%M` and
 #' `%S` are optional, as is the `T`. You can also add dashes (`-`) between the
 #' date/time components if you like.
 #'

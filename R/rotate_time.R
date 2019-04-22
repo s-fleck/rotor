@@ -29,7 +29,7 @@
 #' @param file file to back up/rotate
 #' @param format a scalar `character` that can be a subset of of valid
 #'   `strftime()` formatting strings. The basic pattern is
-#'   `"%Y-%m-%dT%H-%M-%S"`. The sepparators `-` and `T` are optional.
+#'   `"%Y-%m-%d--%H-%M-%S"`. The sepparators `-` and `T` are optional.
 #'   * You can use an arbitrary number of dashes anywhere in the format, so
 #'     `"%Y-%m-%d--%H-%M-%S"` and `"%Y%m%d%H%M%S"` are both legal.
 #'   * All datetime components except `%Y` are optional. If you leave out part
@@ -75,7 +75,7 @@
 rotate_time <- function(
   file,
   age = NULL,
-  format = "%Y-%m-%dT%H-%M-%S",
+  format = "%Y-%m-%d--%H-%M-%S",
   min_size = 1,
   n_backups = Inf,
   compression = FALSE,
