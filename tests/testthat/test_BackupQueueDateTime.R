@@ -32,7 +32,7 @@ test_that("is_parsable_date works as expected", {
 
 test_that("parse_datetime works as expected", {
   d <- as.Date("2019-12-01")
-  expect_identical(parse_datetime(d), as.POSIXct(d))
+  expect_identical(parse_datetime(d), as.POSIXct(as.character(d)))
 
   expect_identical(parse_datetime("2018-12-01"), as.POSIXct("2018-12-01"))
   expect_identical(parse_datetime("20181201"), as.POSIXct("2018-12-01"))
@@ -44,7 +44,6 @@ test_that("parse_datetime works as expected", {
     parse_datetime(c("2018-12-02", "20181201", "2018")),
     as.POSIXct(c("2018-12-02", "2018-12-01", "2018-01-01"))
   )
-
 
   d1 <- as.POSIXct("2019-04-12 17:49:19")
   d2 <- as.POSIXct("2019-04-12 17:49:00")
@@ -74,7 +73,7 @@ test_that("parse_datetime works as expected", {
 
   expect_identical(
     parse_datetime(c("2019-04-12T17-49-19", "20190412T1749", "2019041217")),
-    as.POSIXct(as.character(c(d1, d2, d3)))  # as.POSIXct because c removes timezone
+    as.POSIXct(c(d1, d2, d3))
   )
 })
 
@@ -128,13 +127,17 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
   file.create(file.path(td, "test.2019-04-20--12.log"))
   file.create(file.path(td, "test.20190420T12.log"))
 
-  bq$prune(6)
+  bq$prune(7)
+
+  eres <- c(
+    "2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-04-20 12:00:00",
+    "2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-02-20 00:00:00",
+    "2019-01-01 00:00:50"
+  )
 
   expect_identical(
     as.character(bq$backups$date),
-    c("2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-04-20 12:00:00",
-      "2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-01-01 00:00:50"
-    )
+    eres
   )
 
   bq$backups$date
@@ -144,9 +147,7 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
 
   expect_identical(
     as.character(bq$backups$date),
-    c("2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-04-20 12:00:00",
-      "2019-04-20 12:00:00", "2019-04-20 12:00:00", "2019-01-01 00:00:50"
-    )
+    eres
   )
 
   bq$prune(0)
@@ -167,7 +168,6 @@ test_that("Prune BackupQueueDate based on date", {
   ))
   file.create(bus)
 
-  bq
   bq$prune(as.Date("2019-01-02"))
 
   expect_identical(
@@ -175,138 +175,135 @@ test_that("Prune BackupQueueDate based on date", {
     c(
       "test.2020-01-03.log",
       "test.2019-01-03.log",
-      "test.2019-01-02.log.tar.gz"
+      "test.2019-01-02--12-12-12.log.tar.gz"
     )
   )
   bq$prune(0)
   file.remove(tf)
 })
 
-#
-#
-#
-# test_that("Prune BackupQueueDate based on year interval", {
-#   tf <- file.path(td, "test.log")
-#   file.create(tf)
-#   bq <- BackupQueueDate$new(tf)
-#   bus <- paste0(tools::file_path_sans_ext(tf), c(
-#     ".2019-01-01.log.zip",
-#     ".2019-02-02.log.tar.gz",
-#     ".2019-03-03.log",
-#     ".2020-01-03.log",
-#     ".2021-01-03.log",
-#     ".2022-01-03.log"
-#   ))
-#   file.create(bus)
-#
-#   bq$prune("2 years")
-#   expect_identical(
-#     basename(bq$backups$path),
-#     c(
-#       "test.2022-01-03.log",
-#       "test.2021-01-03.log"
-#     )
-#   )
-#   bq$prune(0)
-#   file.remove(tf)
-# })
-#
-#
-#
-#
-# test_that("Prune BackupQueueDate based on month interval", {
-#   tf <- file.path(td, "test.log")
-#   file.create(tf)
-#   bq <- BackupQueueDate$new(tf)
-#   bus <- paste0(tools::file_path_sans_ext(tf), c(
-#     ".2019-01-01.log.zip",
-#     ".2019-02-02.log.tar.gz",
-#     ".2019-03-03.log",
-#     ".2019-04-03.log"
-#   ))
-#   file.create(bus)
-#
-#   bq$prune("2 months")
-#   expect_identical(
-#     basename(bq$backups$path),
-#     c(
-#       "test.2019-04-03.log",
-#       "test.2019-03-03.log"
-#     )
-#   )
-#   bq$prune(0)
-#   file.remove(tf)
-# })
-#
-#
-#
-#
-# test_that("Prune BackupQueueDate based on week interval", {
-#   tf <- file.path(td, "test.log")
-#   file.create(tf)
-#   bq <- BackupQueueDate$new(tf)
-#   bus <- paste0(tools::file_path_sans_ext(tf), c(
-#     ".2019-04-15.log",
-#     ".2019-04-08.log.tar.gz",
-#     ".2019-04-07.log.zip"
-#   ))
-#   file.create(bus)
-#
-#   bq$prune("2 weeks")
-#   expect_identical(
-#     basename(bq$backups$path),
-#     c(
-#       "test.2019-04-15.log",
-#       "test.2019-04-08.log.tar.gz"
-#     )
-#   )
-#   bq$prune(0)
-#   file.remove(tf)
-# })
-#
-#
-#
-#
-# test_that("Prune BackupQueueDate based on dayss interval", {
-#   tf <- file.path(td, "test.log")
-#   file.create(tf)
-#   bq <- BackupQueueDate$new(tf)
-#   bus <- paste0(tools::file_path_sans_ext(tf), c(
-#     ".2019-04-07.log.zip",
-#     ".2019-04-08.log.tar.gz",
-#     ".2019-04-09.log"
-#   ))
-#   file.create(bus)
-#
-#   bq$prune("2 days")
-#   expect_identical(
-#     basename(bq$backups$path),
-#     c(
-#       "test.2019-04-09.log",
-#       "test.2019-04-08.log.tar.gz"
-#     )
-#   )
-#   bq$prune(0)
-#   file.remove(tf)
-# })
-#
-#
-#
-# test_that("BackupQueueDate $last_date", {
-#   tf <- file.path(td, "test.log")
-#   file.create(tf)
-#   bq <- BackupQueueDate$new(tf)
-#   bq$backups
-#
-#   expect_identical(bq$n_backups, 0L)
-#   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
-#   file.create(bus)
-#   expect_identical(bq$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
-#
-#
-#   bq$last_backup
-#
-#
-#   bq$prune(0)
-#   file.remove(tf)
-# })
+
+
+
+test_that("Prune BackupQueueDate based on year interval", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bq <- BackupQueueDateTime$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(
+    ".2019-01-01--12-12-12.log.zip",
+    ".2019-02-02--12-12-12.log.tar.gz",
+    ".2019-03-03--12-12-12.log",
+    ".2020-01-03--12-12-12.log",
+    ".2021-01-03--12-12-12.log",
+    ".2022-01-03--12-12-12.log"
+  ))
+  file.create(bus)
+
+  bq$prune("2 years")
+  expect_identical(
+    basename(bq$backups$path),
+    c(
+      "test.2022-01-03--12-12-12.log",
+      "test.2021-01-03--12-12-12.log"
+    )
+  )
+  bq$prune(0)
+  file.remove(tf)
+})
+
+
+
+
+test_that("Prune BackupQueueDate based on month interval", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bq <- BackupQueueDateTime$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(
+    ".2019-01-01--00-00-00.log.zip",
+    ".2019-02-02--00-00-00.log.tar.gz",
+    ".2019-03-03--00-00-00.log",
+    ".2019-04-03--00-00-00.log"
+  ))
+  file.create(bus)
+
+  bq$prune("2 months")
+  expect_identical(
+    basename(bq$backups$path),
+    c(
+      "test.2019-04-03--00-00-00.log",
+      "test.2019-03-03--00-00-00.log"
+    )
+  )
+  bq$prune(0)
+  file.remove(tf)
+})
+
+
+
+
+test_that("Prune BackupQueueDate based on week interval", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bq <- BackupQueueDateTime$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(
+    ".2019-04-15--00-00-00.log",
+    ".2019-04-08--00-00-00.log.tar.gz",
+    ".2019-04-07--00-00-00.log.zip"
+  ))
+  file.create(bus)
+
+  bq$prune("2 weeks")
+  expect_identical(
+    basename(bq$backups$path),
+    c(
+      "test.2019-04-15--00-00-00.log",
+      "test.2019-04-08--00-00-00.log.tar.gz"
+    )
+  )
+  bq$prune(0)
+  file.remove(tf)
+})
+
+
+
+
+test_that("Prune BackupQueueDate based on dayss interval", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bq <- BackupQueueDateTime$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(
+    ".2019-04-07--00-00-00.log.zip",
+    ".2019-04-08--00-00-00.log.tar.gz",
+    ".2019-04-09--00-00-00.log"
+  ))
+  file.create(bus)
+
+  bq$prune("2 days")
+  expect_identical(
+    basename(bq$backups$path),
+    c(
+      "test.2019-04-09--00-00-00.log",
+      "test.2019-04-08--00-00-00.log.tar.gz"
+    )
+  )
+  bq$prune(0)
+  file.remove(tf)
+})
+
+
+
+
+test_that("BackupQueueDate $last_date", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bq <- BackupQueueDateTime$new(tf)
+
+  expect_identical(bq$n_backups, 0L)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01--00-00-00.log.zip", ".2019-01-02--00-00-00.log.tar.gz", ".2019-01-03--00-00-00.log"))
+  file.create(bus)
+  expect_identical(bq$backups$sfx, c("2019-01-03--00-00-00", "2019-01-02--00-00-00", "2019-01-01--00-00-00"))
+  expect_equal(bq$last_backup, as.POSIXct("2019-01-03--00-00-00"))
+
+  bq$prune(0)
+  file.remove(tf)
+})

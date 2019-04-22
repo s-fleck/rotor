@@ -66,5 +66,3 @@ readable_size <- function(
 ){
   sapply(as.numeric(x), utils:::format.object_size, "auto")
 }
-
-
