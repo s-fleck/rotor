@@ -29,11 +29,7 @@ BackupQueue <- R6::R6Class(
       to_keep   <- self$backups$path[seq_len(n_backups)]
       to_remove <- setdiff(self$backups$path, to_keep)
 
-      msg_prune_backups(self$file, to_remove, dry_run, verbose)
-
-      if (!dry_run){
-        assert(all(file.remove(to_remove)))
-      }
+      file_remove(to_remove, dry_run = dry_run, verbose = verbose)
 
       self
     },

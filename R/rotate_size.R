@@ -39,12 +39,14 @@ rotate_size <- function(
     compression = compression,
     prerotate = prerotate,
     postrotate = postrotate,
-    dry_run = dry_run,
-    verbose = verbose
+    dry_run = getOption("rotor.dry_run", FALSE),
+    verbose = getOption("rotor.dry_run", dry_run)
   )
 
-  unlink(file)
-  file.create(file)
+  file_remove(file, dry_run = dry_run, verbose = verbose)
+
+  if (create_file)
+    file_create(file, dry_run = dry_run, verbose = verbose)
 
   res
 }

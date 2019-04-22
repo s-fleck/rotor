@@ -82,7 +82,7 @@ test_that("drurun/verbose prune", {
 
   expect_identical(bq$n_backups, length(sfxs))
 
-  expect_message(bq$prune(0, verbose = TRUE), "prun")
+  expect_message(bq$prune(0, verbose = TRUE), "test.1")
   expect_message(bq$prune(0, verbose = TRUE), "Nothing")
   expect_identical(bq$n_backups, 0L)
 })

@@ -112,14 +112,8 @@ BackupQueueDateTime <- R6::R6Class(
        }
     }
 
-    msg_prune_backups(self$file, to_remove, dry_run, verbose)
-
-    if (dry_run){
-      self
-    } else {
-      assert(all(file.remove(to_remove)))
-      self
-    }
+    file_remove(to_remove, dry_run = dry_run, verbose = verbose)
+    self
   }),
 
   active = list(

@@ -45,24 +45,27 @@ copy_or_compress <- function(
       outname <- paste0(outname, ".zip")
 
     if (file.exists(outname)){
-      if (overwrite && !dry_run){
-        msg_file_remove(outname, dry_run, verbose)
-        file.remove(outname)
+      if (overwrite){
+        file_remove(outname, dry_run = dry_run, verbose = verbose)
       } else {
         stop(sprintf("Backup '%s' exists and `overwrite == FALSE`", outname))
       }
     }
 
-    msg_file_copy(file, outname, dry_run, verbose)
+
 
   # copy
-    if (isFALSE(compression) && !dry_run){
-      file.copy(file, outname, overwrite = overwrite)
+    if (isFALSE(compression)){
+      file_copy(file, outname, overwrite = overwrite, dry_run = dry_run, verbose = verbose)
       return(outname)
     }
 
   # zip
     if (identical(compression, "zip")){
+      msg_file_copy(
+        file, outname, dry_run = dry_run, verbose = verbose
+      )
+
       assert_namespace("zip")
       if (!dry_run) zip::zipr(outname, file, compression_level = compression_level)
 

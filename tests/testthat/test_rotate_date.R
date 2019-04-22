@@ -305,7 +305,7 @@ test_that("dry_run does not modify the file systen", {
   expect_snapshot_unchanged(snap)
 
   expect_message(backup_date(tf, dry_run = TRUE, n_backups = 0), "dry_run")
-  expect_message(backup_date(tf, dry_run = TRUE, n_backups = 0), "pruning")
+  expect_message(backup_date(tf, dry_run = TRUE, n_backups = 0), "removing")
   expect_message(backup_date(tf, dry_run = TRUE, n_backups = 0), "2017-03")
   expect_snapshot_unchanged(snap)
 
