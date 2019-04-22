@@ -12,21 +12,22 @@ BackupQueueIndex <- R6::R6Class(
 
       to_keep   <- self$backups$path[seq_len(n_backups)]
       to_remove <- setdiff(self$backups$path, to_keep)
-      msg_prune_backups(self$file, to_remove, dry_run, verbose)
 
-      if (dry_run){
-        return(self)
-      } else {
-        assert(all(file.remove(to_remove)))
-        self$pad_index()
-      }
+      file_remove(to_remove, dry_run = dry_run, verbose = verbose)
+      self$pad_index(dry_run = dry_run, verbose = verbose)
     },
 
 
     push_backup = function(
-      compression = FALSE
+      compression = FALSE,
+      overwrite = FALSE,
+      dry_run = getOption("rotor.dry_run", FALSE),
+      verbose = getOption("rotor.dry_run", dry_run)
     ){
-      self$increment_index()
+      self$increment_index(
+        dry_run = dry_run,
+        verbose = verbose
+      )
 
       # generate new filename
       name <- tools::file_path_sans_ext(self$file)
@@ -38,13 +39,27 @@ BackupQueueIndex <- R6::R6Class(
         name_new <- paste(name, sfx, ext, sep = ".")
       }
 
-      file.copy(self$file, name_new, overwrite = FALSE)
-      name_new <- compress_and_remove(name_new, compression = compression)
-      self$pad_index()
+      copy_or_compress(
+        self$file,
+        outname = name_new,
+        compression = compression,
+        add_ext = TRUE,
+        overwrite = overwrite,
+        dry_run = dry_run,
+        verbose = verbose
+      )
+
+      self$pad_index(
+        dry_run = dry_run,
+        verbose = verbose
+      )
     },
 
 
-    pad_index = function(){
+    pad_index = function(
+      dry_run = getOption("rotor.dry_run", FALSE),
+      verbose = getOption("rotor.dry_run", dry_run)
+    ){
       if (!length(self$backups$path))
         return(self)
 
@@ -55,12 +70,22 @@ BackupQueueIndex <- R6::R6Class(
 
       backups$path_new <- gsub("\\.$", "", backups$path_new)
 
-      file.rename(backups$path, backups$path_new)
+      file_rename(
+        backups$path,
+        backups$path_new,
+        dry_run = dry_run,
+        verbose = verbose
+      )
+
       self
     },
 
 
-    increment_index = function(n = 1){
+    increment_index = function(
+      n = 1,
+      dry_run = getOption("rotor.dry_run", FALSE),
+      verbose = getOption("rotor.dry_run", dry_run)
+    ){
       assert(self$n_backups > 0)
       assert(is_scalar_integerish(n))
 
@@ -74,7 +99,13 @@ BackupQueueIndex <- R6::R6Class(
         sep = "."
       )
       backups$path_new <- gsub("\\.$", "", backups$path_new)
-      file.rename(rev(backups$path), rev(backups$path_new))
+
+      file_rename(
+        rev(backups$path),
+        rev(backups$path_new),
+        dry_run = dry_run,
+        verbose = verbose
+      )
 
       self
     }

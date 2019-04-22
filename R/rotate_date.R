@@ -91,14 +91,10 @@ rotate_date <- function(
     verbose = verbose
   )
 
-  if (!dry_run){
-    msg_file_remove(file, dry_run, verbose)
-    unlink(file)
-  }
+  file_remove(file, dry_run = dry_run, verbose = verbose)
 
-  if (create_file && !dry_run){
-    msg_file_create(file, dry_run, verbose)
-    file.create(file)
+  if (create_file){
+    file_create(file, dry_run = dry_run, verbose = verbose)
   }
 
   res

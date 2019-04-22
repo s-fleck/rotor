@@ -58,11 +58,9 @@ test_that("BackupQueueIndex only shows indexed backups", {
   ))
 
   bq <- BackupQueueIndex$new(tf)
+  expect_true(all(bq$backups$sfx == as.integer(bq$backups$sfx)))
 
-  bq$backups
-
-
-  bq$prune(0)
+  BackupQueue$new(tf)$prune(0)
   file.remove(tf)
 })
 
@@ -165,5 +163,33 @@ test_that("BackupQueue$push_backup() works as expected", {
   expect_setequal(tools::file_ext(bt$backups$path[2:11]), "log")
 
   expect_length(bt$prune(0)$backups$path, 0)
+  file.remove(tf)
+})
+
+
+
+
+test_that("BackupQueueIndex dry run doesnt modify file system", {
+  tf <- file.path(td, "test.log")
+  file.create(tf)
+  bt <- BackupQueueIndex$new(tf)
+  bus <- paste0(tools::file_path_sans_ext(tf), c(".1.log.zip", ".2.log.tar.gz", ".3.log"))
+  file.create(bus)
+
+  snap <- utils::fileSnapshot(td, md5sum = TRUE)
+
+  expect_message(bt$increment_index(92, dry_run = TRUE), "93")
+  expect_snapshot_unchanged(snap)
+
+  expect_silent(bt$pad_index(dry_run = TRUE))
+  expect_snapshot_unchanged(snap)
+
+  expect_message(bt$push_backup(dry_run = TRUE), "test.log -> test.1.log")
+  expect_snapshot_unchanged(snap)
+
+  expect_message(bt$prune(0, dry_run = TRUE), "test.1.log.zip")
+  expect_snapshot_unchanged(snap)
+
+  bt$prune(0)
   file.remove(tf)
 })
