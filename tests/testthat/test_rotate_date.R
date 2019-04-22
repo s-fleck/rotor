@@ -297,9 +297,6 @@ test_that("dry_run does not modify the file systen", {
     file.path(td, "test.2017-04-01.log")
   ))
 
-  expect_snapshot_unchanged <- function(snap){
-    expect_true(!any(utils::changedFiles(snap)$changes))
-  }
 
   snap <- utils::fileSnapshot(td, md5sum = TRUE)
   mockery::stub(backup_date, "Sys.Date", as.Date("2017-05-02"))
