@@ -1,9 +1,20 @@
 context("AppenderFileRotating")
 
+dr <- tempdir()
+td <- file.path(dr, "rotor")
+dir.create(td, recursive = TRUE)
+
+teardown({
+  unlink(td, recursive = TRUE)
+  if (!length(list.files(dr))) unlink(dr, recursive = TRUE)
+})
+
+
 
 test_that("AppenderFileRotating works as expected", {
+  tf <- file.path(td, "test.log")
 
-  tf <- tempfile()
+  AppenderFileRotatingDate$new(file = tf)
 
   lg <-
     lgr::get_logger("test")$
@@ -13,7 +24,9 @@ test_that("AppenderFileRotating works as expected", {
   lg$fatal("test")
 
   lg$appenders[[1]]$rotate()
+  lg$appenders[[1]]$backups
 
-
+  lg$appenders[[1]]$prune(0)
+  lg$appenders[[1]]$backups
 
 })

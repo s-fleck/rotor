@@ -10,10 +10,10 @@ AppenderFileRotatingDate <- R6::R6Class(
       age = NULL,
       timestamp_fmt = "%Y-%m-%d",
       min_size = 1,
-      n_backups = inf,
+      max_backups = Inf,
       compression = FALSE,
-      prerotate = prerotate,
-      postrotate = postrotate,
+      prerotate = identity,
+      postrotate = identity,
       overwrite = FALSE,
       create_file = TRUE
     ){
@@ -25,31 +25,40 @@ AppenderFileRotatingDate <- R6::R6Class(
       self$set_timestamp_fmt(timestamp_fmt)
       self$set_age(age)
       self$set_min_size(min_size)
-      self$set_n_backups(n_backups)
+      self$set_max_backups(max_backups)
+      self$set_compression(compression)
       self$set_prerotate(prerotate)
       self$set_postrotate(postrotate)
       self$set_overwrite(overwrite)
       self$set_create_file(create_file)
+
+      self
     },
 
     rotate = function(
-      age,
-      format
+      dry_run     = getOption("rotor.dry_run", FALSE),
+      verbose     = getOption("rotor.dry_run", dry_run)
     ){
       rotate_date(
         self$file,
-        age = age,
-        format = self$timestamp_fmt,
-        min_size = 1,
-        n_backups = inf,
-        compression = FALSE,
-        prerotate = prerotate,
-        postrotate = postrotate,
-        overwrite = FALSE,
-        create_file = TRUE,
-        dry_run = getOption("rotor.dry_run", FALSE),
-        verbose = getOption("rotor.dry_run", dry_run)
+        age = self$age,
+        format      = self$timestamp_fmt,
+        min_size    = self$min_size,
+        max_backups = self$max_backups,
+        compression = self$compression,
+        prerotate   = self$prerotate,
+        postrotate  = self$postrotate,
+        overwrite   = self$overwrite,
+        create_file = self$create_file,
+        dry_run     = dry_run,
+        verbose     = verbose
       )
+    },
+
+
+    prune = function(max_backups = self$max_backups){
+      BackupQueueDate$new(self$file)$prune(max_backups)
+      self
     },
 
     set_age = function(
@@ -74,11 +83,11 @@ AppenderFileRotatingDate <- R6::R6Class(
       self
     },
 
-    set_n_backups = function(
+    set_max_backups = function(
       x
     ){
-      assert(is_n0(x))
-      private[[".timestamp_fmt"]] <- x
+      assert(is.infinite(x) || is_n0(x))
+      private[[".max_backups"]] <- x
       self
     },
 
@@ -124,18 +133,31 @@ AppenderFileRotatingDate <- R6::R6Class(
   ),
 
   active = list(
-    timestamp_fmt = function() self[[".timestamp_fmt"]]
+    age = function() get(".age", private),
+    timestamp_fmt = function() get(".timestamp_fmt", private),
+    min_size = function() get(".min_size", private),
+    max_backups = function() get(".max_backups", private),
+    compression = function() get(".compression", private),
+    prerotate = function() get(".prerotate", private),
+    postrotate = function() get(".postrotate", private),
+    overwrite = function() get(".overwrite", private),
+    create_file = function() get(".create_file", private),
+
+    backups = function(){
+      BackupQueueDate$new(self$file)$backups
+    }
   ),
 
   private = list(
     .age = NULL,
     .timestamp_fmt = NULL,
     .min_size = NULL,
-    .n_backups = NULL,
+    .max_backups = NULL,
     .compression = NULL,
     .prerotate = NULL,
     .postrotate = NULL,
-    .overwrite = NULL
+    .overwrite = NULL,
+    .create_file = NULL
   )
 )
 
