@@ -171,14 +171,14 @@ parse_interval <- function(x){
 
 
 standardize_datetime_stamp <- function(x){
-  gsub("T|-", "", as.character(x))
+  gsub("T|-|_", "", as.character(x))
 }
 
 
 
 
 standardize_date_stamp <- function(x){
-  gsub("-", "", as.character(x))
+  gsub("-|_", "", as.character(x))
 }
 
 

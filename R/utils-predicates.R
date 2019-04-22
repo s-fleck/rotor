@@ -1,6 +1,3 @@
-
-
-
 is_parsable_interval <- function(x){
   tryCatch(
     {parse_interval(x); TRUE},
@@ -39,9 +36,9 @@ is_valid_datetime_format <- function(
   if (!is_scalar_character(x))
     return(FALSE)
 
-  x <- gsub("(T|-)", "", x)
 
-  x %in% c(
+
+  standardize_datetime_stamp(x) %in% c(
     "%Y%m%d%H%M%S",
     "%Y%m%d%H%M",
     "%Y%m%d%H",
