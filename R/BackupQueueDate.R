@@ -12,6 +12,12 @@ BackupQueueDate <- R6::R6Class(
       self$fmt <- format
       self
     }
+  ),
+
+  active = list(
+    last_backup = function(){
+      as.Date(as.character(max(self$backups$date)))
+    }
   )
 )
 

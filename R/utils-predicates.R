@@ -77,6 +77,9 @@ is_backup_older_than_date <- function(
   backup_date,
   date
 ){
+  if (is_POSIXct(backup_date))
+    backup_date <- as.Date(as.character(backup_date))
+
   assert(is_scalar_Date(backup_date))
   assert(is_parsable_date(date))
   last_backup < parse_date(date)
@@ -97,6 +100,12 @@ is_backup_older_than_interval <- function(
   interval,
   now
 ){
+  if (is_POSIXct(backup_date))
+    backup_date <- as.Date(as.character(backup_date))
+
+  if (is_POSIXct(now))
+    backup_date <- as.Date(as.character(now))
+
   assert(is_scalar_Date(backup_date))
   assert(is_scalar_Date(now))
   assert(is_parsable_interval(interval))

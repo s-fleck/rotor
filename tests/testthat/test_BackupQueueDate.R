@@ -225,7 +225,7 @@ test_that("BackupQueueDate $last_date", {
   file.create(bus)
   expect_identical(bq$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
 
-  expect_equal(bq$last_backup, as.POSIXct("2019-01-03"))
+  expect_equal(bq$last_backup, as.Date("2019-01-03"))
 
   bq$prune(0)
   file.remove(tf)

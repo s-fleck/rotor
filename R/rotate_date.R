@@ -77,7 +77,7 @@ rotate_date <- function(
 ){
   assert(is_scalar_logical(create_file))
 
-  res <- backup_time(
+  res <- backup_date(
     file = file,
     age = age,
     format = format,
@@ -136,7 +136,7 @@ backup_date <- function(
     is_scalar_logical(verbose)
   )
 
-  bq <- BackupQueueDate$new(file)
+  bq <- BackupQueueDate$new(file, format = format)
 
   # Warn if indexed backups exist
   if (BackupQueue$new(file)$has_backups){
@@ -155,7 +155,6 @@ backup_date <- function(
     prerotate(bq$file)
     bq$push_backup(
       now = now,
-      format = format,
       compression = compression,
       dry_run = dry_run,
       verbose = verbose
