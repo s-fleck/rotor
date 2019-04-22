@@ -71,7 +71,7 @@ test_that("backup_date examples from documentation", {
   backup_date(tf, n_backups = "1 year")
   expect_identical(bq$n_backups, 4L)
   expect_identical(bq$last_backup, as.Date("2019-03-02"))
-  expect_identical(as.character(min(bq$backups$date)), "2019-01-01")
+  expect_identical(as.character(min(bq$backups$timestamp)), "2019-01-01")
 
   BackupQueue$new(tf)$prune(0)
   file.remove(tf)

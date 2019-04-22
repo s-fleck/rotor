@@ -80,11 +80,11 @@ BackupQueueDateTime <- R6::R6Class(
         # prune based on dates and intervals
         if (is_parsable_date(n_backups)){
           limit     <- parse_date(n_backups)
-          to_remove <- self$backups$path[as.Date(as.character(self$backups$date)) < limit]
+          to_remove <- self$backups$path[as.Date(as.character(self$backups$timestamp)) < limit]
 
         } else if (is_parsable_datetime(n_backups)){
           limit     <- parse_datetime(n_backups)
-          to_remove <- self$backups$path[self$backups$date < limit]
+          to_remove <- self$backups$path[self$backups$timestamp < limit]
 
         } else if (is_parsable_interval(n_backups)){
           # interval like strings
@@ -108,7 +108,7 @@ BackupQueueDateTime <- R6::R6Class(
               limit <- as.Date(last_backup) - interval$value + 1L
           }
 
-          to_remove <- self$backups$path[as.Date(as.character(self$backups$date)) < limit]
+          to_remove <- self$backups$path[as.Date(as.character(self$backups$timestamp)) < limit]
        }
     }
 
@@ -125,7 +125,7 @@ BackupQueueDateTime <- R6::R6Class(
   active = list(
 
     last_backup = function(){
-      max(self$backups$date)
+      max(self$backups$timestamp)
     },
 
     backups = function(){
@@ -138,8 +138,8 @@ BackupQueueDateTime <- R6::R6Class(
       sel <- vapply(res$sfx, is_parsable_datetime, logical(1))
       res <- res[sel, ]
 
-      res$date <- parse_datetime(res$sfx)
-      res[order(res$date, decreasing = TRUE), ]
+      res$timestamp <- parse_datetime(res$sfx)
+      res[order(res$timestamp, decreasing = TRUE), ]
     }
   )
 )

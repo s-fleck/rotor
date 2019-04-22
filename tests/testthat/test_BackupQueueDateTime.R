@@ -89,7 +89,7 @@ test_that("BackupQueueDate can find and prune backup trails", {
   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01T22-22-22.log.zip", ".20190102---1212.log.tar.gz", ".20190103174919.log", ".12.log"))
   file.create(bus)
   expect_identical(
-    bq$backups$date,
+    bq$backups$timestamp,
     as.POSIXct(c("2019-01-03 17:49:19", "2019-01-02 12:12:00", "2019-01-01 22:22:22"))
   )
 
@@ -136,17 +136,17 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
   )
 
   expect_identical(
-    as.character(bq$backups$date),
+    as.character(bq$backups$timestamp),
     eres
   )
 
-  bq$backups$date
+  bq$backups$timestamp
   noback <- file.path(dirname(tf), ".2019-a2-20.log")
   file.create(noback)
   on.exit(file.remove(noback))
 
   expect_identical(
-    as.character(bq$backups$date),
+    as.character(bq$backups$timestamp),
     eres
   )
 
