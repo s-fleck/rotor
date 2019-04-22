@@ -75,14 +75,14 @@ is_parsable_date <- function(x){
 
 is_backup_older_than_datetime <- function(
   backup_date,
-  timestamp
+  datetime
 ){
   if (is_Date(backup_date))
     backup_date <- as.POSIXct(as.character(backup_date))
 
   assert(is_scalar_POSIXct(backup_date))
-  assert(is_parsable_datetime(date))
-  backup_date < parse_datetime(date)
+  assert(is_parsable_datetime(datetime))
+  backup_date < parse_datetime(datetime)
 }
 
 #' Title
