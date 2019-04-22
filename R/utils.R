@@ -66,3 +66,10 @@ readable_size <- function(
 ){
   sapply(as.numeric(x), utils:::format.object_size, "auto")
 }
+
+
+
+
+expect_snapshot_unchanged <- function(snap){
+  expect_true(!any(utils::changedFiles(snap)$changes))
+}
