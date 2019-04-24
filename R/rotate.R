@@ -20,7 +20,7 @@
 #' @export
 #'
 #' @examples
-rotate_size <- function(
+rotate <- function(
   file,
   size,
   age,
@@ -31,7 +31,7 @@ rotate_size <- function(
   dry_run = FALSE,
   verbose = FALSE
 ){
-  backup_size(
+  backup(
     file,
     size = size,
     age = age,
@@ -53,7 +53,7 @@ rotate_size <- function(
 
 
 
-backup_size <- function(
+backup <- function(
   file,
   size,
   age,
