@@ -1,71 +1,5 @@
-#' Rotate or Backup Files with Timestamps
-#'
-#'
-#' @section Intervals:
-#'
-#' In **rotor**, an interval is a character string in the form
-#' `"<number> <interval>"`. The following intervals are possible:
-#'  `"day(s)"`, `"week(s)"`, `"month(s)"`, `"quarter(s)"`, `"year(s)"`.
-#' The plural `"s"` is optional (so `"2 weeks"` and `"2 week"` are equivalent).
-#' Please be aware that weeks are
-#' [ISOweeks][https://en.wikipedia.org/wiki/ISO_week_date]
-#' and start on Monday (not Sunday as in some countries).
-#'
-#' Interval strings can be used as arguments when backing up or rotating files,
-#' or for pruning backup queues (i.e. limiting the number of backups of a
-#' single) file.
-#'
-#' When rotating/backing up `"1 months"` means "make a new backup if the last
-#' backup is from the preceeding month". E.g if the last backup of `myfile`
-#' is from `2019-02-01` then `backup_time(myfile, age = "1 month")` will only
-#' create a backup if the current date is at least `2019-03-01`.
-#'
-#' When pruning/limiting backup queues, `"1 year"` means "keep at least most
-#' one year worth of backups". So if you call
-#' `backup_time(myfile, max_backups = "1 year")` on `2019-03-01`, it will create
-#' a backup and then remove all backups of `myfile` before `2019-01-01`.
-#'
-#'
-#' @param file file to back up/rotate
-#' @param age
-#'   - a `character` scalar representing an Interval in the form
-#'     `"<number> <interval>"` (see section Intervals).
-#'     Backup/rotate if the last backup is older than
-#'     that (e.g. `"2 months"`). See examples
-#'   - a `Date` or a `character` scalar [representing a Date][parse_date].
-#'     Backup/rotate if the last backup was before that date
-#' @param max_backups understands scalars of different types
-#'   - an `integer` scalar: Maximum number of backups to keep
-#'   - a `Date` scalar: Remove all backups before this date
-#'   - a `character` scalar representing a Date in ISO format
-#'     (e.g. `"2019-12-31"`)
-#'   - a `character` scalar representing an Interval in the form
-#'     `"<number> <interval>"`
-#' @param compression
-#'   - `FALSE` for uncompressed backups,
-#'   - `TRUE` for zip compression; uses [zipr::zip()] if available,
-#'   - a scalar `integer` between `1` and `9` to specify a compression
-#'     level (requires [zip::zipr()], see its documentation for details)
-#'   - `"base::zip()"` or `"zip::zipr"` to force a specific zip command
-#' @param prerotate,postrotate a `function` with a single argument (a file path
-#'   as `character` scalar). `preorate()` and `postrotate()` are
-#'   called before/after the backup is rotated.
-#' @param create_file `logical` scalar. If `TRUE` create an empty file in place
-#'   of `file`.
-#' @param dry_run `logical` scalar. If `TRUE` no changes are applied to the
-#'   file system (no files are created or deleted)
-#' @param verbose `logical` scalar. If `TRUE` additional informative `messages`
-#'   are printed
-#'
-#' @return
-#'  If a creating a backup is triggered and `postrotate` is `NULL`, the path to
-#'  the newly created file is  returned as a `character` scalar. If `postrotate`
-#'  is a function, whatever `postrotate()` returns is returned.
-#'
-#'  If no backup is created, an empty `character()` vector is returned.
+#' @rdname rotate
 #' @export
-#'
-#' @examples
 rotate_date <- function(
   file,
   age = NULL,
@@ -110,7 +44,7 @@ rotate_date <- function(
 
 
 
-#' @rdname rotate_time
+#' @rdname rotate
 #' @export
 backup_date <- function(
   file,

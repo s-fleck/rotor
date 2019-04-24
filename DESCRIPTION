@@ -19,6 +19,7 @@ Imports:
 Suggests: 
     testthat,
     crayon,
+    zip,
     mockery
 Encoding: UTF-8
 LazyData: true

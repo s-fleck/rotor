@@ -1,4 +1,4 @@
 library(testthat)
-library(rtdr)
+library(rotor)
 
-test_check("rtdr")
+test_check("rotor")
