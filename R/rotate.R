@@ -83,6 +83,7 @@ rotate <- function(
   compression = FALSE,
   prerotate = NULL,
   postrotate = NULL,
+  create_file = FALSE,
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
