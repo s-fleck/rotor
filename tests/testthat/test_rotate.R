@@ -1,5 +1,45 @@
 context("rotate_size")
 
+dr <- tempdir()
+td <- file.path(dr, "rotor")
+dir.create(td, recursive = TRUE)
+
+teardown({
+  unlink(td, recursive = TRUE)
+  if (!length(list.files(dr))) unlink(dr, recursive = TRUE)
+})
+
+
+
+
+test_that("backup/rotate happy path", {
+  tf <- file.path(td, "test.log")
+  saveRDS(iris, tf)
+  tf_size <- file.size(tf)
+  bq <- BackupQueue$new(tf)
+
+  expect_message(backup(tf, dry_run = TRUE), "dry_run")
+  expect_identical(bq$n_backups, 0L)
+
+  backup(tf)
+  expect_identical(bq$n_backups, 1L)
+
+  backup(tf, compression = TRUE)
+  expect_identical(bq$n_backups, 2L)
+  expect_identical(tools::file_ext(bq$backups$path[[1]]), "zip")
+
+  expect_message(rotate(tf, dry_run = TRUE, compression = TRUE), "dry_run")
+  expect_identical(bq$n_backups, 2L)
+
+  rotate(tf, compression = FALSE)
+  expect_identical(bq$n_backups, 3L)
+  expect_equal(file.size(tf), 0)
+  expect_equal(file.size(bq$backups$path[[1]]), tf_size)
+  expect_equal(bq$backups$sfx, as.character(1:3))
+
+  rotate(tf)
+})
+
 
 
 

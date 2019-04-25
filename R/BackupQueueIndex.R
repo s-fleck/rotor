@@ -3,7 +3,6 @@ BackupQueueIndex <- R6::R6Class(
   inherit = BackupQueue,
   public = list(
     prune = function(
-      max_backups,
       dry_run  = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.verbose", dry_run)
     ){
@@ -19,7 +18,6 @@ BackupQueueIndex <- R6::R6Class(
 
 
     push_backup = function(
-      compression = FALSE,
       overwrite = FALSE,
       dry_run = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.dry_run", dry_run)
@@ -42,7 +40,7 @@ BackupQueueIndex <- R6::R6Class(
       copy_or_compress(
         self$file,
         outname = name_new,
-        compression = compression,
+        compression = self$compression,
         add_ext = TRUE,
         overwrite = overwrite,
         dry_run = dry_run,
@@ -60,7 +58,7 @@ BackupQueueIndex <- R6::R6Class(
       dry_run = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.dry_run", dry_run)
     ){
-      if (!length(self$backups$path))
+      if (nrow(self$backups) <= 0)
         return(self)
 
       backups <- self$backups
@@ -86,7 +84,9 @@ BackupQueueIndex <- R6::R6Class(
       dry_run = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.dry_run", dry_run)
     ){
-      assert(self$n_backups > 0)
+      if (self$n_backups <= 0){
+        return(self)
+      }
       assert(is_scalar_integerish(n))
 
       backups <- self$backups

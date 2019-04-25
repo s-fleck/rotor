@@ -78,19 +78,18 @@
 #' @examples
 rotate <- function(
   file,
-  size,
+  size = 0,
   max_backups = Inf,
   compression = FALSE,
   prerotate = NULL,
   postrotate = NULL,
-  create_file = FALSE,
+  create_file = TRUE,
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
   backup(
     file,
     size = size,
-    age = age,
     max_backups = max_backups,
     compression = compression,
     prerotate = prerotate,
@@ -104,7 +103,7 @@ rotate <- function(
   if (create_file)
     file_create(file, dry_run = dry_run, verbose = verbose)
 
-  res
+  file
 }
 
 
@@ -112,7 +111,7 @@ rotate <- function(
 
 backup <- function(
   file,
-  size,
+  size = 0,
   max_backups = Inf,
   compression = FALSE,
   prerotate = NULL,
@@ -136,8 +135,18 @@ backup <- function(
     }
     return(character())
   } else {
-    res <- backup(file, max_backups = max_backups, compression = compression)
-    if (verbose) message(sprintf("Rotated '%s' to '%s'", file, res))
+    bq <- BackupQueueIndex$new(
+      file,
+      max_backups = max_backups,
+      compression = compression,
+      prerotate = prerotate,
+      postrotate = postrotate
+    )
+
+    res <- bq$push_backup(
+      dry_run = dry_run,
+      verbose = verbose
+    )
   }
 
   res

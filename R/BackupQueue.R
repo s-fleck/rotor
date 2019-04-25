@@ -3,14 +3,29 @@ BackupQueue <- R6::R6Class(
   public = list(
     initialize = function(
       file,
-      backup_dir = dirname(file)
+      backup_dir = dirname(file),
+      max_backups = Inf,
+      compression = FALSE,
+      prerotate = identity,
+      postrotate = identity
     ){
       self$file <- file
       self$backup_dir <- backup_dir
+      self$compression <- compression
+      self$prerotate   <- prerotate
+      self$postrotate  <- postrotate
+      self$max_backups <- max_backups
+
+
       self
     },
+
     file = NULL,
     backup_dir = NULL,
+    max_backups = NULL,
+    compression = NULL,
+    prerotate = NULL,
+    postrotate = NULL,
 
 
     prune = function(
