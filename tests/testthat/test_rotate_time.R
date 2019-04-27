@@ -56,23 +56,17 @@ test_that("backup_time works with timestamps", {
   bq <- BackupQueueDateTime$new(tf)
   expect_identical(bq$n_backups, 1L)
 
-  expect_identical(
-    backup_time(tf, age = as.POSIXct("2019-02-01 11:59:59")),
-    character()
-  )
+  backup_time(tf, age = as.POSIXct("2019-02-01 11:59:59"))
   expect_identical(bq$n_backups, 1L)
 
-  expect_identical(
-    backup_time(tf, age = as.POSIXct("2019-02-01 12:00:00")),
-    character()
-  )
+  backup_time(tf, age = as.POSIXct("2019-02-01 12:00:00"))
   expect_identical(bq$n_backups, 1L)
 
   now <- as.POSIXct("2020-01-01 11:59:59")
 
   tres <- backup_time(tf, age = as.POSIXct("2019-02-01 12:00:01"), now = now)
   expect_match(
-    tres,
+    newest_backup(tres),
     "2020-01-01"
   )
   expect_identical(bq$n_backups, 2L)

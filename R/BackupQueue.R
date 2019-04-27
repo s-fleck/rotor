@@ -60,7 +60,7 @@ BackupQueue <- R6::R6Class(
 
 
       if (nrow(dd) == 1){
-        dd[, "size"] <- readable_size(dd[, "size"])
+        dd[, "size"] <- fmt_bytes(dd[, "size"])
         dd <- rbind(
           dd,
           c("[no backups]", "")
@@ -75,7 +75,7 @@ BackupQueue <- R6::R6Class(
           dd,
           c(paste(nrow(dd), "files total"), sum(as.integer(dd[, "size"])))
         )
-        dd[, "size"] <- pad_left(readable_size(dd[, "size"]))
+        dd[, "size"] <- pad_left(fmt_bytes(dd[, "size"]))
         dd[, "file"] <- pad_right(dd[, "file"])
         assert(nrow(dd) >= 3)
         sel <- 2:(nrow(dd) - 1)

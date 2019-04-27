@@ -228,8 +228,8 @@ test_that("rotate_date works as expected", {
   checksum <- tools::md5sum(tf)
 
   # ensure backup_date believes it is 2019-01-01
-  backup <- rotate_date(tf)
-  expect_identical(unname(checksum), unname(tools::md5sum(backup)))
+  rotate_date(tf)
+  expect_identical(unname(checksum), unname(tools::md5sum(newest_backup(tf))))
   expect_equal(file.size(tf), 0)
 
   BackupQueueDate$new(tf)$prune(0)
