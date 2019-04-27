@@ -3,7 +3,8 @@ BackupQueueIndex <- R6::R6Class(
   inherit = BackupQueue,
   public = list(
     prune = function(
-      dry_run  = getOption("rotor.dry_run", FALSE),
+      max_backups,
+      dry_run = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.verbose", dry_run)
     ){
       if (!should_prune(self, max_backups, dry_run, verbose))
@@ -18,7 +19,9 @@ BackupQueueIndex <- R6::R6Class(
 
 
     push_backup = function(
+      compression = FALSE,
       overwrite = FALSE,
+      now = Sys.time(),
       dry_run = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.dry_run", dry_run)
     ){
@@ -40,7 +43,7 @@ BackupQueueIndex <- R6::R6Class(
       copy_or_compress(
         self$file,
         outname = name_new,
-        compression = self$compression,
+        compression = compression,
         add_ext = TRUE,
         overwrite = overwrite,
         dry_run = dry_run,

@@ -60,6 +60,8 @@ replace_date_stamp <- function(
 readable_size <- function(
   x
 ){
+  x <- as.numeric(x)
+
   readablifiy <- function(.x){
     for (unit in c("B", "kB", "MB", "GB", "TB")){
       if (max(abs(.x)) < 1024 || unit == "TB")

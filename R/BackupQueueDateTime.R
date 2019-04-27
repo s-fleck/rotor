@@ -13,8 +13,6 @@ BackupQueueDateTime <- R6::R6Class(
       self$backup_dir <- backup_dir
       self$fmt <- format
       self$compression <- compression
-      self$prerotate   <- prerotate
-      self$postrotate  <- postrotate
       self$max_backups <- max_backups
 
       self

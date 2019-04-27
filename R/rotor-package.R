@@ -30,7 +30,6 @@ NULL
     style_subtle  <- style_fatal
     style_accent  <- style_fatal
     col_nchar     <- function(...) nchar(...)
-
   }
 
   assign("style_fatal", style_fatal, envir = parent.env(environment()))

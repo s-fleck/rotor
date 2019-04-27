@@ -101,7 +101,7 @@ backup_time <- function(
   }
 
   if (is_backup_time_necessary(bq, age, now)){
-    prerotate(bq$file)
+    prerotate(file)
     bq$push_backup(
       now = now,
       compression = compression,

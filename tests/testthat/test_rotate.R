@@ -1,4 +1,4 @@
-context("rotate_size")
+context("rotate")
 
 dr <- tempdir()
 td <- file.path(dr, "rotor")

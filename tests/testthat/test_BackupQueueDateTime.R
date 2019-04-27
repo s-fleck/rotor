@@ -80,7 +80,7 @@ test_that("parse_datetime works as expected", {
 
 
 
-test_that("BackupQueueDate can find and prune backup trails", {
+test_that("BackupQueueDateTime can find and prune backup trails", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bq <- BackupQueueDateTime$new(tf)
