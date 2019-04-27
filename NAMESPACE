@@ -2,6 +2,7 @@
 
 export(backup_date)
 export(backup_time)
+export(newest_backup)
 export(rotate)
 export(rotate_date)
 export(rotate_time)

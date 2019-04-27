@@ -39,10 +39,6 @@
 #' @param verbose `logical` scalar. If `TRUE` additional informative `messages`
 #'   are printed
 #'
-#' @param prerotate,postrotate a `function` with a single argument (a file path
-#'   as `character` scalar). `preorate()` and `postrotate()` are
-#'   called before/after the backup is rotated.
-#'
 #' @return `file` as a `character` scalar (like the input argument)
 #'
 #' @section Side Effects:
@@ -128,8 +124,6 @@ backup <- function(
   size <- parse_size(size)
 
   if (file.size(file) > size){
-    prerotate(file)
-
     bq <- BackupQueueIndex$new(
       file,
       max_backups = max_backups
@@ -140,8 +134,6 @@ backup <- function(
       dry_run = dry_run,
       verbose = verbose
     )
-
-    postrotate(file)
   }
 
   bq$prune(

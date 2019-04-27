@@ -89,16 +89,12 @@ backup_date <- function(
   }
 
   if (is_backup_time_necessary(bq, age, now)){
-    prerotate(file)
-
     bq$push_backup(
       now = now,
       compression = compression,
       dry_run = dry_run,
       verbose = verbose
     )
-
-    postrotate(file)
   }
 
   bq$prune(
