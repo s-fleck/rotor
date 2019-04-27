@@ -146,9 +146,10 @@ backup <- function(
       dry_run = dry_run,
       verbose = verbose
     )
-    postrotate(res)
+    res <- postrotate(res)
   }
 
+  bq$prune(max_backups)
   res
 }
 
