@@ -57,14 +57,14 @@ replace_date_stamp <- function(
 
 
 
-readable_size <- function(
+fmt_bytes <- function(
   x
 ){
   x <- as.numeric(x)
 
   readablifiy <- function(.x){
-    for (unit in c("B", "kB", "MB", "GB", "TB")){
-      if (max(abs(.x)) < 1024 || unit == "TB")
+    for (unit in c("B", "KiB", "MiB", "GiB", "TiB")){
+      if (max(abs(.x)) < 1024 || unit == "TiB")
         break
       else
         .x <- .x / 1024

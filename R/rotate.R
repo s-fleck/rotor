@@ -22,8 +22,9 @@
 #'   larger than this size. `Integers` are interpretet as
 #'   bytes. You can pass `character` vectors that contain a file size suffix
 #'   like `1k` (kilobytes), `3M` (megabytes), `4G` (gigabytes),
-#'   `5T`` (terabytes). Please note that those use the binary definitions,
-#'   so `1` kilobyte is `1024` bytes, 1 `megabyte` is `1024` kilobytes, etc...
+#'   `5T`` (terabytes). Instead of these short forms you can also be explicit
+#'   and use the IEC suffixes `KiB`, `MiB`, `GiB`, `TiB`. In Both cases
+#'   `1` kilobyte is `1024` bytes, 1 `megabyte` is `1024` kilobytes, etc... .
 #'
 #' @param compression Whether or not backups should be compressed
 #'   - `FALSE` for uncompressed backups,
@@ -155,13 +156,6 @@ backup <- function(
 
 
 
-fmt_bytes <- function(x){
-  format(structure(x, class = "object_size"), "auto")
-}
-
-
-
-
 #' @param x `character` scalar (`1k`, `1.5g`) etc
 #' @return a `numeric` scalar (can be `double` or `integer`)
 #' @noRd
@@ -188,12 +182,19 @@ parse_size <- function(x){
 
 parse_info_unit <- function(x){
   assert(is_scalar_character(x))
+  x <- tolower(x)
+
+  iec <- c("KiB", "MiB", "GiB", "TiB")
+
+  if (x %in% iec)
+    x <- substr(x, 1, 1)
+
   valid_units <- c("k", "m", "g", "t")
 
   assert(
     x %in% valid_units,
     "'", x, "' is not one of the following valid file size units: ",
-    paste(valid_units, collapse = ", ")
+    paste(c(valid_units, iec), collapse = ", ")
   )
 
   res <- switch(
