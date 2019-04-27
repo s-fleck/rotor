@@ -9,7 +9,7 @@ AppenderFileRotatingDate <- R6::R6Class(
       filters = NULL,
       age = NULL,
       timestamp_fmt = "%Y-%m-%d",
-      min_size = 1,
+      size = 1,
       max_backups = Inf,
       compression = FALSE,
       prerotate = identity,
@@ -24,7 +24,7 @@ AppenderFileRotatingDate <- R6::R6Class(
 
       self$set_timestamp_fmt(timestamp_fmt)
       self$set_age(age)
-      self$set_min_size(min_size)
+      self$set_size(size)
       self$set_max_backups(max_backups)
       self$set_compression(compression)
       self$set_prerotate(prerotate)
@@ -44,7 +44,7 @@ AppenderFileRotatingDate <- R6::R6Class(
         self$file,
         age = self$age,
         format      = self$timestamp_fmt,
-        min_size    = self$min_size,
+        size    = self$size,
         max_backups = self$max_backups,
         compression = self$compression,
         prerotate   = self$prerotate,
@@ -80,10 +80,10 @@ AppenderFileRotatingDate <- R6::R6Class(
       self
     },
 
-    set_min_size = function(
+    set_size = function(
       x
     ){
-      private[[".min_size"]] <- x
+      private[[".size"]] <- x
       self
     },
 
@@ -139,7 +139,7 @@ AppenderFileRotatingDate <- R6::R6Class(
   active = list(
     age = function() get(".age", private),
     timestamp_fmt = function() get(".timestamp_fmt", private),
-    min_size = function() get(".min_size", private),
+    size = function() get(".size", private),
     max_backups = function() get(".max_backups", private),
     compression = function() get(".compression", private),
     prerotate = function() get(".prerotate", private),
@@ -155,7 +155,7 @@ AppenderFileRotatingDate <- R6::R6Class(
   private = list(
     .age = NULL,
     .timestamp_fmt = NULL,
-    .min_size = NULL,
+    .size = NULL,
     .max_backups = NULL,
     .compression = NULL,
     .prerotate = NULL,
