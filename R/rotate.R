@@ -10,19 +10,22 @@
 #'
 #' @param max_backups maximum number of backups to keep
 #'   - an `integer` scalar: Maximum number of backups to keep
+#'
+#'   In addtion, functions ending in `_date()` and `_time()` support:
 #'   - a `Date` scalar: Remove all backups before this date
 #'   - a `character` scalar representing a Date in ISO format
 #'     (e.g. `"2019-12-31"`)
 #'   - a `character` scalar representing an Interval in the form
 #'     `"<number> <interval>"`
 #'
-#' @param size scalar `integer` or `character`. Integers are interpretet as
+#' @param size scalar `integer` or `character`. Backup/rotate if `file` is
+#'   larger than this size. `Integers` are interpretet as
 #'   bytes. You can pass `character` vectors that contain a file size suffix
 #'   like `1k` (kilobytes), `3M` (megabytes), `4G` (gigabytes),
 #'   `5T`` (terabytes). Please note that those use the binary definitions,
 #'   so `1` kilobyte is `1024` bytes, 1 `megabyte` is `1024` kilobytes, etc...
 #'
-#' @param compression
+#' @param compression Whether or not backups should be compressed
 #'   - `FALSE` for uncompressed backups,
 #'   - `TRUE` for zip compression; uses [zipr::zip()] if available,
 #'   - a scalar `integer` between `1` and `9` to specify a compression
@@ -40,11 +43,9 @@
 #'   called before/after the backup is rotated.
 #'
 #' @return
-#'  If a creating a backup is triggered and
-#'  - `postrotate` is `NULL`, the path to the newly created file is returned
-#'    as a `character` scalar.
-#'  - If `postrotate` is a function, `backup()/rotate()` return whatever
-#'    `postrotate()` returns.
+#'  If a creating a backup is triggered, `backup_*()/rotate_*()` return whatever
+#'  `postrotate()` returns. By default that is just the path to the newly
+#'  created file.
 #'
 #'  If no backup is created, `backup()/rotate()` return an empty `character()`
 #'  vector.
@@ -73,9 +74,7 @@
 #' `backup_time(myfile, max_backups = "1 year")` on `2019-03-01`, it will create
 #' a backup and then remove all backups of `myfile` before `2019-01-01`.
 #'
-#'
 #' @export
-#' @examples
 rotate <- function(
   file,
   size = 0,
@@ -161,14 +160,10 @@ fmt_bytes <- function(x){
 
 
 
-#' Title
-#'
 #' @param x `character` scalar (`1k`, `1.5g`) etc
-#'
 #' @return a `numeric` scalar (can be `double` or `integer`)
 #' @noRd
 #'
-#' @examples
 parse_size <- function(x){
   assert(is_scalar(x) && !is.na(x))
 

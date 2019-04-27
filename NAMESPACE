@@ -2,7 +2,6 @@
 
 export(backup_date)
 export(backup_time)
-export(is_backup_older_than_interval)
 export(rotate)
 export(rotate_date)
 export(rotate_time)

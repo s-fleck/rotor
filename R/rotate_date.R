@@ -4,7 +4,7 @@ rotate_date <- function(
   file,
   age = NULL,
   format = "%Y-%m-%d",
-  min_size = 1,
+  size = 1,
   max_backups = Inf,
   compression = FALSE,
   prerotate = identity,

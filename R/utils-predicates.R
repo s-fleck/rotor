@@ -82,16 +82,9 @@ is_backup_older_than_datetime <- function(
   backup_date < parse_datetime(datetime)
 }
 
-#' Title
-#'
-#' @param x an `interval`
-#' @param last_backup
-#' @param now
-#'
-#' @return
-#' @export
-#'
-#' @examples
+
+
+
 is_backup_older_than_interval <- function(
   backup_date,
   interval,
