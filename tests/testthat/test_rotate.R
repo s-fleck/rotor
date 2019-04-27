@@ -18,26 +18,37 @@ test_that("backup/rotate happy path", {
   tf_size <- file.size(tf)
   bq <- BackupQueue$new(tf)
 
+  # no backup because dry run
   expect_message(backup(tf, dry_run = TRUE), "dry_run")
   expect_identical(bq$n_backups, 0L)
 
-  backup(tf)
+  # not rotating because file is to small
+  backup(tf, size = 1e6)
+  expect_identical(bq$n_backups, 0L)
+
+  # backup
+  backup(tf, size = 1)
   expect_identical(bq$n_backups, 1L)
 
+  # backup (zip)
   backup(tf, compression = TRUE)
   expect_identical(bq$n_backups, 2L)
   expect_identical(tools::file_ext(bq$backups$path[[1]]), "zip")
 
+  # not rotating because dryrun
   expect_message(rotate(tf, dry_run = TRUE, compression = TRUE), "dry_run")
   expect_identical(bq$n_backups, 2L)
 
+  # rotating
   rotate(tf, compression = FALSE)
   expect_identical(bq$n_backups, 3L)
   expect_equal(file.size(tf), 0)
   expect_equal(file.size(bq$backups$path[[1]]), tf_size)
   expect_equal(bq$backups$sfx, as.character(1:3))
 
-  rotate(tf)
+  bq$prune(0)
+  file.remove(tf)
+  expect_length(list.files(td), 0)
 })
 
 
