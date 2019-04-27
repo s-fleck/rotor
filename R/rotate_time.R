@@ -32,7 +32,7 @@ rotate_time <- function(
 ){
   assert(is_scalar_logical(create_file))
 
-  res <- backup_time(
+  backup_time(
     file = file,
     age = age,
     format = format,
@@ -51,7 +51,7 @@ rotate_time <- function(
   if (create_file)
     file_create(file, dry_run = dry_run, verbose = verbose)
 
-  res
+  file
 }
 
 
@@ -108,13 +108,16 @@ backup_time <- function(
       dry_run = dry_run,
       verbose = verbose
     )
-    res <- postrotate(bq$backups$path[[1]])
-  } else {
-    res <- character()
+    postrotate(file)
   }
 
-  bq$prune(max_backups, dry_run = dry_run, verbose = verbose)
-  res
+  bq$prune(
+    max_backups,
+    dry_run = dry_run,
+    verbose = verbose
+  )
+
+  file
 }
 
 

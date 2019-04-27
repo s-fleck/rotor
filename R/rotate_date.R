@@ -17,7 +17,7 @@ rotate_date <- function(
 ){
   assert(is_scalar_logical(create_file))
 
-  res <- backup_date(
+  backup_date(
     file = file,
     age = age,
     format = format,
@@ -38,7 +38,7 @@ rotate_date <- function(
     file_create(file, dry_run = dry_run, verbose = verbose)
   }
 
-  res
+  file
 }
 
 
@@ -90,19 +90,24 @@ backup_date <- function(
 
   if (is_backup_time_necessary(bq, age, now)){
     prerotate(file)
+
     bq$push_backup(
       now = now,
       compression = compression,
       dry_run = dry_run,
       verbose = verbose
     )
-    res <- postrotate(bq$backups$path[[1]])
-  } else {
-    res <- character()
+
+    postrotate(file)
   }
 
-  bq$prune(max_backups, dry_run = dry_run, verbose = verbose)
-  res
+  bq$prune(
+    max_backups,
+    dry_run = dry_run,
+    verbose = verbose
+  )
+
+  file
 }
 
 

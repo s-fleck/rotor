@@ -43,13 +43,16 @@
 #'   as `character` scalar). `preorate()` and `postrotate()` are
 #'   called before/after the backup is rotated.
 #'
-#' @return
-#'  If a creating a backup is triggered, `backup_*()/rotate_*()` return whatever
-#'  `postrotate()` returns. By default that is just the path to the newly
-#'  created file.
+#' @return `file` as a `character` scalar (like the input argument)
 #'
-#'  If no backup is created, `backup()/rotate()` return an empty `character()`
-#'  vector.
+#' @section Side Effects:
+#' `backup()`, `backup_date()`, and `backup_time()` creates a new file on the
+#' file system (if the specified conditions are met). It may also delete
+#' backups if `max_backup` is reached.
+#'
+#' `rotate()`, `rotate_date()` and `rotate_time()` does the same, but in
+#' addtion replaces the input `file` with an empty file (or not if
+#' `create_file == FALSE`)
 #'
 #' @section Intervals:
 #'
@@ -124,17 +127,7 @@ backup <- function(
   )
   size <- parse_size(size)
 
-  if (file.size(file) < size){
-    if (verbose) {
-      message(sprintf(
-        "Not rotating '%s': Filesize (%s) is less than the limit (%s)",
-        basename(file),
-        fmt_bytes(file.size(file)),
-        fmt_bytes(size)
-      ))
-    }
-    res <- character()
-  } else {
+  if (file.size(file) > size){
     prerotate(file)
 
     bq <- BackupQueueIndex$new(
@@ -142,16 +135,22 @@ backup <- function(
       max_backups = max_backups
     )
 
-    res <- bq$push_backup(
+    bq$push_backup(
       compression = compression,
       dry_run = dry_run,
       verbose = verbose
     )
-    res <- postrotate(res)
+
+    postrotate(file)
   }
 
-  bq$prune(max_backups)
-  res
+  bq$prune(
+    max_backups,
+    dry_run = dry_run,
+    verbose = verbose
+  )
+
+  file
 }
 
 
