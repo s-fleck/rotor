@@ -81,3 +81,32 @@ fmt_bytes <- function(
 expect_snapshot_unchanged <- function(snap){
   expect_true(!any(utils::changedFiles(snap)$changes))
 }
+
+
+
+
+
+#' Splits a string at `pos` (removing the character at pos)
+#'
+#' @param x a `character` vector
+#' @param pos an `integer` vector
+#'
+#' @noRd
+strsplit_at_seperator_pos <- function(
+  x,
+  pos,
+  seps = "."
+){
+  assert(all(substr(x, pos, pos) %in% seps))
+  matrix(data = c(substr(x, 1, pos - 1L), substr(x, pos + 1L, nchar(x))), ncol = 2)
+}
+
+
+
+
+strsplit_at_pos <- function(
+  x,
+  pos
+){
+  matrix(data = c(substr(x, 1, pos), substr(x, pos + 1L, nchar(x))), ncol = 2)
+}
