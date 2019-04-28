@@ -1,4 +1,4 @@
-#' Manage backups of a file
+#' Helpers for working with backups
 #'
 #' `n_backups()`, `list_backups()`, `newest_backup()` and `oldest_backup()`
 #' display information on the backups (that follow the naming conventions of
