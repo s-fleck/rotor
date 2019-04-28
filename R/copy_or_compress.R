@@ -15,9 +15,9 @@
 copy_or_compress <- function(
   file,
   outname,
-  compression  = FALSE,
+  compression = FALSE,
   add_ext = TRUE,
-  overwrite = overwrite,
+  overwrite = FALSE,
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
@@ -25,6 +25,7 @@ copy_or_compress <- function(
     is_scalar_character(file),
     is_scalar_character(outname),
     file.exists(file),
+    is_scalar_logical(overwrite),
     is_scalar_logical(add_ext),
     is_scalar_logical(dry_run),
     is_scalar_logical(verbose)
@@ -51,11 +52,11 @@ copy_or_compress <- function(
     if (!isFALSE(compression))
       outname <- paste0(outname, ".zip")
 
-    if (file.exists(outname) && ! dry_run){
+    if (file.exists(outname)){
       if (overwrite){
         file_remove(outname, dry_run = dry_run, verbose = verbose)
       } else {
-        stop(sprintf("Backup '%s' exists and `overwrite == FALSE`", outname))
+        stop(sprintf("File '%s' exists and `overwrite == FALSE`", outname))
       }
     }
 

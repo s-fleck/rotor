@@ -35,8 +35,8 @@ test_that("backup/rotate happy path", {
   expect_identical(bq$n_backups, 2L)
   expect_identical(tools::file_ext(bq$backups$path[[1]]), "zip")
 
-  # not rotating because dryrun
-  expect_message(rotate(tf, dry_run = TRUE, compression = TRUE), "dry_run")
+  # file exists
+  expect_error(rotate(tf, dry_run = TRUE, compression = TRUE))
   expect_identical(bq$n_backups, 2L)
 
   # rotating

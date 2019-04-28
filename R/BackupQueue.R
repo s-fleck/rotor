@@ -173,6 +173,7 @@ filenames_as_matrix <- function(
 #' @param file `character` scalar: The base file.
 #' @param potential_backups `chracter` vector: list of files that could
 #'   potentially be backups for `file` (and follow the rotor naming convention)
+#' @noRd
 get_backups <- function(
   file,
   potential_backups,

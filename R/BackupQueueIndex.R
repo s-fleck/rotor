@@ -20,7 +20,6 @@ BackupQueueIndex <- R6::R6Class(
 
     push_backup = function(
       compression = FALSE,
-      overwrite = FALSE,
       now = Sys.time(),
       dry_run = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.dry_run", dry_run)
@@ -45,7 +44,7 @@ BackupQueueIndex <- R6::R6Class(
         outname = name_new,
         compression = compression,
         add_ext = TRUE,
-        overwrite = overwrite,
+        overwrite = FALSE,
         dry_run = dry_run,
         verbose = verbose
       )

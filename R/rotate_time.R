@@ -63,8 +63,6 @@ backup_time <- function(
   max_backups = Inf,
   compression = FALSE,
   now = Sys.time(),
-  prerotate = identity,
-  postrotate = identity,
   overwrite = FALSE,
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
@@ -98,6 +96,7 @@ backup_time <- function(
     bq$push_backup(
       now = now,
       compression = compression,
+      overwrite = overwrite,
       dry_run = dry_run,
       verbose = verbose
     )

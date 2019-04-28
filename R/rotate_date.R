@@ -84,6 +84,7 @@ backup_date <- function(
     bq$push_backup(
       now = now,
       compression = compression,
+      overwrite = overwrite,
       dry_run = dry_run,
       verbose = verbose
     )
