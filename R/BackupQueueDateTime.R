@@ -1,3 +1,4 @@
+#' @rdname BackupQueue
 #' @export
 BackupQueueDateTime <- R6::R6Class(
   "BackupQueueDateTime",

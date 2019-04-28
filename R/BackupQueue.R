@@ -1,3 +1,17 @@
+#' BackupQueues
+#'
+#' `BackupQueue` and its subclasses are [R6::R6Class] for rotating files and
+#' managing backup. They are the internal constructs on which [rotate()] and
+#' co. are based. The `BackupQueue` constructor is exported for use by other
+#' package developers and not indetend for direct use.
+#'
+#' @name BackupQueue
+NULL
+
+
+
+
+#' @rdname BackupQueue
 #' @export
 BackupQueue <- R6::R6Class(
   "BackupQueue",

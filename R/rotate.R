@@ -5,11 +5,33 @@
 #' with an empty one (this is useful for log rotation)
 #'
 #' @param file `character` scalar: file to backup/rotate
+#'
 #' @param age minimum age after which to backup/rotate a file; can be
 #'   - a `character` scalar representing an Interval in the form
 #'     `"<number> <interval>"` (e.g. `"2 months"`, see *Intervals* section below).
-#'   - a `Date` or a `character` scalar [representing a Date][parse_date] for
-#'     a fixed point in time after which to backup/rotate.
+#'   - a `Date` or a `character` scalar representing a Date for
+#'     a fixed point in time after which to backup/rotate. See `format` for
+#'     which Date/Datetime formats are supported by rotor.
+#'
+#' @param format a scalar `character` that can be a subset of of valid
+#'   `strftime()` formatting strings. The default setting is
+#'   `"%Y-%m-%d--%H-%M-%S"`.
+#'   * You can use an arbitrary number of dashes anywhere in the format, so
+#'     `"%Y-%m-%d--%H-%M-%S"` and `"%Y%m%d%H%M%S"` are both legal.
+#'   * `T` and `_` can also be used as sepparators. For example, the following
+#'     datetime formats are also possible:
+#'       `%Y-%m-%d_%H-%M-%S` (Python logging default),
+#'       `%Y%m%dT%H%M%S` [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+#'   * All datetime components except `%Y` are optional. If you leave out part
+#'     of the timestamp, the first point in time in the period is assumed. For
+#'     example (assuming the current year is 2019) `%Y` is identical to
+#'     `2019-01-01--00-00-00`.
+#'   * The timestamps must be lexically sortable, so `"%Y-%m-%d"` is legal,
+#'     `"%m-%d-%Y"` and `%Y-%d` are not.
+#'
+#' @param now The current `Date` or Time (`POSIXct`). You can pass a custom
+#'   value here to to override the real system time. This is mainly useful
+#'   for testing purposes.
 #'
 #' @param max_backups maximum number of backups to keep
 #'   - an `integer` scalar: Maximum number of backups to keep
