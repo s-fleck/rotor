@@ -51,7 +51,7 @@ list_backups <- function(file){
 #' @description `prune_backups()` phyiscally deletes all backups of a file
 #'   based on `max_backups`
 #' @inheritParams rotate
-#' @return `prune_backups()` returns the path to the input file `file`
+#' @return `prune_backups()` returns the path to the input file `file` (invisibly)
 #' @export
 #' @rdname n_backups
 prune_backups <- function(
@@ -67,7 +67,7 @@ prune_backups <- function(
     bq <- BackupQueueDateTime$new(file)
 
   bq$prune(max_backups = max_backups)
-  file
+  invisible(file)
 }
 
 

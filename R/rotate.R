@@ -42,7 +42,7 @@
 #' @param verbose `logical` scalar. If `TRUE` additional informative `messages`
 #'   are printed
 #'
-#' @return `file` as a `character` scalar (like the input argument)
+#' @return `file` as a `character` scalar (invisibly)
 #'
 #' @section Side Effects:
 #' `backup()`, `backup_date()`, and `backup_time()` creates a new file on the
@@ -105,7 +105,7 @@ rotate <- function(
   if (create_file)
     file_create(file, dry_run = dry_run, verbose = verbose)
 
-  file
+  invisible(file)
 }
 
 
@@ -145,7 +145,7 @@ backup <- function(
     verbose = verbose
   )
 
-  file
+  invisible(file)
 }
 
 

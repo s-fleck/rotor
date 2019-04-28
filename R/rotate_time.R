@@ -51,7 +51,7 @@ rotate_time <- function(
   if (create_file)
     file_create(file, dry_run = dry_run, verbose = verbose)
 
-  file
+  invisible(file)
 }
 
 
@@ -115,7 +115,7 @@ backup_time <- function(
     verbose = verbose
   )
 
-  file
+  invisible(file)
 }
 
 

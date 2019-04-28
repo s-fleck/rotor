@@ -21,7 +21,17 @@ knitr::opts_chunk$set(
 
 rotor is aimed to provide a cross platform R reimagination of
 [logrotate](https://linux.die.net/man/8/logrotate) as a companion package to
-https://github.com/s-fleck/lgr. 
+https://github.com/s-fleck/lgr. In addition to rotating log files, it can also
+be used as a (very primtivie) backup tool.
+
+`rotate()`, `rotate_date()`, and `rotate_time()` move a file and insert a 
+suffix (either an integer or a timestamp) into the filename. In addition, they
+create an empty file in place of the original one. This is useful for log 
+rotation.
+
+`backup()`, `backup_date()` and `backup_time()` do the same but keep the 
+original file. 
+
 
 ## Installation
 
@@ -39,12 +49,10 @@ devtools::install_github("s-fleck/rotor")
 ```
 ## Example
 
-`rotate()` and `rotate_date()` rename a file and insert a suffix (either an
-integer or a timestamp) into the filename. This is useful for log rotation.
+The examples below all use `backup()` because it's a bit more convenient to 
+write examples for than `rotate()`, but the later works mostly the 
+same.
 
-`backup()` and `backup_date()` do the same but keep the original file,
-thus creting a backup. The examples below use `backup*()` because it's a bit
-more convenient to write examples for, but `rotate()` works mostly the same.
 
 ```{r}
 library(rotor)
@@ -57,7 +65,7 @@ dr <- tempdir()
 td <- file.path(dr, "rotor")
 dir.create(td, recursive = TRUE)
 tf <- file.path(td, "test.log")
-file.create(tf)
+saveRDS(cars, tf)
 ```
 
 
@@ -67,34 +75,37 @@ made backup.
 ```{r index, collapse=TRUE}
 backup(tf)
 backup(tf)
-backup(tf, compression = "zip")  # backup and rotate also support compression
+backup(tf, compression = TRUE)  # backup and rotate also support compression
 
-find_backups(tf)  # returns all backups of a file
+list_backups(tf)  # returns all backups of a file
 ```
 
 You can also set a maximum number of backups to be kept
 ```{r}
-backup(tf, n_backups = 4)
-backup(tf, n_backups = 4)
-backup(tf, n_backups = 4)
+backup(tf, max_backups = 4)
+backup(tf, max_backups = 4)
+backup(tf, max_backups = 4)
 
-find_backups(tf)
+list_backups(tf)
 ```
 
+`prune_backups()` deletes all backups of a file except for `max_backups`. If
+we set `max_backups` to `0`, we can clean up all backups.
 ```{r}
-invisible(file.remove(find_backups(tf)))  # cleanup
+prune_backups(tf, max_backups = 0)
 ```
 
 
 
-Instead of adding an index, you can also add a timestamp. 
-
+Instead of backup up with an index, you can also add a timestamp. 
 ```{r timestamp}
 backup_date(tf)
-find_backups(tf)
+backup_time(tf)
+list_backups(tf)
 ```
 ```{r}
-invisible(file.remove(find_backups(tf)))  # cleanup
+prune_backups(tf, max_backups = 0)  # cleanup
+list_backups(tf)
 ```
 
 ```{r cleanup, include = FALSE}

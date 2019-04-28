@@ -38,7 +38,7 @@ rotate_date <- function(
     file_create(file, dry_run = dry_run, verbose = verbose)
   }
 
-  file
+  invisible(file)
 }
 
 
@@ -103,7 +103,7 @@ backup_date <- function(
     verbose = verbose
   )
 
-  file
+  invisible(file)
 }
 
 
