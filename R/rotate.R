@@ -1,5 +1,8 @@
-#' Rotate or Backup Files
+#' Rotate or backup files
 #'
+#' Functions starting with `backup` create backups of a `file`, while functions
+#' starting with `rotate` do the same but also replace the original `file`
+#' with an empty one (this is useful for log rotation)
 #'
 #' @param file `character` scalar: file to backup/rotate
 #' @param age minimum age after which to backup/rotate a file; can be
@@ -11,12 +14,12 @@
 #' @param max_backups maximum number of backups to keep
 #'   - an `integer` scalar: Maximum number of backups to keep
 #'
-#'   In addtion, functions ending in `_date()` and `_time()` support:
+#'   In addtion for timestamped backups the following value are supported:
 #'   - a `Date` scalar: Remove all backups before this date
 #'   - a `character` scalar representing a Date in ISO format
 #'     (e.g. `"2019-12-31"`)
 #'   - a `character` scalar representing an Interval in the form
-#'     `"<number> <interval>"`
+#'     `"<number> <interval>"` (see below for more info)
 #'
 #' @param size scalar `integer` or `character`. Backup/rotate if `file` is
 #'   larger than this size. `Integers` are interpretet as
@@ -73,7 +76,7 @@
 #' one year worth of backups". So if you call
 #' `backup_time(myfile, max_backups = "1 year")` on `2019-03-01`, it will create
 #' a backup and then remove all backups of `myfile` before `2019-01-01`.
-#'
+#' @seealso [n_backups()]
 #' @export
 rotate <- function(
   file,
@@ -106,8 +109,8 @@ rotate <- function(
 }
 
 
-
-
+#' @rdname rotate
+#' @export
 backup <- function(
   file,
   size = 0,
@@ -123,12 +126,12 @@ backup <- function(
   )
   size <- parse_size(size)
 
-  if (file.size(file) > size){
-    bq <- BackupQueueIndex$new(
-      file,
-      max_backups = max_backups
-    )
+  bq <- BackupQueueIndex$new(
+    file,
+    max_backups = max_backups
+  )
 
+  if (file.size(file) > size){
     bq$push_backup(
       compression = compression,
       dry_run = dry_run,

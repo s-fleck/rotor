@@ -27,10 +27,14 @@ test_that("first_backup works as expected", {
   file.create(files2)
 
   expect_error(newest_backup(tf))
+  expect_error(prune_backups(tf, 0))
+  expect_warning(expect_true(n_backups(tf) == 4))
   file.remove(files)
 
   expect_match(newest_backup(tf), files2[[1]])
   expect_match(oldest_backup(tf), files2[[2]])
+  prune_backups(tf, 0)
+  expect_true(n_backups(tf) == 0)
 
-  file.remove(tf, files2)
+  file.remove(tf)
 })
