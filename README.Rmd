@@ -32,6 +32,9 @@ rotation.
 `backup()`, `backup_date()` and `backup_time()` do the same but keep the 
 original file. 
 
+See the 
+[function reference](https://s-fleck.github.io/rotor/reference/index.html) for 
+more details
 
 ## Installation
 

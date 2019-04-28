@@ -22,8 +22,12 @@ addition, they create an empty file in place of the original one. This
 is useful for log rotation.
 
 `backup()`, `backup_date()` and `backup_time()` do the same but keep the
-original
-file.
+original file.
+
+See the [function
+reference](https://s-fleck.github.io/rotor/reference/index.html) for
+more
+details
 
 ## Installation
 
@@ -73,9 +77,9 @@ backup(tf)
 backup(tf, compression = TRUE)  # backup and rotate also support compression
 
 list_backups(tf)  # returns all backups of a file
-#> [1] "/tmp/RtmpcK14RK/rotor/test.1.log.zip"
-#> [2] "/tmp/RtmpcK14RK/rotor/test.2.log"    
-#> [3] "/tmp/RtmpcK14RK/rotor/test.3.log"
+#> [1] "/tmp/RtmpHcL8u7/rotor/test.1.log.zip"
+#> [2] "/tmp/RtmpHcL8u7/rotor/test.2.log"    
+#> [3] "/tmp/RtmpHcL8u7/rotor/test.3.log"
 ```
 
 You can also set a maximum number of backups to be kept
@@ -86,10 +90,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/RtmpcK14RK/rotor/test.1.log"    
-#> [2] "/tmp/RtmpcK14RK/rotor/test.2.log"    
-#> [3] "/tmp/RtmpcK14RK/rotor/test.3.log"    
-#> [4] "/tmp/RtmpcK14RK/rotor/test.4.log.zip"
+#> [1] "/tmp/RtmpHcL8u7/rotor/test.1.log"    
+#> [2] "/tmp/RtmpHcL8u7/rotor/test.2.log"    
+#> [3] "/tmp/RtmpHcL8u7/rotor/test.3.log"    
+#> [4] "/tmp/RtmpHcL8u7/rotor/test.4.log.zip"
 ```
 
 `prune_backups()` deletes all backups of a file except for
@@ -106,8 +110,8 @@ Instead of backup up with an index, you can also add a timestamp.
 backup_date(tf)
 backup_time(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmpcK14RK/rotor/test.2019-04-28--18-39-11.log"
-#> [2] "/tmp/RtmpcK14RK/rotor/test.2019-04-28.log"
+#> [1] "/tmp/RtmpHcL8u7/rotor/test.2019-04-28--18-46-14.log"
+#> [2] "/tmp/RtmpHcL8u7/rotor/test.2019-04-28.log"
 ```
 
 ``` r
