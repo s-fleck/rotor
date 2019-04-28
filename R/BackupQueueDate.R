@@ -1,3 +1,4 @@
+#' @export
 BackupQueueDate <- R6::R6Class(
   inherit = BackupQueueDateTime,
   "BackupQueueDate",

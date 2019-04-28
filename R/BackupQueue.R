@@ -1,3 +1,4 @@
+#' @export
 BackupQueue <- R6::R6Class(
   "BackupQueue",
   public = list(
