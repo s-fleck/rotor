@@ -12,8 +12,6 @@ AppenderFileRotatingDate <- R6::R6Class(
       size = 1,
       max_backups = Inf,
       compression = FALSE,
-      prerotate = identity,
-      postrotate = identity,
       overwrite = FALSE,
       create_file = TRUE
     ){
@@ -27,8 +25,6 @@ AppenderFileRotatingDate <- R6::R6Class(
       self$set_size(size)
       self$set_max_backups(max_backups)
       self$set_compression(compression)
-      self$set_prerotate(prerotate)
-      self$set_postrotate(postrotate)
       self$set_overwrite(overwrite)
       self$set_create_file(create_file)
 
@@ -47,8 +43,6 @@ AppenderFileRotatingDate <- R6::R6Class(
         size    = self$size,
         max_backups = self$max_backups,
         compression = self$compression,
-        prerotate   = self$prerotate,
-        postrotate  = self$postrotate,
         overwrite   = self$overwrite,
         create_file = self$create_file,
         now = now,
@@ -142,8 +136,6 @@ AppenderFileRotatingDate <- R6::R6Class(
     size = function() get(".size", private),
     max_backups = function() get(".max_backups", private),
     compression = function() get(".compression", private),
-    prerotate = function() get(".prerotate", private),
-    postrotate = function() get(".postrotate", private),
     overwrite = function() get(".overwrite", private),
     create_file = function() get(".create_file", private),
 
@@ -158,8 +150,6 @@ AppenderFileRotatingDate <- R6::R6Class(
     .size = NULL,
     .max_backups = NULL,
     .compression = NULL,
-    .prerotate = NULL,
-    .postrotate = NULL,
     .overwrite = NULL,
     .create_file = NULL
   )

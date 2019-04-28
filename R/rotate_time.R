@@ -23,8 +23,6 @@ rotate_time <- function(
   size = 1,
   max_backups = Inf,
   compression = FALSE,
-  prerotate = identity,
-  postrotate = identity,
   overwrite = FALSE,
   create_file = TRUE,
   dry_run = getOption("rotor.dry_run", FALSE),
@@ -39,8 +37,6 @@ rotate_time <- function(
     size = size,
     max_backups = max_backups,
     compression = compression,
-    prerotate = prerotate,
-    postrotate = postrotate,
     overwrite = overwrite,
     dry_run = dry_run,
     verbose = verbose
@@ -80,8 +76,6 @@ backup_time <- function(
     is_scalar_integerish(size),
     is.infinite(max_backups) || is_n0(max_backups) || is.character(max_backups) || is_Date(max_backups),
     is_scalar_logical(compression),
-    is.function(prerotate),
-    is.function(postrotate),
     is_scalar_logical(overwrite),
     is_scalar_logical(dry_run),
     is_scalar_logical(verbose)

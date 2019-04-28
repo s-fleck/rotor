@@ -83,8 +83,6 @@ rotate <- function(
   size = 0,
   max_backups = Inf,
   compression = FALSE,
-  prerotate = identity,
-  postrotate = identity,
   create_file = TRUE,
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
@@ -94,8 +92,6 @@ rotate <- function(
     size = size,
     max_backups = max_backups,
     compression = compression,
-    prerotate = prerotate,
-    postrotate = postrotate,
     dry_run = dry_run,
     verbose = verbose
   )
@@ -116,8 +112,6 @@ backup <- function(
   size = 0,
   max_backups = Inf,
   compression = FALSE,
-  prerotate = identity,
-  postrotate = identity,
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){

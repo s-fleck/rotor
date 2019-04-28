@@ -19,9 +19,6 @@ BackupQueue <- R6::R6Class(
     backup_dir = NULL,
     max_backups = NULL,
     compression = NULL,
-    prerotate = NULL,
-    postrotate = NULL,
-
 
     prune = function(
       max_backups,
