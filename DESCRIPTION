@@ -1,7 +1,7 @@
 Type: Package
 Package: rotor
 Title: Rote files
-Version: 0.0.2.9000
+Version: 0.1.0.9000
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",

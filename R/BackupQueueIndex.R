@@ -120,7 +120,7 @@ BackupQueueIndex <- R6::R6Class(
       res <- super$backups
 
       if (nrow(res) < 1){
-        return(data.frame())
+        return(EMPTY_BACKUPS_INDEX)
       }
       res <- res[grep("^\\d+$", res$sfx), ]
       res$index <- as.integer(res$sfx)
@@ -129,4 +129,3 @@ BackupQueueIndex <- R6::R6Class(
     }
   )
 )
-

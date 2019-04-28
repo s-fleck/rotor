@@ -73,9 +73,9 @@ backup(tf)
 backup(tf, compression = TRUE)  # backup and rotate also support compression
 
 list_backups(tf)  # returns all backups of a file
-#> [1] "/tmp/RtmpKVMscP/rotor/test.1.log.zip"
-#> [2] "/tmp/RtmpKVMscP/rotor/test.2.log"    
-#> [3] "/tmp/RtmpKVMscP/rotor/test.3.log"
+#> [1] "/tmp/RtmpnUAmmS/rotor/test.1.log.zip"
+#> [2] "/tmp/RtmpnUAmmS/rotor/test.2.log"    
+#> [3] "/tmp/RtmpnUAmmS/rotor/test.3.log"
 ```
 
 You can also set a maximum number of backups to be kept
@@ -86,10 +86,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/RtmpKVMscP/rotor/test.1.log"    
-#> [2] "/tmp/RtmpKVMscP/rotor/test.2.log"    
-#> [3] "/tmp/RtmpKVMscP/rotor/test.3.log"    
-#> [4] "/tmp/RtmpKVMscP/rotor/test.4.log.zip"
+#> [1] "/tmp/RtmpnUAmmS/rotor/test.1.log"    
+#> [2] "/tmp/RtmpnUAmmS/rotor/test.2.log"    
+#> [3] "/tmp/RtmpnUAmmS/rotor/test.3.log"    
+#> [4] "/tmp/RtmpnUAmmS/rotor/test.4.log.zip"
 ```
 
 `prune_backups()` deletes all backups of a file except for
@@ -106,12 +106,12 @@ Instead of backup up with an index, you can also add a timestamp.
 backup_date(tf)
 backup_time(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmpKVMscP/rotor/test.2019-04-28--12-02-23.log"
-#> [2] "/tmp/RtmpKVMscP/rotor/test.2019-04-28.log"
+#> [1] "/tmp/RtmpnUAmmS/rotor/test.2019-04-28--12-15-38.log"
+#> [2] "/tmp/RtmpnUAmmS/rotor/test.2019-04-28.log"
 ```
 
 ``` r
 prune_backups(tf, max_backups = 0)  # cleanup
 list_backups(tf)
-#> NULL
+#> character(0)
 ```

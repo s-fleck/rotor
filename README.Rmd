@@ -112,5 +112,3 @@ list_backups(tf)
 unlink(td, recursive = TRUE)
 if (!length(list.files(dr))) unlink(dr, recursive = TRUE)
 ```
-
-

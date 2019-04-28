@@ -48,6 +48,7 @@ list_backups <- function(file){
 
 
 
+
 #' @description `prune_backups()` phyiscally deletes all backups of a file
 #'   based on `max_backups`
 #' @inheritParams rotate

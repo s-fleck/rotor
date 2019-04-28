@@ -131,7 +131,7 @@ BackupQueueDateTime <- R6::R6Class(
       res <- super$backups
 
       if (nrow(res) < 1){
-        return(data.frame())
+        return(EMPTY_BACKUPS_DATETIME)
       }
 
       sel <- vapply(res$sfx, is_parsable_datetime, logical(1))
@@ -261,3 +261,7 @@ prep_hms <- function(.x){
   s <- ifelse(nchar(.x) >  4, substr(.x, 5, 6), "00")
   paste(h, m, s, sep = ":")
 }
+
+
+
+

@@ -115,7 +115,7 @@ BackupQueue <- R6::R6Class(
 
       # parse to df
       if (!length(backup_files)){
-        return(data.frame())
+        return(EMPTY_BACKUPS_INDEX)
       }
 
       fname_matrix <- filenames_as_matrix(self$file, backups = backup_files)
@@ -194,3 +194,32 @@ get_backups <- function(
 
   sort(grep(pat, potential_backups, value = TRUE))
 }
+
+
+
+
+EMPTY_BACKUPS <- data.frame(
+  path = character(0),
+  dir = character(0),
+  name = character(0),
+  sfx = character(0),
+  ext = character(0),
+  size = numeric(0),
+  isdir = logical(0),
+  mode = structure(integer(0)),
+  mtime = structure(numeric(0), class = c("POSIXct", "POSIXt")),
+  ctime = structure(numeric(0), class = c("POSIXct", "POSIXt")),
+  atime = structure(numeric(0), class = c("POSIXct", "POSIXt")),
+  uid = integer(0),
+  gid = integer(0),
+  uname = character(0),
+  grname = character(0),
+  stringsAsFactors = FALSE
+)
+
+EMPTY_BACKUPS_DATETIME <- EMPTY_BACKUPS
+EMPTY_BACKUPS_DATETIME$timestamp <-
+  structure(numeric(0), class = c("POSIXct", "POSIXt"), tzone = "")
+
+EMPTY_BACKUPS_INDEX <- EMPTY_BACKUPS
+EMPTY_BACKUPS_INDEX$index <- integer(0)
