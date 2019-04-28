@@ -31,7 +31,7 @@
 #'
 #' @param compression Whether or not backups should be compressed
 #'   - `FALSE` for uncompressed backups,
-#'   - `TRUE` for zip compression; uses [zipr::zip()] if available,
+#'   - `TRUE` for zip compression; uses [zip::zipr()] if available,
 #'   - a scalar `integer` between `1` and `9` to specify a compression
 #'     level (requires [zip::zipr()], see its documentation for details)
 #'   - `"base::zip()"` or `"zip::zipr"` to force a specific zip command
@@ -41,6 +41,12 @@
 #'
 #' @param verbose `logical` scalar. If `TRUE` additional informative `messages`
 #'   are printed
+#'
+#' @param create_file `logical` scalar. If `TRUE` create an empty file in
+#'   place of `file` after rotating.
+#'
+#' @param overwrite `logical` scalar. If `TRUE` overwrite backups if a backup
+#'   of the same name (usually due to timestamp collision) exists.
 #'
 #' @return `file` as a `character` scalar (invisibly)
 #'
@@ -60,7 +66,7 @@
 #'  `"day(s)"`, `"week(s)"`, `"month(s)"`, `"quarter(s)"`, `"year(s)"`.
 #' The plural `"s"` is optional (so `"2 weeks"` and `"2 week"` are equivalent).
 #' Please be aware that weeks are
-#' [ISOweeks][https://en.wikipedia.org/wiki/ISO_week_date]
+#' [ISOweeks](https://en.wikipedia.org/wiki/ISO_week_date)
 #' and start on Monday (not Sunday as in some countries).
 #'
 #' Interval strings can be used as arguments when backing up or rotating files,

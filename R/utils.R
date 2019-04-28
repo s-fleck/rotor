@@ -79,7 +79,7 @@ fmt_bytes <- function(
 
 
 expect_snapshot_unchanged <- function(snap){
-  expect_true(!any(utils::changedFiles(snap)$changes))
+  testthat::expect_true(!any(utils::changedFiles(snap)$changes))
 }
 
 

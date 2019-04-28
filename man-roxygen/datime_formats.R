@@ -1,7 +1,7 @@
 #' @section Supported Datetime Formats
 #'
 #' **rotor** only supports a limited number of
-#' [ISO_8601][https://en.wikipedia.org/wiki/ISO_8601]
+#' [ISO_8601](https://en.wikipedia.org/wiki/ISO_8601)
 #' inspired formats for Dates and Datetimes.
 #' To work with lgr dateimtes have to be lexically sortable (`2018-12-04`` is
 #' ok, `12-04-2018` is not) and can only contain characters that are valid in

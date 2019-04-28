@@ -6,7 +6,7 @@
 #'   * `T` and `_` can also be used as sepparators. For example, the following
 #'     datetime formats are also possible:
 #'       `%Y-%m-%d_%H-%M-%S` (Python logging default),
-#'       `%Y%m%dT%H%M%S` ([ISO 8601][https://en.wikipedia.org/wiki/ISO_8601])
+#'       `%Y%m%dT%H%M%S` [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
 #'   * All datetime components except `%Y` are optional. If you leave out part
 #'     of the timestamp, the first point in time in the period is assumed. For
 #'     example (assuming the current year is 2019) `%Y` is identical to

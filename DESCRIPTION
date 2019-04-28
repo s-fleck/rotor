@@ -9,8 +9,8 @@ Authors@R:
            email = "stefan.b.fleck@gmail.com",
            comment = c(ORCID = "0000-0003-3344-9851"))
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
-Description: Rotate or backup files based on size or date.
-    Inspired the unix program logrotate
+Description: Rotate or backup files based on size or date. Inspired the linux 
+  utility logrotate.
 License: MIT + file LICENSE
 Imports:
     tools,

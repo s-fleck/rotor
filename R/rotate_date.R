@@ -49,8 +49,6 @@ backup_date <- function(
   size = 1,
   max_backups = Inf,
   compression = FALSE,
-  prerotate = identity,
-  postrotate = identity,
   overwrite = FALSE,
   now = Sys.Date(),
   dry_run = getOption("rotor.dry_run", FALSE),
