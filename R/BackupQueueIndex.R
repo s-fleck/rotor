@@ -1,3 +1,5 @@
+#' @rdname BackupQueue
+#' @export
 BackupQueueIndex <- R6::R6Class(
   "BackupQueue",
   inherit = BackupQueue,
