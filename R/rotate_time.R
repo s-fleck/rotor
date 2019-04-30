@@ -9,6 +9,7 @@ rotate_time <- function(
   compression = FALSE,
   overwrite = FALSE,
   create_file = TRUE,
+  now = Sys.time(),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
@@ -22,6 +23,7 @@ rotate_time <- function(
     max_backups = max_backups,
     compression = compression,
     overwrite = overwrite,
+    now = now,
     dry_run = dry_run,
     verbose = verbose
   )
@@ -46,8 +48,8 @@ backup_time <- function(
   size = 1,
   max_backups = Inf,
   compression = FALSE,
-  now = Sys.time(),
   overwrite = FALSE,
+  now = Sys.time(),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
