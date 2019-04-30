@@ -20,11 +20,34 @@ is_valid_date_format <- function(x){
 }
 
 
+assert_valid_date_format <- function(x){
+  xdep <- deparse(substitute(x))
+  if (!is_valid_datetime_format(x))
+    stop("`", xdep, "` is not a valid date format but ", preview_object(x))
+  else
+    TRUE
+}
+
+
+is_valid_date_format <- function(
+  x
+){
+  if (!is_scalar_character(x))
+    return(FALSE)
+
+  x <- standardize_datetime_stamp(x)
+
+  if (nchar(x) > 6)
+    return(FALSE)
+
+  is_valid_datetime_format(x)
+}
+
 
 assert_valid_datetime_format <- function(x){
   xdep <- deparse(substitute(x))
   if (!is_valid_datetime_format(x))
-    stop("`", xdep, "` is not a valid datimetime format but ", preview_object(x))
+    stop("`", xdep, "` is not a valid datetime format but ", preview_object(x))
   else
     TRUE
 }
@@ -35,8 +58,6 @@ is_valid_datetime_format <- function(
 ){
   if (!is_scalar_character(x))
     return(FALSE)
-
-
 
   standardize_datetime_stamp(x) %in% c(
     "%Y%m%d%H%M%S",
