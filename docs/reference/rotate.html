@@ -131,13 +131,13 @@ with an empty one (this is useful for log rotation)</p>
 
 <span class='fu'>rotate_time</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d--%H-%M-%S"</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>(),
   <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='fl'>FALSE</span>),
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='no'>dry_run</span>))
 
 <span class='fu'>backup_time</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d--%H-%M-%S"</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>(), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>(),
   <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='fl'>FALSE</span>),
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='no'>dry_run</span>))</pre>
     
