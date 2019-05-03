@@ -59,7 +59,6 @@ backup_time <- function(
     is_valid_datetime_format(format),
     is_scalar_integerish(size),
     is.infinite(max_backups) || is_n0(max_backups) || is.character(max_backups) || is_Date(max_backups),
-    is_scalar_logical(compression),
     is_scalar_logical(overwrite),
     is_scalar_logical(dry_run),
     is_scalar_logical(verbose)

@@ -22,10 +22,10 @@ BackupQueueIndex <- R6::R6Class(
 
     push_backup = function(
       compression = FALSE,
-      now = Sys.time(),
       dry_run = getOption("rotor.dry_run", FALSE),
       verbose = getOption("rotor.dry_run", dry_run)
     ){
+      assert_valid_compression(compression)
       self$increment_index(
         dry_run = dry_run,
         verbose = verbose

@@ -30,12 +30,12 @@ BackupQueueDateTime <- R6::R6Class(
       verbose = getOption("rotor.dry_run", dry_run)
     ){
       assert_valid_datetime_format(self$fmt)
+      assert_valid_compression(compression)
 
       if (is_Date(now))
         now <- as.POSIXct(as.character(now))
 
       stopifnot(
-        is_scalar_logical(compression),
         is_scalar_logical(overwrite),
         is_scalar_POSIXct(now),
         is_scalar_logical(dry_run),

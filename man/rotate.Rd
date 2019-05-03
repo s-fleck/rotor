@@ -66,10 +66,11 @@ In addtion for timestamped backups the following value are supported:
 \item{compression}{Whether or not backups should be compressed
 \itemize{
 \item \code{FALSE} for uncompressed backups,
-\item \code{TRUE} for zip compression; uses \code{\link[zip:zipr]{zip::zipr()}} if available,
+\item \code{TRUE} for zip compression; uses \code{\link[base:zip]{base::zip()}}
 \item a scalar \code{integer} between \code{1} and \code{9} to specify a compression
 level (requires \code{\link[zip:zipr]{zip::zipr()}}, see its documentation for details)
-\item \code{"base::zip()"} or \code{"zip::zipr"} to force a specific zip command
+\item the \code{character} scalars \code{"base::zip()"} or \code{"zip::zipr"} to force a
+specific zip command
 }}
 
 \item{create_file}{\code{logical} scalar. If \code{TRUE} create an empty file in

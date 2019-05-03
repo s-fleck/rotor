@@ -45,8 +45,7 @@ copy_or_compress <- function(
 
   # init
     if (isTRUE(compression)){
-      compression <-
-        {if (requireNamespace("zip", quietly = TRUE)) "zip::zipr" else "base::zip"}
+      compression <- "base::zip"
     }
 
     if (!isFALSE(compression))

@@ -53,10 +53,11 @@
 #'
 #' @param compression Whether or not backups should be compressed
 #'   - `FALSE` for uncompressed backups,
-#'   - `TRUE` for zip compression; uses [zip::zipr()] if available,
+#'   - `TRUE` for zip compression; uses [base::zip()]
 #'   - a scalar `integer` between `1` and `9` to specify a compression
 #'     level (requires [zip::zipr()], see its documentation for details)
-#'   - `"base::zip()"` or `"zip::zipr"` to force a specific zip command
+#'   - the `character` scalars `"base::zip()"` or `"zip::zipr"` to force a
+#'     specific zip command
 #'
 #' @param dry_run `logical` scalar. If `TRUE` no changes are applied to the
 #'   file system (no files are created or deleted)
@@ -146,6 +147,7 @@ backup <- function(
   stopifnot(
     is_scalar_character(file) && file.exists(file)
   )
+
   size <- parse_size(size)
 
   bq <- BackupQueueIndex$new(
