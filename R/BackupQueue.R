@@ -163,6 +163,9 @@ filenames_as_matrix <- function(
     return(NULL)
   }
 
+  file <- path.expand(file)
+  backups <- path.expand(backups)
+
   name <- tools::file_path_sans_ext(file)
   ext  <- tools::file_ext(file)
   name_end <- attr(gregexpr(name, backups[[1]])[[1]], "match.length") + 1L
