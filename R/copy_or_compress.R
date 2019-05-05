@@ -33,19 +33,19 @@ copy_or_compress <- function(
 
   assert(
     is_scalar_atomic(compression) && (
-      compression %in% c("base::zip", "zip::zipr") ||
+      compression %in% c("utils::zip", "zip::zipr") ||
       compression %in% 1:9 ||
       is_bool(compression)
     ),
     '`compression` must be `TRUE`, `FALSE`, or an integer between 1 and 9',
-    'or the character scalers "base::zip" or "zip::zipr" not: ',
+    'or the character scalers "utils::zip" or "zip::zipr" not: ',
     preview_object(compression)
   )
 
 
   # init
     if (isTRUE(compression)){
-      compression <- "base::zip"
+      compression <- "utils::zip"
     }
 
     if (!isFALSE(compression))
@@ -79,7 +79,7 @@ copy_or_compress <- function(
       msg_file_copy(file, outname, dry_run = dry_run, verbose = verbose)
       if (!dry_run) zip::zipr(outname, file)
 
-    } else if (identical(compression, "base::zip")){
+    } else if (identical(compression, "utils::zip")){
       owd <- setwd(dir = dirname(file))
       on.exit(setwd(owd))
       utils::zip(outname, files = basename(file), flags="-q")

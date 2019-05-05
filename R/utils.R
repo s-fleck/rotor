@@ -110,3 +110,21 @@ strsplit_at_pos <- function(
 ){
   matrix(data = c(substr(x, 1, pos), substr(x, pos + 1L, nchar(x))), ncol = 2)
 }
+
+
+
+
+is_zipcmd_available <- function(){
+  ori <- tempfile()
+  des <- tempfile(fileext = ".zip")
+  file.create(ori)
+  on.exit(suppressWarnings(file.remove(ori)))
+
+  tryCatch(suppressMessages(suppressWarnings({
+    utils::zip(des, ori)
+    on.exit(suppressWarnings(file.remove(des)), add = TRUE)
+    identical(unzip(des, list = TRUE)$Name) == basename(ori)
+  })),
+    error = function(e) FALSE
+  )
+}

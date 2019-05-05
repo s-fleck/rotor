@@ -283,6 +283,9 @@ test_that("is_backup_older_than_interval", {
 
 
 test_that("dry_run does not modify the file systen", {
+  if (!is_zipcmd_available())
+    skip("Test requires a workings system zip command")
+
   expect_length(list.files(td), 0)
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)

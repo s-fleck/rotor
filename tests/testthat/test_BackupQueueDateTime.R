@@ -312,6 +312,9 @@ test_that("BackupQueueDate $last_date", {
 
 
 test_that("BackupQueueDateTime$push_backup() can push to different directory", {
+  if (!is_zipcmd_available())
+    skip("Test requires a workings system zip command")
+
   tf <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)

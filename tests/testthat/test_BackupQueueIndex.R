@@ -144,6 +144,9 @@ test_that("BackupQueue$increment_index works as expected", {
 
 
 test_that("BackupQueue$push_backup() works as expected", {
+  if (!is_zipcmd_available())
+    skip("Test requires a workings system zip command")
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:9, ".log")
@@ -169,6 +172,9 @@ test_that("BackupQueue$push_backup() works as expected", {
 
 
 test_that("BackupQueueIndex$push_backup() can push to different directory", {
+  if (!is_zipcmd_available())
+    skip("Test requires a workings system zip command")
+
   tf <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)

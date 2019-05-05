@@ -58,7 +58,7 @@
 #'     level (requires the
 #'     [zip](https://CRAN.R-project.org/package=zip) package,
 #'     see its documentation for details)
-#'   - the `character` scalars `"base::zip()"` or `"zip::zipr"` to force a
+#'   - the `character` scalars `"utils::zip()"` or `"zip::zipr"` to force a
 #'     specific zip command
 #'
 #' @param dry_run `logical` scalar. If `TRUE` no changes are applied to the
