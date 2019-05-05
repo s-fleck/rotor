@@ -20,10 +20,9 @@
 #' newest_backup(tf)
 #' oldest_backup(tf)
 #'
+#' # cleanup
 #' prune_backups(tf, 0)
 #' n_backups(tf)
-#'
-#' # cleanup
 #' file.remove(tf)
 n_backups <- function(file){
   if (is_impure_BackupQueue(file)){

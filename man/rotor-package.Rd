@@ -4,7 +4,7 @@
 \name{rotor-package}
 \alias{rotor}
 \alias{rotor-package}
-\title{rotor: Rote files}
+\title{rotor: Log Rotation and Conditional Backups}
 \description{
 Conditionally rotate or back-up files based on their size or the
   date of the last backup; inspired by the 'linux' utility 'logrotate'.

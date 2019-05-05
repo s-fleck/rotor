@@ -1,6 +1,6 @@
 Type: Package
 Package: rotor
-Title: Rote files
+Title: Log Rotation and Conditional Backups
 Version: 0.1.0.9001
 Authors@R: 
     person(given = "Stefan",

@@ -69,7 +69,7 @@ In addition for timestamped backups the following value are supported:
 \item \code{TRUE} for zip compression; uses \code{\link[=zip]{zip()}}
 \item a scalar \code{integer} between \code{1} and \code{9} to specify a compression
 level (requires the
-\href{https://cran.r-project.org/web/packages/zip/index.html}{zip} package,
+\href{https://CRAN.R-project.org/package=zip}{zip} package,
 see its documentation for details)
 \item the \code{character} scalars \code{"base::zip()"} or \code{"zip::zipr"} to force a
 specific zip command

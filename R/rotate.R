@@ -56,7 +56,7 @@
 #'   - `TRUE` for zip compression; uses [zip()]
 #'   - a scalar `integer` between `1` and `9` to specify a compression
 #'     level (requires the
-#'     [zip](https://cran.r-project.org/web/packages/zip/index.html) package,
+#'     [zip](https://CRAN.R-project.org/package=zip) package,
 #'     see its documentation for details)
 #'   - the `character` scalars `"base::zip()"` or `"zip::zipr"` to force a
 #'     specific zip command
