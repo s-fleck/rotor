@@ -157,8 +157,8 @@ filenames_as_matrix <- function(
     return(NULL)
   }
 
-  file    <- path.expand(file)
-  backups <- path.expand(backups)
+  file    <- normalizePath(file, mustWork = FALSE)
+  backups <- normalizePath(backups, mustWork = FALSE)
 
 
   file_dir  <- dirname(file)

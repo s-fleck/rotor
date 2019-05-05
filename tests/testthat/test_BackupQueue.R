@@ -26,7 +26,7 @@ test_that("get_backups works as expected", {
 
   expect_identical(
     get_backups("foo.txt", c("path/to/foo.1.txt", "path/to/bar"), sfx_patterns = "\\d{1}"),
-    "path/to/foo.1.txt"
+    normalizePath("path/to/foo.1.txt", mustWork = FALSE)
   )
 
   expect_error(
