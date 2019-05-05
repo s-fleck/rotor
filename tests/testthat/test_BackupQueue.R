@@ -83,33 +83,6 @@ test_that("BackupQueue finding backups works as expected for files without exten
 
 
 
-test_that("BackupQueue finding backups works as expected with custom backup dir", {
-  skip("blubb")
-
-  tf     <- file.path(td, "test.log")
-  bu_dir <- file.path(td, "backups")
-  dir.create(bu_dir)
-  on.exit(unlink(bu_dir))
-
-  file.create(tf)
-  bq <- BackupQueue$new(
-    tf,
-    backup_dir = bu_dir
-  )
-
-  sfxs <-c(1:12, "2019-12-31")
-  bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs, ".log")
-  file.create(bus)
-
-  expect_path_setequal(bq$backups$path, bus)
-  expect_setequal(bq$backups$sfx, sfxs)
-  expect_setequal(bq$backups$ext, "log")
-  bq$prune(0)
-})
-
-
-
-
 test_that("dryrun/verbose prune", {
   tf <- file.path(td, "test")
   file.create(tf)

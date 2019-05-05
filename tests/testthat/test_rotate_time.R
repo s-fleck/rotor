@@ -74,8 +74,30 @@ test_that("backup_time works with timestamps", {
   expect_equal(min(bq$backups$timestamp), as.POSIXct("2019-02-01 12:00:00"))
   expect_equal(max(bq$backups$timestamp), now)
 
-
-
   backup_time(tf, max_backups = 0)
   file.remove(tf)
+})
+
+
+
+
+test_that("backup/rotate date works to different directory", {
+  tf     <- file.path(td, "test.log")
+  bu_dir <- file.path(td, "backups")
+  dir.create(bu_dir)
+  on.exit(unlink(c(bu_dir, tf)))
+
+  file.create(tf)
+  writeLines("foobar", tf)
+
+  backup_time(tf, backup_dir = bu_dir, now = as.POSIXct("2019-01-01 12:12:12"), verbose = TRUE)
+
+  expect_identical(
+    readLines(tf),
+    readLines(file.path(dirname(tf), "backups", "test.2019-01-01--12-12-12.log"))
+  )
+
+  expect_identical(n_backups(tf, backup_dir = bu_dir), 1L)
+  prune_backups(tf, 0, backup_dir = bu_dir)
+  expect_identical(n_backups(tf, backup_dir = bu_dir), 0L)
 })

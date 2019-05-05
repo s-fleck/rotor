@@ -322,3 +322,26 @@ test_that("dry_run does not modify the file systen", {
   unlink(tf)
   expect_length(list.files(td), 0)
 })
+
+
+
+test_that("backup/rotate date works to different directory", {
+  tf     <- file.path(td, "test.log")
+  bu_dir <- file.path(td, "backups")
+  dir.create(bu_dir)
+  on.exit(unlink(c(bu_dir, tf)))
+
+  file.create(tf)
+  writeLines("foobar", tf)
+
+  backup_date(tf, backup_dir = bu_dir, now = as.Date("2019-01-01"))
+
+  expect_identical(
+    readLines(tf),
+    readLines(file.path(dirname(tf), "backups", "test.2019-01-01.log"))
+  )
+
+  expect_identical(n_backups(tf, backup_dir = bu_dir), 1L)
+  prune_backups(tf, 0, backup_dir = bu_dir)
+  expect_identical(n_backups(tf, backup_dir = bu_dir), 0L)
+})

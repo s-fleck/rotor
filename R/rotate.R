@@ -115,6 +115,7 @@ rotate <- function(
   max_backups = Inf,
   compression = FALSE,
   create_file = TRUE,
+  backup_dir = dirname(file),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
@@ -123,6 +124,7 @@ rotate <- function(
     size = size,
     max_backups = max_backups,
     compression = compression,
+    backup_dir = backup_dir,
     dry_run = dry_run,
     verbose = verbose
   )
@@ -143,6 +145,7 @@ backup <- function(
   size = 0,
   max_backups = Inf,
   compression = FALSE,
+  backup_dir = dirname(file),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
@@ -154,6 +157,7 @@ backup <- function(
 
   bq <- BackupQueueIndex$new(
     file,
+    backup_dir = backup_dir,
     max_backups = max_backups
   )
 

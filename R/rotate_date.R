@@ -10,6 +10,7 @@ rotate_date <- function(
   compression = FALSE,
   overwrite = FALSE,
   create_file = TRUE,
+  backup_dir = dirname(file),
   now = Sys.Date(),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
@@ -24,6 +25,7 @@ rotate_date <- function(
     max_backups = max_backups,
     compression = compression,
     overwrite = overwrite,
+    backup_dir = backup_dir,
     now = now,
     dry_run = dry_run,
     verbose = verbose
@@ -51,6 +53,7 @@ backup_date <- function(
   max_backups = Inf,
   compression = FALSE,
   overwrite = FALSE,
+  backup_dir = dirname(file),
   now = Sys.Date(),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
@@ -67,11 +70,11 @@ backup_date <- function(
     is_scalar_Date(now)
   )
 
-  bq <- BackupQueueDate$new(file, format = format)
+  bq <- BackupQueueDate$new(file, format = format, backup_dir = backup_dir)
 
   # Warn if indexed backups exist
-  if (BackupQueue$new(file)$has_backups){
-    bi <- BackupQueueIndex$new(file)
+  if (BackupQueue$new(file, backup_dir = backup_dir)$has_backups){
+    bi <- BackupQueueIndex$new(file, backup_dir = backup_dir)
     idx_backups <- paste(setdiff(bi$backups$path, bq$backups$path))
     if (length(idx_backups)){warning(
       "Backing up by timestamp, but indexed backups exist already:\n",
