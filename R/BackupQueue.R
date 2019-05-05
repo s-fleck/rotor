@@ -131,13 +131,7 @@ BackupQueue <- R6::R6Class(
       }
 
       fname_matrix <- filenames_as_matrix(self$file, backups = backup_files)
-      fname_df <- data.frame(
-        dir   = dirname(fname_matrix[, "name"]),
-        name  = basename(fname_matrix[, "name"]),
-        sfx   = fname_matrix[, "sfx"],
-        ext   = fname_matrix[, "ext"],
-        stringsAsFactors = FALSE
-      )
+      fname_df     <- as.data.frame(fname_matrix, stringsAsFactors = FALSE)
       finfo <- file.info(backup_files)
 
       res <- cbind(
@@ -163,22 +157,41 @@ filenames_as_matrix <- function(
     return(NULL)
   }
 
-  file <- path.expand(file)
+  file    <- path.expand(file)
   backups <- path.expand(backups)
 
-  name <- tools::file_path_sans_ext(file)
-  ext  <- tools::file_ext(file)
-  name_end <- attr(gregexpr(name, backups[[1]])[[1]], "match.length") + 1L
-  a <- strsplit_at_seperator_pos(backups, name_end)
 
-  if (!is_blank(ext)){
-    ext_start <- unlist(gregexpr(ext, a[, 2]))
+  file_dir  <- dirname(file)
+  file_name <- basename(tools::file_path_sans_ext(file))
+  file_ext  <- tools::file_ext(file)
+
+  back_dir  <- dirname(backups)
+  assert(
+    all_are_identical(back_dir),
+    "All backups of `file` must be in the same directory, not \n",
+    paste("*", unique(back_dir), collapse = "\n")
+  )
+  back_name <- basename(backups)
+
+  filename_end <-
+    attr(gregexpr(file_name, back_name[[1]])[[1]], "match.length") + 1L
+
+  a <- strsplit_at_seperator_pos(back_name, filename_end)
+  assert(
+    all_are_identical(a[, 1]),
+    "All backups of `file` must have the same basename, not  \n",
+    paste("*", unique(a[, 1]), collapse = "\n")
+  )
+
+
+  if (!is_blank(file_ext)){
+    ext_start <- unlist(gregexpr(file_ext, a[, 2]))
     b <- strsplit_at_seperator_pos(a[, 2], ext_start - 1L)
-    res <- cbind(a[, 1], b)
-    colnames(res) <- c("name", "sfx", "ext")
+    res <- cbind(back_dir, a[, 1], b)
+    colnames(res) <- c("dir", "name", "sfx", "ext")
   } else {
-    res <- cbind(a, "")
-    colnames(res) <- c("name", "sfx", "ext")
+    res <- cbind(back_dir, a, "")
+    colnames(res) <- c("dir", "name", "sfx", "ext")
   }
 
   assert(is.matrix(res))

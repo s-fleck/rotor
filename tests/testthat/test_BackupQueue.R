@@ -62,7 +62,33 @@ test_that("BackupQueue finding backups works as expected for files without exten
 
 
 
-test_that("drurun/verbose prune", {
+test_that("BackupQueue finding backups works as expected with custom backup dir", {
+  skip("blubb")
+
+  tf     <- file.path(td, "test.log")
+  bu_dir <- file.path(td, "backups")
+  dir.create(bu_dir)
+  on.exit(unlink(bu_dir))
+
+  file.create(tf)
+  bq <- BackupQueue$new(
+    tf,
+    backup_dir = bu_dir
+  )
+
+  sfxs <-c(1:12, "2019-12-31")
+  bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs, ".log")
+  file.create(bus)
+
+  expect_setequal(bq$backups$path, bus)
+  expect_setequal(bq$backups$sfx, sfxs)
+  expect_setequal(bq$backups$ext, "log")
+  bq$prune(0)
+})
+
+
+
+test_that("dryrun/verbose prune", {
   tf <- file.path(td, "test")
   file.create(tf)
   bq <- BackupQueue$new(tf)
@@ -86,4 +112,50 @@ test_that("drurun/verbose prune", {
   expect_message(bq$prune(0, verbose = TRUE), "test.1")
   expect_message(bq$prune(0, verbose = TRUE), "Nothing")
   expect_identical(bq$n_backups, 0L)
+})
+
+
+
+
+test_that("filenames_as_matrix works as expected", {
+
+  res <- filenames_as_matrix(
+    "blah.txt",
+    c(
+      "blah.1.txt",
+      "blah.2019-12-31.txt",
+      "blah.2019-12-31--01-01-01.txt.tar.gz"
+    )
+  )
+
+  expect_identical(res[, "ext"], c("txt", "txt", "txt.tar.gz"))
+  expect_identical(res[, "sfx"], c("1",  "2019-12-31", "2019-12-31--01-01-01"))
+})
+
+
+
+
+test_that("filenames_as_matrix works as expected with paths", {
+  expect_error(
+    filenames_as_matrix("x/y.txt", c("a/y.1.txt", "b/y.2.txt")),
+    "same directory"
+  )
+  expect_error(
+    filenames_as_matrix("x/y.txt", c("a/y.1.txt", "a/z.2.txt")),
+    "same basename"
+  )
+
+  res <- filenames_as_matrix(
+    "blah/blah.txt",
+    c(
+      "blubb/blah.1.txt",
+      "blubb/blah.2019-12-31.txt",
+      "blubb/blah.2019-12-31--01-01-01.txt.tar.gz"
+    )
+  )
+
+  expect_identical(res[, "dir"], rep("blubb", 3))
+  expect_identical(res[, "name"], rep("blah", 3))
+  expect_identical(res[, "ext"], c("txt", "txt", "txt.tar.gz"))
+  expect_identical(res[, "sfx"], c("1",  "2019-12-31", "2019-12-31--01-01-01"))
 })
