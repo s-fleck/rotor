@@ -10,33 +10,35 @@
 \title{Rotate or backup files}
 \usage{
 rotate(file, size = 0, max_backups = Inf, compression = FALSE,
-  create_file = TRUE, dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run))
-
-backup(file, size = 0, max_backups = Inf, compression = FALSE,
+  create_file = TRUE, backup_dir = dirname(file),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run))
 
+backup(file, size = 0, max_backups = Inf, compression = FALSE,
+  backup_dir = dirname(file), dry_run = getOption("rotor.dry_run",
+  FALSE), verbose = getOption("rotor.dry_run", dry_run))
+
 rotate_date(file, age = NULL, format = "\%Y-\%m-\%d", size = 1,
   max_backups = Inf, compression = FALSE, overwrite = FALSE,
-  create_file = TRUE, now = Sys.Date(),
+  create_file = TRUE, backup_dir = dirname(file), now = Sys.Date(),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run))
 
 backup_date(file, age = NULL, format = "\%Y-\%m-\%d", size = 1,
   max_backups = Inf, compression = FALSE, overwrite = FALSE,
-  now = Sys.Date(), dry_run = getOption("rotor.dry_run", FALSE),
+  backup_dir = dirname(file), now = Sys.Date(),
+  dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run))
 
 rotate_time(file, age = NULL, format = "\%Y-\%m-\%d--\%H-\%M-\%S",
   size = 1, max_backups = Inf, compression = FALSE,
-  overwrite = FALSE, create_file = TRUE, now = Sys.time(),
-  dry_run = getOption("rotor.dry_run", FALSE),
+  overwrite = FALSE, create_file = TRUE, backup_dir = dirname(file),
+  now = Sys.time(), dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run))
 
 backup_time(file, age = NULL, format = "\%Y-\%m-\%d--\%H-\%M-\%S",
   size = 1, max_backups = Inf, compression = FALSE,
-  overwrite = FALSE, now = Sys.time(),
+  overwrite = FALSE, backup_dir = dirname(file), now = Sys.time(),
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run))
 }
@@ -71,12 +73,15 @@ In addition for timestamped backups the following value are supported:
 level (requires the
 \href{https://CRAN.R-project.org/package=zip}{zip} package,
 see its documentation for details)
-\item the \code{character} scalars \code{"base::zip()"} or \code{"zip::zipr"} to force a
+\item the \code{character} scalars \code{"utils::zip()"} or \code{"zip::zipr"} to force a
 specific zip command
 }}
 
 \item{create_file}{\code{logical} scalar. If \code{TRUE} create an empty file in
 place of \code{file} after rotating.}
+
+\item{backup_dir}{\code{character} scalar. The directory in which the backups
+of \code{file} are stored (defaults to \code{dirname(file)})}
 
 \item{dry_run}{\code{logical} scalar. If \code{TRUE} no changes are applied to the
 file system (no files are created or deleted)}

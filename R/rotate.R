@@ -51,6 +51,9 @@
 #'   and use the IEC suffixes `KiB`, `MiB`, `GiB`, `TiB`. In Both cases
 #'   `1` kilobyte is `1024` bytes, 1 `megabyte` is `1024` kilobytes, etc... .
 #'
+#' @param backup_dir `character` scalar. The directory in which the backups
+#'   of `file` are stored (defaults to `dirname(file)`)
+#'
 #' @param compression Whether or not backups should be compressed
 #'   - `FALSE` for uncompressed backups,
 #'   - `TRUE` for zip compression; uses [zip()]

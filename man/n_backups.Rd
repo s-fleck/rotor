@@ -8,18 +8,21 @@
 \alias{oldest_backup}
 \title{Helpers for working with backups}
 \usage{
-n_backups(file)
+n_backups(file, backup_dir = dirname(file))
 
-list_backups(file)
+list_backups(file, backup_dir = dirname(file))
 
-prune_backups(file, max_backups)
+prune_backups(file, max_backups, backup_dir = dirname(file))
 
-newest_backup(file)
+newest_backup(file, backup_dir = dirname(file))
 
-oldest_backup(file)
+oldest_backup(file, backup_dir = dirname(file))
 }
 \arguments{
 \item{file}{\code{character} scalar: Path to a file.}
+
+\item{backup_dir}{\code{character} scalar. The directory in which the backups
+of \code{file} are stored (defaults to \code{dirname(file)})}
 
 \item{max_backups}{maximum number of backups to keep
 \itemize{
