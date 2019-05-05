@@ -210,15 +210,24 @@ get_backups <- function(
   potential_backups,
   sfx_patterns
 ){
-  name <- tools::file_path_sans_ext(file)
+  if (!length(potential_backups))
+    return(character())
+
+  bu_dir <- dirname(potential_backups)
+  bu_dir <- as_scalar(bu_dir)
+
+  name <- basename(tools::file_path_sans_ext(file))
   ext  <- tools::file_ext(file)
   sfx_patterns <- paste0("(", sfx_patterns, ")", collapse = "|")
 
+  path_path <- {if (bu_dir %in% c(".", "")) "" else paste0(bu_dir, "[\\/\\\\]")}
+
+
   if (is_blank(ext)){
-    pat <- sprintf("^%s\\.%s\\.*$", name, sfx_patterns)
+    pat <- sprintf("^%s%s\\.%s\\.*$", path_path, name, sfx_patterns)
 
   } else {
-    pat <- sprintf("^%s\\.%s\\.%s\\.*$", name, sfx_patterns, ext)
+    pat <- sprintf("^%s%s\\.%s\\.%s\\.*$", path_path, name, sfx_patterns, ext)
   }
 
   sort(grep(pat, potential_backups, value = TRUE))

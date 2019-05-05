@@ -15,6 +15,27 @@ teardown({
 
 
 
+test_that("get_backups works as expected", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+
+  expect_identical(
+    get_backups("foo.txt", c("foo.1.txt", "bar"), sfx_patterns = "\\d{1}"),
+    "foo.1.txt"
+  )
+
+  expect_identical(
+    get_backups("foo.txt", c("path/to/foo.1.txt", "path/to/bar"), sfx_patterns = "\\d{1}"),
+    "path/to/foo.1.txt"
+  )
+
+  expect_error(
+    get_backups("foo.txt", c("path/to/foo.1.txt", "path/bar"), sfx_patterns = "\\d{1}")
+  )
+})
+
+
+
 test_that("BackupQueue works as expected", {
   tf <- file.path(td, "test")
   file.create(tf)
