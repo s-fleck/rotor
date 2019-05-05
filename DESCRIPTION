@@ -18,6 +18,7 @@ Imports:
     dint
 Suggests: 
     testthat,
+    fs,
     crayon,
     zip,
     mockery,

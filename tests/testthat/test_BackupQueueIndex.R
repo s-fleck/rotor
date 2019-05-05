@@ -23,16 +23,16 @@ test_that("BackupQueueIndex can find and prune backup trails", {
   expect_identical(bt$n_backups, 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), c(".1.log.zip", ".2.log.tar.gz", ".3.log"))
   file.create(bus)
-  expect_identical(bt$backups$path, bus)
+  expect_path_equal(bt$backups$path, bus)
 
   # multiple pruning with the same settings does not change anything
-  expect_identical(bt$prune(2)$backups$path, bus[1:2])
-  expect_identical(bt$prune(2)$backups$path, bus[1:2])
-  expect_identical(bt$prune(2)$backups$path, bus[1:2])
+  expect_path_equal(bt$prune(2)$backups$path, bus[1:2])
+  expect_path_equal(bt$prune(2)$backups$path, bus[1:2])
+  expect_path_equal(bt$prune(2)$backups$path, bus[1:2])
 
   # pruning with higher prune number than number of backups does not change anything
-  expect_identical(bt$prune(1)$backups$path, bus[1])
-  expect_identical(bt$prune(2)$backups$path, bus[1])
+  expect_path_equal(bt$prune(1)$backups$path, bus[1])
+  expect_path_equal(bt$prune(2)$backups$path, bus[1])
 
   #cleanup
   expect_length(bt$prune(0)$backups$path, 0)
@@ -74,11 +74,11 @@ test_that("BackupQueue pruning works as expected for files without extension", {
   expect_identical(bt$n_backups, 0L)
   bus <- paste0(tf, c(".1", ".2", ".3"))
   file.create(bus)
-  expect_identical(bt$backups$path, bus)
+  expect_path_equal(bt$backups$path, bus)
   bt$prune(2)
-  expect_identical(bt$backups$path, bus[1:2])
+  expect_path_equal(bt$backups$path, bus[1:2])
   bt$prune(2)
-  expect_identical(bt$backups$path, bus[1:2])
+  expect_path_equal(bt$backups$path, bus[1:2])
   expect_length(bt$prune(0)$backups$path, 0)
   file.remove(tf)
 })
@@ -95,9 +95,9 @@ test_that("BackupQueue works as expected for files with extension", {
   expect_identical(bt$n_backups, 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), c(".1.log", ".2.log", ".3.log"))
   file.create(bus)
-  expect_identical(bt$backups$path, bus)
+  expect_path_equal(bt$backups$path, bus)
   bt$prune(2)
-  expect_identical(bt$backups$path, bus[1:2])
+  expect_path_equal(bt$backups$path, bus[1:2])
   expect_length(bt$prune(0)$backups$path, 0)
   file.remove(tf)
 })
@@ -115,9 +115,9 @@ test_that("BackupQueue$pad_index works as expected", {
   file.create(bus)
 
   bt <- BackupQueueIndex$new(tf)
-  expect_setequal(bt$backups$path, bus)
-  expect_identical(bt$pad_index()$backups$path, padded_bus)
-  expect_identical(bt$prune(9)$backups$path, bus[1:9])
+  expect_path_setequal(bt$backups$path, bus)
+  expect_path_setequal(bt$pad_index()$backups$path, padded_bus)
+  expect_path_setequal(bt$prune(9)$backups$path, bus[1:9])
 
   expect_length(bt$prune(0)$backups$path, 0)
   file.remove(tf)
@@ -133,8 +133,8 @@ test_that("BackupQueue$increment_index works as expected", {
   file.create(bus)
 
   bt <- BackupQueueIndex$new(tf)
-  expect_setequal(bt$backups$path, bus)
-  expect_identical(bt$increment_index()$backups$path, pushed_bus)
+  expect_path_setequal(bt$backups$path, bus)
+  expect_path_equal(bt$increment_index()$backups$path, pushed_bus)
 
   expect_length(bt$prune(0)$backups$path, 0)
   file.remove(tf)

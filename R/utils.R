@@ -123,8 +123,27 @@ is_zipcmd_available <- function(){
   tryCatch(suppressMessages(suppressWarnings({
     utils::zip(des, ori)
     on.exit(suppressWarnings(file.remove(des)), add = TRUE)
-    identical(unzip(des, list = TRUE)$Name) == basename(ori)
+    identical(utils::unzip(des, list = TRUE)$Name) == basename(ori)
   })),
     error = function(e) FALSE
   )
+}
+
+
+
+
+path_equal <- function(x, y){
+  fs::path_real(x) == fs::path_real(y)
+}
+
+
+
+expect_path_equal <- function(x, y){
+  testthat::expect_equal(fs::path_real(x), fs::path_real(y))
+}
+
+
+
+expect_path_setequal <- function(x, y){
+  testthat::expect_equal(sort(unique(fs::path_real(x))), sort(unique(fs::path_real(y))))
 }

@@ -24,9 +24,9 @@ test_that("get_backups works as expected", {
     "foo.1.txt"
   )
 
-  expect_identical(
+  expect_path_equal(
     get_backups("foo.txt", c("path/to/foo.1.txt", "path/to/bar"), sfx_patterns = "\\d{1}"),
-    normalizePath("path/to/foo.1.txt", mustWork = FALSE)
+    "path/to/foo.1.txt"
   )
 
   expect_error(
@@ -41,8 +41,8 @@ test_that("BackupQueue works as expected", {
   file.create(tf)
 
   bq <- BackupQueue$new(tf)
-  expect_identical(bq$file, tf)
-  expect_identical(bq$backup_dir, dirname(tf))
+  expect_path_equal(bq$file, tf)
+  expect_path_equal(bq$backup_dir, dirname(tf))
   file.remove(tf)
 })
 
@@ -58,7 +58,7 @@ test_that("BackupQueue finding backups works as expected for files with extensio
   bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs, ".log")
   file.create(bus)
 
-  expect_setequal(bq$backups$path, bus)
+  expect_path_setequal(bq$backups$path, bus)
   expect_setequal(bq$backups$sfx, sfxs)
   expect_setequal(bq$backups$ext, "log")
   bq$prune(0)
@@ -75,7 +75,7 @@ test_that("BackupQueue finding backups works as expected for files without exten
   bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs)
   file.create(bus)
 
-  expect_setequal(bq$backups$path, bus)
+  expect_path_setequal(bq$backups$path, bus)
   expect_setequal(bq$backups$sfx, sfxs)
   expect_setequal(bq$backups$ext, "")
 })
@@ -101,11 +101,12 @@ test_that("BackupQueue finding backups works as expected with custom backup dir"
   bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs, ".log")
   file.create(bus)
 
-  expect_setequal(bq$backups$path, bus)
+  expect_path_setequal(bq$backups$path, bus)
   expect_setequal(bq$backups$sfx, sfxs)
   expect_setequal(bq$backups$ext, "log")
   bq$prune(0)
 })
+
 
 
 
@@ -175,7 +176,7 @@ test_that("filenames_as_matrix works as expected with paths", {
     )
   )
 
-  expect_identical(res[, "dir"], rep("blubb", 3))
+  expect_path_equal(res[, "dir"], rep("blubb", 3))
   expect_identical(res[, "name"], rep("blah", 3))
   expect_identical(res[, "ext"], c("txt", "txt", "txt.tar.gz"))
   expect_identical(res[, "sfx"], c("1",  "2019-12-31", "2019-12-31--01-01-01"))

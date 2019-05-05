@@ -63,7 +63,7 @@ test_that("BackupQueueDate works with supported datestamp formats", {
   file.create(noback)
   on.exit(file.remove(noback))
 
-  expect_identical(
+  expect_path_equal(
     basename(bq$backups$path),
     c(
       "test.20200411.log",
@@ -93,7 +93,7 @@ test_that("Prune BackupQueueDate based on date", {
   file.create(bus)
   bq$prune(as.Date("2019-01-02"))
 
-  expect_identical(
+  expect_path_equal(
     basename(bq$backups$path),
     c(
       "test.2020-01-03.log",
@@ -150,7 +150,7 @@ test_that("Prune BackupQueueDate based on month interval", {
   file.create(bus)
 
   bq$prune("2 months")
-  expect_identical(
+  expect_path_equal(
     basename(bq$backups$path),
     c(
       "test.2019-04-03.log",
@@ -176,7 +176,7 @@ test_that("Prune BackupQueueDate based on week interval", {
   file.create(bus)
 
   bq$prune("2 weeks")
-  expect_identical(
+  expect_path_equal(
     basename(bq$backups$path),
     c(
       "test.2019-04-15.log",
@@ -202,7 +202,7 @@ test_that("Prune BackupQueueDate based on dayss interval", {
   file.create(bus)
 
   bq$prune("2 days")
-  expect_identical(
+  expect_path_equal(
     basename(bq$backups$path),
     c(
       "test.2019-04-09.log",

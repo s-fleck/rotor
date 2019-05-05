@@ -20,8 +20,8 @@ test_that("first_backup works as expected", {
 
   file.create(tf, files)
 
-  expect_match(newest_backup(tf), files[[2]])
-  expect_match(oldest_backup(tf), files[[1]])
+  expect_path_equal(newest_backup(tf), files[[2]])
+  expect_path_equal(oldest_backup(tf), files[[1]])
 
   files2 <- file.path(td, c("test.1.log", "test.2.log"))
   file.create(files2)
@@ -31,8 +31,8 @@ test_that("first_backup works as expected", {
   expect_warning(expect_true(n_backups(tf) == 4))
   file.remove(files)
 
-  expect_match(newest_backup(tf), files2[[1]])
-  expect_match(oldest_backup(tf), files2[[2]])
+  expect_path_equal(newest_backup(tf), files2[[1]])
+  expect_path_equal(oldest_backup(tf), files2[[2]])
   prune_backups(tf, 0)
   expect_true(n_backups(tf) == 0)
 
