@@ -114,24 +114,6 @@ strsplit_at_pos <- function(
 
 
 
-is_zipcmd_available <- function(){
-  ori <- tempfile()
-  des <- tempfile(fileext = ".zip")
-  file.create(ori)
-  on.exit(suppressWarnings(file.remove(ori)))
-
-  tryCatch(suppressMessages(suppressWarnings({
-    utils::zip(des, ori)
-    on.exit(suppressWarnings(file.remove(des)), add = TRUE)
-    identical(utils::unzip(des, list = TRUE)$Name) == basename(ori)
-  })),
-    error = function(e) FALSE
-  )
-}
-
-
-
-
 path_equal <- function(x, y){
   fs::path_real(x) == fs::path_real(y)
 }

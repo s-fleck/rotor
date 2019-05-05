@@ -149,3 +149,21 @@ assert_valid_compression <- function(compression){
     preview_object(compression)
   )
 }
+
+
+
+
+is_zipcmd_available <- function(){
+  ori <- tempfile()
+  des <- tempfile(fileext = ".zip")
+  file.create(ori)
+  on.exit(suppressWarnings(file.remove(ori)))
+
+  tryCatch(suppressMessages(suppressWarnings({
+    utils::zip(des, ori)
+    on.exit(suppressWarnings(file.remove(des)), add = TRUE)
+    identical(basename(utils::unzip(des, list = TRUE)$Name), basename(ori))
+  })),
+  error = function(e) FALSE
+  )
+}
