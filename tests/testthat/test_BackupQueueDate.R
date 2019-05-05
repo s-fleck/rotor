@@ -231,3 +231,25 @@ test_that("BackupQueueDate $last_date", {
   bq$prune(0)
   file.remove(tf)
 })
+
+
+
+
+test_that("BackupQueueDateTime$push_backup() can push to different directory", {
+  tf <- file.path(td, "test.log")
+  bu_dir <- file.path(td, "backups")
+  dir.create(bu_dir)
+  file.create(tf)
+  on.exit(file.remove(bu_dir, tf))
+
+
+  bt <- BackupQueueDate$new(tf, backup_dir = bu_dir)
+  bt$push_backup(verbose = TRUE)
+
+  expect_match(bt$backups$dir, "rotor.backups")
+  bt$push_backup(compression = TRUE)
+
+  expect_identical(bt$n_backups, 2L)
+
+  expect_length(bt$prune(0)$backups$path, 0)
+})

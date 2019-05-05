@@ -43,7 +43,11 @@ BackupQueueDateTime <- R6::R6Class(
       )
 
       # generate new filename
-      name <- tools::file_path_sans_ext(self$file)
+      name <- file.path(
+        self$backup_dir,
+        tools::file_path_sans_ext(basename(self$file))
+      )
+
       ext  <- tools::file_ext(self$file)
       sfx  <- format(now, format = self$fmt)
 

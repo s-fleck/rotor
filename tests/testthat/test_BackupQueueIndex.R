@@ -167,7 +167,8 @@ test_that("BackupQueue$push_backup() works as expected", {
 
 
 
-test_that("BackupQueue$push_backup() can push to different directory", {
+
+test_that("BackupQueueIndex$push_backup() can push to different directory", {
   tf <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
@@ -178,17 +179,15 @@ test_that("BackupQueue$push_backup() can push to different directory", {
   bt <- BackupQueueIndex$new(tf, backup_dir = bu_dir)
   bt$push_backup(verbose = TRUE)
 
-  BackupQueue$new(tf, backup_dir = bu_dir)
-
-  bt$backups
-
+  expect_match(bt$backups$dir, "rotor.backups")
   bt$push_backup(compression = TRUE)
-  bt$backups
 
+  expect_identical(bt$n_backups, 2L)
 
   expect_length(bt$prune(0)$backups$path, 0)
-  file.remove(tf)
 })
+
+
 
 
 test_that("BackupQueueIndex dry run doesnt modify file system", {

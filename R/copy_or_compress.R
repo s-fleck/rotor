@@ -82,7 +82,7 @@ copy_or_compress <- function(
     } else if (identical(compression, "base::zip")){
       owd <- setwd(dir = dirname(file))
       on.exit(setwd(owd))
-      utils::zip(basename(outname), files = basename(file), flags="-q")
+      utils::zip(outname, files = basename(file), flags="-q")
 
     } else {
       stop("should not be possible to arrive here")
