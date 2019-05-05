@@ -36,7 +36,7 @@
 <meta property="og:description" content="n_backups(), list_backups(), newest_backup() and oldest_backup()
 display information on the backups (that follow the naming conventions of
 rotor) of a single file.
-prune_backups() phyiscally deletes all backups of a file
+prune_backups() physically deletes all backups of a file
 based on max_backups" />
 <meta name="twitter:card" content="summary" />
 
@@ -68,7 +68,7 @@ based on max_backups" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
       </span>
     </div>
 
@@ -109,7 +109,7 @@ based on max_backups" />
     <p><code>n_backups()</code>, <code>list_backups()</code>, <code>newest_backup()</code> and <code>oldest_backup()</code>
 display information on the backups (that follow the naming conventions of
 rotor) of a single file.</p>
-<p><code>prune_backups()</code> phyiscally deletes all backups of a file
+<p><code>prune_backups()</code> physically deletes all backups of a file
 based on <code>max_backups</code></p>
     
     </div>
@@ -137,7 +137,7 @@ based on <code>max_backups</code></p>
 <li><p>an <code>integer</code> scalar: Maximum number of backups to keep</p></li>
 </ul>
 
-<p>In addtion for timestamped backups the following value are supported:</p><ul>
+<p>In addition for timestamped backups the following value are supported:</p><ul>
 <li><p>a <code>Date</code> scalar: Remove all backups before this date</p></li>
 <li><p>a <code>character</code> scalar representing a Date in ISO format
 (e.g. <code>"2019-12-31"</code>)</p></li>
@@ -152,7 +152,7 @@ based on <code>max_backups</code></p>
     <p><code>list_backups()</code> returns the paths to all backups of <code>file</code></p>
 <p><code>prune_backups()</code> returns the path to the input file <code>file</code> (invisibly)</p>
 <p><code>newest_backup()</code> and <code>oldest_backup()</code> return the paths to the
-newst or oldest backup of <code>file</code> (or an empty <code>character</code> vector if none exist)</p>
+newest or oldest backup of <code>file</code> (or an empty <code>character</code> vector if none exist)</p>
     
     <h2 class="hasAnchor" id="intervals"><a class="anchor" href="#intervals"></a>Intervals</h2>
 
@@ -168,7 +168,7 @@ and start on Monday (not Sunday as in some countries).</p>
 or for pruning backup queues (i.e. limiting the number of backups of a
 single) file.</p>
 <p>When rotating/backing up <code>"1 months"</code> means "make a new backup if the last
-backup is from the preceeding month". E.g if the last backup of <code>myfile</code>
+backup is from the preceding month". E.g if the last backup of <code>myfile</code>
 is from <code>2019-02-01</code> then <code><a href='rotate.html'>backup_time(myfile, age = "1 month")</a></code> will only
 create a backup if the current date is at least <code>2019-03-01</code>.</p>
 <p>When pruning/limiting backup queues, <code>"1 year"</code> means "keep at least most
@@ -188,8 +188,8 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 <span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
 <span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
 
-<span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp2JhXwd/test2a775dc36ffd.1.rds"
-#&gt; [2] "/tmp/Rtmp2JhXwd/test2a775dc36ffd.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp2JhXwd/test2a775dc36ffd.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp2JhXwd/test2a775dc36ffd.2.rds"</div><div class='input'>
+<span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpT89ZLu/test21bf173b733b.1.rds"
+#&gt; [2] "/tmp/RtmpT89ZLu/test21bf173b733b.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpT89ZLu/test21bf173b733b.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpT89ZLu/test21bf173b733b.2.rds"</div><div class='input'>
 <span class='fu'>prune_backups</span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
 <span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'>
 <span class='co'># cleanup</span>

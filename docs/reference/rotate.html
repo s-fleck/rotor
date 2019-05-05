@@ -66,7 +66,7 @@ with an empty one (this is useful for log rotation)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
       </span>
     </div>
 
@@ -151,7 +151,7 @@ with an empty one (this is useful for log rotation)</p>
     <tr>
       <th>size</th>
       <td><p>scalar <code>integer</code> or <code>character</code>. Backup/rotate if <code>file</code> is
-larger than this size. <code>Integers</code> are interpretet as
+larger than this size. <code>Integers</code> are interpreted as
 bytes. You can pass <code>character</code> vectors that contain a file size suffix
 like <code>1k</code> (kilobytes), <code>3M</code> (megabytes), <code>4G</code> (gigabytes),
 <code>5T`` (terabytes). Instead of these short forms you can also be explicit and use the IEC suffixes </code>KiB<code>, </code>MiB<code>, </code>GiB<code>, </code>TiB<code>. In Both cases </code>1<code>kilobyte is</code>1024<code>bytes, 1</code>megabyte<code>is</code>1024` kilobytes, etc... .</p></td>
@@ -162,7 +162,7 @@ like <code>1k</code> (kilobytes), <code>3M</code> (megabytes), <code>4G</code> (
 <li><p>an <code>integer</code> scalar: Maximum number of backups to keep</p></li>
 </ul>
 
-<p>In addtion for timestamped backups the following value are supported:</p><ul>
+<p>In addition for timestamped backups the following value are supported:</p><ul>
 <li><p>a <code>Date</code> scalar: Remove all backups before this date</p></li>
 <li><p>a <code>character</code> scalar representing a Date in ISO format
 (e.g. <code>"2019-12-31"</code>)</p></li>
@@ -174,10 +174,13 @@ like <code>1k</code> (kilobytes), <code>3M</code> (megabytes), <code>4G</code> (
       <th>compression</th>
       <td><p>Whether or not backups should be compressed</p><ul>
 <li><p><code>FALSE</code> for uncompressed backups,</p></li>
-<li><p><code>TRUE</code> for zip compression; uses <code><a href='https://www.rdocumentation.org/packages/zip/topics/zip'>zip::zipr()</a></code> if available,</p></li>
+<li><p><code>TRUE</code> for zip compression; uses <code><a href='https://www.rdocumentation.org/packages/utils/topics/zip'>zip()</a></code></p></li>
 <li><p>a scalar <code>integer</code> between <code>1</code> and <code>9</code> to specify a compression
-level (requires <code><a href='https://www.rdocumentation.org/packages/zip/topics/zip'>zip::zipr()</a></code>, see its documentation for details)</p></li>
-<li><p><code>"base::zip()"</code> or <code>"zip::zipr"</code> to force a specific zip command</p></li>
+level (requires the
+<a href='https://cran.r-project.org/web/packages/zip/index.html'>zip</a> package,
+see its documentation for details)</p></li>
+<li><p>the <code>character</code> scalars <code>"base::zip()"</code> or <code>"zip::zipr"</code> to force a
+specific zip command</p></li>
 </ul></td>
     </tr>
     <tr>
@@ -212,7 +215,7 @@ which Date/Datetime formats are supported by rotor.</p></li>
 <code>"%Y-%m-%d--%H-%M-%S"</code>.</p><ul>
 <li><p>You can use an arbitrary number of dashes anywhere in the format, so
 <code>"%Y-%m-%d--%H-%M-%S"</code> and <code>"%Y%m%d%H%M%S"</code> are both legal.</p></li>
-<li><p><code>T</code> and <code>_</code> can also be used as sepparators. For example, the following
+<li><p><code>T</code> and <code>_</code> can also be used as separators. For example, the following
 datetime formats are also possible:
 <code>%Y-%m-%d_%H-%M-%S</code> (Python logging default),
 <code>%Y%m%dT%H%M%S</code> <a href='https://en.wikipedia.org/wiki/ISO_8601'>ISO 8601</a></p></li>
@@ -248,7 +251,7 @@ for testing purposes.</p></td>
 file system (if the specified conditions are met). It may also delete
 backups if <code>max_backup</code> is reached.</p>
 <p><code>rotate()</code>, <code>rotate_date()</code> and <code>rotate_time()</code> does the same, but in
-addtion replaces the input <code>file</code> with an empty file (or not if
+addition replaces the input <code>file</code> with an empty file (or not if
 <code>create_file == FALSE</code>)</p>
     
     <h2 class="hasAnchor" id="intervals"><a class="anchor" href="#intervals"></a>Intervals</h2>
@@ -265,7 +268,7 @@ and start on Monday (not Sunday as in some countries).</p>
 or for pruning backup queues (i.e. limiting the number of backups of a
 single) file.</p>
 <p>When rotating/backing up <code>"1 months"</code> means "make a new backup if the last
-backup is from the preceeding month". E.g if the last backup of <code>myfile</code>
+backup is from the preceding month". E.g if the last backup of <code>myfile</code>
 is from <code>2019-02-01</code> then <code>backup_time(myfile, age = "1 month")</code> will only
 create a backup if the current date is at least <code>2019-03-01</code>.</p>
 <p>When pruning/limiting backup queues, <code>"1 year"</code> means "keep at least most

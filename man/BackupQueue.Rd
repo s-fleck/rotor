@@ -7,7 +7,7 @@
 \alias{BackupQueueDate}
 \alias{BackupQueueDateTime}
 \alias{BackupQueueIndex}
-\title{BackupQueues: An internal R6 class for managing backups}
+\title{An internal R6 class for managing backups}
 \format{An object of class \code{R6ClassGenerator} of length 24.}
 \usage{
 BackupQueue
@@ -22,6 +22,6 @@ BackupQueueIndex
 \code{BackupQueue} and its subclasses are \link[R6:R6Class]{R6::R6Class} for rotating files and
 managing backup. They are the internal constructs on which \code{\link[=rotate]{rotate()}} and
 co. are based. The \code{BackupQueue} constructor is exported for use by other
-package developers and not indetend for direct use.
+package developers and not intended for direct use.
 }
 \keyword{datasets}

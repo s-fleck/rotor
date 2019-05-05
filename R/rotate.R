@@ -18,7 +18,7 @@
 #'   `"%Y-%m-%d--%H-%M-%S"`.
 #'   * You can use an arbitrary number of dashes anywhere in the format, so
 #'     `"%Y-%m-%d--%H-%M-%S"` and `"%Y%m%d%H%M%S"` are both legal.
-#'   * `T` and `_` can also be used as sepparators. For example, the following
+#'   * `T` and `_` can also be used as separators. For example, the following
 #'     datetime formats are also possible:
 #'       `%Y-%m-%d_%H-%M-%S` (Python logging default),
 #'       `%Y%m%dT%H%M%S` [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
@@ -36,7 +36,7 @@
 #' @param max_backups maximum number of backups to keep
 #'   - an `integer` scalar: Maximum number of backups to keep
 #'
-#'   In addtion for timestamped backups the following value are supported:
+#'   In addition for timestamped backups the following value are supported:
 #'   - a `Date` scalar: Remove all backups before this date
 #'   - a `character` scalar representing a Date in ISO format
 #'     (e.g. `"2019-12-31"`)
@@ -44,7 +44,7 @@
 #'     `"<number> <interval>"` (see below for more info)
 #'
 #' @param size scalar `integer` or `character`. Backup/rotate if `file` is
-#'   larger than this size. `Integers` are interpretet as
+#'   larger than this size. `Integers` are interpreted as
 #'   bytes. You can pass `character` vectors that contain a file size suffix
 #'   like `1k` (kilobytes), `3M` (megabytes), `4G` (gigabytes),
 #'   `5T`` (terabytes). Instead of these short forms you can also be explicit
@@ -53,9 +53,11 @@
 #'
 #' @param compression Whether or not backups should be compressed
 #'   - `FALSE` for uncompressed backups,
-#'   - `TRUE` for zip compression; uses [base::zip()]
+#'   - `TRUE` for zip compression; uses [zip()]
 #'   - a scalar `integer` between `1` and `9` to specify a compression
-#'     level (requires [zip::zipr()], see its documentation for details)
+#'     level (requires the
+#'     [zip](https://cran.r-project.org/web/packages/zip/index.html) package,
+#'     see its documentation for details)
 #'   - the `character` scalars `"base::zip()"` or `"zip::zipr"` to force a
 #'     specific zip command
 #'
@@ -79,7 +81,7 @@
 #' backups if `max_backup` is reached.
 #'
 #' `rotate()`, `rotate_date()` and `rotate_time()` does the same, but in
-#' addtion replaces the input `file` with an empty file (or not if
+#' addition replaces the input `file` with an empty file (or not if
 #' `create_file == FALSE`)
 #'
 #' @section Intervals:
@@ -97,7 +99,7 @@
 #' single) file.
 #'
 #' When rotating/backing up `"1 months"` means "make a new backup if the last
-#' backup is from the preceeding month". E.g if the last backup of `myfile`
+#' backup is from the preceding month". E.g if the last backup of `myfile`
 #' is from `2019-02-01` then `backup_time(myfile, age = "1 month")` will only
 #' create a backup if the current date is at least `2019-03-01`.
 #'

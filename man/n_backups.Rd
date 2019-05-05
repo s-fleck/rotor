@@ -26,7 +26,7 @@ oldest_backup(file)
 \item an \code{integer} scalar: Maximum number of backups to keep
 }
 
-In addtion for timestamped backups the following value are supported:
+In addition for timestamped backups the following value are supported:
 \itemize{
 \item a \code{Date} scalar: Remove all backups before this date
 \item a \code{character} scalar representing a Date in ISO format
@@ -41,14 +41,14 @@ In addtion for timestamped backups the following value are supported:
 \code{prune_backups()} returns the path to the input file \code{file} (invisibly)
 
 \code{newest_backup()} and \code{oldest_backup()} return the paths to the
-newst or oldest backup of \code{file} (or an empty \code{character} vector if none exist)
+newest or oldest backup of \code{file} (or an empty \code{character} vector if none exist)
 }
 \description{
 \code{n_backups()}, \code{list_backups()}, \code{newest_backup()} and \code{oldest_backup()}
 display information on the backups (that follow the naming conventions of
 rotor) of a single file.
 
-\code{prune_backups()} phyiscally deletes all backups of a file
+\code{prune_backups()} physically deletes all backups of a file
 based on \code{max_backups}
 }
 \section{Intervals}{
@@ -67,7 +67,7 @@ or for pruning backup queues (i.e. limiting the number of backups of a
 single) file.
 
 When rotating/backing up \code{"1 months"} means "make a new backup if the last
-backup is from the preceeding month". E.g if the last backup of \code{myfile}
+backup is from the preceding month". E.g if the last backup of \code{myfile}
 is from \code{2019-02-01} then \code{backup_time(myfile, age = "1 month")} will only
 create a backup if the current date is at least \code{2019-03-01}.
 

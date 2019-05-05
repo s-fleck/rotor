@@ -6,8 +6,8 @@
 \alias{rotor-package}
 \title{rotor: Rote files}
 \description{
-Rotate or backup files based on size or date. Inspired the linux 
-  utility logrotate.
+Conditionally rotate or back-up files based on their size or the
+  date of the last backup; inspired by the 'linux' utility 'logrotate'.
 }
 \author{
 \strong{Maintainer}: Stefan Fleck \email{stefan.b.fleck@gmail.com} (0000-0003-3344-9851)

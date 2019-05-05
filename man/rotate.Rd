@@ -44,7 +44,7 @@ backup_time(file, age = NULL, format = "\%Y-\%m-\%d--\%H-\%M-\%S",
 \item{file}{\code{character} scalar: file to backup/rotate}
 
 \item{size}{scalar \code{integer} or \code{character}. Backup/rotate if \code{file} is
-larger than this size. \code{Integers} are interpretet as
+larger than this size. \code{Integers} are interpreted as
 bytes. You can pass \code{character} vectors that contain a file size suffix
 like \code{1k} (kilobytes), \code{3M} (megabytes), \code{4G} (gigabytes),
 \code{5T`` (terabytes). Instead of these short forms you can also be explicit and use the IEC suffixes }KiB\code{, }MiB\code{, }GiB\code{, }TiB\code{. In Both cases }1\code{kilobyte is}1024\code{bytes, 1}megabyte\code{is}1024` kilobytes, etc... .}
@@ -54,7 +54,7 @@ like \code{1k} (kilobytes), \code{3M} (megabytes), \code{4G} (gigabytes),
 \item an \code{integer} scalar: Maximum number of backups to keep
 }
 
-In addtion for timestamped backups the following value are supported:
+In addition for timestamped backups the following value are supported:
 \itemize{
 \item a \code{Date} scalar: Remove all backups before this date
 \item a \code{character} scalar representing a Date in ISO format
@@ -66,9 +66,11 @@ In addtion for timestamped backups the following value are supported:
 \item{compression}{Whether or not backups should be compressed
 \itemize{
 \item \code{FALSE} for uncompressed backups,
-\item \code{TRUE} for zip compression; uses \code{\link[base:zip]{base::zip()}}
+\item \code{TRUE} for zip compression; uses \code{\link[=zip]{zip()}}
 \item a scalar \code{integer} between \code{1} and \code{9} to specify a compression
-level (requires \code{\link[zip:zipr]{zip::zipr()}}, see its documentation for details)
+level (requires the
+\href{https://cran.r-project.org/web/packages/zip/index.html}{zip} package,
+see its documentation for details)
 \item the \code{character} scalars \code{"base::zip()"} or \code{"zip::zipr"} to force a
 specific zip command
 }}
@@ -97,7 +99,7 @@ which Date/Datetime formats are supported by rotor.
 \itemize{
 \item You can use an arbitrary number of dashes anywhere in the format, so
 \code{"\%Y-\%m-\%d--\%H-\%M-\%S"} and \code{"\%Y\%m\%d\%H\%M\%S"} are both legal.
-\item \code{T} and \code{_} can also be used as sepparators. For example, the following
+\item \code{T} and \code{_} can also be used as separators. For example, the following
 datetime formats are also possible:
 \code{\%Y-\%m-\%d_\%H-\%M-\%S} (Python logging default),
 \code{\%Y\%m\%dT\%H\%M\%S} \href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601}
@@ -131,7 +133,7 @@ file system (if the specified conditions are met). It may also delete
 backups if \code{max_backup} is reached.
 
 \code{rotate()}, \code{rotate_date()} and \code{rotate_time()} does the same, but in
-addtion replaces the input \code{file} with an empty file (or not if
+addition replaces the input \code{file} with an empty file (or not if
 \code{create_file == FALSE})
 }
 
@@ -151,7 +153,7 @@ or for pruning backup queues (i.e. limiting the number of backups of a
 single) file.
 
 When rotating/backing up \code{"1 months"} means "make a new backup if the last
-backup is from the preceeding month". E.g if the last backup of \code{myfile}
+backup is from the preceding month". E.g if the last backup of \code{myfile}
 is from \code{2019-02-01} then \code{backup_time(myfile, age = "1 month")} will only
 create a backup if the current date is at least \code{2019-03-01}.
 

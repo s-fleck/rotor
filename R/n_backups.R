@@ -49,7 +49,7 @@ list_backups <- function(file){
 
 
 
-#' @description `prune_backups()` phyiscally deletes all backups of a file
+#' @description `prune_backups()` physically deletes all backups of a file
 #'   based on `max_backups`
 #' @inheritParams rotate
 #' @return `prune_backups()` returns the path to the input file `file` (invisibly)
@@ -73,7 +73,7 @@ prune_backups <- function(
 
 
 #' @return `newest_backup()` and `oldest_backup()` return the paths to the
-#'   newst or oldest backup of `file` (or an empty `character` vector if none exist)
+#'   newest or oldest backup of `file` (or an empty `character` vector if none exist)
 #' @export
 #' @rdname n_backups
 newest_backup <- function(

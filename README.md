@@ -11,23 +11,21 @@ status](https://travis-ci.org/s-fleck/rotor.svg?branch=master)](https://travis-c
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 <!-- badges: end -->
 
-rotor is aimed to provide a cross platform R reimagination of
+**rotor** provides a cross platform R reimagination of
 [logrotate](https://linux.die.net/man/8/logrotate) as a companion
 package to <https://github.com/s-fleck/lgr>. In addition to rotating log
-files, it can also be used as a (very primtivie) backup tool.
-
-**rotor** relies solely on information encoded in the filename suffix of
-the backups (i.e. the timestamp or index). It therefore also works with
-backups created by other tools, as long as the filename has a format
-that rotor can deal with.
+files, it can also be used as a (primitive) backup tool. For
+conditionally creating and deleting backups, rotor relies solely on
+information encoded in the filename suffix of the backups (i.e. the
+timestamp or index). It therefore also works with backups created by
+other tools, as long as the filename has a format that rotor can deal
+with.
 
 `rotate()`, `rotate_date()`, and `rotate_time()` move a file and insert
 a suffix (either an integer or a timestamp) into the filename. In
 addition, they create an empty file in place of the original one. This
-is useful for log rotation.
-
-`backup()`, `backup_date()` and `backup_time()` do the same but keep the
-original file.
+is useful for log rotation. `backup()`, `backup_date()` and
+`backup_time()` do the same but keep the original file.
 
 See the [function
 reference](https://s-fleck.github.io/rotor/reference/index.html) for
@@ -53,23 +51,18 @@ devtools::install_github("s-fleck/rotor")
 
 ## Example
 
-The examples below all use `backup()` because it’s a bit more convenient
-to write examples for than `rotate()`, but the later works mostly the
-same.
+Before we run the examples for rotor, we have to setup a temporary
+directory and an example log file.
 
 ``` r
 library(rotor)
-```
 
-First we must create a temporary directory and an example log file.
-
-``` r
 # setup test file for examples
 dr <- tempdir()
 td <- file.path(dr, "rotor")
 dir.create(td, recursive = TRUE)
-tf <- file.path(td, "test.log")
-saveRDS(cars, tf)
+tf <- file.path(td, "mylogfile.log")
+writeLines("An important message", tf)
 ```
 
 `backup()` makes a copy of a file and inserts an index between the
@@ -78,38 +71,56 @@ the most recently made backup.
 
 ``` r
 backup(tf)
-backup(tf)
 
 # backup and rotate also support compression
 backup(tf, compression = TRUE) 
 
-# returns all backups of a file
+# display backups of a file
 list_backups(tf)  
-#> [1] "/tmp/RtmpRrR1ZJ/rotor/test.1.log.zip"
-#> [2] "/tmp/RtmpRrR1ZJ/rotor/test.2.log"    
-#> [3] "/tmp/RtmpRrR1ZJ/rotor/test.3.log"
+#> [1] "/tmp/Rtmpwsya1w/rotor/mylogfile.1.log.zip"
+#> [2] "/tmp/Rtmpwsya1w/rotor/mylogfile.2.log"
 ```
 
-You can also set a maximum number of backups to be kept. Notice how the
-zipped backup we created above moves to index 4 as we create three new
-backups.
+`rotate()` also makes a copy, but replaces the original file with an
+empty one.
+
+``` r
+rotate(tf)
+list_backups(tf)
+#> [1] "/tmp/Rtmpwsya1w/rotor/mylogfile.1.log"    
+#> [2] "/tmp/Rtmpwsya1w/rotor/mylogfile.2.log.zip"
+#> [3] "/tmp/Rtmpwsya1w/rotor/mylogfile.3.log"
+
+# the original file is now empty
+readLines(tf)
+#> character(0)
+
+# its content was moved to the first backup
+readLines(list_backups(tf)[[1]])
+#> [1] "An important message"
+
+writeLines("another important message", tf)
+```
+
+The `max_backups` parameter limits the maximum number of backups rotor
+will keep of a file. Notice how the zipped backup we created above moves
+to index 4 as we create two new backups.
 
 ``` r
 backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
-backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/RtmpRrR1ZJ/rotor/test.1.log"    
-#> [2] "/tmp/RtmpRrR1ZJ/rotor/test.2.log"    
-#> [3] "/tmp/RtmpRrR1ZJ/rotor/test.3.log"    
-#> [4] "/tmp/RtmpRrR1ZJ/rotor/test.4.log.zip"
+#> [1] "/tmp/Rtmpwsya1w/rotor/mylogfile.1.log"    
+#> [2] "/tmp/Rtmpwsya1w/rotor/mylogfile.2.log"    
+#> [3] "/tmp/Rtmpwsya1w/rotor/mylogfile.3.log"    
+#> [4] "/tmp/Rtmpwsya1w/rotor/mylogfile.4.log.zip"
 ```
 
 We can also use `prune_backups()` to delete old backups. Other than
 ensuring that no new backups is created, it works equivalent to using
-`backup()` with the `max_backups` paramter. If we set `max_backups` to
-`0`, we can clean up all backups.
+`backup()` with the `max_backups` parameter. By setting it to `0`, we
+delete all backups.
 
 ``` r
 prune_backups(tf, max_backups = 0)
@@ -120,10 +131,10 @@ timestamped backups.
 
 ``` r
 backup_date(tf)
-backup_time(tf)
+rotate_time(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmpRrR1ZJ/rotor/test.2019-05-02--11-17-22.log"
-#> [2] "/tmp/RtmpRrR1ZJ/rotor/test.2019-05-02.log"
+#> [1] "/tmp/Rtmpwsya1w/rotor/mylogfile.2019-05-05--10-39-39.log"
+#> [2] "/tmp/Rtmpwsya1w/rotor/mylogfile.2019-05-05.log"
 ```
 
 ``` r
@@ -142,3 +153,17 @@ prune_backups(tf, "1 year")
 # keep all backups after April 4th, 2018
 prune_backups(tf, "2018-04-01")  
 ```
+
+# Dependencies
+
+**rotor** comes with two non-base dependencies:
+
+  - [R6](https://github.com/r-lib/R6): A light weight system for
+    encapsulated object-oriented programming.
+  - [dint](https://github.com/s-fleck/dint): A toolkit for working
+    year-quarter and year-month dates that I am also the author of. Is
+    used by `rotate_date()` and `rotate_time()` to deal with calendar
+    periods.
+
+Both packages have no transitive dependencies (i.e they do not depend on
+anything outside of base R)
