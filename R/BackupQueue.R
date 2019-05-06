@@ -209,6 +209,8 @@ get_backups <- function(
   if (!length(potential_backups))
     return(character())
 
+  # compare tidy paths against each other, so tha we do not miss matches on
+  # equivalent paths because of inconsistent path sepparators
   bu_dir <- path_tidy(as_scalar(dirname(potential_backups)))
 
   name <- basename(tools::file_path_sans_ext(file))
@@ -224,6 +226,7 @@ get_backups <- function(
     pat <- sprintf("^%s%s\\.%s\\.%s\\.*$", path_pat, name, sfx_patterns, ext)
   }
 
+  # compare tidy paths, but return original paths
   sel <- grep(pat, path_tidy(potential_backups))
   sort(potential_backups[sel])
 }

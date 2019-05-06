@@ -165,13 +165,12 @@ expect_path_setequal <- function(x, y){
 
 
 
-path_standardize <- function(x){
-  path_tidy(path.expand(x))
-}
-
-
-
-
+#' Clean up paths to make them comparable, inspired by fs::path_tidy
+#'
+#' @param x `character` vector
+#'
+#' @return a `character` vector
+#' @noRd
 path_tidy <- function(x){
   x <- gsub("\\\\", "/", x)
   x <- gsub("(?!^)/+", "/", x, perl = TRUE)
@@ -195,6 +194,12 @@ path_tidy <- function(x){
   x
 }
 
+
+
+
+path_standardize <- function(x){
+  path_tidy(path.expand(x))
+}
 
 
 
