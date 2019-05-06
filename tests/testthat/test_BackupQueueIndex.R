@@ -14,6 +14,7 @@ teardown({
 
 
 
+
 test_that("BackupQueueIndex can find and prune backup trails", {
   tf <- file.path(td, "test.log")
   file.create(tf)
@@ -179,11 +180,11 @@ test_that("BackupQueueIndex$push_backup() can push to different directory", {
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
   file.create(tf)
-  on.exit(file.remove(bu_dir, tf))
+  on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
 
 
   bt <- BackupQueueIndex$new(tf, backup_dir = bu_dir)
-  bt$push_backup(verbose = TRUE)
+  bt$push_backup()
 
   expect_match(bt$backups$dir, "rotor.backups")
   bt$push_backup(compression = TRUE)

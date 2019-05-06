@@ -10,6 +10,7 @@ teardown({
 
 
 
+
 test_that("copy_or_compress works with default zip command", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
@@ -45,6 +46,8 @@ test_that("copy_or_compress works with internal zip command", {
 
 
 test_that("copy_or_compress works with zip::zipr", {
+  skip_if_not_installed("zip")
+
   tf <- file.path(td, "compresstest.log")
   on.exit(unlink(tf))
   saveRDS(iris, file = tf, compress = FALSE)

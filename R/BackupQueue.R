@@ -157,10 +157,6 @@ filenames_as_matrix <- function(
     return(NULL)
   }
 
-  file    <- normalizePath(file, mustWork = FALSE)
-  backups <- normalizePath(backups, mustWork = FALSE)
-
-
   file_dir  <- dirname(file)
   file_name <- basename(tools::file_path_sans_ext(file))
   file_ext  <- tools::file_ext(file)
@@ -213,24 +209,23 @@ get_backups <- function(
   if (!length(potential_backups))
     return(character())
 
-  bu_dir <- dirname(potential_backups)
-  bu_dir <- as_scalar(bu_dir)
+  bu_dir <- path_tidy(as_scalar(dirname(potential_backups)))
 
   name <- basename(tools::file_path_sans_ext(file))
   ext  <- tools::file_ext(file)
   sfx_patterns <- paste0("(", sfx_patterns, ")", collapse = "|")
 
-  path_path <- {if (bu_dir %in% c(".", "")) "" else paste0(bu_dir, "[\\/\\\\]")}
-
+  path_pat <- {if (bu_dir %in% c(".", "")) "" else paste0(bu_dir, "[\\/\\\\]")}
 
   if (is_blank(ext)){
-    pat <- sprintf("^%s%s\\.%s\\.*$", path_path, name, sfx_patterns)
+    pat <- sprintf("^%s%s\\.%s\\.*$", path_pat, name, sfx_patterns)
 
   } else {
-    pat <- sprintf("^%s%s\\.%s\\.%s\\.*$", path_path, name, sfx_patterns, ext)
+    pat <- sprintf("^%s%s\\.%s\\.%s\\.*$", path_pat, name, sfx_patterns, ext)
   }
 
-  sort(grep(pat, potential_backups, value = TRUE))
+  sel <- grep(pat, path_tidy(potential_backups))
+  sort(potential_backups[sel])
 }
 
 

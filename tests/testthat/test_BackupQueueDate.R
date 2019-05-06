@@ -13,6 +13,7 @@ teardown({
 
 
 
+
 test_that("BackupQueueDate can find and prune backup trails", {
   tf <- file.path(td, "test.log")
   file.create(tf)
@@ -243,7 +244,7 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
   file.create(tf)
-  on.exit(file.remove(bu_dir, tf))
+  on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
 
 
   bt <- BackupQueueDate$new(tf, backup_dir = bu_dir)
@@ -256,3 +257,4 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
 
   expect_length(bt$prune(0)$backups$path, 0)
 })
+

@@ -319,7 +319,7 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
   file.create(tf)
-  on.exit(file.remove(bu_dir, tf))
+  on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
 
 
   bt <- BackupQueueDateTime$new(tf, backup_dir = bu_dir)

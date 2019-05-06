@@ -201,3 +201,11 @@ path_tidy <- function(x){
 is_windows_path <- function(x){
   nchar(x) >= 2 & grepl("^[A-Za-z].*", x) & substr(x, 2, 2) == ":"
 }
+
+
+
+
+# for R < 3.5
+isFALSE <- function(x){
+  identical(x, FALSE)
+}
