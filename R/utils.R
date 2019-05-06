@@ -122,14 +122,44 @@ path_equal <- function(x, y){
 
 
 expect_path_equal <- function(x, y){
-  testthat::expect_equal(path_standardize(x), path_standardize(y))
+  if (identical(x, y)){
+    return(testthat::expect_equal(x, y))
+
+  }
+
+  x <- path_tidy(x)
+  y <- path_tidy(y)
+
+  if (identical(x, y)){
+    return(testthat::expect_equal(x, y))
+  }
+
+  x <- path.expand(x)
+  y <- path.expand(y)
+  testthat::expect_equal(x, y)
 }
 
 
 
 
 expect_path_setequal <- function(x, y){
-  testthat::expect_equal(sort(unique(path_standardize(x))), sort(unique(path_standardize(y))))
+  x <- unique(x)
+  y <- unique(y)
+
+  if (setequal(x, y)){
+    return(testthat::expect_setequal(x, y))
+  }
+
+  x <- path_tidy(x)
+  y <- path_tidy(y)
+
+  if (identical(x, y)){
+    return(testthat::expect_setequal(x, y))
+  }
+
+  x <- path.expand(x)
+  y <- path.expand(y)
+  testthat::expect_setequal(x, y)
 }
 
 
