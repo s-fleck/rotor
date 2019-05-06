@@ -11,6 +11,7 @@ first <- function(x){
 
 
 
+
 # rename a file by incrementing a timestamp in the filename. very narrow function
 # only used during unit tests
 replace_date_stamp <- function(
@@ -85,7 +86,6 @@ expect_snapshot_unchanged <- function(snap){
 
 
 
-
 #' Splits a string at `pos` (removing the character at pos)
 #'
 #' @param x a `character` vector
@@ -120,12 +120,54 @@ path_equal <- function(x, y){
 
 
 
+
 expect_path_equal <- function(x, y){
-  testthat::expect_equal(fs::path_real(x), fs::path_real(y))
+  testthat::expect_equal(path_standardize(x), path_standardize(y))
 }
 
 
 
+
 expect_path_setequal <- function(x, y){
-  testthat::expect_equal(sort(unique(fs::path_real(x))), sort(unique(fs::path_real(y))))
+  testthat::expect_equal(sort(unique(path_standardize(x))), sort(unique(path_standardize(y))))
+}
+
+
+
+
+path_standardize <- function(x){
+  path_tidy(path.expand(x))
+}
+
+
+
+
+path_tidy <- function(x){
+  x <- gsub("\\\\", "/", x)
+  x <- gsub("(?!^)/+", "/", x, perl = TRUE)
+
+  sel <- x != "/"
+  x[sel] <- gsub("/$", "", x[sel])
+
+  sel <- is_windows_path(x)
+
+  if (any(sel)){
+    clean_win <- function(.x){
+      substr(.x, 1, 1)  <- toupper(substr(.x, 1 ,1))
+      .sel <- nchar(.x) == 2
+      .x[.sel] <- paste0(.x[.sel], "/")
+      .x
+    }
+
+    x[sel] <- clean_win(x[sel])
+  }
+
+  x
+}
+
+
+
+
+is_windows_path <- function(x){
+  nchar(x) >= 2 & grepl("^[A-Za-z].*", x) & substr(x, 2, 2) == ":"
 }
