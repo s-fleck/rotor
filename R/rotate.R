@@ -196,10 +196,12 @@ parse_size <- function(x){
     assert(is.character(x))
   }
 
-  num  <- as.numeric(substr(x, 1, nchar(x) -1L))
-  unit <- parse_info_unit(substr(x, nchar(x), nchar(x)))
+  unit_start <- regexec("[kmgt]", tolower(x))[[1]]
 
-  res <- num * unit
+  num  <- trimws(substr(x, 1, unit_start - 1L))
+  unit <- trimws(substr(x, unit_start, nchar(x)))
+  res  <- as.numeric(num) * parse_info_unit(unit)
+
   assert(is_scalar(res) && !is.na(res) && is_scalar_numeric(res))
   res
 }
@@ -211,7 +213,7 @@ parse_info_unit <- function(x){
   assert(is_scalar_character(x))
   x <- tolower(x)
 
-  iec <- c("KiB", "MiB", "GiB", "TiB")
+  iec <- c("kib", "mib", "gib", "tib", "kb", "mb", "gb", "tb")
 
   if (x %in% iec)
     x <- substr(x, 1, 1)
