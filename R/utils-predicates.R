@@ -160,7 +160,7 @@ is_zipcmd_available <- function(){
   on.exit(suppressWarnings(file.remove(ori)))
 
   tryCatch(suppressMessages(suppressWarnings({
-    utils::zip(des, ori)
+    utils::zip(des, ori, flags = "-q")
     on.exit(suppressWarnings(file.remove(des)), add = TRUE)
     identical(basename(utils::unzip(des, list = TRUE)$Name), basename(ori))
   })),
