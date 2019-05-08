@@ -122,23 +122,20 @@ rotate <- function(
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
-  backup(
+  rotate_internal(
     file,
     size = size,
     max_backups = max_backups,
     compression = compression,
     backup_dir = backup_dir,
+    create_file = create_file,
     dry_run = dry_run,
-    verbose = verbose
+    verbose = verbose,
+    do_rotate = TRUE
   )
-
-  file_remove(file, dry_run = dry_run, verbose = verbose)
-
-  if (create_file)
-    file_create(file, dry_run = dry_run, verbose = verbose)
-
-  invisible(file)
 }
+
+
 
 
 #' @rdname rotate
@@ -152,9 +149,34 @@ backup <- function(
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
-  stopifnot(
-    is_scalar_character(file) && file.exists(file)
+  rotate_internal(
+    file,
+    size = size,
+    max_backups = max_backups,
+    compression = compression,
+    backup_dir = backup_dir,
+    dry_run = dry_run,
+    verbose = verbose,
+    create_file = FALSE,
+    do_rotate = FALSE
   )
+}
+
+
+
+rotate_internal <- function(
+  file,
+  size,
+  max_backups,
+  compression,
+  create_file,
+  backup_dir,
+  dry_run,
+  verbose,
+  do_rotate
+){
+  assert(is_scalar_character(file) && file.exists(file))
+  assert(is_bool(do_rotate))
 
   size <- parse_size(size)
 
@@ -170,6 +192,13 @@ backup <- function(
       dry_run = dry_run,
       verbose = verbose
     )
+
+    if (do_rotate){
+      file_remove(file, dry_run = dry_run, verbose = verbose)
+
+      if (create_file)
+        file_create(file, dry_run = dry_run, verbose = verbose)
+    }
   }
 
   bq$prune(

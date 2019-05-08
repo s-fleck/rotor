@@ -101,3 +101,22 @@ test_that("backup/rotate date works to different directory", {
   prune_backups(tf, 0, backup_dir = bu_dir)
   expect_identical(n_backups(tf, backup_dir = bu_dir), 0L)
 })
+
+
+
+test_that("backup/rotate_date works with size", {
+  tf     <- file.path(td, "test.log")
+  on.exit(unlink(tf))
+  saveRDS(iris, tf)
+  size_ori <- file.size(tf)
+
+  rotate_time(tf, size = "5kb")
+  expect_identical(n_backups(tf), 0L)
+  expect_equal(file.size(tf), size_ori)
+
+  rotate_time(tf, size = "0.5kb")
+  expect_identical(n_backups(tf), 1L)
+  expect_equal(file.size(tf), 0)
+
+  prune_backups(tf, 0)
+})

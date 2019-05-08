@@ -38,6 +38,25 @@ test_that("backup_date warns if indexed backups exist", {
 
 
 
+test_that("backup/rotate_date works with size", {
+  tf     <- file.path(td, "test.log")
+  on.exit(unlink(tf))
+  saveRDS(iris, tf)
+  size_ori <- file.size(tf)
+
+  rotate_date(tf, size = "5kb")
+  expect_identical(n_backups(tf), 0L)
+  expect_equal(file.size(tf), size_ori)
+
+  rotate_date(tf, size = "0.5kb")
+  expect_identical(n_backups(tf), 1L)
+  expect_equal(file.size(tf), 0)
+
+  prune_backups(tf, 0)
+})
+
+
+
 
 test_that("backup_date examples from documentation", {
   #' When rotating/backing up `"1 months"` means "make a new backup if the last

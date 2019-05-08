@@ -80,6 +80,27 @@ test_that("backup/rotate works to different directory", {
 
 
 
+test_that("backup/rotate works with size", {
+  tf     <- file.path(td, "test.log")
+  on.exit(unlink(tf))
+  saveRDS(iris, tf)
+  size_ori <- file.size(tf)
+
+  rotate(tf, size = "5kb")
+  expect_identical(n_backups(tf), 0L)
+  expect_equal(file.size(tf), size_ori)
+
+  rotate(tf, size = "0.5kb")
+  expect_identical(n_backups(tf), 1L)
+  expect_equal(file.size(tf), 0)
+
+  prune_backups(tf, 0)
+})
+
+
+
+
+
 test_that("parse_info_unit works", {
   expect_identical(parse_info_unit("k"), 1024)
   expect_identical(parse_info_unit("k"), parse_info_unit("KiB"))
