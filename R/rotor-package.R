@@ -39,3 +39,11 @@ NULL
   assign("style_accent", style_accent, envir = parent.env(environment()))
   assign("col_nchar", col_nchar, envir = parent.env(environment()))
 }
+
+
+
+
+disable_r6_not <- function(){
+  R6::is.R6(NULL)
+  NULL
+}
