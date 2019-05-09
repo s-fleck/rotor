@@ -115,51 +115,58 @@ strsplit_at_pos <- function(
 
 
 path_equal <- function(x, y){
-  fs::path_real(x) == fs::path_real(y)
+  if (identical(x, y)){
+    return(TRUE)
+  }
+
+  x <- path_tidy(x)
+  y <- path_tidy(y)
+
+  if (identical(x, y)){
+    return(TRUE)
+  }
+
+  x <- path.expand(x)
+  y <- path.expand(y)
+
+  identical(x, y)
+}
+
+
+
+
+path_setequal <- function(x, y){
+  x <- unique(x)
+  y <- unique(y)
+
+  if (setequal(x, y)){
+    return(TRUE)
+  }
+
+  x <- path_tidy(x)
+  y <- path_tidy(y)
+
+  if (setequal(x, y)){
+    return(TRUE)
+  }
+
+  x <- path.expand(x)
+  y <- path.expand(y)
+  setequal(x, y)
 }
 
 
 
 
 expect_path_equal <- function(x, y){
-  if (identical(x, y)){
-    return(testthat::expect_equal(x, y))
-
-  }
-
-  x <- path_tidy(x)
-  y <- path_tidy(y)
-
-  if (identical(x, y)){
-    return(testthat::expect_equal(x, y))
-  }
-
-  x <- path.expand(x)
-  y <- path.expand(y)
-  testthat::expect_equal(x, y)
+  testthat::expect_true(path_equal(x, y))
 }
 
 
 
 
 expect_path_setequal <- function(x, y){
-  x <- unique(x)
-  y <- unique(y)
-
-  if (setequal(x, y)){
-    return(testthat::expect_setequal(x, y))
-  }
-
-  x <- path_tidy(x)
-  y <- path_tidy(y)
-
-  if (identical(x, y)){
-    return(testthat::expect_setequal(x, y))
-  }
-
-  x <- path.expand(x)
-  y <- path.expand(y)
-  testthat::expect_setequal(x, y)
+  testthat::expect_true(path_setequal(x, y))
 }
 
 
