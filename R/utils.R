@@ -214,3 +214,10 @@ is_windows_path <- function(x){
 isFALSE <- function(x){
   identical(x, FALSE)
 }
+
+
+
+
+is_windows <- function(){
+  Sys.info()["sysname"] == "Windows"
+}

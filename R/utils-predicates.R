@@ -153,17 +153,13 @@ assert_valid_compression <- function(compression){
 
 
 
-is_zipcmd_available <- function(){
-  ori <- tempfile()
-  des <- tempfile(fileext = ".zip")
-  file.create(ori)
-  on.exit(suppressWarnings(file.remove(ori)))
+is_zipcmd_available <- function(cmd = Sys.getenv("R_ZIPCMD", "zip")){
+  if (is_windows()){
+    suppressWarnings(res <- system2("where", cmd, stderr = NULL, stdout = NULL))
+  } else {
+    suppressWarnings(res <- system2("command", paste("-v", cmd), stderr = NULL, stdout = NULL))
+  }
 
-  tryCatch(suppressMessages(suppressWarnings({
-    utils::zip(des, ori, flags = "-q")
-    on.exit(suppressWarnings(file.remove(des)), add = TRUE)
-    identical(basename(utils::unzip(des, list = TRUE)$Name), basename(ori))
-  })),
-  error = function(e) FALSE
-  )
+  assert(is_scalar(res))
+  res == 0
 }
