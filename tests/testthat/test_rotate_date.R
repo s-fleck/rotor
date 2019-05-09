@@ -26,6 +26,7 @@ test_that("backup_date warns if indexed backups exist", {
     file.path(td, "test.2017-03.log"),
     file.path(td, "test.2017-04-01.log")
   ))
+  writeLines("test", tf)
 
   expect_warning(
     bu <- backup_date(tf),
@@ -68,6 +69,7 @@ test_that("backup_date examples from documentation", {
     tf,
     file.path(td, "test.2019-02-01.log")
   )
+  writeLines("test", tf)
 
   mockery::stub(backup_date, "Sys.Date", as.Date("2019-02-28"))
   backup_date(tf, age = "1 month")
@@ -120,7 +122,7 @@ test_that("backup_date works as expected for years", {
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
 
-  # roate because backup is from last year
+  # rotate because backup is from last year
   file.create(file.path(td, "test.2018-12-31.log"))
   bu <- backup_date(tf, "2 year")  # dont rotate
   expect_identical(bq$n_backups, 1L)

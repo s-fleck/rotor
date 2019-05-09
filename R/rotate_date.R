@@ -15,9 +15,7 @@ rotate_date <- function(
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
-  assert(is_scalar_logical(create_file))
-
-  backup_date(
+  rotate_date_internal(
     file = file,
     age = age,
     format = format,
@@ -28,17 +26,13 @@ rotate_date <- function(
     backup_dir = backup_dir,
     now = now,
     dry_run = dry_run,
-    verbose = verbose
+    verbose = verbose,
+    create_file = create_file,
+    do_rotate = TRUE
   )
-
-  file_remove(file, dry_run = dry_run, verbose = verbose)
-
-  if (create_file){
-    file_create(file, dry_run = dry_run, verbose = verbose)
-  }
-
-  invisible(file)
 }
+
+
 
 
 
@@ -58,17 +52,56 @@ backup_date <- function(
   dry_run = getOption("rotor.dry_run", FALSE),
   verbose = getOption("rotor.dry_run", dry_run)
 ){
+  rotate_date_internal(
+    file = file,
+    age = age,
+    format = format,
+    size = size,
+    max_backups = max_backups,
+    compression = compression,
+    overwrite = overwrite,
+    backup_dir = backup_dir,
+    now = now,
+    dry_run = dry_run,
+    verbose = verbose,
+    do_rotate = FALSE,
+    create_file = FALSE
+  )
+}
+
+
+
+
+rotate_date_internal <- function(
+  file,
+  age,
+  format,
+  size,
+  max_backups,
+  compression,
+  overwrite,
+  create_file,
+  backup_dir,
+  now,
+  do_rotate,
+  dry_run,
+  verbose
+){
   stopifnot(
     is_scalar_character(file) && file.exists(file),
     is.null(age) || is_scalar(age),
     is_valid_date_format(format),
-    is_scalar_integerish(size),
+    is_scalar(size),
     is.infinite(max_backups) || is_n0(max_backups) || is.character(max_backups) || is_Date(max_backups),
-    is_scalar_logical(overwrite),
-    is_scalar_logical(dry_run),
-    is_scalar_logical(verbose),
+    is_scalar_bool(overwrite),
+    is_scalar_bool(dry_run),
+    is_scalar_bool(verbose),
+    is_scalar_bool(create_file),
+    is_scalar_bool(do_rotate),
     is_scalar_Date(now)
   )
+
+  size <- parse_size(size)
 
   bq <- BackupQueueDate$new(file, format = format, backup_dir = backup_dir)
 
@@ -83,7 +116,12 @@ backup_date <- function(
     )}
   }
 
-  if (is_backup_time_necessary(bq, age, now)){
+
+  # backup
+  if (
+    file.size(file) > size &&
+    is_backup_time_necessary(bq, age, now)
+  ){
     bq$push_backup(
       now = now,
       compression = compression,
@@ -91,29 +129,24 @@ backup_date <- function(
       dry_run = dry_run,
       verbose = verbose
     )
+  } else {
+    do_rotate <- FALSE
   }
 
-  bq$prune(
-    max_backups,
-    dry_run = dry_run,
-    verbose = verbose
-  )
+
+  # prune
+  bq$prune(max_backups, dry_run = dry_run, verbose = verbose)
+
+
+  # rotate
+  if (do_rotate){
+    file_remove(file, dry_run = dry_run, verbose = verbose)
+
+    if (create_file){
+      file_create(file, dry_run = dry_run, verbose = verbose)
+    }
+  }
+
 
   invisible(file)
-}
-
-
-
-
-is_backup_time_necessary <- function(
-  bq, age, now
-){
-  if (is.null(age) || !bq$has_backups)
-    return(TRUE)
-
-  if (is_parsable_date(age))
-    is_backup_older_than_date(bq$last_backup, age)
-
-  if (is_parsable_interval(age))
-    is_backup_older_than_interval(bq$last_backup, age, now)
 }

@@ -192,20 +192,24 @@ rotate_internal <- function(
       dry_run = dry_run,
       verbose = verbose
     )
-
-    if (do_rotate){
-      file_remove(file, dry_run = dry_run, verbose = verbose)
-
-      if (create_file)
-        file_create(file, dry_run = dry_run, verbose = verbose)
-    }
+  } else {
+    do_rotate <- FALSE
   }
+
 
   bq$prune(
     max_backups,
     dry_run = dry_run,
     verbose = verbose
   )
+
+  if (do_rotate){
+    file_remove(file, dry_run = dry_run, verbose = verbose)
+
+    if (create_file)
+      file_create(file, dry_run = dry_run, verbose = verbose)
+  }
+
 
   invisible(file)
 }

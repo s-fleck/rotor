@@ -18,6 +18,7 @@ test_that("backup_time common usecases", {
     tf,
     file.path(td, "test.2019-02-01--12-00-00.log")
   )
+  writeLines("test", tf)
   bq <- BackupQueueDateTime$new(tf)
 
   mockery::stub(backup_time, "Sys.time", as.POSIXct("2019-02-28--12-30-00"))
@@ -52,6 +53,7 @@ test_that("backup_time works with timestamps", {
     tf,
     file.path(td, "test.2019-02-01--12-00-00.log")
   )
+  writeLines("test", tf)
 
   bq <- BackupQueueDateTime$new(tf)
   expect_identical(bq$n_backups, 1L)
