@@ -100,6 +100,62 @@ test_that("backup/rotate works with size", {
 
 
 
+test_that("backup/rotate max_size is respected", {
+  tf     <- file.path(td, "test.log")
+  on.exit(unlink(tf))
+  saveRDS(iris, tf)
+  size_ori <- file.size(tf)
+
+  for (i in 1:10)
+    backup(tf, max_backups = 4)
+
+  expect_identical(n_backups(tf), 4L)
+  rotate(tf, max_backups = 4)
+  expect_identical(n_backups(tf), 4L)
+  rotate(tf, max_backups = 4, size = -1)
+
+  expect_equal(
+    c(file.size(tf), file.size(list_backups(tf))),
+    c(0, 0, size_ori, size_ori, size_ori)
+  )
+
+  prune_backups(tf, 0)
+})
+
+
+
+test_that("backup/rotate max_size is respected", {
+  tf     <- file.path(td, "test.log")
+  on.exit(unlink(tf))
+  saveRDS(iris, tf)
+  size_ori <- file.size(tf)
+
+  # backup enforces max_backups
+  for (i in 1:10)  backup(tf, max_backups = 4)
+  expect_identical(n_backups(tf), 4L)
+
+  # roate enforces max_backups
+  rotate(tf, max_backups = 4)
+  expect_identical(n_backups(tf), 4L)
+  rotate(tf, max_backups = 4, size = -1)
+  expect_equal(
+    c(file.size(tf), file.size(list_backups(tf))),
+    c(0, 0, size_ori, size_ori, size_ori)
+  )
+
+  # dry-run does nothing
+  snap <- fileSnapshot(td)
+  rotate(tf, max_backups = 2, dry_run = TRUE)
+  backup(tf, max_backups = 2, size = -1, dry_run = TRUE)
+
+
+  prune_backups(tf, 0)
+})
+
+
+
+
+# utils -------------------------------------------------------------------
 
 test_that("parse_info_unit works", {
   expect_identical(parse_info_unit("k"), 1024)
