@@ -20,13 +20,20 @@ is_valid_date_format <- function(x){
 }
 
 
+
+
 assert_valid_date_format <- function(x){
   xdep <- deparse(substitute(x))
-  if (!is_valid_datetime_format(x))
-    stop("`", xdep, "` is not a valid date format but ", preview_object(x))
-  else
-    TRUE
+  if (!is_valid_datetime_format(x)){
+    stop(
+      "`", xdep, "` is not a valid date format but ", preview_object(x),
+      ". See ?rotate for details."
+    )
+  }
+  TRUE
 }
+
+
 
 
 is_valid_date_format <- function(
@@ -44,13 +51,20 @@ is_valid_date_format <- function(
 }
 
 
+
+
 assert_valid_datetime_format <- function(x){
   xdep <- deparse(substitute(x))
   if (!is_valid_datetime_format(x))
-    stop("`", xdep, "` is not a valid datetime format but ", preview_object(x))
+    stop(
+      "`", xdep, "` is not a valid datetime format but ", preview_object(x),
+      ". See ?rotate for details."
+    )
   else
     TRUE
 }
+
+
 
 
 is_valid_datetime_format <- function(
@@ -78,6 +92,7 @@ is_parsable_datetime <- function(x){
     error = function(...) FALSE
   )
 }
+
 
 
 

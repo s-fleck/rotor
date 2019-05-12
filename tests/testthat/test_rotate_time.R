@@ -106,6 +106,7 @@ test_that("backup/rotate date works to different directory", {
 
 
 
+
 test_that("backup/rotate_date works with size", {
   tf     <- file.path(td, "test.log")
   on.exit(unlink(tf))

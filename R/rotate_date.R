@@ -35,8 +35,6 @@ rotate_date <- function(
 
 
 
-
-
 #' @rdname rotate
 #' @export
 backup_date <- function(
@@ -90,7 +88,6 @@ rotate_date_internal <- function(
   stopifnot(
     is_scalar_character(file) && file_exists(file),
     is.null(age) || is_scalar(age),
-    is_valid_date_format(format),
     is_scalar(size),
     is.infinite(max_backups) || is_n0(max_backups) || is.character(max_backups) || is_Date(max_backups),
     is_scalar_bool(overwrite),
@@ -100,6 +97,7 @@ rotate_date_internal <- function(
     is_scalar_bool(do_rotate),
     is_scalar(now)
   )
+  assert_valid_date_format(format)
 
   now <- parse_date(now)
 
