@@ -77,6 +77,6 @@ test_that("utils-fs can create/remove files in dry_run memory", {
   file_create(new_fake)
   expect_snapshot_unchanged(snap)
 
-  expect_identical(list_files(td, full.names = TRUE), c(new_real, new_fake))
-  expect_identical(list.files(td, full.names = TRUE), c(new_real, tf))
+  expect_path_equal(list_files(td, full.names = TRUE), c(new_real, new_fake))
+  expect_path_equal(list.files(td, full.names = TRUE), c(new_real, tf))
 })
