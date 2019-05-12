@@ -150,7 +150,7 @@ also be a period or a date / datetime for timestamped backups.
 # keep all backups younger than one year
 prune_backups(tf, "1 year") 
   
-# keep all backups after April 4th, 2018
+# remove all backups before April 4th, 2018
 prune_backups(tf, "2018-04-01")  
 ```
 
