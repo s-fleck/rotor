@@ -248,7 +248,7 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
 
 
   bt <- BackupQueueDate$new(tf, backup_dir = bu_dir)
-  bt$push_backup(verbose = TRUE)
+  bt$push_backup()
 
   expect_match(bt$backups$dir, "rotor.backups")
   bt$push_backup(compression = TRUE)

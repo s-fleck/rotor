@@ -88,7 +88,7 @@ rotate_date_internal <- function(
   verbose
 ){
   stopifnot(
-    is_scalar_character(file) && file.exists(file),
+    is_scalar_character(file) && file_exists(file),
     is.null(age) || is_scalar(age),
     is_valid_date_format(format),
     is_scalar(size),
@@ -100,6 +100,19 @@ rotate_date_internal <- function(
     is_scalar_bool(do_rotate),
     is_scalar_Date(now)
   )
+
+  options(
+    rotor.dry_run = dry_run,
+    rotor.verbose = verbose
+  )
+
+  on.exit({
+    options(
+      rotor.dry_run = FALSE,
+      rotor.verbose = FALSE
+    )
+    dm$reset()
+  })
 
   size <- parse_size(size)
 
@@ -125,9 +138,7 @@ rotate_date_internal <- function(
     bq$push_backup(
       now = now,
       compression = compression,
-      overwrite = overwrite,
-      dry_run = dry_run,
-      verbose = verbose
+      overwrite = overwrite
     )
   } else {
     do_rotate <- FALSE
@@ -135,15 +146,15 @@ rotate_date_internal <- function(
 
 
   # prune
-  bq$prune(max_backups, dry_run = dry_run, verbose = verbose)
+  bq$prune(max_backups)
 
 
   # rotate
   if (do_rotate){
-    file_remove(file, dry_run = dry_run, verbose = verbose)
+    file_remove(file)
 
     if (create_file){
-      file_create(file, dry_run = dry_run, verbose = verbose)
+      file_create(file)
     }
   }
 

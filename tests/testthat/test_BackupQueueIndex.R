@@ -204,20 +204,32 @@ test_that("BackupQueueIndex dry run doesnt modify file system", {
   bus <- paste0(tools::file_path_sans_ext(tf), c(".1.log.zip", ".2.log.tar.gz", ".3.log"))
   file.create(bus)
 
+
+  options(
+    rotor.dry_run = TRUE
+  )
+
+  on.exit({
+    options(
+      rotor.dry_run = FALSE
+    )
+    dm$reset()
+  })
+
+
   snap <- utils::fileSnapshot(td, md5sum = TRUE)
 
-  expect_message(bt$increment_index(92, dry_run = TRUE), "93")
+  expect_message(bt$increment_index(92), "93")
   expect_snapshot_unchanged(snap)
 
-  expect_silent(bt$pad_index(dry_run = TRUE))
+  expect_silent(bt$pad_index())
   expect_snapshot_unchanged(snap)
 
-  expect_message(bt$push_backup(dry_run = TRUE), "test.log -> test.1.log")
+  expect_message(bt$push_backup(), "test.log -> test.1.log")
   expect_snapshot_unchanged(snap)
 
-  expect_message(bt$prune(0, dry_run = TRUE), "test.1.log.zip")
+  expect_message(bt$prune(0), "test.01.log")
   expect_snapshot_unchanged(snap)
 
-  bt$prune(0)
   file.remove(tf)
 })

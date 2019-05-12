@@ -164,7 +164,7 @@ is_zipcmd_available <- function(cmd = Sys.getenv("R_ZIPCMD", "zip")){
   } else {
     res <- tryCatch(
        system2("command", paste("-v", cmd), stderr = NULL, stdout = NULL),
-       warning = function(w) {warning(w); 99}
+       warning = function(w) {99}
     )
   }
 

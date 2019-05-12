@@ -5,31 +5,24 @@ BackupQueueIndex <- R6::R6Class(
   inherit = BackupQueue,
   public = list(
     prune = function(
-      max_backups,
-      dry_run = getOption("rotor.dry_run", FALSE),
-      verbose = getOption("rotor.verbose", dry_run)
+      max_backups
     ){
-      if (!should_prune(self, max_backups, dry_run, verbose))
+      if (!should_prune(self, max_backups))
         return(self)
 
       to_keep   <- self$backups$path[seq_len(max_backups)]
       to_remove <- setdiff(self$backups$path, to_keep)
 
-      file_remove(to_remove, dry_run = dry_run, verbose = verbose)
-      self$pad_index(dry_run = dry_run, verbose = verbose)
+      file_remove(to_remove)
+      self$pad_index()
     },
 
 
     push_backup = function(
-      compression = FALSE,
-      dry_run = getOption("rotor.dry_run", FALSE),
-      verbose = getOption("rotor.dry_run", dry_run)
+      compression = FALSE
     ){
       assert_valid_compression(compression)
-      self$increment_index(
-        dry_run = dry_run,
-        verbose = verbose
-      )
+      self$increment_index()
 
       # generate new filename
       name <- file.path(
@@ -49,21 +42,14 @@ BackupQueueIndex <- R6::R6Class(
         outname = name_new,
         compression = compression,
         add_ext = TRUE,
-        overwrite = FALSE,
-        dry_run = dry_run,
-        verbose = verbose
+        overwrite = FALSE
       )
 
-      self$pad_index(
-        dry_run = dry_run,
-        verbose = verbose
-      )
+      self$pad_index( )
     },
 
 
     pad_index = function(
-      dry_run = getOption("rotor.dry_run", FALSE),
-      verbose = getOption("rotor.dry_run", dry_run)
     ){
       if (nrow(self$backups) <= 0)
         return(self)
@@ -77,9 +63,7 @@ BackupQueueIndex <- R6::R6Class(
 
       file_rename(
         backups$path,
-        backups$path_new,
-        dry_run = dry_run,
-        verbose = verbose
+        backups$path_new
       )
 
       self
@@ -87,9 +71,7 @@ BackupQueueIndex <- R6::R6Class(
 
 
     increment_index = function(
-      n = 1,
-      dry_run = getOption("rotor.dry_run", FALSE),
-      verbose = getOption("rotor.dry_run", dry_run)
+      n = 1
     ){
       if (self$n_backups <= 0){
         return(self)
@@ -109,9 +91,7 @@ BackupQueueIndex <- R6::R6Class(
 
       file_rename(
         rev(backups$path),
-        rev(backups$path_new),
-        dry_run = dry_run,
-        verbose = verbose
+        rev(backups$path_new)
       )
 
       self

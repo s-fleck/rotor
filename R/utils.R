@@ -49,9 +49,9 @@ replace_date_stamp <- function(
 
   new_name <- apply(splt, 1, paste, collapse = ".")
 
-  assert(all(file.exists(x)))
-  assert(isTRUE(!file.exists(new_name)))
-  file.rename(x, new_name)
+  assert(all(file_exists(x)))
+  assert(isTRUE(!file_exists(new_name)))
+  file_rename(x, new_name)
   new_name
 }
 

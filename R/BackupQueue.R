@@ -36,11 +36,9 @@ BackupQueue <- R6::R6Class(
     compression = NULL,
 
     prune = function(
-      max_backups,
-      dry_run  = getOption("rotor.dry_run", FALSE),
-      verbose = getOption("rotor.verbose", dry_run)
+      max_backups
     ){
-      if (!should_prune(self, max_backups, dry_run, verbose))
+      if (!should_prune(self, max_backups))
         return(self)
 
       if (max_backups > 0){ warning(
@@ -51,7 +49,7 @@ BackupQueue <- R6::R6Class(
       to_keep   <- self$backups$path[seq_len(max_backups)]
       to_remove <- setdiff(self$backups$path, to_keep)
 
-      file_remove(to_remove, dry_run = dry_run, verbose = verbose)
+      file_remove(to_remove)
 
       self
     },
@@ -117,7 +115,7 @@ BackupQueue <- R6::R6Class(
       backup_files <- get_backups(
         file = self$file,
         potential_backups =
-          list.files(self$backup_dir, full.names = self$backup_dir != "."),
+          list_files(self$backup_dir, full.names = self$backup_dir != "."),
         sfx_patterns = c(
           "\\d+",
           "\\d{4}-\\d{2}-\\d{2}",

@@ -25,9 +25,7 @@ BackupQueueDateTime <- R6::R6Class(
     push_backup = function(
       compression = FALSE,
       overwrite = FALSE,
-      now = Sys.time(),
-      dry_run = getOption("rotor.dry_run", FALSE),
-      verbose = getOption("rotor.dry_run", dry_run)
+      now = Sys.time()
     ){
       assert_valid_datetime_format(self$fmt)
       assert_valid_compression(compression)
@@ -37,9 +35,7 @@ BackupQueueDateTime <- R6::R6Class(
 
       stopifnot(
         is_scalar_logical(overwrite),
-        is_scalar_POSIXct(now),
-        is_scalar_logical(dry_run),
-        is_scalar_logical(verbose)
+        is_scalar_POSIXct(now)
       )
 
       # generate new filename
@@ -62,9 +58,7 @@ BackupQueueDateTime <- R6::R6Class(
         outname = name_new,
         compression = compression,
         add_ext = TRUE,
-        overwrite = overwrite,
-        dry_run = dry_run,
-        verbose = verbose
+        overwrite = overwrite
       )
 
       self
@@ -72,13 +66,11 @@ BackupQueueDateTime <- R6::R6Class(
 
 
     prune = function(
-      max_backups,  # minimum date/interval is the minimum date/interval to keep
-      dry_run  = getOption("rotor.dry_run", FALSE),
-      verbose = getOption("rotor.verbose", dry_run)
+      max_backups
     ){
       assert(is_scalar(max_backups))
 
-      if (!should_prune(self, max_backups, dry_run, verbose))
+      if (!should_prune(self, max_backups))
         return(self)
 
 
@@ -123,7 +115,7 @@ BackupQueueDateTime <- R6::R6Class(
        }
     }
 
-    file_remove(to_remove, dry_run = dry_run, verbose = verbose)
+    file_remove(to_remove)
     self
   }),
 

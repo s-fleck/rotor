@@ -17,18 +17,14 @@ copy_or_compress <- function(
   outname,
   compression = FALSE,
   add_ext = TRUE,
-  overwrite = FALSE,
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  overwrite = FALSE
 ){
   stopifnot(
     is_scalar_character(file),
     is_scalar_character(outname),
-    file.exists(file),
+    file_exists(file),
     is_scalar_logical(overwrite),
-    is_scalar_logical(add_ext),
-    is_scalar_logical(dry_run),
-    is_scalar_logical(verbose)
+    is_scalar_logical(add_ext)
   )
 
   assert(
@@ -53,31 +49,28 @@ copy_or_compress <- function(
 
     if (file.exists(outname)){
       if (overwrite){
-        file_remove(outname, dry_run = dry_run, verbose = verbose)
+        file_remove(outname)
       } else {
         stop(sprintf("File '%s' exists and `overwrite == FALSE`", outname))
       }
     }
 
-
-  # copy
-    if (isFALSE(compression)){
-      file_copy(file, outname, overwrite = overwrite, dry_run = dry_run, verbose = verbose)
-      return(outname)
+    if (compression %in% 1:9){
+      compression_level <- compression
+      compression <- "zip::zipr"
+    } else {
+      compression_level <- 9
     }
 
-  if (compression %in% 1:9){
-    compression_level <- compression
-    compression <- "zip::zipr"
-  } else {
-    compression_level <- 9
-  }
 
-  # zip
-    if (identical(compression, "zip::zipr")){
+  # logic
+    if (getOption("rotor.dry_run", FALSE) || isFALSE(compression)){
+      file_copy(file, outname, overwrite = overwrite)
+
+    } else if (identical(compression, "zip::zipr")){
       assert_namespace("zip")
-      msg_file_copy(file, outname, dry_run = dry_run, verbose = verbose)
-      if (!dry_run) zip::zipr(outname, file)
+      msg_file_copy(file, outname)
+      zip::zipr(outname, file)
 
     } else if (identical(compression, "utils::zip")){
       owd <- setwd(dir = dirname(file))

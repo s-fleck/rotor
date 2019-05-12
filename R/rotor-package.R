@@ -38,12 +38,15 @@ NULL
   assign("style_subtle", style_subtle, envir = parent.env(environment()))
   assign("style_accent", style_accent, envir = parent.env(environment()))
   assign("col_nchar", col_nchar, envir = parent.env(environment()))
+
+  # Memory for dry-run operations
+  assign("dm", DryRunMemory$new(), parent.env(environment()))
 }
 
 
 
 
-disable_r6_not <- function(){
+disable_r6_note <- function(){
   R6::is.R6(NULL)
   NULL
 }

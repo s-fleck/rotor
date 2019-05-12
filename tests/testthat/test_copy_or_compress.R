@@ -57,3 +57,4 @@ test_that("copy_or_compress works with zip::zipr", {
   expect_true(file.exists(r))
   expect_identical(zip::zip_list(r)[1, ]$filename, "compresstest.log")
 })
+

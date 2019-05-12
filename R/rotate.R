@@ -175,10 +175,23 @@ rotate_internal <- function(
   verbose,
   do_rotate
 ){
-  assert(is_scalar_character(file) && file.exists(file))
+  assert(is_scalar_character(file) && file_exists(file))
   assert(is_bool(do_rotate))
 
   size <- parse_size(size)
+
+  options(
+    rotor.dry_run = dry_run,
+    rotor.verbose = verbose
+  )
+
+  on.exit({
+    options(
+      rotor.dry_run = FALSE,
+      rotor.verbose = FALSE
+    )
+    dm$reset()
+  })
 
   bq <- BackupQueueIndex$new(
     file,
@@ -187,27 +200,19 @@ rotate_internal <- function(
   )
 
   if (file.size(file) > size){
-    bq$push_backup(
-      compression = compression,
-      dry_run = dry_run,
-      verbose = verbose
-    )
+    bq$push_backup(compression = compression)
   } else {
     do_rotate <- FALSE
   }
 
 
-  bq$prune(
-    max_backups,
-    dry_run = dry_run,
-    verbose = verbose
-  )
+  bq$prune(max_backups)
 
   if (do_rotate){
-    file_remove(file, dry_run = dry_run, verbose = verbose)
+    file_remove(file)
 
     if (create_file)
-      file_create(file, dry_run = dry_run, verbose = verbose)
+      file_create(file)
   }
 
 
