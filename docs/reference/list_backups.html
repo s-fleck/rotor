@@ -66,7 +66,7 @@ rotor) of a single file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -125,6 +125,11 @@ rotor) of a single file.</p>
       <th>file</th>
       <td><p><code>character</code> scalar: Path to a file.</p></td>
     </tr>
+    <tr>
+      <th>backup_dir</th>
+      <td><p><code>character</code> scalar. The directory in which the backups
+of <code>file</code> are stored (defaults to <code><a href='https://rdrr.io/r/base/basename.html'>dirname(file)</a></code>)</p></td>
+    </tr>
     </table>
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
@@ -167,8 +172,8 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 <span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
 <span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
 
-<span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpmLLuHJ/test538d6e034b63.1.rds"
-#&gt; [2] "/tmp/RtmpmLLuHJ/test538d6e034b63.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpmLLuHJ/test538d6e034b63.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpmLLuHJ/test538d6e034b63.2.rds"</div><div class='input'>
+<span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp4JsQNc/test1bdf61d0f1a0.1.rds"
+#&gt; [2] "/tmp/Rtmp4JsQNc/test1bdf61d0f1a0.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp4JsQNc/test1bdf61d0f1a0.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp4JsQNc/test1bdf61d0f1a0.2.rds"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='rotate.html'>prune_backups</a></span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
 <span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>

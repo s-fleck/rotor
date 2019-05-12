@@ -32,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
       </span>
     </div>
 
@@ -103,14 +103,14 @@
 <a class="sourceLine" id="cb3-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"><span class="co"># display backups of a file</span></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)  </a>
-<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; [1] "/tmp/Rtmp16cH7H/rotor/mylogfile.1.log.zip"</span></a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; [2] "/tmp/Rtmp16cH7H/rotor/mylogfile.2.log"</span></a></code></pre></div>
+<a class="sourceLine" id="cb3-8" data-line-number="8"><span class="co">#&gt; [1] "/tmp/RtmpHNEPvd/rotor/mylogfile.1.log.zip"</span></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="co">#&gt; [2] "/tmp/RtmpHNEPvd/rotor/mylogfile.2.log"</span></a></code></pre></div>
 <p><code><a href="reference/rotate.html">rotate()</a></code> also makes a copy, but replaces the original file with an empty one.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">rotate</a></span>(tf)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)</a>
-<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; [1] "/tmp/Rtmp16cH7H/rotor/mylogfile.1.log"    </span></a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; [2] "/tmp/Rtmp16cH7H/rotor/mylogfile.2.log.zip"</span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; [3] "/tmp/Rtmp16cH7H/rotor/mylogfile.3.log"</span></a>
+<a class="sourceLine" id="cb4-3" data-line-number="3"><span class="co">#&gt; [1] "/tmp/RtmpHNEPvd/rotor/mylogfile.1.log"    </span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; [2] "/tmp/RtmpHNEPvd/rotor/mylogfile.2.log.zip"</span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; [3] "/tmp/RtmpHNEPvd/rotor/mylogfile.3.log"</span></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co"># the original file is now empty</span></a>
 <a class="sourceLine" id="cb4-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(tf)</a>
@@ -126,18 +126,18 @@
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="reference/rotate.html">backup</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">4</span>)</a>
 <a class="sourceLine" id="cb5-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb5-4" data-line-number="4"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)</a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [1] "/tmp/Rtmp16cH7H/rotor/mylogfile.1.log"    </span></a>
-<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; [2] "/tmp/Rtmp16cH7H/rotor/mylogfile.2.log"    </span></a>
-<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; [3] "/tmp/Rtmp16cH7H/rotor/mylogfile.3.log"    </span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; [4] "/tmp/Rtmp16cH7H/rotor/mylogfile.4.log.zip"</span></a></code></pre></div>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [1] "/tmp/RtmpHNEPvd/rotor/mylogfile.1.log"    </span></a>
+<a class="sourceLine" id="cb5-6" data-line-number="6"><span class="co">#&gt; [2] "/tmp/RtmpHNEPvd/rotor/mylogfile.2.log"    </span></a>
+<a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co">#&gt; [3] "/tmp/RtmpHNEPvd/rotor/mylogfile.3.log"    </span></a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="co">#&gt; [4] "/tmp/RtmpHNEPvd/rotor/mylogfile.4.log.zip"</span></a></code></pre></div>
 <p>We can also use <code><a href="reference/rotate.html">prune_backups()</a></code> to delete old backups. Other than ensuring that no new backups is created, it works equivalent to using <code><a href="reference/rotate.html">backup()</a></code> with the <code>max_backups</code> parameter. By setting it to <code>0</code>, we delete all backups.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">prune_backups</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">0</span>)</a></code></pre></div>
 <p>Besides creating backup up with an index, <strong>rotor</strong> can also create timestamped backups.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">backup_date</a></span>(tf)</a>
 <a class="sourceLine" id="cb7-2" data-line-number="2"><span class="kw"><a href="reference/rotate.html">rotate_time</a></span>(tf)</a>
 <a class="sourceLine" id="cb7-3" data-line-number="3"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)</a>
-<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; [1] "/tmp/Rtmp16cH7H/rotor/mylogfile.2019-05-12--13-29-50.log"</span></a>
-<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [2] "/tmp/Rtmp16cH7H/rotor/mylogfile.2019-05-12.log"</span></a></code></pre></div>
+<a class="sourceLine" id="cb7-4" data-line-number="4"><span class="co">#&gt; [1] "/tmp/RtmpHNEPvd/rotor/mylogfile.2019-05-12--21-24-00.log"</span></a>
+<a class="sourceLine" id="cb7-5" data-line-number="5"><span class="co">#&gt; [2] "/tmp/RtmpHNEPvd/rotor/mylogfile.2019-05-12.log"</span></a></code></pre></div>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">prune_backups</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">0</span>)  <span class="co"># cleanup</span></a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="co">#&gt; character(0)</span></a></code></pre></div>
