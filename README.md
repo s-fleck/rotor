@@ -16,7 +16,7 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 package to <https://github.com/s-fleck/lgr>. In addition to rotating log
 files, it can also be used as a (primitive) backup tool. For
 conditionally creating and deleting backups, rotor relies solely on
-information encoded in the filename suffix of the backups (i.e. the
+information encoded in the filename suffixes (i.e. a
 timestamp or index). It therefore also works with backups created by
 other tools, as long as the filename has a format that rotor can deal
 with.
@@ -150,7 +150,7 @@ also be a period or a date / datetime for timestamped backups.
 # keep all backups younger than one year
 prune_backups(tf, "1 year") 
   
-# keep all backups after April 4th, 2018
+# remove all backups before April 4th, 2018
 prune_backups(tf, "2018-04-01")  
 ```
 
