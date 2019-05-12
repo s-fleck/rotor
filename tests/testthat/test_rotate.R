@@ -65,8 +65,13 @@ test_that("backup/rotate works to different directory", {
   file.create(tf)
   writeLines("foobar", tf)
 
-  backup(tf, backup_dir = bu_dir)
+  # dry run does nothing
+  snap <- fileSnapshot(bu_dir)
+  expect_message(backup(tf, backup_dir = bu_dir, dry_run = TRUE))
+  expect_snapshot_unchanged(snap)
 
+  # create backup in different dir
+  backup(tf, backup_dir = bu_dir)
   expect_identical(
     readLines(tf),
     readLines(file.path(dirname(tf), "backups", "test.1.log"))
@@ -86,17 +91,23 @@ test_that("backup/rotate works with size", {
   saveRDS(iris, tf)
   size_ori <- file.size(tf)
 
+  # dont rotate if file size is to small
   rotate(tf, size = "5kb")
   expect_identical(n_backups(tf), 0L)
   expect_equal(file.size(tf), size_ori)
 
+  # dry run does nothing
+  expect_message(rotate(tf, size = "0.5kb", dry_run = TRUE))
+  expect_identical(n_backups(tf), 0L)
+  expect_equal(file.size(tf), size_ori)
+
+  # rotate if file size is big enough
   rotate(tf, size = "0.5kb")
   expect_identical(n_backups(tf), 1L)
   expect_equal(file.size(tf), 0)
 
   prune_backups(tf, 0)
 })
-
 
 
 
