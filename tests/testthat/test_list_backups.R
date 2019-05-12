@@ -1,4 +1,4 @@
-context("newest_backup")
+context("list_backup")
 
 dr <- tempdir()
 td <- file.path(dr, "rotor")
@@ -46,7 +46,7 @@ test_that("n_backups and co work as expected with backup_dir", {
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
-  on.exit(unlink(c(bu_dir, tf)))
+  on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
 
   files <- file.path(
     bu_dir,
@@ -81,7 +81,7 @@ test_that("prune_backups dry run works", {
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
-  on.exit(unlink(c(bu_dir, tf)))
+  on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
 
   files <- file.path(
     bu_dir,
@@ -97,5 +97,4 @@ test_that("prune_backups dry run works", {
   )
 
   expect_snapshot_unchanged(snap)
-
 })

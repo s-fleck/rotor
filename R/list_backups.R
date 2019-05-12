@@ -6,6 +6,7 @@
 #'
 #' @param file `character` scalar: Path to a file.
 #' @inheritSection rotate Intervals
+#' @inheritParams rotate
 #' @export
 #' @seealso [rotate()]
 #' @examples

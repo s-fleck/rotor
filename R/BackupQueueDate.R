@@ -29,6 +29,10 @@ BackupQueueDate <- R6::R6Class(
 parse_date <- function(x){
   if (is_Date(x)){
     return(x)
+
+  } else if (is_POSIXct(x)){
+    return(as.Date(x))
+
   } else if (!is.character(x) && !is_integerish(x)) {
     stop(
       "`", deparse(substitute(x)), "` must be a character or Date, ",
@@ -37,7 +41,7 @@ parse_date <- function(x){
   }
 
   x <- standardize_date_stamp(x)
-  dd <- prep_ymd(x)
+  x <- prep_ymd(x)
   res <- as.Date(x)
 
   assert(!anyNA(res))

@@ -98,8 +98,10 @@ rotate_date_internal <- function(
     is_scalar_bool(verbose),
     is_scalar_bool(create_file),
     is_scalar_bool(do_rotate),
-    is_scalar_Date(now)
+    is_scalar(now)
   )
+
+  now <- parse_date(now)
 
   options(
     rotor.dry_run = dry_run,

@@ -17,6 +17,9 @@ oldest_backup(file, backup_dir = dirname(file))
 }
 \arguments{
 \item{file}{\code{character} scalar: Path to a file.}
+
+\item{backup_dir}{\code{character} scalar. The directory in which the backups
+of \code{file} are stored (defaults to \code{dirname(file)})}
 }
 \value{
 \code{list_backups()} returns the paths to all backups of \code{file}

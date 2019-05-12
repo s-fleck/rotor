@@ -97,6 +97,7 @@ rotate_time_internal <- function(
     is_scalar_bool(do_rotate)
   )
 
+  now  <- parse_datetime(now)
   size <- parse_size(size)
 
   options(

@@ -104,8 +104,12 @@ test_that("backup_date examples from documentation", {
 test_that("backup_date works as expected for years", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
-
+  snap <- fileSnapshot(td)
   # no backup younger than 1 year exists, so rotate
+
+  # dry run does nothing
+  expect_message(bu <- backup_date(tf, "1 year", dry_run = TRUE), "copy")
+  expect_snapshot_unchanged(snap)
   bu <- backup_date(tf, "1 year")
   expect_true(file.size(bu) > 1)
 
@@ -113,12 +117,10 @@ test_that("backup_date works as expected for years", {
   expect_true(bq$has_backups)
   bq$prune(0)
 
-  # ensure backup_date believes it is 2019-01-01
-  mockery::stub(backup_date, "Sys.Date", as.Date("2019-01-01"))
-
   # no backup because last backup is less than a year old
   file.create(file.path(td, "test.2019-12-31.log"))
-  bu <- backup_date(tf, "1 year")
+  bu <- backup_date(tf, "1 year", now = "2019-01-01")
+  bu <- backup_date(tf, "1 year", now = Sys.time())
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
 
