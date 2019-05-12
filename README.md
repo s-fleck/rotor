@@ -16,7 +16,7 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 package to <https://github.com/s-fleck/lgr>. In addition to rotating log
 files, it can also be used as a (primitive) backup tool. For
 conditionally creating and deleting backups, rotor relies solely on
-information encoded in the filename suffix of the backups (i.e. the
+information encoded in the filename suffixes (i.e. a
 timestamp or index). It therefore also works with backups created by
 other tools, as long as the filename has a format that rotor can deal
 with.
