@@ -186,3 +186,12 @@ is_zipcmd_available <- function(cmd = Sys.getenv("R_ZIPCMD", "zip")){
   assert(is_scalar(res))
   res == 0
 }
+
+
+
+
+is_dir <- function(
+  x
+){
+  file.exists(x) && file.info(x)$isdir
+}

@@ -98,6 +98,7 @@ rotate_date_internal <- function(
     is_scalar(now)
   )
   assert_valid_date_format(format)
+  assert(!is_dir(file))
 
   now <- parse_date(now)
 

@@ -96,6 +96,7 @@ rotate_time_internal <- function(
     is_scalar_bool(do_rotate)
   )
   assert_valid_date_format(format)
+  assert(!is_dir(file))
 
   now  <- parse_datetime(now)
   size <- parse_size(size)

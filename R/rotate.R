@@ -177,6 +177,7 @@ rotate_internal <- function(
   do_rotate
 ){
   assert(is_scalar_character(file) && file_exists(file))
+  assert(!is_dir(file))
   assert(is_bool(do_rotate))
 
   size <- parse_size(size)
