@@ -64,10 +64,25 @@ list_backups <- function(
 prune_backups <- function(
   file,
   max_backups,
-  backup_dir = dirname(file)
+  backup_dir = dirname(file),
+  dry_run = getOption("rotor.dry_run", FALSE),
+  verbose = dry_run
 ){
   assert_pure_BackupQueue(file, backup_dir = backup_dir)
   assert(is_scalar_character(file))
+
+  options(
+    rotor.dry_run = dry_run,
+    rotor.verbose = verbose
+  )
+
+  on.exit({
+    options(
+      rotor.dry_run = FALSE,
+      rotor.verbose = FALSE
+    )
+    dm$reset()
+  })
 
   bq <- BackupQueueIndex$new(file, backup_dir = backup_dir)
 

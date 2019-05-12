@@ -12,7 +12,8 @@ n_backups(file, backup_dir = dirname(file))
 
 list_backups(file, backup_dir = dirname(file))
 
-prune_backups(file, max_backups, backup_dir = dirname(file))
+prune_backups(file, max_backups, backup_dir = dirname(file),
+  dry_run = getOption("rotor.dry_run", FALSE), verbose = dry_run)
 
 newest_backup(file, backup_dir = dirname(file))
 
@@ -37,6 +38,12 @@ In addition for timestamped backups the following value are supported:
 \item a \code{character} scalar representing an Interval in the form
 \code{"<number> <interval>"} (see below for more info)
 }}
+
+\item{dry_run}{\code{logical} scalar. If \code{TRUE} no changes are applied to the
+file system (no files are created or deleted)}
+
+\item{verbose}{\code{logical} scalar. If \code{TRUE} additional informative \code{messages}
+are printed}
 }
 \value{
 \code{list_backups()} returns the paths to all backups of \code{file}

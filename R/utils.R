@@ -80,7 +80,7 @@ fmt_bytes <- function(
 
 
 expect_snapshot_unchanged <- function(snap){
-  if (!length(snap$info$size) && !length(fileSnapshot(snap$path)$info$size))
+  if (!length(snap$info$size) && !length(utils::fileSnapshot(snap$path)$info$size))
     testthat::expect_true(TRUE)
   else
     testthat::expect_true(!any(utils::changedFiles(snap)$changes))
