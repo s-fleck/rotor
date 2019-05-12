@@ -142,13 +142,14 @@ if (!length(list.files(dr))) unlink(dr, recursive = TRUE)
 
 # Dependencies
 
-**rotor** comes with two non-base dependencies:
+**rotor**'s dependencies are intentionally kept slim. It only comes with two
+non-base dependencies:
 
 * [R6](https://github.com/r-lib/R6): A light weight system for 
   encapsulated object-oriented programming.
 * [dint](https://github.com/s-fleck/dint): A toolkit for working year-quarter 
-  and year-month dates that I am also the author of. Is used by `rotate_date()` 
-  and `rotate_time()` to deal with calendar periods. 
+  and year-month dates that I am also the author of. It is used by 
+  `rotate_date()` and `rotate_time()` to deal with calendar periods. 
   
 Both packages have no transitive dependencies (i.e they do not depend on 
 anything outside of base R)

@@ -35,7 +35,9 @@
 
 <meta property="og:description" content="Functions starting with backup create backups of a file, while functions
 starting with rotate do the same but also replace the original file
-with an empty one (this is useful for log rotation)" />
+with an empty one (this is useful for log rotation)
+prune_backups() physically deletes all backups of a file
+based on max_backups" />
 <meta name="twitter:card" content="summary" />
 
 
@@ -66,7 +68,7 @@ with an empty one (this is useful for log rotation)" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.1.0.9003</span>
       </span>
     </div>
 
@@ -107,39 +109,40 @@ with an empty one (this is useful for log rotation)" />
     <p>Functions starting with <code>backup</code> create backups of a <code>file</code>, while functions
 starting with <code>rotate</code> do the same but also replace the original <code>file</code>
 with an empty one (this is useful for log rotation)</p>
+<p><code>prune_backups()</code> physically deletes all backups of a file
+based on <code>max_backups</code></p>
     
     </div>
 
     <pre class="usage"><span class='fu'>rotate</span>(<span class='no'>file</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='no'>dry_run</span>))
+  <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>backup</span>(<span class='no'>file</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='no'>dry_run</span>))
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
+
+<span class='fu'>prune_backups</span>(<span class='no'>file</span>, <span class='no'>max_backups</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>),
+  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>rotate_date</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>(),
-  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='no'>dry_run</span>))
+  <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(),
+  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>backup_date</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d"</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>,
   <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>(), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='no'>dry_run</span>))
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>rotate_time</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d--%H-%M-%S"</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>(),
-  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='no'>dry_run</span>))
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>),
+  <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>backup_time</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d--%H-%M-%S"</span>,
   <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>(),
-  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='fl'>FALSE</span>),
-  <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/options'>getOption</a></span>(<span class='st'>"rotor.dry_run"</span>, <span class='no'>dry_run</span>))</pre>
+  <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(),
+  <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -174,12 +177,12 @@ like <code>1k</code> (kilobytes), <code>3M</code> (megabytes), <code>4G</code> (
       <th>compression</th>
       <td><p>Whether or not backups should be compressed</p><ul>
 <li><p><code>FALSE</code> for uncompressed backups,</p></li>
-<li><p><code>TRUE</code> for zip compression; uses <code><a href='https://www.rdocumentation.org/packages/utils/topics/zip'>zip()</a></code></p></li>
+<li><p><code>TRUE</code> for zip compression; uses <code><a href='https://rdrr.io/r/utils/zip.html'>zip()</a></code></p></li>
 <li><p>a scalar <code>integer</code> between <code>1</code> and <code>9</code> to specify a compression
 level (requires the
-<a href='https://cran.r-project.org/web/packages/zip/index.html'>zip</a> package,
+<a href='https://CRAN.R-project.org/package=zip'>zip</a> package,
 see its documentation for details)</p></li>
-<li><p>the <code>character</code> scalars <code>"base::zip()"</code> or <code>"zip::zipr"</code> to force a
+<li><p>the <code>character</code> scalars <code>"utils::zip()"</code> or <code>"zip::zipr"</code> to force a
 specific zip command</p></li>
 </ul></td>
     </tr>
@@ -187,6 +190,11 @@ specific zip command</p></li>
       <th>create_file</th>
       <td><p><code>logical</code> scalar. If <code>TRUE</code> create an empty file in
 place of <code>file</code> after rotating.</p></td>
+    </tr>
+    <tr>
+      <th>backup_dir</th>
+      <td><p><code>character</code> scalar. The directory in which the backups
+of <code>file</code> are stored (defaults to <code><a href='https://rdrr.io/r/base/basename.html'>dirname(file)</a></code>)</p></td>
     </tr>
     <tr>
       <th>dry_run</th>
@@ -211,7 +219,7 @@ which Date/Datetime formats are supported by rotor.</p></li>
     <tr>
       <th>format</th>
       <td><p>a scalar <code>character</code> that can be a subset of of valid
-<code><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime()</a></code> formatting strings. The default setting is
+<code><a href='https://rdrr.io/r/base/strptime.html'>strftime()</a></code> formatting strings. The default setting is
 <code>"%Y-%m-%d--%H-%M-%S"</code>.</p><ul>
 <li><p>You can use an arbitrary number of dashes anywhere in the format, so
 <code>"%Y-%m-%d--%H-%M-%S"</code> and <code>"%Y%m%d%H%M%S"</code> are both legal.</p></li>
@@ -247,12 +255,13 @@ for testing purposes.</p></td>
     <h2 class="hasAnchor" id="side-effects"><a class="anchor" href="#side-effects"></a>Side Effects</h2>
 
     
-    <p><code>backup()</code>, <code>backup_date()</code>, and <code>backup_time()</code> creates a new file on the
-file system (if the specified conditions are met). It may also delete
-backups if <code>max_backup</code> is reached.</p>
-<p><code>rotate()</code>, <code>rotate_date()</code> and <code>rotate_time()</code> does the same, but in
-addition replaces the input <code>file</code> with an empty file (or not if
-<code>create_file == FALSE</code>)</p>
+    <p><code>backup()</code>, <code>backup_date()</code>, and <code>backup_time()</code> may create files (if the
+specified conditions are met). They may also delete backups, based on
+<code>max_backup</code>.</p>
+<p><code>rotate()</code>, <code>rotate_date()</code> and <code>rotate_time()</code> do the same, but in
+addition delete the input <code>file</code>, or replace it with an empty file if
+<code>create_file == TRUE</code> (the default).</p>
+    <p><code>prune_backups()</code> may delete files, depending on <code>max_backups</code>.</p>
     
     <h2 class="hasAnchor" id="intervals"><a class="anchor" href="#intervals"></a>Intervals</h2>
 
@@ -278,7 +287,7 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
     
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p><code><a href='n_backups.html'>n_backups()</a></code></p></div>
+    <div class='dont-index'><p><code><a href='list_backups.html'>list_backups()</a></code></p></div>
     
 
   </div>

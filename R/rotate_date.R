@@ -12,8 +12,8 @@ rotate_date <- function(
   create_file = TRUE,
   backup_dir = dirname(file),
   now = Sys.Date(),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = FALSE,
+  verbose = dry_run
 ){
   rotate_date_internal(
     file = file,
@@ -49,8 +49,8 @@ backup_date <- function(
   overwrite = FALSE,
   backup_dir = dirname(file),
   now = Sys.Date(),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = FALSE,
+  verbose = dry_run
 ){
   rotate_date_internal(
     file = file,
@@ -105,7 +105,6 @@ rotate_date_internal <- function(
     rotor.dry_run = dry_run,
     rotor.verbose = verbose
   )
-
   on.exit({
     options(
       rotor.dry_run = FALSE,

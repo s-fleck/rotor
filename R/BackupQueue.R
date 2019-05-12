@@ -1,5 +1,6 @@
 #' An internal R6 class for managing backups
 #'
+#' **documentation under development**
 #' `BackupQueue` and its subclasses are [R6::R6Class] for rotating files and
 #' managing backup. They are the internal constructs on which [rotate()] and
 #' co. are based. The `BackupQueue` constructor is exported for use by other

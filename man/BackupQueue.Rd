@@ -19,6 +19,7 @@ BackupQueueDateTime
 BackupQueueIndex
 }
 \description{
+\strong{documentation under development}
 \code{BackupQueue} and its subclasses are \link[R6:R6Class]{R6::R6Class} for rotating files and
 managing backup. They are the internal constructs on which \code{\link[=rotate]{rotate()}} and
 co. are based. The \code{BackupQueue} constructor is exported for use by other

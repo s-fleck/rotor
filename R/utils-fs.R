@@ -51,6 +51,7 @@ file_create <- function(
 
 
 
+
 file_remove<- function(
   ...,
   dry_run = getOption("rotor.dry_run", FALSE),
@@ -63,6 +64,7 @@ file_remove<- function(
 
   file.remove(...)
 }
+
 
 
 
@@ -96,6 +98,7 @@ list_files <- function(
 
   list.files(path = path, full.names = full.names, ...)
 }
+
 
 
 
@@ -147,6 +150,7 @@ msg_file_remove <- function(
 
 
 
+
 msg_file_rename <- function(
   from,
   to,
@@ -182,6 +186,7 @@ msg_file_rename <- function(
 
 
 
+
 msg_file_create <- function(
   ...,
   dry_run = getOption("rotor.dry_run", FALSE),
@@ -199,6 +204,8 @@ msg_file_create <- function(
   message(paste0("[dry_run] "[dry_run], "creating:"))
   message(paste0("[dry_run] "[dry_run], "+ ", files, "\n"))
 }
+
+
 
 
 msg_prune_backups <- function(
@@ -219,7 +226,6 @@ msg_prune_backups <- function(
     paste0("[dry_run] "[dry_run], "- ", to_remove, collapse = "\n")
   )
 }
-
 
 
 

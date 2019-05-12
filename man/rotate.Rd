@@ -3,6 +3,7 @@
 \name{rotate}
 \alias{rotate}
 \alias{backup}
+\alias{prune_backups}
 \alias{rotate_date}
 \alias{backup_date}
 \alias{rotate_time}
@@ -10,37 +11,34 @@
 \title{Rotate or backup files}
 \usage{
 rotate(file, size = 0, max_backups = Inf, compression = FALSE,
-  create_file = TRUE, backup_dir = dirname(file),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run))
+  create_file = TRUE, backup_dir = dirname(file), dry_run = FALSE,
+  verbose = dry_run)
 
 backup(file, size = 0, max_backups = Inf, compression = FALSE,
-  backup_dir = dirname(file), dry_run = getOption("rotor.dry_run",
-  FALSE), verbose = getOption("rotor.dry_run", dry_run))
+  backup_dir = dirname(file), dry_run = FALSE, verbose = dry_run)
+
+prune_backups(file, max_backups, backup_dir = dirname(file),
+  dry_run = FALSE, verbose = dry_run)
 
 rotate_date(file, age = NULL, format = "\%Y-\%m-\%d", size = 1,
   max_backups = Inf, compression = FALSE, overwrite = FALSE,
   create_file = TRUE, backup_dir = dirname(file), now = Sys.Date(),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run))
+  dry_run = FALSE, verbose = dry_run)
 
 backup_date(file, age = NULL, format = "\%Y-\%m-\%d", size = 1,
   max_backups = Inf, compression = FALSE, overwrite = FALSE,
-  backup_dir = dirname(file), now = Sys.Date(),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run))
+  backup_dir = dirname(file), now = Sys.Date(), dry_run = FALSE,
+  verbose = dry_run)
 
 rotate_time(file, age = NULL, format = "\%Y-\%m-\%d--\%H-\%M-\%S",
   size = 1, max_backups = Inf, compression = FALSE,
   overwrite = FALSE, create_file = TRUE, backup_dir = dirname(file),
-  now = Sys.time(), dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run))
+  now = Sys.time(), dry_run = FALSE, verbose = dry_run)
 
 backup_time(file, age = NULL, format = "\%Y-\%m-\%d--\%H-\%M-\%S",
   size = 1, max_backups = Inf, compression = FALSE,
   overwrite = FALSE, backup_dir = dirname(file), now = Sys.time(),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run))
+  dry_run = FALSE, verbose = dry_run)
 }
 \arguments{
 \item{file}{\code{character} scalar: file to backup/rotate}
@@ -130,16 +128,22 @@ for testing purposes.}
 Functions starting with \code{backup} create backups of a \code{file}, while functions
 starting with \code{rotate} do the same but also replace the original \code{file}
 with an empty one (this is useful for log rotation)
+
+\code{prune_backups()} physically deletes all backups of a file
+based on \code{max_backups}
 }
 \section{Side Effects}{
 
-\code{backup()}, \code{backup_date()}, and \code{backup_time()} creates a new file on the
-file system (if the specified conditions are met). It may also delete
-backups if \code{max_backup} is reached.
+\code{backup()}, \code{backup_date()}, and \code{backup_time()} may create files (if the
+specified conditions are met). They may also delete backups, based on
+\code{max_backup}.
 
-\code{rotate()}, \code{rotate_date()} and \code{rotate_time()} does the same, but in
-addition replaces the input \code{file} with an empty file (or not if
-\code{create_file == FALSE})
+\code{rotate()}, \code{rotate_date()} and \code{rotate_time()} do the same, but in
+addition delete the input \code{file}, or replace it with an empty file if
+\code{create_file == TRUE} (the default).
+
+
+\code{prune_backups()} may delete files, depending on \code{max_backups}.
 }
 
 \section{Intervals}{
@@ -169,5 +173,5 @@ a backup and then remove all backups of \code{myfile} before \code{2019-01-01}.
 }
 
 \seealso{
-\code{\link[=n_backups]{n_backups()}}
+\code{\link[=list_backups]{list_backups()}}
 }

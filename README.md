@@ -16,7 +16,7 @@ maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www
 package to <https://github.com/s-fleck/lgr>. In addition to rotating log
 files, it can also be used as a (primitive) backup tool. For
 conditionally creating and deleting backups, rotor relies solely on
-information encoded in the filename suffixes (i.e. a
+information encoded in the filename suffix of the backups (i.e. the
 timestamp or index). It therefore also works with backups created by
 other tools, as long as the filename has a format that rotor can deal
 with.
@@ -77,8 +77,8 @@ backup(tf, compression = TRUE)
 
 # display backups of a file
 list_backups(tf)  
-#> [1] "/tmp/Rtmpwsya1w/rotor/mylogfile.1.log.zip"
-#> [2] "/tmp/Rtmpwsya1w/rotor/mylogfile.2.log"
+#> [1] "/tmp/Rtmp8MYGOD/rotor/mylogfile.1.log.zip"
+#> [2] "/tmp/Rtmp8MYGOD/rotor/mylogfile.2.log"
 ```
 
 `rotate()` also makes a copy, but replaces the original file with an
@@ -87,9 +87,9 @@ empty one.
 ``` r
 rotate(tf)
 list_backups(tf)
-#> [1] "/tmp/Rtmpwsya1w/rotor/mylogfile.1.log"    
-#> [2] "/tmp/Rtmpwsya1w/rotor/mylogfile.2.log.zip"
-#> [3] "/tmp/Rtmpwsya1w/rotor/mylogfile.3.log"
+#> [1] "/tmp/Rtmp8MYGOD/rotor/mylogfile.1.log"    
+#> [2] "/tmp/Rtmp8MYGOD/rotor/mylogfile.2.log.zip"
+#> [3] "/tmp/Rtmp8MYGOD/rotor/mylogfile.3.log"
 
 # the original file is now empty
 readLines(tf)
@@ -111,10 +111,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/Rtmpwsya1w/rotor/mylogfile.1.log"    
-#> [2] "/tmp/Rtmpwsya1w/rotor/mylogfile.2.log"    
-#> [3] "/tmp/Rtmpwsya1w/rotor/mylogfile.3.log"    
-#> [4] "/tmp/Rtmpwsya1w/rotor/mylogfile.4.log.zip"
+#> [1] "/tmp/Rtmp8MYGOD/rotor/mylogfile.1.log"    
+#> [2] "/tmp/Rtmp8MYGOD/rotor/mylogfile.2.log"    
+#> [3] "/tmp/Rtmp8MYGOD/rotor/mylogfile.3.log"    
+#> [4] "/tmp/Rtmp8MYGOD/rotor/mylogfile.4.log.zip"
 ```
 
 We can also use `prune_backups()` to delete old backups. Other than
@@ -133,8 +133,8 @@ timestamped backups.
 backup_date(tf)
 rotate_time(tf)
 list_backups(tf)
-#> [1] "/tmp/Rtmpwsya1w/rotor/mylogfile.2019-05-05--10-39-39.log"
-#> [2] "/tmp/Rtmpwsya1w/rotor/mylogfile.2019-05-05.log"
+#> [1] "/tmp/Rtmp8MYGOD/rotor/mylogfile.2019-05-12--13-29-40.log"
+#> [2] "/tmp/Rtmp8MYGOD/rotor/mylogfile.2019-05-12.log"
 ```
 
 ``` r
@@ -150,19 +150,20 @@ also be a period or a date / datetime for timestamped backups.
 # keep all backups younger than one year
 prune_backups(tf, "1 year") 
   
-# remove all backups before April 4th, 2018
+# keep all backups after April 4th, 2018
 prune_backups(tf, "2018-04-01")  
 ```
 
 # Dependencies
 
-**rotor** comes with two non-base dependencies:
+**rotor**’s dependencies are intentionally kept slim. It only comes with
+two non-base dependencies:
 
   - [R6](https://github.com/r-lib/R6): A light weight system for
     encapsulated object-oriented programming.
   - [dint](https://github.com/s-fleck/dint): A toolkit for working
-    year-quarter and year-month dates that I am also the author of. Is
-    used by `rotate_date()` and `rotate_time()` to deal with calendar
+    year-quarter and year-month dates that I am also the author of. It
+    is used by `rotate_date()` and `rotate_time()` to deal with calendar
     periods.
 
 Both packages have no transitive dependencies (i.e they do not depend on

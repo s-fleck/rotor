@@ -24,6 +24,18 @@
 #' prune_backups(tf, 0)
 #' n_backups(tf)
 #' file.remove(tf)
+list_backups <- function(
+  file,
+  backup_dir = dirname(file)
+){
+  BackupQueue$new(file, backup_dir = backup_dir)$backups$path
+}
+
+
+
+#' @rdname list_backups
+#' @export
+#' @return `list_backups()` returns the paths to all backups of `file`
 n_backups <- function(
   file,
   backup_dir = dirname(file)
@@ -42,64 +54,10 @@ n_backups <- function(
 
 
 
-#' @rdname n_backups
-#' @export
-#' @return `list_backups()` returns the paths to all backups of `file`
-list_backups <- function(
-  file,
-  backup_dir = dirname(file)
-){
-  BackupQueue$new(file, backup_dir = backup_dir)$backups$path
-}
-
-
-
-
-#' @description `prune_backups()` physically deletes all backups of a file
-#'   based on `max_backups`
-#' @inheritParams rotate
-#' @return `prune_backups()` returns the path to the input file `file` (invisibly)
-#' @export
-#' @rdname n_backups
-prune_backups <- function(
-  file,
-  max_backups,
-  backup_dir = dirname(file),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = dry_run
-){
-  assert_pure_BackupQueue(file, backup_dir = backup_dir)
-  assert(is_scalar_character(file))
-
-  options(
-    rotor.dry_run = dry_run,
-    rotor.verbose = verbose
-  )
-
-  on.exit({
-    options(
-      rotor.dry_run = FALSE,
-      rotor.verbose = FALSE
-    )
-    dm$reset()
-  })
-
-  bq <- BackupQueueIndex$new(file, backup_dir = backup_dir)
-
-  if (!bq$has_backups)
-    bq <- BackupQueueDateTime$new(file, backup_dir = backup_dir)
-
-  bq$prune(max_backups = max_backups)
-  invisible(file)
-}
-
-
-
-
 #' @return `newest_backup()` and `oldest_backup()` return the paths to the
 #'   newest or oldest backup of `file` (or an empty `character` vector if none exist)
 #' @export
-#' @rdname n_backups
+#' @rdname list_backups
 newest_backup <- function(
   file,
   backup_dir = dirname(file)
@@ -130,7 +88,7 @@ newest_backup <- function(
 
 
 #' @export
-#' @rdname n_backups
+#' @rdname list_backups
 oldest_backup <- function(
   file,
   backup_dir = dirname(file)

@@ -11,8 +11,8 @@ rotate_time <- function(
   create_file = TRUE,
   backup_dir = dirname(file),
   now = Sys.time(),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = FALSE,
+  verbose = dry_run
 ){
   rotate_time_internal(
     file = file,
@@ -46,8 +46,8 @@ backup_time <- function(
   overwrite = FALSE,
   backup_dir = dirname(file),
   now = Sys.time(),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = FALSE,
+  verbose = dry_run
 ){
   rotate_time_internal(
     file = file,
@@ -103,7 +103,6 @@ rotate_time_internal <- function(
     rotor.dry_run = dry_run,
     rotor.verbose = verbose
   )
-
   on.exit({
     options(
       rotor.dry_run = FALSE,

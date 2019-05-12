@@ -79,13 +79,13 @@
 #' @return `file` as a `character` scalar (invisibly)
 #'
 #' @section Side Effects:
-#' `backup()`, `backup_date()`, and `backup_time()` creates a new file on the
-#' file system (if the specified conditions are met). It may also delete
-#' backups if `max_backup` is reached.
+#' `backup()`, `backup_date()`, and `backup_time()` may create files (if the
+#' specified conditions are met). They may also delete backups, based on
+#' `max_backup`.
 #'
-#' `rotate()`, `rotate_date()` and `rotate_time()` does the same, but in
-#' addition replaces the input `file` with an empty file (or not if
-#' `create_file == FALSE`)
+#' `rotate()`, `rotate_date()` and `rotate_time()` do the same, but in
+#' addition delete the input `file`, or replace it with an empty file if
+#' `create_file == TRUE` (the default).
 #'
 #' @section Intervals:
 #'
@@ -110,7 +110,7 @@
 #' one year worth of backups". So if you call
 #' `backup_time(myfile, max_backups = "1 year")` on `2019-03-01`, it will create
 #' a backup and then remove all backups of `myfile` before `2019-01-01`.
-#' @seealso [n_backups()]
+#' @seealso [list_backups()]
 #' @export
 rotate <- function(
   file,
@@ -119,8 +119,8 @@ rotate <- function(
   compression = FALSE,
   create_file = TRUE,
   backup_dir = dirname(file),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = FALSE,
+  verbose = dry_run
 ){
   rotate_internal(
     file,
@@ -146,8 +146,8 @@ backup <- function(
   max_backups = Inf,
   compression = FALSE,
   backup_dir = dirname(file),
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = FALSE,
+  verbose = dry_run
 ){
   rotate_internal(
     file,
@@ -184,7 +184,6 @@ rotate_internal <- function(
     rotor.dry_run = dry_run,
     rotor.verbose = verbose
   )
-
   on.exit({
     options(
       rotor.dry_run = FALSE,
@@ -218,6 +217,47 @@ rotate_internal <- function(
 
   invisible(file)
 }
+
+
+
+
+#' @description `prune_backups()` physically deletes all backups of a file
+#'   based on `max_backups`
+#' @section Side Effects:
+#' `prune_backups()` may delete files, depending on `max_backups`.
+#' @export
+#' @rdname rotate
+prune_backups <- function(
+  file,
+  max_backups,
+  backup_dir = dirname(file),
+  dry_run = FALSE,
+  verbose = dry_run
+){
+  assert_pure_BackupQueue(file, backup_dir = backup_dir)
+  assert(is_scalar_character(file))
+
+  options(
+    rotor.dry_run = dry_run,
+    rotor.verbose = verbose
+  )
+  on.exit({
+    options(
+      rotor.dry_run = FALSE,
+      rotor.verbose = FALSE
+    )
+    dm$reset()
+  })
+
+  bq <- BackupQueueIndex$new(file, backup_dir = backup_dir)
+
+  if (!bq$has_backups)
+    bq <- BackupQueueDateTime$new(file, backup_dir = backup_dir)
+
+  bq$prune(max_backups = max_backups)
+  invisible(file)
+}
+
 
 
 
