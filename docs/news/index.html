@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>An internal R6 class for managing backups — BackupQueue • rotor</title>
+<title>Changelog • rotor</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -31,14 +31,7 @@
 
 
 
-<meta property="og:title" content="An internal R6 class for managing backups — BackupQueue" />
-
-<meta property="og:description" content="documentation under development
-BackupQueue and its subclasses are R6::R6Class for rotating files and
-managing backup. They are the internal constructs on which rotate() and
-co. are based. The BackupQueue constructor is exported for use by other
-package developers and not intended for direct use." />
-<meta name="twitter:card" content="summary" />
+<meta property="og:title" content="Changelog" />
 
 
 
@@ -55,7 +48,7 @@ package developers and not intended for direct use." />
   </head>
 
   <body>
-    <div class="container template-reference-topic">
+    <div class="container template-news">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -102,43 +95,32 @@ package developers and not intended for direct use." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>An internal R6 class for managing backups</h1>
-    
-    <div class="hidden name"><code>BackupQueue.Rd</code></div>
-    </div>
-
-    <div class="ref-description">
-    
-    <p><strong>documentation under development</strong>
-<code>BackupQueue</code> and its subclasses are <a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6::R6Class</a> for rotating files and
-managing backup. They are the internal constructs on which <code><a href='rotate.html'>rotate()</a></code> and
-co. are based. The <code>BackupQueue</code> constructor is exported for use by other
-package developers and not intended for direct use.</p>
-    
-    </div>
-
-    <pre class="usage"><span class='no'>BackupQueue</span>
-
-<span class='no'>BackupQueueDate</span>
-
-<span class='no'>BackupQueueDateTime</span>
-
-<span class='no'>BackupQueueIndex</span></pre>
-        
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
-
-    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
-    
-
-  </div>
-  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <h2>Contents</h2>
-    <ul class="nav nav-pills nav-stacked">
+      <h1>Changelog <small></small></h1>
       
-      <li><a href="#format">Format</a></li>
-          </ul>
+    </div>
 
+    <div id="rotor-0-2-1-2019-05-15" class="section level1">
+<h1 class="page-header">
+<a href="#rotor-0-2-1-2019-05-15" class="anchor"></a>rotor 0.2.1 (2019-05-15)</h1>
+<ul>
+<li>added examples to <code><a href="../reference/rotate.html">rotate()</a></code> documentation</li>
+<li>
+<code>dry_run</code> status is now tracked internally instead of a potentially user modifiable <code><a href="https://rdrr.io/r/base/options.html">option()</a></code> (it was never designed to be user modifiable anyways).</li>
+<li>Track test coverage with covr</li>
+<li>Added a <code>NEWS.md</code> file to track changes to the package.</li>
+</ul>
+</div>
   </div>
+
+  <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
+    <div id="tocnav">
+      <h2>Contents</h2>
+      <ul class="nav nav-pills nav-stacked">
+        <li><a href="#rotor-0-2-1-2019-05-15">0.2.1</a></li>
+      </ul>
+    </div>
+  </div>
+
 </div>
 
       <footer>

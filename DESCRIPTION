@@ -1,7 +1,7 @@
 Type: Package
 Package: rotor
 Title: Log Rotation and Conditional Backups
-Version: 0.2.0.9000
+Version: 0.2.1
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -10,7 +10,7 @@ Authors@R:
            comment = c(ORCID = "0000-0003-3344-9851"))
 Maintainer: Stefan Fleck <stefan.b.fleck@gmail.com>
 Description: Conditionally rotate or back-up files based on their size or the
-  date of the last backup; inspired by the 'linux' utility 'logrotate'.
+  date of the last backup; inspired by the 'Linux' utility 'logrotate'.
 License: MIT + file LICENSE
 Imports:
     tools,

@@ -21,13 +21,13 @@ knitr::opts_chunk$set(
 <!-- badges: end -->
 
 **rotor** provides a cross platform R reimagination of
-[logrotate](https://linux.die.net/man/8/logrotate) as a companion package to
-https://github.com/s-fleck/lgr. In addition to rotating log files, it can also
-be used as a (primitive) backup tool. For conditionally creating and deleting
-backups, rotor relies solely on information encoded in the filename suffix of 
-the backups (i.e. the timestamp or index). It therefore also works with backups 
-created by other tools, as long as the filename has a format that rotor can deal 
-with.
+[logrotate](https://linux.die.net/man/8/logrotate) as a companion package to the
+logging package [lgr](https://github.com/s-fleck/lgr). In addition to rotating
+log files, it can also be used as a (primitive) backup tool. For conditionally
+creating and deleting backups, rotor relies solely on information encoded in a
+suffix of the backup file names (i.e. a timestamp or index). It therefore also
+works with backups created by other tools, as long as the filename has a format
+that rotor can deal with.
 
 `rotate()`, `rotate_date()`, and `rotate_time()` move a file and insert a 
 suffix (either an integer or a timestamp) into the filename. In addition, they

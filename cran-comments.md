@@ -9,4 +9,6 @@
 
 0 errors | 0 warnings | 1 note
 
+* Resubmission 
+* Added examples to the documentation of rotate() and co.
 * This is a new release.

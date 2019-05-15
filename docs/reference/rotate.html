@@ -68,7 +68,7 @@ based on max_backups" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1</span>
       </span>
     </div>
 
@@ -82,6 +82,9 @@ based on max_backups" />
 </li>
 <li>
   <a href="../reference/index.html">Reference</a>
+</li>
+<li>
+  <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
       
@@ -290,6 +293,61 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
     <div class='dont-index'><p><code><a href='list_backups.html'>list_backups()</a></code></p></div>
     
 
+    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
+    <pre class="examples"><div class='input'><span class='co'># setup example file</span>
+<span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"test"</span>, <span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".rds"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span>(<span class='no'>cars</span>, <span class='no'>tf</span>)
+
+<span class='co'># create two backups of `tf``</span>
+<span class='fu'>backup</span>(<span class='no'>tf</span>)
+<span class='fu'>backup</span>(<span class='no'>tf</span>)
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)  <span class='co'># find all backups of a file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpiatcU7/test26ef62711958.1.rds"
+#&gt; [2] "/tmp/RtmpiatcU7/test26ef62711958.2.rds"</div><div class='input'>
+<span class='co'># If `size` is set, a backup is only created if the target file is at least</span>
+<span class='co'># that big. This is more useful for log rotation than for backups.</span>
+<span class='fu'>backup</span>(<span class='no'>tf</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"100 mb"</span>)  <span class='co'># no backup becuase `tf` is to small</span>
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpiatcU7/test26ef62711958.1.rds"
+#&gt; [2] "/tmp/RtmpiatcU7/test26ef62711958.2.rds"</div><div class='input'>
+<span class='co'># If `dry_run` is TRUE, backup() only shows what would happen without</span>
+<span class='co'># actually creating or deleting files</span>
+<span class='fu'>backup</span>(<span class='no'>tf</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"0.1kb"</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>[dry_run] renaming:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] ~ /tmp/RtmpiatcU7/test26ef62711958.2.rds -&gt; test26ef62711958.3.rds</span>
+#&gt; <span class='message'>[dry_run] ~ /tmp/RtmpiatcU7/test26ef62711958.1.rds -&gt; test26ef62711958.2.rds</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] copying:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] + /tmp/RtmpiatcU7/test26ef62711958.rds -&gt; test26ef62711958.1.rds</span></div><div class='input'>
+<span class='co'># rotate() is the same as backup(), but replaces `tf`` with an empty file</span>
+<span class='fu'>rotate</span>(<span class='no'>tf</span>)
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpiatcU7/test26ef62711958.1.rds"
+#&gt; [2] "/tmp/RtmpiatcU7/test26ef62711958.2.rds"
+#&gt; [3] "/tmp/RtmpiatcU7/test26ef62711958.3.rds"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span>(<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>))</div><div class='output co'>#&gt; [1] 289 289 289</div><div class='input'>
+<span class='co'># prune_backups() can remove old backups</span>
+<span class='fu'>prune_backups</span>(<span class='no'>tf</span>, <span class='fl'>1</span>)  <span class='co'># keep only one backup</span>
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpiatcU7/test26ef62711958.1.rds"</div><div class='input'>
+<span class='co'># rotate/backup_date() adds a date instead of an index</span>
+<span class='co'># you should not mix index backups and timestamp backups</span>
+<span class='co'># so we clean up first</span>
+<span class='fu'>prune_backups</span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span>(<span class='no'>cars</span>, <span class='no'>tf</span>)
+
+<span class='co'># backup_date() adds the date instead of an index to the filename</span>
+<span class='fu'>backup_date</span>(<span class='no'>tf</span>)
+
+<span class='co'># `age` sets the minimum age of the last backup before creating a new one.</span>
+<span class='co'># the example below creates no new backup since it's less than a week</span>
+<span class='co'># since the last.</span>
+<span class='fu'>backup_date</span>(<span class='no'>tf</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='st'>"1 week"</span>)
+
+<span class='co'># `now` overrides the current date.</span>
+<span class='fu'>backup_date</span>(<span class='no'>tf</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='st'>"1 year"</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='st'>"2999-12-31"</span>)
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpiatcU7/test26ef62711958.2019-05-15.rds"
+#&gt; [2] "/tmp/RtmpiatcU7/test26ef62711958.2999-12-31.rds"</div><div class='input'>
+<span class='co'># backup_time() creates backups with a full timestamp</span>
+<span class='fu'>backup_time</span>(<span class='no'>tf</span>)
+
+<span class='co'># It's okay to mix backup_date() and backup_time()</span>
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpiatcU7/test26ef62711958.2019-05-15--14-02-06.rds"
+#&gt; [2] "/tmp/RtmpiatcU7/test26ef62711958.2019-05-15.rds"          
+#&gt; [3] "/tmp/RtmpiatcU7/test26ef62711958.2999-12-31.rds"          </div><div class='input'>
+<span class='co'># cleanup</span>
+<span class='fu'>prune_backups</span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
@@ -303,7 +361,9 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
       <li><a href="#intervals">Intervals</a></li>
 
       <li><a href="#see-also">See also</a></li>
-          </ul>
+      
+      <li><a href="#examples">Examples</a></li>
+    </ul>
 
   </div>
 </div>
