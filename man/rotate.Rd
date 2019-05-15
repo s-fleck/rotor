@@ -172,6 +172,63 @@ one year worth of backups". So if you call
 a backup and then remove all backups of \code{myfile} before \code{2019-01-01}.
 }
 
+\examples{
+# setup example file
+tf <- tempfile("test", fileext = ".rds")
+saveRDS(cars, tf)
+
+# create two backups of `tf``
+backup(tf)
+backup(tf)
+list_backups(tf)  # find all backups of a file
+
+# If `size` is set, a backup is only created if the target file is at least
+# that big. This is more useful for log rotation than for backups.
+backup(tf, size = "100 mb")  # no backup becuase `tf` is to small
+list_backups(tf)
+
+# If `dry_run` is TRUE, backup() only shows what would happen without
+# actually creating or deleting files
+backup(tf, size = "0.1kb", dry_run = TRUE)
+
+# rotate() is the same as backup(), but replaces `tf`` with an empty file
+rotate(tf)
+list_backups(tf)
+file.size(tf)
+file.size(list_backups(tf))
+
+# prune_backups() can remove old backups
+prune_backups(tf, 1)  # keep only one backup
+list_backups(tf)
+
+# rotate/backup_date() adds a date instead of an index
+# you should not mix index backups and timestamp backups
+# so we clean up first
+prune_backups(tf, 0)
+saveRDS(cars, tf)
+
+# backup_date() adds the date instead of an index to the filename
+backup_date(tf)
+
+# `age` sets the minimum age of the last backup before creating a new one.
+# the example below creates no new backup since it's less than a week
+# since the last.
+backup_date(tf, age = "1 week")
+
+# `now` overrides the current date.
+backup_date(tf, age = "1 year", now = "2999-12-31")
+list_backups(tf)
+
+# backup_time() creates backups with a full timestamp
+backup_time(tf)
+
+# It's okay to mix backup_date() and backup_time()
+list_backups(tf)
+
+# cleanup
+prune_backups(tf, 0)
+file.remove(tf)
+}
 \seealso{
 \code{\link[=list_backups]{list_backups()}}
 }
