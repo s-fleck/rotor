@@ -123,3 +123,19 @@ test_that("backup/rotate_date works with size", {
 
   prune_backups(tf, 0)
 })
+
+
+
+
+test_that("backup/rotate_time fails if backup already exists for that period", {
+  tf <- file.path(td, "test.log")
+  on.exit(unlink(tf))
+  saveRDS(iris, tf)
+
+  now <- Sys.time()
+  backup_time(tf, now = now)
+  expect_error(backup_time(tf, now = now), "exists")
+  expect_error(rotate_time(tf, now = now, dry_run = TRUE), "exists")
+
+  prune_backups(tf, 0)
+})

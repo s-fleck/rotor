@@ -59,6 +59,21 @@ test_that("backup/rotate_date works with size", {
 
 
 
+test_that("backup/rotate_date fails if backup already exists for that period", {
+  tf <- file.path(td, "test.log")
+  on.exit(unlink(tf))
+  saveRDS(iris, tf)
+
+  now <- Sys.Date()
+  backup_date(tf, now = now)
+  expect_error(backup_date(tf, now = now), "exists")
+  expect_error(rotate_date(tf, now = now), "exists")
+  prune_backups(tf, 0)
+})
+
+
+
+
 test_that("backup_date examples from documentation", {
   #' When rotating/backing up `"1 months"` means "make a new backup if the last
   #' backup is from the preceeding month". E.g if the last backup of `myfile`
@@ -311,10 +326,9 @@ test_that("dry_run does not modify the file systen", {
 
   expect_length(list.files(td), 0)
   tf <- file.path(td, "test.log")
-  saveRDS(iris, tf)
-  mockery::stub(backup_date, "Sys.Date", as.Date("2017-05-01"))
-  backup_date(tf)
 
+  saveRDS(iris, tf)
+  backup_date(tf, now = "2017-05-01")
   file.create(c(
     file.path(td, "test.2017.log"),
     file.path(td, "test.201701.log"),
@@ -325,9 +339,7 @@ test_that("dry_run does not modify the file systen", {
 
 
   snap <- utils::fileSnapshot(td, md5sum = TRUE)
-  mockery::stub(backup_date, "Sys.Date", as.Date("2017-05-02"))
-  expect_message(backup_date(tf, dry_run = TRUE), "2017-05-02")
-  expect_message(backup_date(tf, dry_run = TRUE), "dry_run")
+  expect_message(backup_date(tf, dry_run = TRUE, now = "2017-05-02"), "copying")
   expect_snapshot_unchanged(snap)
 
   expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "dry_run")
