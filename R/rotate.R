@@ -182,17 +182,10 @@ rotate_internal <- function(
 
   size <- parse_size(size)
 
-  options(
-    rotor.dry_run = dry_run,
-    rotor.verbose = verbose
-  )
-  on.exit({
-    options(
-      rotor.dry_run = FALSE,
-      rotor.verbose = FALSE
-    )
-    dm$reset()
-  })
+  if (dry_run){
+    DRY_RUN$activate()
+    on.exit(DRY_RUN$deactivate())
+  }
 
   bq <- BackupQueueIndex$new(
     file,
@@ -239,17 +232,10 @@ prune_backups <- function(
   assert_pure_BackupQueue(file, backup_dir = backup_dir)
   assert(is_scalar_character(file))
 
-  options(
-    rotor.dry_run = dry_run,
-    rotor.verbose = verbose
-  )
-  on.exit({
-    options(
-      rotor.dry_run = FALSE,
-      rotor.verbose = FALSE
-    )
-    dm$reset()
-  })
+  if (dry_run){
+    DRY_RUN$activate()
+    on.exit(DRY_RUN$deactivate())
+  }
 
   bq <- BackupQueueIndex$new(file, backup_dir = backup_dir)
 

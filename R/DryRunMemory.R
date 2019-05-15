@@ -3,13 +3,33 @@ DryRunMemory <- R6::R6Class(
   public = list(
     initialize = function(){
       self$reset()
+      self$active <- FALSE
+      self
     },
+
+    # activate/deactivate
+    active = NULL,
+
+    activate = function(...){
+      self$active <- TRUE
+      self$reset()
+      self
+    },
+
+    deactivate = function(){
+      self$active <- FALSE
+      self$reset()
+      self
+    },
+
 
     list = function(path){
       x <- path_standardize(list.files(path, full.names = TRUE))
       unique(self$fake(x))
     },
 
+
+    # file operations
     exists = function(...){
       files <- c(...)
 

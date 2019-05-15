@@ -42,11 +42,11 @@ test_that("utils-fs can create/remove files in dry_run memory", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   snap <- fileSnapshot(td)
-  options(rotor.dry_run = TRUE)
+  DRY_RUN$activate()
+
   on.exit({
-    options(rotor.dry_run = FALSE)
     file.remove(tf)
-    dm$reset()
+    DRY_RUN$deactivate()
   })
 
 

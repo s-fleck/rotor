@@ -192,6 +192,7 @@ test_that("BackupQueueIndex$push_backup() can push to different directory", {
   expect_identical(bt$n_backups, 2L)
 
   expect_length(bt$prune(0)$backups$path, 0)
+  expect_length(list.files(bu_dir), 0)
 })
 
 
@@ -204,18 +205,11 @@ test_that("BackupQueueIndex dry run doesnt modify file system", {
   bus <- paste0(tools::file_path_sans_ext(tf), c(".1.log.zip", ".2.log.tar.gz", ".3.log"))
   file.create(bus)
 
-
-  options(
-    rotor.dry_run = TRUE
-  )
-
+  DRY_RUN$activate()
   on.exit({
-    options(
-      rotor.dry_run = FALSE
-    )
-    dm$reset()
+    file.remove(tf)
+    DRY_RUN$deactivate()
   })
-
 
   snap <- utils::fileSnapshot(td, md5sum = TRUE)
 
@@ -230,6 +224,4 @@ test_that("BackupQueueIndex dry run doesnt modify file system", {
 
   expect_message(bt$prune(0), "test.01.log")
   expect_snapshot_unchanged(snap)
-
-  file.remove(tf)
 })

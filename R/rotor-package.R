@@ -40,7 +40,7 @@ NULL
   assign("col_nchar", col_nchar, envir = parent.env(environment()))
 
   # Memory for dry-run operations
-  assign("dm", DryRunMemory$new(), parent.env(environment()))
+  assign("DRY_RUN", DryRunMemory$new(), parent.env(environment()))
 }
 
 

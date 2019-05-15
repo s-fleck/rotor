@@ -254,8 +254,8 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
   bt$push_backup(compression = TRUE)
 
   expect_identical(bt$n_backups, 2L)
-
   expect_length(bt$prune(0)$backups$path, 0)
+  expect_length(list.files(bu_dir), 0)
 })
 
 

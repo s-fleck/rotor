@@ -72,12 +72,13 @@ test_that("n_backups and co work as expected with backup_dir", {
   expect_true(n_backups(tf) == 0)
 
   file.remove(tf)
+  expect_length(list.files(bu_dir), 0)
 })
 
 
 
 
-test_that("prune_backups dry run works", {
+test_that("prune_backups dry run works with sepparate backup dir", {
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
@@ -87,7 +88,7 @@ test_that("prune_backups dry run works", {
     bu_dir,
     c("test.2019-02-01--12-00-00.log", "test.2019-02-01--12-00-01.log")
   )
-  file.create(files)
+  file.create(tf, files)
 
   snap <- fileSnapshot(bu_dir)
 
@@ -97,4 +98,7 @@ test_that("prune_backups dry run works", {
   )
 
   expect_snapshot_unchanged(snap)
+  prune_backups(tf, 0, backup_dir = bu_dir)
+  file.remove(tf)
+  expect_length(list.files(bu_dir), 0)
 })

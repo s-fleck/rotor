@@ -102,17 +102,10 @@ rotate_date_internal <- function(
 
   now <- parse_date(now)
 
-  options(
-    rotor.dry_run = dry_run,
-    rotor.verbose = verbose
-  )
-  on.exit({
-    options(
-      rotor.dry_run = FALSE,
-      rotor.verbose = FALSE
-    )
-    dm$reset()
-  })
+  if (dry_run){
+    DRY_RUN$activate()
+    on.exit(DRY_RUN$deactivate())
+  }
 
   size <- parse_size(size)
 

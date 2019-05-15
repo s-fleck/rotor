@@ -101,17 +101,10 @@ rotate_time_internal <- function(
   now  <- parse_datetime(now)
   size <- parse_size(size)
 
-  options(
-    rotor.dry_run = dry_run,
-    rotor.verbose = verbose
-  )
-  on.exit({
-    options(
-      rotor.dry_run = FALSE,
-      rotor.verbose = FALSE
-    )
-    dm$reset()
-  })
+  if (dry_run){
+    DRY_RUN$activate()
+    on.exit(DRY_RUN$deactivate())
+  }
 
 
   bq <- BackupQueueDateTime$new(file, format = format, backup_dir = backup_dir)

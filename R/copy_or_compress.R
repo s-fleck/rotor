@@ -64,7 +64,7 @@ copy_or_compress <- function(
 
 
   # logic
-    if (getOption("rotor.dry_run", FALSE) || isFALSE(compression)){
+    if (DRY_RUN$active || isFALSE(compression)){
       file_copy(file, outname, overwrite = overwrite)
 
     } else if (identical(compression, "zip::zipr")){

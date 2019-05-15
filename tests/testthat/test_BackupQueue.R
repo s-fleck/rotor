@@ -1,8 +1,5 @@
 context("BackupQueue")
 
-
-
-
 dr <- tempdir()
 td <- file.path(dr, "rotor")
 dir.create(td, recursive = TRUE)
@@ -92,11 +89,10 @@ test_that("dryrun/verbose prune", {
   bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs)
   file.create(bus)
 
-  # testing the option tests the function argument at the same time
-  withr::with_options(
-    list(rotor.dry_run = TRUE),
-    invisible(bq$prune(0))
-  )
+  DRY_RUN$activate()
+  on.exit(DRY_RUN$deactivate())
+  bq$prune(0)
+  DRY_RUN$deactivate()
   expect_identical(bq$n_backups, length(sfxs))
 
   bq$prune(0)

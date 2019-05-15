@@ -1,12 +1,12 @@
 file_rename <- function(
   from,
   to,
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = DRY_RUN$active,
+  verbose = dry_run
 ){
   msg_file_rename(from, to, dry_run = dry_run, verbose = verbose)
   if (dry_run) {
-    return(dm$move(from, to))
+    return(DRY_RUN$move(from, to))
   }
 
   file.rename(from, to)
@@ -21,12 +21,12 @@ file_copy <- function(
   from,
   to,
   ...,
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = DRY_RUN$active,
+  verbose = dry_run
 ){
   msg_file_copy(from, to, dry_run = dry_run, verbose = verbose)
   if (dry_run){
-    return(dm$create(to))
+    return(DRY_RUN$create(to))
   }
 
   file.copy(from, to, ...)
@@ -38,12 +38,12 @@ file_copy <- function(
 file_create <- function(
   ...,
   showWarnings = TRUE,
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = DRY_RUN$active,
+  verbose = dry_run
 ){
   msg_file_create(..., dry_run = dry_run, verbose = verbose)
   if (dry_run) {
-    return(dm$create(...))
+    return(DRY_RUN$create(...))
   }
 
   file.create(..., showWarnings = showWarnings)
@@ -54,12 +54,12 @@ file_create <- function(
 
 file_remove<- function(
   ...,
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = DRY_RUN$active,
+  verbose = dry_run
 ){
   msg_file_remove(..., dry_run = dry_run, verbose = verbose)
   if (dry_run) {
-    return(dm$remove(...))
+    return(DRY_RUN$remove(...))
   }
 
   file.remove(...)
@@ -70,11 +70,11 @@ file_remove<- function(
 
 file_exists<- function(
   ...,
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = DRY_RUN$active,
+  verbose = dry_run
 ){
   if (dry_run) {
-    return(dm$exists(...))
+    return(DRY_RUN$exists(...))
   }
 
   file.exists(...)
@@ -87,11 +87,11 @@ list_files <- function(
   path = ".",
   full.names = FALSE,
   ...,
-  dry_run = getOption("rotor.dry_run", FALSE),
-  verbose = getOption("rotor.dry_run", dry_run)
+  dry_run = DRY_RUN$active,
+  verbose = dry_run
 ){
   if (dry_run) {
-    res <- dm$list(path, ...)
+    res <- DRY_RUN$list(path, ...)
     if (!full.names) res <- basename(res)
     return(res)
   }
@@ -105,7 +105,7 @@ list_files <- function(
 msg_file_copy <- function(
   from,
   to,
-  dry_run = getOption("rotor.dry_run", FALSE),
+  dry_run = DRY_RUN$active,
   verbose  = dry_run
 ){
   stopifnot(
@@ -132,7 +132,7 @@ msg_file_copy <- function(
 
 msg_file_remove <- function(
   ...,
-  dry_run = getOption("rotor.dry_run", FALSE),
+  dry_run = DRY_RUN$active,
   verbose  = dry_run
 ){
   files <- c(...)
@@ -154,7 +154,7 @@ msg_file_remove <- function(
 msg_file_rename <- function(
   from,
   to,
-  dry_run = getOption("rotor.dry_run", FALSE),
+  dry_run = DRY_RUN$active,
   verbose  = dry_run
 ){
   stopifnot(
@@ -189,7 +189,7 @@ msg_file_rename <- function(
 
 msg_file_create <- function(
   ...,
-  dry_run = getOption("rotor.dry_run", FALSE),
+  dry_run = DRY_RUN$active,
   verbose  = dry_run)
 {
   files <- c(...)
@@ -211,7 +211,7 @@ msg_file_create <- function(
 msg_prune_backups <- function(
   file,
   to_remove,
-  dry_run = getOption("rotor.dry_run", FALSE),
+  dry_run = DRY_RUN$active,
   verbose  = dry_run
 ){
   assert(is_scalar_character(file))

@@ -77,6 +77,7 @@ test_that("backup/rotate works to different directory", {
   expect_identical(n_backups(tf, backup_dir = bu_dir), 1L)
   prune_backups(tf, 0, backup_dir = bu_dir)
   expect_identical(n_backups(tf, backup_dir = bu_dir), 0L)
+  expect_length(list.files(bu_dir), 0)
 })
 
 
