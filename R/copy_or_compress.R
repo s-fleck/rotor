@@ -47,7 +47,7 @@ copy_or_compress <- function(
     if (!isFALSE(compression))
       outname <- paste0(outname, ".zip")
 
-    if (file.exists(outname)){
+    if (file_exists(outname)){
       if (overwrite){
         file_remove(outname)
       } else {

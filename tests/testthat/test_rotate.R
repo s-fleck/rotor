@@ -12,6 +12,7 @@ teardown({
 
 
 
+
 test_that("backup/rotate happy path", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
@@ -37,10 +38,6 @@ test_that("backup/rotate happy path", {
   backup(tf, compression = TRUE)
   expect_identical(bq$n_backups, 2L)
   expect_identical(tools::file_ext(bq$backups$path[[1]]), "zip")
-
-  # file exists
-  expect_error(rotate(tf, dry_run = TRUE, compression = TRUE))
-  expect_identical(bq$n_backups, 2L)
 
   # rotating
   rotate(tf, compression = FALSE)
@@ -107,6 +104,23 @@ test_that("backup/rotate works with size", {
   expect_equal(file.size(tf), 0)
 
   prune_backups(tf, 0)
+})
+
+
+
+
+test_that("backup/rotate dry_run", {
+  tf <- file.path(td, "test.rds")
+  on.exit(unlink(tf))
+  snap <- utils::fileSnapshot(td)
+
+  saveRDS(cars, tf)
+  backup(tf)
+  backup(tf)
+  expect_message(backup(tf, dry_run = TRUE), "dry_run")
+  expect_message(rotate(tf, dry_run = TRUE), "dry_run")
+
+  expect_snapshot_unchanged(snap)
 })
 
 
