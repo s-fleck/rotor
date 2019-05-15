@@ -365,7 +365,7 @@ test_that("backup/rotate_time works to different directory", {
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
-  on.exit(unlink(c(bu_dir, tf)))
+  on.exit(unlink(c(tf, bu_dir), recursive = TRUE))
 
   file.create(tf)
   writeLines("foobar", tf)
@@ -390,7 +390,7 @@ test_that("backup/rotate_time works with custom format", {
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
-  on.exit(unlink(c(bu_dir, tf)))
+  on.exit(unlink(c(tf, bu_dir), recursive = TRUE))
 
   file.create(tf)
   writeLines("foobar", tf)
