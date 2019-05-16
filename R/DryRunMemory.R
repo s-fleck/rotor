@@ -1,3 +1,5 @@
+# nocov start
+# implicitely tested via utils-fs
 DryRunMemory <- R6::R6Class(
   "DryRunMemory",
   public = list(

@@ -208,28 +208,6 @@ msg_file_create <- function(
 
 
 
-msg_prune_backups <- function(
-  file,
-  to_remove,
-  dry_run = DRY_RUN$active,
-  verbose  = dry_run
-){
-  assert(is_scalar_character(file))
-  assert(is.character(to_remove))
-  assert(is_scalar_logical(verbose))
-  assert(is_scalar_logical(dry_run))
-
-  if (!verbose) return()
-
-  message(
-    "[dry_run] "[dry_run], "pruning backups for '", file, "':\n",
-    paste0("[dry_run] "[dry_run], "- ", to_remove, collapse = "\n")
-  )
-}
-
-
-
-
 should_prune <- function(
   obj,
   max_backups
