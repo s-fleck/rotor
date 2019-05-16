@@ -96,6 +96,10 @@ rotate_date_internal <- function(
     is_scalar_bool(do_rotate),
     is_scalar(now)
   )
+  assert(
+    is_scalar_character(backup_dir) && dir.exists(backup_dir),
+    "backup dir '", backup_dir, "' does not exist."
+  )
   assert_valid_date_format(format)
   assert(!is_dir(file))
 

@@ -234,6 +234,10 @@ rotate_internal <- function(
   do_rotate
 ){
   assert(is_scalar_character(file) && file_exists(file))
+  assert(
+    is_scalar_character(backup_dir) && dir.exists(backup_dir),
+    "backup dir '", backup_dir, "' does not exist."
+  )
   assert(!is_dir(file))
   assert(is_bool(do_rotate))
 
