@@ -144,3 +144,23 @@ test_that("filenames_as_matrix works as expected with paths", {
   expect_identical(res[, "ext"], c("txt", "txt", "txt.tar.gz"))
   expect_identical(res[, "sfx"], c("1",  "2019-12-31", "2019-12-31--01-01-01"))
 })
+
+
+
+
+test_that("$print() does not fail", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+  on.exit(file.remove(tf))
+  bq <- BackupQueue$new(tf)
+
+  # printing empty bq succeedes
+  expect_output(print(bq))
+
+  # printing nonempty bq succeedes
+  sfxs <-c(1:12, "2019-12-31")
+  bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs)
+  file.create(bus)
+  on.exit(file.remove(bus), add = TRUE)
+  expect_output(print(bq))
+})
