@@ -1,5 +1,11 @@
 # rotor (development version)
 
+* Reordered some of the arguments of all `rotate_*()` and `backup_*()` 
+  functions to be more intuitive
+* default `size` for all all `rotate_*()` and `backup_*()` functions is now
+  consistently `1` (Byte)
+  
+
 # rotor 0.2.1 (2019-05-15)
 
 * added examples to `rotate()` documentation

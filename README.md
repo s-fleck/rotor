@@ -11,6 +11,8 @@ status](https://travis-ci.org/s-fleck/rotor.svg?branch=master)](https://travis-c
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test
 coverage](https://codecov.io/gh/s-fleck/rotor/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/rotor?branch=master)
+[![CRAN
+status](https://www.r-pkg.org/badges/version/rotor)](https://cran.r-project.org/package=rotor)
 <!-- badges: end -->
 
 **rotor** provides a cross platform R reimagination of
@@ -78,8 +80,8 @@ backup(tf, compression = TRUE)
 
 # display backups of a file
 list_backups(tf)  
-#> [1] "/tmp/RtmpUOwz0W/rotor/mylogfile.1.log.zip"
-#> [2] "/tmp/RtmpUOwz0W/rotor/mylogfile.2.log"
+#> [1] "/tmp/RtmplvAoSn/rotor/mylogfile.1.log.zip"
+#> [2] "/tmp/RtmplvAoSn/rotor/mylogfile.2.log"
 ```
 
 `rotate()` also backs up a file, but replaces the original file with an
@@ -88,9 +90,9 @@ empty one.
 ``` r
 rotate(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmpUOwz0W/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmpUOwz0W/rotor/mylogfile.2.log.zip"
-#> [3] "/tmp/RtmpUOwz0W/rotor/mylogfile.3.log"
+#> [1] "/tmp/RtmplvAoSn/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmplvAoSn/rotor/mylogfile.2.log.zip"
+#> [3] "/tmp/RtmplvAoSn/rotor/mylogfile.3.log"
 
 # the original file is now empty
 readLines(tf)
@@ -113,10 +115,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/RtmpUOwz0W/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmpUOwz0W/rotor/mylogfile.2.log"    
-#> [3] "/tmp/RtmpUOwz0W/rotor/mylogfile.3.log"    
-#> [4] "/tmp/RtmpUOwz0W/rotor/mylogfile.4.log.zip"
+#> [1] "/tmp/RtmplvAoSn/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmplvAoSn/rotor/mylogfile.2.log"    
+#> [3] "/tmp/RtmplvAoSn/rotor/mylogfile.3.log"    
+#> [4] "/tmp/RtmplvAoSn/rotor/mylogfile.4.log.zip"
 ```
 
 We can also use `prune_backups()` to delete old backups. Other than
@@ -135,8 +137,8 @@ timestamped backups.
 backup_date(tf)
 rotate_time(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmpUOwz0W/rotor/mylogfile.2019-05-15--16-29-39.log"
-#> [2] "/tmp/RtmpUOwz0W/rotor/mylogfile.2019-05-15.log"
+#> [1] "/tmp/RtmplvAoSn/rotor/mylogfile.2019-05-16--14-47-44.log"
+#> [2] "/tmp/RtmplvAoSn/rotor/mylogfile.2019-05-16.log"
 ```
 
 ``` r
