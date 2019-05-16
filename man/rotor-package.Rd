@@ -7,7 +7,7 @@
 \title{rotor: Log Rotation and Conditional Backups}
 \description{
 Conditionally rotate or back-up files based on their size or the
-  date of the last backup; inspired by the 'linux' utility 'logrotate'.
+  date of the last backup; inspired by the 'Linux' utility 'logrotate'.
 }
 \author{
 \strong{Maintainer}: Stefan Fleck \email{stefan.b.fleck@gmail.com} (0000-0003-3344-9851)

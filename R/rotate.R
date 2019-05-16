@@ -171,11 +171,11 @@
 #' file.remove(tf)
 rotate <- function(
   file,
-  size = 0,
+  size = 1,
   max_backups = Inf,
   compression = FALSE,
-  create_file = TRUE,
   backup_dir = dirname(file),
+  create_file = TRUE,
   dry_run = FALSE,
   verbose = dry_run
 ){

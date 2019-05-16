@@ -1,16 +1,15 @@
-
 #' @rdname rotate
 #' @export
 rotate_date <- function(
   file,
   age = NULL,
-  format = "%Y-%m-%d",
   size = 1,
   max_backups = Inf,
   compression = FALSE,
+  format = "%Y-%m-%d",
+  backup_dir = dirname(file),
   overwrite = FALSE,
   create_file = TRUE,
-  backup_dir = dirname(file),
   now = Sys.Date(),
   dry_run = FALSE,
   verbose = dry_run
@@ -40,12 +39,12 @@ rotate_date <- function(
 backup_date <- function(
   file,
   age = NULL,
-  format = "%Y-%m-%d",
   size = 1,
   max_backups = Inf,
   compression = FALSE,
-  overwrite = FALSE,
+  format = "%Y-%m-%d",
   backup_dir = dirname(file),
+  overwrite = FALSE,
   now = Sys.Date(),
   dry_run = FALSE,
   verbose = dry_run
