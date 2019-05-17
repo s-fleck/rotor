@@ -89,10 +89,10 @@ rotate_time_internal <- function(
     is.null(age) || is_scalar(age),
     is_scalar(size),
     is.infinite(max_backups) || is_n0(max_backups) || is.character(max_backups) || is_Date(max_backups),
-    is_scalar_logical(overwrite),
-    is_scalar_logical(dry_run),
-    is_scalar_logical(verbose),
-    is_scalar_logical(create_file),
+    is_scalar_bool(overwrite),
+    is_scalar_bool(dry_run),
+    is_scalar_bool(verbose),
+    is_scalar_bool(create_file),
     is_scalar_bool(do_rotate)
   )
   assert(

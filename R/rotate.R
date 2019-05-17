@@ -233,13 +233,17 @@ rotate_internal <- function(
   verbose,
   do_rotate
 ){
-  assert(is_scalar_character(file) && file_exists(file))
+  stopifnot(
+    is_scalar_character(file) && file_exists(file),
+    is_scalar_bool(do_rotate),
+    is_scalar_bool(dry_run),
+    is_scalar_bool(verbose)
+  )
   assert(
     is_scalar_character(backup_dir) && dir.exists(backup_dir),
     "backup dir '", backup_dir, "' does not exist."
   )
   assert(!is_dir(file))
-  assert(is_bool(do_rotate))
 
   size <- parse_size(size)
 
