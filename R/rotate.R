@@ -43,7 +43,7 @@
 #'   - a `character` scalar representing an Interval in the form
 #'     `"<number> <interval>"` (see below for more info)
 #'
-#' @param size scalar `integer` or `character`. Backup/rotate if `file` is
+#' @param size scalar `integer`, `character` or `Inf`. Backup/rotate if `file` is
 #'   larger than this size. `Integers` are interpreted as
 #'   bytes. You can pass `character` vectors that contain a file size suffix
 #'   like `1k` (kilobytes), `3M` (megabytes), `4G` (gigabytes),
@@ -319,6 +319,7 @@ prune_backups <- function(
 #' @noRd
 #'
 parse_size <- function(x){
+  if (is.infinite(x)) return(x)
   assert(is_scalar(x) && !is.na(x))
 
   if (is_integerish(x)){
