@@ -5,6 +5,8 @@
 * default `size` for all all `rotate_*()` and `backup_*()` functions is now
   consistently `1` (Byte)
 * support for `Inf` size
+* R6 API: BackupQueue subclasses gain a `should_rotate(...)` method that 
+  determines whether rotation/backup should take place. 
   
 
 # rotor 0.2.1 (2019-05-15)

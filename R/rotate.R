@@ -245,8 +245,6 @@ rotate_internal <- function(
   )
   assert(!is_dir(file))
 
-  size <- parse_size(size)
-
   if (dry_run){
     DRY_RUN$activate()
     on.exit(DRY_RUN$deactivate())
@@ -258,7 +256,7 @@ rotate_internal <- function(
     max_backups = max_backups
   )
 
-  if (file.size(file) > size){
+  if (bq$should_rotate(size = size)){
     bq$push_backup(compression = compression)
   } else {
     do_rotate <- FALSE

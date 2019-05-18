@@ -102,14 +102,10 @@ rotate_time_internal <- function(
   assert_valid_date_format(format)
   assert(!is_dir(file))
 
-  now  <- parse_datetime(now)
-  size <- parse_size(size)
-
   if (dry_run){
     DRY_RUN$activate()
     on.exit(DRY_RUN$deactivate())
   }
-
 
   bq <- BackupQueueDateTime$new(file, format = format, backup_dir = backup_dir)
 
@@ -124,10 +120,7 @@ rotate_time_internal <- function(
     )}
   }
 
-  if (
-    file.size(file) > size &&
-    is_backup_time_necessary(bq, age, now)
-  ){
+  if (bq$should_rotate(size = size, age = age, now = now)){
     bq$push_backup(
       now = now,
       compression = compression,

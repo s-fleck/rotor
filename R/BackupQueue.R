@@ -353,10 +353,10 @@ BackupQueueDateTime <- R6::R6Class(
     ){
       now <- parse_datetime(now)
 
-      if (file.size(self$file) < parse_size(size) || !self$has_backups)
+      if (file.size(self$file) < parse_size(size))
         return(FALSE)
 
-      else if (is.null(age))
+      else if (is.null(age) || !self$has_backups)
         return(TRUE)
 
       else if (is_parsable_datetime(age))
