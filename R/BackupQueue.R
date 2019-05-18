@@ -4,7 +4,8 @@
 #' `BackupQueue` and its subclasses are [R6::R6Class] for rotating files and
 #' managing backup. They are the internal constructs on which [rotate()] and
 #' co. are based. The `BackupQueue` constructor is exported for use by other
-#' package developers and not intended for direct use.
+#' package developers and not intended for direct use. It is still experimental
+#' and die API is sure to change.
 #'
 #' @name BackupQueue
 NULL
@@ -285,18 +286,24 @@ BackupQueueDateTime <- R6::R6Class(
       backup_dir = dirname(file),
       max_backups = Inf,
       compression = FALSE,
-      format = "%Y-%m-%d--%H-%M-%S"
+      format = "%Y-%m-%d--%H-%M-%S",
+      cache_last_rotation = TRUE
     ){
+      assert(is_scalar_bool(cache_last_rotation))
       self$file <- file
       self$backup_dir <- backup_dir
       self$fmt <- format
       self$compression <- compression
       self$max_backups <- max_backups
+      self$cache_last_rotation <- cache_last_rotation
+
+      self$update_last_rotation_cache()
 
       self
     },
 
     fmt = NULL,
+    cache_last_rotation = NULL,
 
     push_backup = function(
       compression = FALSE,
@@ -336,13 +343,15 @@ BackupQueueDateTime <- R6::R6Class(
         overwrite = overwrite
       )
 
+      self$update_last_rotation_cache()
       self
     },
 
     should_rotate = function(
       size,
       age,
-      now = Sys.time()
+      now = Sys.time(),
+      last_rotation = self$last_rotation
     ){
       now <- parse_datetime(now)
 
@@ -353,14 +362,20 @@ BackupQueueDateTime <- R6::R6Class(
         return(TRUE)
 
       else if (is_parsable_datetime(age))
-        return(is_backup_older_than_datetime(self$last_backup, age))
+        return(is_backup_older_than_datetime(self$last_rotation, age))
 
       else if (is_parsable_interval(age))
-        return(is_backup_older_than_interval(self$last_backup, age, now))
+        return(is_backup_older_than_interval(self$last_rotation, age, now))
 
       stop("`age` must be a parsable date or datetime")
     },
 
+    update_last_rotation_cache = function(){
+      bu <- self$backups
+      private$last_rotation_cache <-
+        if (!nrow(bu)) NULL else max(bu$timestamp)
+      self
+    },
 
     prune = function(
       max_backups
@@ -390,22 +405,22 @@ BackupQueueDateTime <- R6::R6Class(
           # interval like strings
           interval <- parse_interval(max_backups)
 
-          last_backup <- as.Date(as.character(self$last_backup))
+          last_rotation <- as.Date(as.character(self$last_rotation))
 
           if (identical(interval[["unit"]], "year")){
-            limit <- dint::first_of_year(dint::get_year(last_backup) - interval$value + 1L)
+            limit <- dint::first_of_year(dint::get_year(last_rotation) - interval$value + 1L)
 
           } else if (identical(interval[["unit"]], "quarter")){
-            limit <- dint::first_of_quarter(dint::as_date_yq(last_backup) - interval$value + 1L)
+            limit <- dint::first_of_quarter(dint::as_date_yq(last_rotation) - interval$value + 1L)
 
           } else if (identical(interval[["unit"]], "month")) {
-            limit <- dint::first_of_month(dint::as_date_ym(last_backup) - interval$value + 1L)
+            limit <- dint::first_of_month(dint::as_date_ym(last_rotation) - interval$value + 1L)
 
           } else if (identical(interval[["unit"]], "week")){
-            limit <- dint::first_of_isoweek(dint::as_date_yw(last_backup) - interval$value + 1L)
+            limit <- dint::first_of_isoweek(dint::as_date_yw(last_rotation) - interval$value + 1L)
 
           } else if (identical(interval[["unit"]], "day")){
-            limit <- as.Date(last_backup) - interval$value + 1L
+            limit <- as.Date(last_rotation) - interval$value + 1L
           }
 
           to_remove <- self$backups$path[as.Date(as.character(self$backups$timestamp)) < limit]
@@ -413,13 +428,18 @@ BackupQueueDateTime <- R6::R6Class(
       }
 
       file_remove(to_remove)
+      self$update_last_rotation_cache()
       self
     }),
 
   active = list(
 
-    last_backup = function(){
-      max(self$backups$timestamp)
+    last_rotation = function(){
+      if (get("cache_last_rotation", envir = self, mode = "logical")){
+        get("last_rotation_cache", private)
+      } else {
+        max(self$backups$timestamp)
+      }
     },
 
     backups = function(){
@@ -435,6 +455,10 @@ BackupQueueDateTime <- R6::R6Class(
       res$timestamp <- parse_datetime(res$sfx)
       res[order(res$timestamp, decreasing = TRUE), ]
     }
+  ),
+
+  private = list(
+    last_rotation_cache = NULL
   )
 )
 
@@ -451,18 +475,35 @@ BackupQueueDate <- R6::R6Class(
     initialize = function(
       file,
       backup_dir = dirname(file),
-      format = "%Y-%m-%d"
+      format = "%Y-%m-%d",
+      cache_last_rotation = TRUE
     ){
       self$file <- file
       self$backup_dir <- backup_dir
       self$fmt <- format
+      self$cache_last_rotation <- cache_last_rotation
+
+      self$update_last_rotation_cache()
+      self
+    },
+
+    update_last_rotation_cache = function(){
+      bu <- self$backups
+
+      private$last_rotation_cache <-
+        if (!nrow(bu)) NULL else as.Date(as.character(max(self$backups$timestamp)))
+
       self
     }
   ),
 
   active = list(
-    last_backup = function(){
-      as.Date(as.character(max(self$backups$timestamp)))
+    last_rotation = function(){
+      if (get("cache_last_rotation", envir = self, mode = "logical")){
+        get("last_rotation_cache", private)
+      } else {
+        as.Date(as.character(max(self$backups$timestamp)))
+      }
     }
   )
 )

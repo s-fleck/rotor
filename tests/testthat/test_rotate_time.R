@@ -34,7 +34,7 @@ test_that("backup_time common usecases", {
   expect_identical(bq$n_backups, 4L)
   backup_time(tf, max_backups = "1 year", now = as.POSIXct("2019-03-01 00:00:01"))
   expect_identical(bq$n_backups, 4L)
-  expect_equal(bq$last_backup, as.POSIXct("2019-03-01 00:00:01"))
+  expect_equal(bq$last_rotation, as.POSIXct("2019-03-01 00:00:01"))
   expect_identical(
     as.character(min(bq$backups$timestamp)),
     "2019-01-01"

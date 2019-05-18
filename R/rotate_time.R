@@ -154,8 +154,8 @@ is_backup_time_necessary <- function(
     return(TRUE)
 
   if (is_parsable_datetime(age))
-    return(is_backup_older_than_datetime(bq$last_backup, age))
+    return(is_backup_older_than_datetime(bq$last_rotation, age))
 
   if (is_parsable_interval(age))
-    return(is_backup_older_than_interval(bq$last_backup, age, now))
+    return(is_backup_older_than_interval(bq$last_rotation, age, now))
 }
