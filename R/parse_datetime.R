@@ -76,12 +76,12 @@ prep_hms <- function(.x){
 
 
 standardize_datetime_stamp <- function(x){
-  gsub("T|-|_", "", as.character(x))
+  gsub("T|-|_|\\s", "", as.character(x))
 }
 
 
 
 
 standardize_date_stamp <- function(x){
-  gsub("-|_", "", as.character(x))
+  gsub("-|_|\\s", "", as.character(x))
 }

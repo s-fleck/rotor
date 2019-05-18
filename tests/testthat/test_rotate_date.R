@@ -84,15 +84,14 @@ test_that("backup_date examples from documentation", {
     tf,
     file.path(td, "test.2019-02-01.log")
   )
+  on.exit(file.remove(tf))
   writeLines("test", tf)
 
-  mockery::stub(backup_date, "Sys.Date", as.Date("2019-02-28"))
-  backup_date(tf, age = "1 month")
+  backup_date(tf, age = "1 month", now = "2019-02-28")
   bq <- BackupQueueDate$new(tf)
   expect_identical(bq$n_backups, 1L)
 
-  mockery::stub(backup_date, "Sys.Date", as.Date("2019-03-01"))
-  backup_date(tf, age = "1 month")
+  backup_date(tf, age = "1 month", now = "2019-03-01")
   bq <- BackupQueueDate$new(tf)
   expect_identical(bq$n_backups, 2L)
 
@@ -100,17 +99,16 @@ test_that("backup_date examples from documentation", {
   #' one year worth of backups". So if you call
   #' `backup_date(myfile, max_backups = "1 year")` on `2019-03-01`, it will create
   #' a backup and then remove all backups of `myfile` before `2019-01-01`.
-  mockery::stub(backup_date, "Sys.Date", as.Date("2019-03-02"))
   file.create(file.path(td, "test.2019-01-01.log"))
   file.create(file.path(td, "test.2018-12-31.log"))
   expect_identical(bq$n_backups, 4L)
-  backup_date(tf, max_backups = "1 year")
+  backup_date(tf, max_backups = "1 year", now = "2019-03-02")
   expect_identical(bq$n_backups, 4L)
+  bq$update_last_rotation_cache()
   expect_identical(bq$last_rotation, as.Date("2019-03-02"))
   expect_identical(as.character(min(bq$backups$timestamp)), "2019-01-01")
 
   BackupQueue$new(tf)$prune(0)
-  file.remove(tf)
 })
 
 
@@ -164,22 +162,19 @@ test_that("backup_date works as expected for quarters", {
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
 
-  # ensure backup_date believes it is 2019-01-01
-  mockery::stub(backup_date, "Sys.Date",    as.Date("2019-04-01"))
-
   # no backup because last backup is less than a quarter old
   file.create(file.path(td, "test.2019-06-21.log"))
-  bu <- backup_date(tf, "1 quarter")
+  bu <- backup_date(tf, "1 quarter", now = "2019-04-01")
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
 
   # no backup because last backup is less than 2 quarter old
   file.create(file.path(td, "test.2019-01-01.log"))
-  bu <- backup_date(tf, "2 quarter")
+  bu <- backup_date(tf, "2 quarter", now = "2019-04-01")
   expect_identical(bq$n_backups, 1L)
 
   # backup because last backup is more than 1 quarter old
-  bu <- backup_date(tf, "1 quarter")
+  bu <- backup_date(tf, "1 quarter", now = "2019-04-01")
   expect_true(length(bq$backups$path) == 2)
 
   bq$prune(0)
@@ -199,22 +194,19 @@ test_that("backup_date works as expected for months", {
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
 
-  # ensure backup_date believes it is 2019-01-01
-  mockery::stub(backup_date, "Sys.Date",    as.Date("2019-05-02"))
-
   # no backup because last backup is less than a month old
   file.create(file.path(td, "test.2019-05-21.log"))
-  bu <- backup_date(tf, "1 month")
+  bu <- backup_date(tf, "1 month", now = "2019-05-02")
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
 
   # no backup because last backup is less than 2 month old
   file.create(file.path(td, "test.2019-04-21.log"))
-  bu <- backup_date(tf, "2 month")
+  bu <- backup_date(tf, "2 month", now = "2019-05-02")
   expect_identical(bq$n_backups, 1L)
 
   # backup because last backup is more than 1 month old
-  bu <- backup_date(tf, "1 month")
+  bu <- backup_date(tf, "1 month", now = "2019-05-02")
   expect_true(length(bq$backups$path) == 2)
 
   bq$prune(0)
@@ -235,22 +227,20 @@ test_that("backup_date works as expected for weeks", {
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
 
-  # ensure backup_date believes it is 2019-01-01
-  mockery::stub(backup_date, "Sys.Date",    as.Date("2019-01-30"))  # first of week is 2019-01-28
 
   # no backup because last backup is less than a week old
   file.create(file.path(td, "test.2019-01-28.log"))
-  bu <- backup_date(tf, "1 week")
+  bu <- backup_date(tf, "1 week", now = "2019-01-30")
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
 
   # no backup because last backup is less than 2 week old
   file.create(file.path(td, "test.2019-01-27.log"))
-  bu <- backup_date(tf, "2 week")
+  bu <- backup_date(tf, "2 week", now = "2019-01-30")
   expect_identical(bq$n_backups, 1L)
 
   # backup because last backup is more than 1 week old
-  bu <- backup_date(tf, "1 week")
+  bu <- backup_date(tf, "1 week", now = "2019-01-30")
   expect_true(length(bq$backups$path) == 2)
 
   bq$prune(0)

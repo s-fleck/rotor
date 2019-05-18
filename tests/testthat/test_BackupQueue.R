@@ -805,8 +805,7 @@ test_that("BackupQueueDate works with supported datestamp formats", {
   bq <- BackupQueueDate$new(tf, cache_last_rotation = FALSE)
   expect_identical(bq$n_backups, 0L)
   for (i in 1:10) {
-    mockery::stub(bq$push_backup, "Sys.time", as.POSIXct(date + i * 5))
-    bq$push_backup()
+    bq$push_backup(now = as.POSIXct(date + i * 5))
   }
   bq$prune(5)
   expect_length(bq$backups$path, 5)

@@ -295,9 +295,7 @@ BackupQueueDateTime <- R6::R6Class(
       self$fmt <- format
       self$compression <- compression
       self$max_backups <- max_backups
-      self$cache_last_rotation <- cache_last_rotation
-
-      self$update_last_rotation_cache()
+      self$set_cache_last_rotation(cache_last_rotation)
 
       self
     },
@@ -377,6 +375,12 @@ BackupQueueDateTime <- R6::R6Class(
       self
     },
 
+    set_cache_last_rotation = function(x){
+      assert(is_scalar_bool(x))
+      private$.cache_last_rotation <- x
+      self$update_last_rotation_cache()
+    },
+
     prune = function(
       max_backups
     ){
@@ -435,7 +439,7 @@ BackupQueueDateTime <- R6::R6Class(
   active = list(
 
     last_rotation = function(){
-      if (get("cache_last_rotation", envir = self, mode = "logical")){
+      if (get(".cache_last_rotation", envir = private, mode = "logical")){
         get("last_rotation_cache", private)
       } else {
         max(self$backups$timestamp)
@@ -458,7 +462,8 @@ BackupQueueDateTime <- R6::R6Class(
   ),
 
   private = list(
-    last_rotation_cache = NULL
+    last_rotation_cache = NULL,
+    .cache_last_rotation = NULL
   )
 )
 
@@ -481,7 +486,7 @@ BackupQueueDate <- R6::R6Class(
       self$file <- file
       self$backup_dir <- backup_dir
       self$fmt <- format
-      self$cache_last_rotation <- cache_last_rotation
+      self$set_cache_last_rotation(cache_last_rotation)
 
       self$update_last_rotation_cache()
       self
@@ -499,7 +504,7 @@ BackupQueueDate <- R6::R6Class(
 
   active = list(
     last_rotation = function(){
-      if (get("cache_last_rotation", envir = self, mode = "logical")){
+      if (get(".cache_last_rotation", envir = private, mode = "logical")){
         get("last_rotation_cache", private)
       } else {
         as.Date(as.character(max(self$backups$timestamp)))
