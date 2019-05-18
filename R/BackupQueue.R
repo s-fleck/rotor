@@ -313,8 +313,7 @@ BackupQueueDateTime <- R6::R6Class(
       assert_valid_datetime_format(self$fmt)
       assert_valid_compression(compression)
 
-      if (is_Date(now))
-        now <- as.POSIXct(as.character(now))
+      now <- parse_datetime(now)
 
       stopifnot(
         is_scalar_logical(overwrite),
@@ -352,6 +351,8 @@ BackupQueueDateTime <- R6::R6Class(
       age,
       now = Sys.time()
     ){
+      now <- parse_datetime(now)
+
       if (file.size(self$file) < parse_size(size) || !self$has_backups)
         return(FALSE)
 

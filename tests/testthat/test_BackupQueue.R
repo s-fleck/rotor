@@ -384,6 +384,17 @@ test_that("BackupQueueIndex dry run doesnt modify file system", {
 
 
 
+test_that("BackupQueueIndex: $should_rotate", {
+  tf <- file.path(td, "test.log")
+  saveRDS(iris, tf)
+  on.exit(file.remove(tf))
+
+  bq <- BackupQueueIndex$new(tf)
+  expect_false(bq$should_rotate("1gb"))
+  expect_true(bq$should_rotate("0.5kb"))
+})
+
+
 # BackupQueueDatetime -----------------------------------------------------
 context("BackupQueueDateTime")
 
@@ -709,6 +720,21 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
 
 
 
+test_that("BackupQueueDateTime: $should_rotate", {
+  tf <- file.path(td, "test.log")
+  saveRDS(iris, tf)
+  on.exit(file.remove(tf))
+
+  bq <- BackupQueueDateTime$new(tf)
+  bq$push_backup(now = "2019-01-01")
+  on.exit(bq$prune(0), add = TRUE, after = FALSE)
+
+  expect_false(bq$should_rotate("0.5kb", age = "1 year"))
+  expect_true(bq$should_rotate("0.5kb", age = "1 year", now = "2020-01-01"))
+  expect_true(bq$should_rotate("0.5kb", age = "0 year"))
+})
+
+
 # BackupQueueDate ---------------------------------------------------------
 context("BackupQueueDate")
 
@@ -984,4 +1010,28 @@ test_that("parse_date works as expected", {
   expect_equal(parse_date("201904"), as.Date("2019-04-01"))
   expect_equal(parse_date("2019"), as.Date("2019-01-01"))
 
+})
+
+
+
+
+test_that("BackupQueueDate: $should_rotate", {
+  tf <- file.path(td, "test.log")
+  saveRDS(iris, tf)
+  on.exit(file.remove(tf))
+
+  bq <- BackupQueueDate$new(tf)
+  bq$push_backup(now = "2019-01-01")
+  on.exit(bq$prune(0), add = TRUE, after = FALSE)
+
+  expect_false(bq$should_rotate("0.5kb", age = "1 year"))
+  expect_true(bq$should_rotate("0.5kb", age = "1 year", now = "2020-01-01"))
+  expect_true(bq$should_rotate("0.5kb", age = "0 year"))
+})
+
+
+
+
+test_that("BackupQueue: all cleanup succesfull", {
+  expect_length(list.files(td), 0)
 })
