@@ -172,7 +172,16 @@ BackupQueueIndex <- R6::R6Class(
     },
 
     should_rotate = function(size){
-      file.size(self$file) > parse_size(size)
+      size <- parse_size(size)
+
+      # try to avoid costly file.size check
+      if (size <= 0)
+        return(TRUE)
+
+      if (is.infinite(size))
+        return(FALSE)
+
+      file.size(self$file) > size
     },
 
     push_backup = function(
@@ -352,11 +361,13 @@ BackupQueueDateTime <- R6::R6Class(
       last_rotation = self$last_rotation
     ){
       now <- parse_datetime(now)
+      size <- parse_size(size)
 
-      if (file.size(self$file) < parse_size(size))
+      # try to avoid costly file.size check
+      if (is.infinite(size) || file.size(self$file) < size)
         return(FALSE)
 
-      else if (is.null(age) || !self$has_backups)
+      if (is.null(age) || is.null(self$last_rotation))
         return(TRUE)
 
       else if (is_parsable_datetime(age))
@@ -438,7 +449,7 @@ BackupQueueDateTime <- R6::R6Class(
 
   active = list(
 
-    last_rotation = function(){
+      last_rotation = function(){
       if (get(".cache_last_rotation", envir = private, mode = "logical")){
         get("last_rotation_cache", private)
       } else {
