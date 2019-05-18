@@ -353,10 +353,10 @@ BackupQueueDateTime <- R6::R6Class(
         return(TRUE)
 
       else if (is_parsable_datetime(age))
-        return(is_backup_older_than_datetime(bq$last_backup, age))
+        return(is_backup_older_than_datetime(self$last_backup, age))
 
       else if (is_parsable_interval(age))
-        return(is_backup_older_than_interval(bq$last_backup, age, now))
+        return(is_backup_older_than_interval(self$last_backup, age, now))
 
       stop("`age` must be a parsable date or datetime")
     },
