@@ -59,13 +59,6 @@ BackupQueue <- R6::R6Class(
     },
 
 
-    should_rotate = function(
-      size
-    ){
-
-    },
-
-
     print = function(){
       cat(fmt_class(class(self)[[1]]), "\n\n")
 
@@ -161,7 +154,7 @@ BackupQueue <- R6::R6Class(
 #' @rdname BackupQueue
 #' @export
 BackupQueueIndex <- R6::R6Class(
-  "BackupQueue",
+  "BackupQueueIndex",
   inherit = BackupQueue,
   public = list(
     prune = function(
