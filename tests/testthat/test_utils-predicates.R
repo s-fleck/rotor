@@ -72,3 +72,19 @@ test_that("is_pure_BackupQueue", {
 
   unlink(tf_idx)
 })
+
+
+
+
+test_that("is_parsable_date works as expected", {
+  expect_true(is_parsable_datetime("2018-12-01"))
+  expect_true(is_parsable_datetime("20181201"))
+  expect_true(is_parsable_datetime("2018-02"))
+  expect_true(is_parsable_datetime("201802"))
+  expect_true(is_parsable_datetime("2018"))
+
+  expect_true(is_parsable_datetime(20181231))
+  expect_false(is_parsable_datetime(20181232))
+  expect_false(is_parsable_datetime("1 week"))
+  expect_false(is_parsable_datetime("2 years"))
+})

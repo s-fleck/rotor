@@ -273,16 +273,6 @@ test_that("rotate_date works as expected", {
 
 
 
-test_that("parse_interval", {
-  expect_identical(parse_interval(9)$unit, "day")
-  expect_identical(parse_interval("1 week")$unit, "week")
-  expect_identical(parse_interval("2 months")$unit, "month")
-  expect_identical(parse_interval("3 quarters")$unit, "quarter")
-  expect_identical(parse_interval("4 years")$unit, "year")
-})
-
-
-
 test_that("is_backup_older_than_interval", {
   # week
   expect_false(
