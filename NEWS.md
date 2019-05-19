@@ -8,7 +8,7 @@
 * R6 API: BackupQueue subclasses gain a `should_rotate(...)` method that 
   determines whether rotation/backup should take place. 
 * R6 API: BackupQueueDate and -DateTime now have a caching mechanism for 
-  the last rotation date. 
+  backups (defaults to `FALSE`). 
 
 # rotor 0.2.1 (2019-05-15)
 

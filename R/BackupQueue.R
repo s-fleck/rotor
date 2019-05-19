@@ -296,21 +296,21 @@ BackupQueueDateTime <- R6::R6Class(
       max_backups = Inf,
       compression = FALSE,
       format = "%Y-%m-%d--%H-%M-%S",
-      cache_last_rotation = TRUE
+      cache_backups = FALSE
     ){
-      assert(is_scalar_bool(cache_last_rotation))
+      assert(is_scalar_bool(cache_backups))
       self$file <- file
       self$backup_dir <- backup_dir
       self$fmt <- format
       self$compression <- compression
       self$max_backups <- max_backups
-      self$set_cache_last_rotation(cache_last_rotation)
+      self$set_cache_backups(cache_backups)
 
       self
     },
 
     fmt = NULL,
-    cache_last_rotation = NULL,
+    cache_backups = NULL,
 
     push_backup = function(
       compression = FALSE,
@@ -350,7 +350,7 @@ BackupQueueDateTime <- R6::R6Class(
         overwrite = overwrite
       )
 
-      self$update_last_rotation_cache()
+      self$update_backups_cache()
       self
     },
 
@@ -379,17 +379,28 @@ BackupQueueDateTime <- R6::R6Class(
       stop("`age` must be a parsable date or datetime")
     },
 
-    update_last_rotation_cache = function(){
-      bu <- self$backups
-      private$last_rotation_cache <-
-        if (!nrow(bu)) NULL else max(bu$timestamp)
+    update_backups_cache = function(){
+      res <- super$backups
+
+      if (nrow(res) < 1){
+        res <- EMPTY_BACKUPS_DATETIME
+
+      } else {
+        sel <- vapply(res$sfx, is_parsable_datetime, logical(1))
+        res <- res[sel, ]
+        res$timestamp <- parse_datetime(res$sfx)
+        res <- res[order(res$timestamp, decreasing = TRUE), ]
+
+      }
+
+      private[["backups_cache"]] <- res
       self
     },
 
-    set_cache_last_rotation = function(x){
+    set_cache_backups = function(x){
       assert(is_scalar_bool(x))
-      private$.cache_last_rotation <- x
-      self$update_last_rotation_cache()
+      private$.cache_backups <- x
+      self$update_backups_cache()
     },
 
     prune = function(
@@ -397,9 +408,12 @@ BackupQueueDateTime <- R6::R6Class(
     ){
       assert(is_scalar(max_backups))
 
-      if (!should_prune(self, max_backups))
+      if (!should_prune(self, max_backups)){
         return(self)
-
+      } else {
+        # to be save
+        self$update_backups_cache()
+      }
 
       if (is_integerish(max_backups) && is.finite(max_backups)){
         # prune based on number of backups
@@ -443,38 +457,31 @@ BackupQueueDateTime <- R6::R6Class(
       }
 
       file_remove(to_remove)
-      self$update_last_rotation_cache()
+      self$update_backups_cache()
       self
     }),
 
   active = list(
-
-      last_rotation = function(){
-      if (get(".cache_last_rotation", envir = private, mode = "logical")){
-        get("last_rotation_cache", private)
+    last_rotation = function() {
+      bus <- get("backups", envir = self)
+      if (nrow(bus) < 1) {
+        NULL
       } else {
-        max(self$backups$timestamp)
+        max(get("backups", envir = self)$timestamp)
       }
     },
 
     backups = function(){
-      res <- super$backups
-
-      if (nrow(res) < 1){
-        return(EMPTY_BACKUPS_DATETIME)
+      if (!get(".cache_backups", envir = private, mode = "logical")){
+        self$update_backups_cache()
       }
-
-      sel <- vapply(res$sfx, is_parsable_datetime, logical(1))
-      res <- res[sel, ]
-
-      res$timestamp <- parse_datetime(res$sfx)
-      res[order(res$timestamp, decreasing = TRUE), ]
+      get("backups_cache", envir = private)
     }
   ),
 
   private = list(
-    last_rotation_cache = NULL,
-    .cache_last_rotation = NULL
+    backups_cache = NULL,
+    .cache_backups = NULL
   )
 )
 
@@ -492,33 +499,25 @@ BackupQueueDate <- R6::R6Class(
       file,
       backup_dir = dirname(file),
       format = "%Y-%m-%d",
-      cache_last_rotation = TRUE
+      cache_backups = FALSE
     ){
       self$file <- file
       self$backup_dir <- backup_dir
       self$fmt <- format
-      self$set_cache_last_rotation(cache_last_rotation)
+      self$set_cache_backups(cache_backups)
 
-      self$update_last_rotation_cache()
-      self
-    },
-
-    update_last_rotation_cache = function(){
-      bu <- self$backups
-
-      private$last_rotation_cache <-
-        if (!nrow(bu)) NULL else as.Date(as.character(max(self$backups$timestamp)))
-
+      self$update_backups_cache()
       self
     }
   ),
 
   active = list(
-    last_rotation = function(){
-      if (get(".cache_last_rotation", envir = private, mode = "logical")){
-        get("last_rotation_cache", private)
+    last_rotation = function() {
+      bus <- get("backups", envir = self)
+      if (nrow(bus) < 1) {
+        NULL
       } else {
-        as.Date(as.character(max(self$backups$timestamp)))
+        as.Date(as.character(max(get("backups", envir = self)$timestamp)))
       }
     }
   )

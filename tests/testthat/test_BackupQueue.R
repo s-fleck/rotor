@@ -414,35 +414,35 @@ test_that("is_parsable_date works as expected", {
 
 
 
-test_that("BackupQueueDatetime: last_rotation_cache", {
+test_that("BackupQueueDatetime: backups_cache", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   on.exit(unlink(tf))
-  bq <- BackupQueueDateTime$new(tf)
+  bq <- BackupQueueDateTime$new(tf, cache_backups = TRUE)
   file.create(paste0(tools::file_path_sans_ext(tf), ".2019-01-01T22-22-22.log.zip"))
 
 
   # last rotation cache must be updated manually
   expect_null(bq$last_rotation)
-  bq$update_last_rotation_cache()
+  bq$update_backups_cache()
   expect_equal(bq$last_rotation, parse_datetime("2019-01-01T22-22-22"))
 
   # last rotation cache is set on creation
-  bq <- BackupQueueDateTime$new(tf)
+  bq <- BackupQueueDateTime$new(tf, cache_backups = TRUE)
   expect_equal(bq$last_rotation, parse_datetime("2019-01-01T22-22-22"))
 
   # last rotation cache is updated on backup push
-  bq <- BackupQueueDateTime$new(tf)
+  bq <- BackupQueueDateTime$new(tf, cache_backups = TRUE)
   bq$push_backup(now = "2019-02-01--00-00-00")
   expect_equal(bq$last_rotation, parse_datetime("2019-02-01--00-00-00"))
 
   # last rotation cache is set on creation
-  bq <- BackupQueueDateTime$new(tf, cache_last_rotation = FALSE)
+  bq <- BackupQueueDateTime$new(tf, cache_backups = FALSE)
   file.create(paste0(tools::file_path_sans_ext(tf), ".2019-03-01--00-00-00.log.zip"))
   expect_equal(bq$last_rotation, parse_datetime("2019-03-01--00-00-00"))
 
   expect_equal(bq$n_backups, 3)
-  bq <- BackupQueueDateTime$new(tf, cache_last_rotation = TRUE)
+  bq <- BackupQueueDateTime$new(tf, cache_backups = TRUE)
   bq$prune(0)
   expect_null(bq$last_rotation)
 })
@@ -503,11 +503,10 @@ test_that("parse_datetime works as expected", {
 test_that("BackupQueueDateTime can find and prune backup trails", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bq <- BackupQueueDateTime$new(tf)
-
-  expect_identical(bq$n_backups, 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01T22-22-22.log.zip", ".20190102---1212.log.tar.gz", ".20190103174919.log", ".12.log"))
   file.create(bus)
+  bq <- BackupQueueDateTime$new(tf)
+
   expect_identical(
     bq$backups$timestamp,
     as.POSIXct(c("2019-01-03 17:49:19", "2019-01-02 12:12:00", "2019-01-01 22:22:22"))
@@ -546,6 +545,7 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
   file.create(file.path(td, "test.2019-04-20T1200.log"))
   file.create(file.path(td, "test.2019-04-20--12.log"))
   file.create(file.path(td, "test.20190420T12.log"))
+  bq$update_backups_cache()
 
   bq$prune(7)
 
@@ -579,7 +579,6 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
 test_that("Prune BackupQueueDate based on date", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bq <- BackupQueueDateTime$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
     ".2019-01-01.log.zip",
     ".2019-01-02--12-12-12.log.tar.gz",
@@ -588,6 +587,7 @@ test_that("Prune BackupQueueDate based on date", {
   ))
   file.create(bus)
 
+  bq <- BackupQueueDateTime$new(tf)
   bq$prune(as.Date("2019-01-02"))
 
   expect_identical(
@@ -716,7 +716,7 @@ test_that("Prune BackupQueueDate based on dayss interval", {
 test_that("BackupQueueDate $last_date", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bq <- BackupQueueDateTime$new(tf, cache_last_rotation = FALSE)
+  bq <- BackupQueueDateTime$new(tf, cache_backups = FALSE)
 
   expect_identical(bq$n_backups, 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01--00-00-00.log.zip", ".2019-01-02--00-00-00.log.tar.gz", ".2019-01-03--00-00-00.log"))
@@ -782,6 +782,7 @@ test_that("BackupQueueDate can find and prune backup trails", {
   expect_identical(bq$n_backups, 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log", ".12.log"))
   file.create(bus)
+  bq$update_backups_cache()
   expect_identical(bq$backups$sfx, c("2019-01-03", "2019-01-02", "2019-01-01"))
 
   # backup_matrix stays a matrix even if it has only one row
@@ -802,7 +803,7 @@ test_that("BackupQueueDate works with supported datestamp formats", {
   file.create(tf)
   date <- as.Date("2019-01-01")
 
-  bq <- BackupQueueDate$new(tf, cache_last_rotation = FALSE)
+  bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
   expect_identical(bq$n_backups, 0L)
   for (i in 1:10) {
     bq$push_backup(now = as.POSIXct(date + i * 5))
@@ -979,7 +980,7 @@ test_that("Prune BackupQueueDate based on dayss interval", {
 test_that("BackupQueueDate $last_rotation", {
   tf <- file.path(td, "test.log")
   file.create(tf)
-  bq <- BackupQueueDate$new(tf, cache_last_rotation = FALSE)
+  bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
 
   expect_identical(bq$n_backups, 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01.log.zip", ".2019-01-02.log.tar.gz", ".2019-01-03.log"))
@@ -1067,35 +1068,35 @@ test_that("BackupQueueDate: $should_rotate", {
 
 
 
-test_that("BackupQueueDate: last_rotation_cache", {
+test_that("BackupQueueDate: backups_cache", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   on.exit(unlink(tf))
-  bq <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf, cache_backups = TRUE)
   file.create(paste0(tools::file_path_sans_ext(tf), ".2019-01-01T22-22-22.log.zip"))
 
   # last rotation cache must be updated manually
   expect_null(bq$last_rotation)
-  bq$update_last_rotation_cache()
+  bq$update_backups_cache()
   expect_equal(bq$last_rotation, parse_date("2019-01-01"))
 
   # last rotation cache is set on creation
-  bq <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf, cache_backups = TRUE)
   expect_equal(bq$last_rotation, parse_date("2019-01-01"))
 
   # last rotation cache is updated on backup push
-  bq <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf, cache_backups = TRUE)
   bq$push_backup(now = "2019-02-01--00-00-00")
   expect_equal(bq$last_rotation, parse_date("2019-02-01"))
 
-  # last rotation cache is set on creation
-  bq <- BackupQueueDate$new(tf, cache_last_rotation = FALSE)
+  # don't cache if set to FALSE
+  bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
   file.create(paste0(tools::file_path_sans_ext(tf), ".2019-03-01--00-00-00.log.zip"))
   expect_equal(bq$last_rotation, parse_date("2019-03-01"))
 
   # last rotation cache is set on prune
   expect_equal(bq$n_backups, 3)
-  bq <- BackupQueueDate$new(tf, cache_last_rotation = TRUE)
+  bq <- BackupQueueDate$new(tf, cache_backups = TRUE)
   bq$prune(0)
   expect_null(bq$last_rotation)
 })

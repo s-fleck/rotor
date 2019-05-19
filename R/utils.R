@@ -179,3 +179,23 @@ is_windows_path <- function(x){
 isFALSE <- function(x){
   identical(x, FALSE)
 }
+
+
+
+expect_dir_empty <- function(
+  path
+){
+  assert(is_scalar_character(path))
+  testthat::expect_true(
+    dir.exists(path),
+    info = sprintf("'%s' does not exist", path)
+  )
+  testthat::expect_true(
+    is_dir(path),
+    info = sprintf("'%s' is not a directory", path)
+  )
+  testthat::expect_true(
+    length(list.files(path)) == 0L,
+    info = sprintf("Directory '%s' is not empty", path)
+  )
+}

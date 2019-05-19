@@ -20,7 +20,7 @@ test_that("backup_time common usecases", {
   )
   on.exit(unlink(tf))
   writeLines("test", tf)
-  bq <- BackupQueueDateTime$new(tf, cache_last_rotation = FALSE)
+  bq <- BackupQueueDateTime$new(tf, cache_backups = FALSE)
 
   backup_time(tf, age = "1 month", now = "2019-02-28--12-30-00")
   expect_identical(bq$n_backups, 1L)

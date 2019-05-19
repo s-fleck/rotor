@@ -14,10 +14,8 @@ teardown({
 
 test_that("backup_date warns if indexed backups exist", {
   tf <- file.path(td, "test.log")
-  bq <- BackupQueueDate$new(tf)
 
-  file.create(c(
-    tf,
+  bus <- c(
     file.path(td, "test.1.log"),
     file.path(td, "test.2.log"),
     file.path(td, "test.2017.log"),
@@ -25,22 +23,26 @@ test_that("backup_date warns if indexed backups exist", {
     file.path(td, "test.20170201.log"),
     file.path(td, "test.2017-03.log"),
     file.path(td, "test.2017-04-01.log")
-  ))
+  )
+  file.create(c(bus, tf))
   writeLines("test", tf)
 
   expect_warning(
     bu <- backup_date(tf),
     "test\\.1\\.log.*test\\.2\\.log"
   )
+  unlink(bus)
+  prune_backups(tf, 0)
+  unlink(tf)
 
-  BackupQueue$new(tf)$prune(0)
-  file.remove(tf)
+  expect_dir_empty(td)
 })
 
 
 
 test_that("backup/rotate_date works with size", {
   tf     <- file.path(td, "test.log")
+  expect_dir_empty(td)
   on.exit(unlink(tf))
   saveRDS(iris, tf)
   size_ori <- file.size(tf)
@@ -54,6 +56,8 @@ test_that("backup/rotate_date works with size", {
   expect_equal(file.size(tf), 0)
 
   prune_backups(tf, 0)
+  unlink(tf)
+  expect_dir_empty(td)
 })
 
 
@@ -69,6 +73,8 @@ test_that("backup/rotate_date fails if backup already exists for that period", {
   expect_error(backup_date(tf, now = now), "exists")
   expect_error(rotate_date(tf, now = now), "exists")
   prune_backups(tf, 0)
+  unlink(tf)
+  expect_dir_empty(td)
 })
 
 
@@ -84,16 +90,14 @@ test_that("backup_date examples from documentation", {
     tf,
     file.path(td, "test.2019-02-01.log")
   )
-  on.exit(file.remove(tf))
+  on.exit(unlink(tf))
   writeLines("test", tf)
 
   backup_date(tf, age = "1 month", now = "2019-02-28")
-  bq <- BackupQueueDate$new(tf)
-  expect_identical(bq$n_backups, 1L)
+  expect_identical(n_backups(tf), 1L)
 
   backup_date(tf, age = "1 month", now = "2019-03-01")
-  bq <- BackupQueueDate$new(tf)
-  expect_identical(bq$n_backups, 2L)
+  expect_identical(n_backups(tf), 2L)
 
   #' When pruning/limiting backup queues, `"1 year"` means "keep at least most
   #' one year worth of backups". So if you call
@@ -101,14 +105,15 @@ test_that("backup_date examples from documentation", {
   #' a backup and then remove all backups of `myfile` before `2019-01-01`.
   file.create(file.path(td, "test.2019-01-01.log"))
   file.create(file.path(td, "test.2018-12-31.log"))
-  expect_identical(bq$n_backups, 4L)
+  expect_identical(n_backups(tf), 4L)
   backup_date(tf, max_backups = "1 year", now = "2019-03-02")
-  expect_identical(bq$n_backups, 4L)
-  bq$update_last_rotation_cache()
-  expect_identical(bq$last_rotation, as.Date("2019-03-02"))
-  expect_identical(as.character(min(bq$backups$timestamp)), "2019-01-01")
+  expect_identical(n_backups(tf), 4L)
+  expect_match(newest_backup(tf), "2019-03-02")
+  expect_match(oldest_backup(tf), "2019-01-01")
 
-  BackupQueue$new(tf)$prune(0)
+  prune_backups(tf, 0)
+  unlink(tf)
+  expect_dir_empty(td)
 })
 
 
@@ -126,7 +131,7 @@ test_that("backup_date works as expected for years", {
   bu <- backup_date(tf, "1 year")
   expect_true(file.size(bu) > 1)
 
-  bq <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
   expect_true(bq$has_backups)
   bq$prune(0)
 
@@ -145,7 +150,8 @@ test_that("backup_date works as expected for years", {
   expect_true(length(bq$backups$path) == 2)
 
   bq$prune(0)
-  file.remove(tf)
+  unlink(tf)
+  expect_dir_empty(td)
 })
 
 
@@ -154,7 +160,7 @@ test_that("backup_date works as expected for years", {
 test_that("backup_date works as expected for quarters", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
-  bq <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
 
   # no backup younger than 1 quarter exists, so rotate
   bu <- backup_date(tf, "1 quarter")
@@ -186,7 +192,7 @@ test_that("backup_date works as expected for quarters", {
 test_that("backup_date works as expected for months", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
-  bq <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
 
   # no backup younger than 1 month exists, so rotate
   bu <- backup_date(tf, "1 month")
@@ -219,7 +225,7 @@ test_that("backup_date works as expected for months", {
 test_that("backup_date works as expected for weeks", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
-  bq <- BackupQueueDate$new(tf)
+  bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
 
   # no backup younger than 1 week exists, so rotate
   bu <- backup_date(tf, "1 week")
