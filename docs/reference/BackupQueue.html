@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>An internal R6 class for managing backups — BackupQueue • rotor</title>
+<title>An R6 class for managing backups — BackupQueue • rotor</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -30,13 +31,15 @@
 
 
 
-<meta property="og:title" content="An internal R6 class for managing backups — BackupQueue" />
+<meta property="og:title" content="An R6 class for managing backups — BackupQueue" />
 
-<meta property="og:description" content="documentation under development
-BackupQueue and its subclasses are R6::R6Class for rotating files and
-managing backup. They are the internal constructs on which rotate() and
-co. are based. The BackupQueue constructor is exported for use by other
-package developers and not intended for direct use." />
+<meta property="og:description" content="BackupQueue &amp;amp; co are part of the R6 API of rotor. They are
+used internally by rotate() and related functions and are not designed
+for interactive use. Rather, if you are a package developer and want to
+integrate rotor in one of your package, the BackupQueue subclasses give
+you a bit of extra control.
+As of now, the R6 API is still under development and subject to change.
+More documentation will follow in the foreseable future." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -67,7 +70,7 @@ package developers and not intended for direct use." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9004</span>
       </span>
     </div>
 
@@ -75,7 +78,7 @@ package developers and not intended for direct use." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -101,28 +104,30 @@ package developers and not intended for direct use." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>An internal R6 class for managing backups</h1>
+    <h1>An R6 class for managing backups</h1>
     
     <div class="hidden name"><code>BackupQueue.Rd</code></div>
     </div>
 
     <div class="ref-description">
     
-    <p><strong>documentation under development</strong>
-<code>BackupQueue</code> and its subclasses are <a href='https://www.rdocumentation.org/packages/R6/topics/R6Class'>R6::R6Class</a> for rotating files and
-managing backup. They are the internal constructs on which <code><a href='rotate.html'>rotate()</a></code> and
-co. are based. The <code>BackupQueue</code> constructor is exported for use by other
-package developers and not intended for direct use.</p>
+    <p><code>BackupQueue</code> &amp; co are part of the <a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6</a> API of <strong>rotor</strong>. They are
+used internally by <code><a href='rotate.html'>rotate()</a></code> and related functions and are not designed
+for interactive use. Rather, if you are a package developer and want to
+integrate rotor in one of your package, the <code>BackupQueue</code> subclasses give
+you a bit of extra control.</p>
+<p>As of now, <strong>the R6 API is still under development and subject to change</strong>.
+More documentation will follow in the foreseable future.</p>
     
     </div>
 
     <pre class="usage"><span class='no'>BackupQueue</span>
 
-<span class='no'>BackupQueueDate</span>
+<span class='no'>BackupQueueIndex</span>
 
 <span class='no'>BackupQueueDateTime</span>
 
-<span class='no'>BackupQueueIndex</span></pre>
+<span class='no'>BackupQueueDate</span></pre>
         
     <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
 

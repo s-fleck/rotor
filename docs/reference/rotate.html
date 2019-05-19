@@ -16,7 +16,8 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
@@ -67,7 +68,7 @@ based on max_backups" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9004</span>
       </span>
     </div>
 
@@ -75,7 +76,7 @@ based on max_backups" />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -117,33 +118,33 @@ based on <code>max_backups</code></p>
     </div>
 
     <pre class="usage"><span class='fu'>rotate</span>(<span class='no'>file</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/basename'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>backup</span>(<span class='no'>file</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>0</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>, <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/basename'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
-<span class='fu'>prune_backups</span>(<span class='no'>file</span>, <span class='no'>max_backups</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/basename'>dirname</a></span>(<span class='no'>file</span>),
+<span class='fu'>prune_backups</span>(<span class='no'>file</span>, <span class='no'>max_backups</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>),
   <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>rotate_date</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d"</span>,
-  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/basename'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>(), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>backup_date</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d"</span>,
-  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/basename'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.Date</a></span>(),
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.Date</a></span>(),
   <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>rotate_time</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d--%H-%M-%S"</span>,
-  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/basename'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>(), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>create_file</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(), <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)
 
 <span class='fu'>backup_time</span>(<span class='no'>file</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>format</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d--%H-%M-%S"</span>,
-  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/basename'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/Sys.time'>Sys.time</a></span>(),
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>), <span class='kw'>overwrite</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(),
   <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='no'>dry_run</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -155,7 +156,7 @@ based on <code>max_backups</code></p>
     </tr>
     <tr>
       <th>size</th>
-      <td><p>scalar <code>integer</code> or <code>character</code>. Backup/rotate if <code>file</code> is
+      <td><p>scalar <code>integer</code>, <code>character</code> or <code>Inf</code>. Backup/rotate if <code>file</code> is
 larger than this size. <code>Integers</code> are interpreted as
 bytes. You can pass <code>character</code> vectors that contain a file size suffix
 like <code>1k</code> (kilobytes), <code>3M</code> (megabytes), <code>4G</code> (gigabytes),
@@ -179,7 +180,7 @@ like <code>1k</code> (kilobytes), <code>3M</code> (megabytes), <code>4G</code> (
       <th>compression</th>
       <td><p>Whether or not backups should be compressed</p><ul>
 <li><p><code>FALSE</code> for uncompressed backups,</p></li>
-<li><p><code>TRUE</code> for zip compression; uses <code><a href='https://www.rdocumentation.org/packages/utils/topics/zip'>zip()</a></code></p></li>
+<li><p><code>TRUE</code> for zip compression; uses <code><a href='https://rdrr.io/r/utils/zip.html'>zip()</a></code></p></li>
 <li><p>a scalar <code>integer</code> between <code>1</code> and <code>9</code> to specify a compression
 level (requires the
 <a href='https://CRAN.R-project.org/package=zip'>zip</a> package,
@@ -191,7 +192,7 @@ specific zip command</p></li>
     <tr>
       <th>backup_dir</th>
       <td><p><code>character</code> scalar. The directory in which the backups
-of <code>file</code> are stored (defaults to <code><a href='https://www.rdocumentation.org/packages/base/topics/basename'>dirname(file)</a></code>)</p></td>
+of <code>file</code> are stored (defaults to <code><a href='https://rdrr.io/r/base/basename.html'>dirname(file)</a></code>)</p></td>
     </tr>
     <tr>
       <th>create_file</th>
@@ -221,7 +222,7 @@ which Date/Datetime formats are supported by rotor.</p></li>
     <tr>
       <th>format</th>
       <td><p>a scalar <code>character</code> that can be a subset of of valid
-<code><a href='https://www.rdocumentation.org/packages/base/topics/strptime'>strftime()</a></code> formatting strings. The default setting is
+<code><a href='https://rdrr.io/r/base/strptime.html'>strftime()</a></code> formatting strings. The default setting is
 <code>"%Y-%m-%d--%H-%M-%S"</code>.</p><ul>
 <li><p>You can use an arbitrary number of dashes anywhere in the format, so
 <code>"%Y-%m-%d--%H-%M-%S"</code> and <code>"%Y%m%d%H%M%S"</code> are both legal.</p></li>
@@ -244,9 +245,11 @@ of the same name (usually due to timestamp collision) exists.</p></td>
     </tr>
     <tr>
       <th>now</th>
-      <td><p>The current <code>Date</code> or Time (<code>POSIXct</code>). You can pass a custom
-value here to to override the real system time. This is mainly useful
-for testing purposes.</p></td>
+      <td><p>The current <code>Date</code> or time (<code>POSIXct</code>) as a scalar. You can pass a
+custom value here to to override the real system time. As a convenience you
+can also pass in <code>character</code> strings that follow the guidelines outlined
+above for <code>format</code>, but please note that these differ from the formats
+understood by <code><a href='https://rdrr.io/r/base/as.POSIXlt.html'>as.POSIXct()</a></code> or <code><a href='https://rdrr.io/r/base/as.Date.html'>as.Date()</a></code>.</p></td>
     </tr>
     </table>
     
@@ -294,36 +297,36 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># setup example file</span>
-<span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/tempfile'>tempfile</a></span>(<span class='st'>"test"</span>, <span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".rds"</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readRDS'>saveRDS</a></span>(<span class='no'>cars</span>, <span class='no'>tf</span>)
+<span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"test"</span>, <span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".rds"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span>(<span class='no'>cars</span>, <span class='no'>tf</span>)
 
 <span class='co'># create two backups of `tf``</span>
 <span class='fu'>backup</span>(<span class='no'>tf</span>)
 <span class='fu'>backup</span>(<span class='no'>tf</span>)
-<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)  <span class='co'># find all backups of a file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp1t1MBv/test6e911c0fead6.1.rds"
-#&gt; [2] "/tmp/Rtmp1t1MBv/test6e911c0fead6.2.rds"</div><div class='input'>
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)  <span class='co'># find all backups of a file</span></div><div class='output co'>#&gt; [1] "/tmp/RtmpI6HHZ5/test11504d621eb2.1.rds"
+#&gt; [2] "/tmp/RtmpI6HHZ5/test11504d621eb2.2.rds"</div><div class='input'>
 <span class='co'># If `size` is set, a backup is only created if the target file is at least</span>
 <span class='co'># that big. This is more useful for log rotation than for backups.</span>
 <span class='fu'>backup</span>(<span class='no'>tf</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"100 mb"</span>)  <span class='co'># no backup becuase `tf` is to small</span>
-<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp1t1MBv/test6e911c0fead6.1.rds"
-#&gt; [2] "/tmp/Rtmp1t1MBv/test6e911c0fead6.2.rds"</div><div class='input'>
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpI6HHZ5/test11504d621eb2.1.rds"
+#&gt; [2] "/tmp/RtmpI6HHZ5/test11504d621eb2.2.rds"</div><div class='input'>
 <span class='co'># If `dry_run` is TRUE, backup() only shows what would happen without</span>
 <span class='co'># actually creating or deleting files</span>
-<span class='fu'>backup</span>(<span class='no'>tf</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"0.1kb"</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>[dry_run] renaming:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] ~ /tmp/Rtmp1t1MBv/test6e911c0fead6.2.rds -&gt; test6e911c0fead6.3.rds</span>
-#&gt; <span class='message'>[dry_run] ~ /tmp/Rtmp1t1MBv/test6e911c0fead6.1.rds -&gt; test6e911c0fead6.2.rds</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] copying:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] + /tmp/Rtmp1t1MBv/test6e911c0fead6.rds -&gt; test6e911c0fead6.1.rds</span></div><div class='input'>
+<span class='fu'>backup</span>(<span class='no'>tf</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"0.1kb"</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>[dry_run] renaming:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] ~ /tmp/RtmpI6HHZ5/test11504d621eb2.2.rds -&gt; test11504d621eb2.3.rds</span>
+#&gt; <span class='message'>[dry_run] ~ /tmp/RtmpI6HHZ5/test11504d621eb2.1.rds -&gt; test11504d621eb2.2.rds</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] copying:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] + /tmp/RtmpI6HHZ5/test11504d621eb2.rds -&gt; test11504d621eb2.1.rds</span></div><div class='input'>
 <span class='co'># rotate() is the same as backup(), but replaces `tf`` with an empty file</span>
 <span class='fu'>rotate</span>(<span class='no'>tf</span>)
-<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp1t1MBv/test6e911c0fead6.1.rds"
-#&gt; [2] "/tmp/Rtmp1t1MBv/test6e911c0fead6.2.rds"
-#&gt; [3] "/tmp/Rtmp1t1MBv/test6e911c0fead6.3.rds"</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.info'>file.size</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/file.info'>file.size</a></span>(<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>))</div><div class='output co'>#&gt; [1] 282 282 282</div><div class='input'>
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpI6HHZ5/test11504d621eb2.1.rds"
+#&gt; [2] "/tmp/RtmpI6HHZ5/test11504d621eb2.2.rds"
+#&gt; [3] "/tmp/RtmpI6HHZ5/test11504d621eb2.3.rds"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span>(<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>))</div><div class='output co'>#&gt; [1] 289 289 289</div><div class='input'>
 <span class='co'># prune_backups() can remove old backups</span>
 <span class='fu'>prune_backups</span>(<span class='no'>tf</span>, <span class='fl'>1</span>)  <span class='co'># keep only one backup</span>
-<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp1t1MBv/test6e911c0fead6.1.rds"</div><div class='input'>
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpI6HHZ5/test11504d621eb2.1.rds"</div><div class='input'>
 <span class='co'># rotate/backup_date() adds a date instead of an index</span>
 <span class='co'># you should not mix index backups and timestamp backups</span>
 <span class='co'># so we clean up first</span>
 <span class='fu'>prune_backups</span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/readRDS'>saveRDS</a></span>(<span class='no'>cars</span>, <span class='no'>tf</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span>(<span class='no'>cars</span>, <span class='no'>tf</span>)
 
 <span class='co'># backup_date() adds the date instead of an index to the filename</span>
 <span class='fu'>backup_date</span>(<span class='no'>tf</span>)
@@ -335,18 +338,18 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 
 <span class='co'># `now` overrides the current date.</span>
 <span class='fu'>backup_date</span>(<span class='no'>tf</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='st'>"1 year"</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='st'>"2999-12-31"</span>)
-<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp1t1MBv/test6e911c0fead6.2019-05-16.rds"
-#&gt; [2] "/tmp/Rtmp1t1MBv/test6e911c0fead6.2999-12-31.rds"</div><div class='input'>
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpI6HHZ5/test11504d621eb2.2019-05-19.rds"
+#&gt; [2] "/tmp/RtmpI6HHZ5/test11504d621eb2.2999-12-31.rds"</div><div class='input'>
 <span class='co'># backup_time() creates backups with a full timestamp</span>
 <span class='fu'>backup_time</span>(<span class='no'>tf</span>)
 
 <span class='co'># It's okay to mix backup_date() and backup_time()</span>
-<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp1t1MBv/test6e911c0fead6.2019-05-16--14-52-40.rds"
-#&gt; [2] "/tmp/Rtmp1t1MBv/test6e911c0fead6.2019-05-16.rds"          
-#&gt; [3] "/tmp/Rtmp1t1MBv/test6e911c0fead6.2999-12-31.rds"          </div><div class='input'>
+<span class='fu'><a href='list_backups.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpI6HHZ5/test11504d621eb2.2019-05-19--20-53-44.rds"
+#&gt; [2] "/tmp/RtmpI6HHZ5/test11504d621eb2.2019-05-19.rds"          
+#&gt; [3] "/tmp/RtmpI6HHZ5/test11504d621eb2.2999-12-31.rds"          </div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'>prune_backups</span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
-<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/files'>file.remove</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

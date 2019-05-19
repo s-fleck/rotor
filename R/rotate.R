@@ -29,9 +29,11 @@
 #'   * The timestamps must be lexically sortable, so `"%Y-%m-%d"` is legal,
 #'     `"%m-%d-%Y"` and `%Y-%d` are not.
 #'
-#' @param now The current `Date` or Time (`POSIXct`). You can pass a custom
-#'   value here to to override the real system time. This is mainly useful
-#'   for testing purposes.
+#' @param now The current `Date` or time (`POSIXct`) as a scalar. You can pass a
+#'   custom value here to to override the real system time. As a convenience you
+#'   can also pass in `character` strings that follow the guidelines outlined
+#'   above for `format`, but please note that these differ from the formats
+#'   understood by [as.POSIXct()] or [as.Date()].
 #'
 #' @param max_backups maximum number of backups to keep
 #'   - an `integer` scalar: Maximum number of backups to keep
@@ -43,13 +45,13 @@
 #'   - a `character` scalar representing an Interval in the form
 #'     `"<number> <interval>"` (see below for more info)
 #'
-#' @param size scalar `integer`, `character` or `Inf`. Backup/rotate if `file` is
-#'   larger than this size. `Integers` are interpreted as
-#'   bytes. You can pass `character` vectors that contain a file size suffix
-#'   like `1k` (kilobytes), `3M` (megabytes), `4G` (gigabytes),
-#'   `5T`` (terabytes). Instead of these short forms you can also be explicit
-#'   and use the IEC suffixes `KiB`, `MiB`, `GiB`, `TiB`. In Both cases
-#'   `1` kilobyte is `1024` bytes, 1 `megabyte` is `1024` kilobytes, etc... .
+#' @param size scalar `integer`, `character` or `Inf`. Backup/rotate only if
+#'   `file` is larger than this size. `Integers` are interpreted as bytes. You
+#'   can pass `character` vectors that contain a file size suffix like `1k`
+#'   (kilobytes), `3M` (megabytes), `4G` (gigabytes), `5T`` (terabytes). Instead
+#'   of these short forms you can also be explicit and use the IEC suffixes
+#'   `KiB`, `MiB`, `GiB`, `TiB`. In Both cases `1` kilobyte is `1024` bytes, 1
+#'   `megabyte` is `1024` kilobytes, etc... .
 #'
 #' @param backup_dir `character` scalar. The directory in which the backups
 #'   of `file` are stored (defaults to `dirname(file)`)

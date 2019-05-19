@@ -43,11 +43,10 @@ backup_time(file, age = NULL, size = 1, max_backups = Inf,
 \arguments{
 \item{file}{\code{character} scalar: file to backup/rotate}
 
-\item{size}{scalar \code{integer}, \code{character} or \code{Inf}. Backup/rotate if \code{file} is
-larger than this size. \code{Integers} are interpreted as
-bytes. You can pass \code{character} vectors that contain a file size suffix
-like \code{1k} (kilobytes), \code{3M} (megabytes), \code{4G} (gigabytes),
-\code{5T`` (terabytes). Instead of these short forms you can also be explicit and use the IEC suffixes }KiB\code{, }MiB\code{, }GiB\code{, }TiB\code{. In Both cases }1\code{kilobyte is}1024\code{bytes, 1}megabyte\code{is}1024` kilobytes, etc... .}
+\item{size}{scalar \code{integer}, \code{character} or \code{Inf}. Backup/rotate only if
+\code{file} is larger than this size. \code{Integers} are interpreted as bytes. You
+can pass \code{character} vectors that contain a file size suffix like \code{1k}
+(kilobytes), \code{3M} (megabytes), \code{4G} (gigabytes), \code{5T`` (terabytes). Instead of these short forms you can also be explicit and use the IEC suffixes }KiB\code{, }MiB\code{, }GiB\code{, }TiB\code{. In Both cases }1\code{kilobyte is}1024\code{bytes, 1}megabyte\code{is}1024` kilobytes, etc... .}
 
 \item{max_backups}{maximum number of backups to keep
 \itemize{
@@ -117,9 +116,11 @@ example (assuming the current year is 2019) \code{\%Y} is identical to
 \item{overwrite}{\code{logical} scalar. If \code{TRUE} overwrite backups if a backup
 of the same name (usually due to timestamp collision) exists.}
 
-\item{now}{The current \code{Date} or Time (\code{POSIXct}). You can pass a custom
-value here to to override the real system time. This is mainly useful
-for testing purposes.}
+\item{now}{The current \code{Date} or time (\code{POSIXct}) as a scalar. You can pass a
+custom value here to to override the real system time. As a convenience you
+can also pass in \code{character} strings that follow the guidelines outlined
+above for \code{format}, but please note that these differ from the formats
+understood by \code{\link[=as.POSIXct]{as.POSIXct()}} or \code{\link[=as.Date]{as.Date()}}.}
 }
 \value{
 \code{file} as a \code{character} scalar (invisibly)

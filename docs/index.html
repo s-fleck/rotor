@@ -7,7 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Log Rotation and Conditional Backups • rotor</title>
 <!-- jquery --><script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script><!-- Bootstrap --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script><!-- Font Awesome icons --><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous">
 <!-- clipboard.js --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script><!-- sticky kit --><script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script><!-- pkgdown --><link href="pkgdown.css" rel="stylesheet">
 <script src="pkgdown.js"></script><meta property="og:title" content="Log Rotation and Conditional Backups">
 <meta property="og:description" content="Conditionally rotate or back-up files based on their size or the
@@ -31,7 +32,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9001</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9004</span>
       </span>
     </div>
 
@@ -39,7 +40,7 @@
       <ul class="nav navbar-nav">
 <li>
   <a href="index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -78,24 +79,24 @@
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
 <p>You can install the released version of rotor from <a href="https://CRAN.R-project.org">CRAN</a> with:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"rotor"</span>)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span>(<span class="st">"rotor"</span>)</a></code></pre></div>
 <p>And the development version from <a href="https://github.com/">GitHub</a> with:</p>
 <div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="co"># install.packages("remotes")</span></a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"s-fleck/rotor"</span>)</a></code></pre></div>
+<a class="sourceLine" id="cb2-2" data-line-number="2">remotes<span class="op">::</span><span class="kw"><a href="https://rdrr.io/pkg/remotes/man/install_github.html">install_github</a></span>(<span class="st">"s-fleck/rotor"</span>)</a></code></pre></div>
 </div>
 <div id="example" class="section level2">
 <h2 class="hasAnchor">
 <a href="#example" class="anchor"></a>Example</h2>
 <p>First we create a temporary directory for the files created by the code examples</p>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(rotor)</a>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span>(rotor)</a>
 <a class="sourceLine" id="cb3-2" data-line-number="2"></a>
 <a class="sourceLine" id="cb3-3" data-line-number="3"><span class="co"># create a directory</span></a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">td &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(<span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/tempfile">tempdir</a></span>(), <span class="st">"rotor"</span>)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/files2">dir.create</a></span>(td, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">td &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="kw"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"rotor"</span>)</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5"><span class="kw"><a href="https://rdrr.io/r/base/files2.html">dir.create</a></span>(td, <span class="dt">recursive =</span> <span class="ot">TRUE</span>)</a>
 <a class="sourceLine" id="cb3-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb3-7" data-line-number="7"><span class="co"># create an example logfile</span></a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">tf &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/file.path">file.path</a></span>(td, <span class="st">"mylogfile.log"</span>)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/writeLines">writeLines</a></span>(<span class="st">"An important message"</span>, tf)</a></code></pre></div>
+<a class="sourceLine" id="cb3-8" data-line-number="8">tf &lt;-<span class="st"> </span><span class="kw"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(td, <span class="st">"mylogfile.log"</span>)</a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span>(<span class="st">"An important message"</span>, tf)</a></code></pre></div>
 <p><code><a href="reference/rotate.html">backup()</a></code> makes a copy of a file and inserts an index between the filename and the file extension. The file with the index <code>1</code> is always the most recently made backup.</p>
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">backup</a></span>(tf)</a>
 <a class="sourceLine" id="cb4-2" data-line-number="2"></a>
@@ -104,42 +105,42 @@
 <a class="sourceLine" id="cb4-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co"># display backups of a file</span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)  </a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; [1] "/tmp/RtmpF0JWZx/rotor/mylogfile.1.log.zip"</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; [2] "/tmp/RtmpF0JWZx/rotor/mylogfile.2.log"</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; [1] "/tmp/RtmpTZAOxh/rotor/mylogfile.1.log.zip"</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; [2] "/tmp/RtmpTZAOxh/rotor/mylogfile.2.log"</span></a></code></pre></div>
 <p><code><a href="reference/rotate.html">rotate()</a></code> also backs up a file, but replaces the original file with an empty one.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">rotate</a></span>(tf)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; [1] "/tmp/RtmpF0JWZx/rotor/mylogfile.1.log"    </span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; [2] "/tmp/RtmpF0JWZx/rotor/mylogfile.2.log.zip"</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [3] "/tmp/RtmpF0JWZx/rotor/mylogfile.3.log"</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; [1] "/tmp/RtmpTZAOxh/rotor/mylogfile.1.log"    </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; [2] "/tmp/RtmpTZAOxh/rotor/mylogfile.2.log.zip"</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [3] "/tmp/RtmpTZAOxh/rotor/mylogfile.3.log"</span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># the original file is now empty</span></a>
-<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(tf)</a>
+<a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(tf)</a>
 <a class="sourceLine" id="cb5-9" data-line-number="9"><span class="co">#&gt; character(0)</span></a>
 <a class="sourceLine" id="cb5-10" data-line-number="10"></a>
 <a class="sourceLine" id="cb5-11" data-line-number="11"><span class="co"># its content was moved to the first backup</span></a>
-<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/readLines">readLines</a></span>(<span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)[[<span class="dv">1</span>]])</a>
+<a class="sourceLine" id="cb5-12" data-line-number="12"><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)[[<span class="dv">1</span>]])</a>
 <a class="sourceLine" id="cb5-13" data-line-number="13"><span class="co">#&gt; [1] "An important message"</span></a>
 <a class="sourceLine" id="cb5-14" data-line-number="14"></a>
 <a class="sourceLine" id="cb5-15" data-line-number="15"><span class="co"># we can now safely write to the original file</span></a>
-<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/writeLines">writeLines</a></span>(<span class="st">"another important message"</span>, tf)</a></code></pre></div>
+<a class="sourceLine" id="cb5-16" data-line-number="16"><span class="kw"><a href="https://rdrr.io/r/base/writeLines.html">writeLines</a></span>(<span class="st">"another important message"</span>, tf)</a></code></pre></div>
 <p>The <code>max_backups</code> parameter limits the maximum number of backups rotor will keep of a file. Notice how the zipped backup we created above moves to index 4 as we create two new backups.</p>
 <div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb6-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">backup</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">4</span>)</a>
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="reference/rotate.html">backup</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">4</span>)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] "/tmp/RtmpF0JWZx/rotor/mylogfile.1.log"    </span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; [2] "/tmp/RtmpF0JWZx/rotor/mylogfile.2.log"    </span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; [3] "/tmp/RtmpF0JWZx/rotor/mylogfile.3.log"    </span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [4] "/tmp/RtmpF0JWZx/rotor/mylogfile.4.log.zip"</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] "/tmp/RtmpTZAOxh/rotor/mylogfile.1.log"    </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; [2] "/tmp/RtmpTZAOxh/rotor/mylogfile.2.log"    </span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; [3] "/tmp/RtmpTZAOxh/rotor/mylogfile.3.log"    </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [4] "/tmp/RtmpTZAOxh/rotor/mylogfile.4.log.zip"</span></a></code></pre></div>
 <p>We can also use <code><a href="reference/rotate.html">prune_backups()</a></code> to delete old backups. Other than ensuring that no new backups is created, it works identically to using <code><a href="reference/rotate.html">backup()</a></code> with the <code>max_backups</code> parameter. By setting it to <code>0</code>, we delete all backups.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">prune_backups</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">0</span>)</a></code></pre></div>
 <p>Besides creating backup up with an index, <strong>rotor</strong> can also create timestamped backups.</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb8-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">backup_date</a></span>(tf)</a>
 <a class="sourceLine" id="cb8-2" data-line-number="2"><span class="kw"><a href="reference/rotate.html">rotate_time</a></span>(tf)</a>
 <a class="sourceLine" id="cb8-3" data-line-number="3"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)</a>
-<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; [1] "/tmp/RtmpF0JWZx/rotor/mylogfile.2019-05-16--14-52-34.log"</span></a>
-<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; [2] "/tmp/RtmpF0JWZx/rotor/mylogfile.2019-05-16.log"</span></a></code></pre></div>
+<a class="sourceLine" id="cb8-4" data-line-number="4"><span class="co">#&gt; [1] "/tmp/RtmpTZAOxh/rotor/mylogfile.2019-05-19--20-53-40.log"</span></a>
+<a class="sourceLine" id="cb8-5" data-line-number="5"><span class="co">#&gt; [2] "/tmp/RtmpTZAOxh/rotor/mylogfile.2019-05-19.log"</span></a></code></pre></div>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">prune_backups</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">0</span>)  <span class="co"># cleanup</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="reference/list_backups.html">list_backups</a></span>(tf)</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; character(0)</span></a></code></pre></div>
@@ -166,7 +167,14 @@
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=rotor">https://​cloud.r-project.org/​package=rotor</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li><a href="LICENSE.html">Full license</a></li>

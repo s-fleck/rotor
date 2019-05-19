@@ -25,5 +25,6 @@ integrate rotor in one of your package, the \code{BackupQueue} subclasses give
 you a bit of extra control.
 
 As of now, \strong{the R6 API is still under development and subject to change}.
+More documentation will follow in the foreseable future.
 }
 \keyword{datasets}
