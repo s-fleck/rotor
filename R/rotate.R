@@ -234,16 +234,11 @@ rotate_internal <- function(
   do_rotate
 ){
   stopifnot(
-    is_scalar_character(file) && file_exists(file),
     is_scalar_bool(do_rotate),
     is_scalar_bool(dry_run),
-    is_scalar_bool(verbose)
+    is_scalar_bool(verbose),
+    is_scalar_bool(create_file)
   )
-  assert(
-    is_scalar_character(backup_dir) && dir.exists(backup_dir),
-    "backup dir '", backup_dir, "' does not exist."
-  )
-  assert(!is_dir(file))
 
   if (dry_run){
     DRY_RUN$activate()
@@ -253,11 +248,12 @@ rotate_internal <- function(
   bq <- BackupQueueIndex$new(
     file,
     backup_dir = backup_dir,
-    max_backups = max_backups
+    max_backups = max_backups,
+    compression = compression
   )
 
   if (bq$should_rotate(size = size)){
-    bq$push_backup(compression = compression)
+    bq$push_backup()
   } else {
     do_rotate <- FALSE
   }

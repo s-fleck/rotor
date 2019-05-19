@@ -315,7 +315,8 @@ test_that("BackupQueue$push_backup() works as expected", {
   bt$push_backup()
   expect_length(bt$backups$path, 10)
 
-  bt$push_backup(compression = TRUE)
+  bt$set_compression(TRUE)
+  bt$push_backup()
   expect_length(bt$backups$path, 11)
   expect_identical(tools::file_ext(bt$backups$path[[1]]), "zip")
   expect_setequal(tools::file_ext(bt$backups$path[2:11]), "log")
@@ -342,7 +343,8 @@ test_that("BackupQueueIndex$push_backup() can push to different directory", {
   bt$push_backup()
 
   expect_match(bt$backups$dir, "rotor.backups")
-  bt$push_backup(compression = TRUE)
+  bt$set_compression(TRUE)
+  bt$push_backup()
 
   expect_identical(bt$n_backups, 2L)
 
@@ -746,7 +748,8 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
   bt$push_backup()
 
   expect_match(bt$backups$dir, "rotor.backups")
-  bt$push_backup(compression = TRUE)
+  bt$set_compression(TRUE)
+  bt$push_backup()
 
   expect_identical(bt$n_backups, 2L)
 
@@ -1011,7 +1014,8 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
   bt$push_backup()
 
   expect_match(bt$backups$dir, "rotor.backups")
-  bt$push_backup(compression = TRUE)
+  bt$set_compression(TRUE)
+  bt$push_backup()
 
   expect_identical(bt$n_backups, 2L)
   expect_length(bt$prune(0)$backups$path, 0)

@@ -100,13 +100,11 @@ BackupQueue <- R6::R6Class(
 
 
 # ... setters -------------------------------------------------------------
-
-
-
     set_file = function(
       x
     ){
-      assert(is_scalar_character(x))
+      assert(is_scalar_character(x) && file_exists(x))
+      assert(!is_dir(x))
       private[[".file"]] <- x
       self
     },
@@ -245,9 +243,7 @@ BackupQueueIndex <- R6::R6Class(
     },
 
     push_backup = function(
-      compression = FALSE
     ){
-      assert_valid_compression(compression)
       self$increment_index()
 
       # generate new filename
@@ -266,7 +262,7 @@ BackupQueueIndex <- R6::R6Class(
       copy_or_compress(
         self$file,
         outname = name_new,
-        compression = compression,
+        compression = self$compression,
         add_ext = TRUE,
         overwrite = FALSE
       )
@@ -373,13 +369,10 @@ BackupQueueDateTime <- R6::R6Class(
     },
 
     push_backup = function(
-      compression = FALSE,
       overwrite = FALSE,
       now = Sys.time()
     ){
       assert_valid_datetime_format(self$fmt)
-      assert_valid_compression(compression)
-
       now <- parse_datetime(now)
 
       stopifnot(
@@ -405,7 +398,7 @@ BackupQueueDateTime <- R6::R6Class(
       copy_or_compress(
         self$file,
         outname = name_new,
-        compression = compression,
+        compression = self$compression,
         add_ext = TRUE,
         overwrite = overwrite
       )
@@ -420,7 +413,7 @@ BackupQueueDateTime <- R6::R6Class(
       now = Sys.time(),
       last_rotation = self$last_rotation
     ){
-      now <- parse_datetime(now)
+      now  <- parse_datetime(now)
       size <- parse_size(size)
 
       # try to avoid costly file.size check
@@ -515,8 +508,16 @@ BackupQueueDateTime <- R6::R6Class(
     },
 
     # setters -----------------------------------------------------------------
+    set_max_backups = function(
+      x
+    ){
+      assert(is.infinite(x) || is_n0(x) || is.character(x) || is_Date(x))
+      private[[".max_backups"]] <- x
+      self
+    },
+
     set_fmt = function(x){
-      assert(is_scalar_character(x))
+      assert_valid_datetime_format(x)
       private[[".fmt"]] <- x
       self
     },
@@ -588,8 +589,16 @@ BackupQueueDate <- R6::R6Class(
       self$set_cache_backups(cache_backups)
 
       self$update_backups_cache()
+    },
+
+    # ... setters -------------------------------------------------------------
+    set_fmt = function(x){
+      assert_valid_date_format(x)
+      private[[".fmt"]] <- x
+      self
     }
   ),
+
 
   # ... getters -------------------------------------------------------------
   active = list(

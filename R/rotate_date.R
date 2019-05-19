@@ -85,22 +85,12 @@ rotate_date_internal <- function(
   verbose
 ){
   stopifnot(
-    is_scalar_character(file) && file_exists(file),
-    is.null(age) || is_scalar(age),
-    is_scalar(size),
-    is.infinite(max_backups) || is_n0(max_backups) || is.character(max_backups) || is_Date(max_backups),
-    is_scalar_bool(overwrite),
+    is_scalar_bool(do_rotate),
     is_scalar_bool(dry_run),
     is_scalar_bool(verbose),
-    is_scalar_bool(create_file),
-    is_scalar_bool(do_rotate),
-    is_scalar(now)
+    is_scalar_bool(create_file)
   )
-  assert(
-    is_scalar_character(backup_dir) && dir.exists(backup_dir),
-    "backup dir '", backup_dir, "' does not exist."
-  )
-  assert_valid_date_format(format)
+
   assert(!is_dir(file))
 
   if (dry_run){
@@ -108,7 +98,12 @@ rotate_date_internal <- function(
     on.exit(DRY_RUN$deactivate())
   }
 
-  bq <- BackupQueueDate$new(file, fmt = format, backup_dir = backup_dir)
+  bq <- BackupQueueDate$new(
+    file,
+    fmt = format,
+    backup_dir = backup_dir,
+    compression = compression
+  )
 
   # Warn if indexed backups exist
   if (BackupQueue$new(file, backup_dir = backup_dir)$has_backups){
@@ -126,7 +121,6 @@ rotate_date_internal <- function(
   if (bq$should_rotate(size = size, age = age, now = now)){
     bq$push_backup(
       now = now,
-      compression = compression,
       overwrite = overwrite
     )
   } else {
