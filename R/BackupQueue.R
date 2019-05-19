@@ -36,7 +36,7 @@ BackupQueue <- R6::R6Class(
     },
 
     prune = function(
-      max_backups
+      max_backups = self$max_backups
     ){
       if (!should_prune(self, max_backups))
         return(self)
@@ -217,7 +217,7 @@ BackupQueueIndex <- R6::R6Class(
   inherit = BackupQueue,
   public = list(
     prune = function(
-      max_backups
+      max_backups = self$max_backups
     ){
       if (!should_prune(self, max_backups))
         return(self)
@@ -450,7 +450,7 @@ BackupQueueDateTime <- R6::R6Class(
     },
 
     prune = function(
-      max_backups
+      max_backups = self$max_backups
     ){
       assert(is_scalar(max_backups))
 
