@@ -91,7 +91,7 @@ rotate_date_internal <- function(
     is_scalar_bool(create_file)
   )
 
-  assert(!is_dir(file))
+  assert_pure_BackupQueue(file, backup_dir = backup_dir, warn_only = TRUE)
 
   if (dry_run){
     DRY_RUN$activate()
@@ -104,18 +104,6 @@ rotate_date_internal <- function(
     backup_dir = backup_dir,
     compression = compression
   )
-
-  # Warn if indexed backups exist
-  if (BackupQueue$new(file, backup_dir = backup_dir)$has_backups){
-    bi <- BackupQueueIndex$new(file, backup_dir = backup_dir)
-    idx_backups <- paste(setdiff(bi$backups$path, bq$backups$path))
-    if (length(idx_backups)){warning(
-      "Backing up by timestamp, but indexed backups exist already:\n",
-      paste("-", setdiff(bi$backups$path, bq$backups$path), collapse = "\n"),
-      call. = FALSE
-    )}
-  }
-
 
   # backup
   if (bq$should_rotate(size = size, age = age, now = now)){

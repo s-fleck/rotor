@@ -335,12 +335,14 @@ test_that("dry_run does not modify the file systen", {
 
 
   snap <- utils::fileSnapshot(td, md5sum = TRUE)
-  expect_message(backup_date(tf, dry_run = TRUE, now = "2017-05-02"), "copying")
-  expect_snapshot_unchanged(snap)
+  expect_silent({
+    expect_message(backup_date(tf, dry_run = TRUE, now = "2017-05-02"), "copying")
+    expect_snapshot_unchanged(snap)
+    expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "dry_run")
+    expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "removing")
+    expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "2017-03")
+  })
 
-  expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "dry_run")
-  expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "removing")
-  expect_message(backup_date(tf, dry_run = TRUE, max_backups = 0), "2017-03")
   expect_snapshot_unchanged(snap)
 
   expect_message(
@@ -403,3 +405,4 @@ test_that("backup/rotate_time works with custom format", {
   expect_identical(n_backups(tf, backup_dir = bu_dir), 0L)
   expect_length(list.files(bu_dir), 0)
 })
+

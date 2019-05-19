@@ -240,6 +240,8 @@ rotate_internal <- function(
     is_scalar_bool(create_file)
   )
 
+  assert_pure_BackupQueue(file, backup_dir = backup_dir, warn_only = TRUE)
+
   if (dry_run){
     DRY_RUN$activate()
     on.exit(DRY_RUN$deactivate())

@@ -42,7 +42,7 @@ n_backups <- function(
   file,
   backup_dir = dirname(file)
 ){
-  if (is_impure_BackupQueue(file, backup_dir = backup_dir)){
+  if (!is_pure_BackupQueue(file, backup_dir = backup_dir)){
     warning(
       "Found index as well as timestamped backups for '", file, "'. ",
       "This is fine, but some rotor functions might not work as expected",
@@ -115,51 +115,4 @@ oldest_backup <- function(
   }
 
   last(bq$backups$path)
-}
-
-
-
-
-is_pure_BackupQueueIndex <- function(
-  file,
-  backup_dir = dirname(file)
-){
-  identical(BackupQueueDateTime$new(file, backup_dir = backup_dir)$n_backups, 0L)
-}
-
-
-
-
-is_pure_BackupQueueDateTime <- function(
-  file,
-  backup_dir = dirname(file)
-){
-  identical(BackupQueueIndex$new(file, backup_dir = backup_dir)$n_backups, 0L)
-}
-
-
-
-
-is_impure_BackupQueue <- function(
-  file,
-  backup_dir = dirname(file)
-){
-  BackupQueueDateTime$new(file, backup_dir = backup_dir)$n_backups > 0 &&
-  BackupQueueIndex$new(file, backup_dir = backup_dir)$n_backups > 0
-}
-
-
-
-
-assert_pure_BackupQueue <- function(
-  file,
-  backup_dir = dirname(file)
-){
-  if (is_impure_BackupQueue(file, backup_dir = backup_dir)){
-    stop(
-      "Operation not possible because indexed as well as timestamped backups
-       exist for '", file, "'. ",
-      call. = FALSE
-    )
-  }
 }

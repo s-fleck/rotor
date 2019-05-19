@@ -1,3 +1,72 @@
+
+is_pure_BackupQueueIndex <- function(
+  file,
+  backup_dir = dirname(file)
+){
+  identical(BackupQueueDateTime$new(file, backup_dir = backup_dir)$n_backups, 0L)
+}
+
+
+
+
+is_pure_BackupQueueDateTime <- function(
+  file,
+  backup_dir = dirname(file)
+){
+  bi <- BackupQueueIndex$new(file, backup_dir = backup_dir)
+  identical(bi$n_backups, 0L) || min(bi$backups$index) > 1L
+}
+
+
+
+
+is_pure_BackupQueue <- function(
+  file,
+  backup_dir = dirname(file)
+){
+  bi <- BackupQueueIndex$new(file, backup_dir = backup_dir)
+
+  if (bi$n_backups < 1){
+    TRUE
+  } else if (identical(min(bi$backups$index), 1L)){
+    # check if min index is 1 to filter out BackupQueueIndex that are truely
+    # BackupQueueDate but only have integer like timestamps
+    identical(
+      BackupQueueDateTime$new(file, backup_dir = backup_dir)$n_backups,
+      0L
+    )
+  } else {
+    TRUE
+  }
+}
+
+
+
+
+assert_pure_BackupQueue <- function(
+  file,
+  backup_dir = dirname(file),
+  warn_only = FALSE
+){
+  if (is_pure_BackupQueue(file, backup_dir = backup_dir))
+    return(TRUE)
+
+  msg <- paste0(
+    "Indexed as well as timestamped backups exist for '", file, "'.\n",
+    paste("*", list_backups(file), collapse = "\n")
+  )
+
+  if (warn_only){
+    warning(msg, call. = FALSE)
+    FALSE
+  } else {
+    stop("Operation not possible: ", msg,  call. = FALSE)
+  }
+}
+
+
+
+
 is_parsable_interval <- function(x){
   tryCatch(
     {parse_interval(x); TRUE},
