@@ -1,0 +1,32 @@
+---
+title: "benchmarks"
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup}
+library(rotor)
+library(bench)
+```
+
+
+```{r}
+
+tf <- tempfile()
+file.create(tf)
+
+backup_date(tf, now = "2019-01-01")
+backup_date(tf, now = "2019-01-02")
+backup_date(tf, now = "2019-01-03")
+backup_date(tf, now = "2019-01-04")
+backup_date(tf, now = "2019-01-05")
+
+
+
+```
+
