@@ -29,16 +29,11 @@ BackupQueue <- R6::R6Class(
     ){
       self$set_file(file)
       self$set_backup_dir(backup_dir)
-      self$compression <- compression
-      self$max_backups <- max_backups
+      self$set_compression(compression)
+      self$set_max_backups(max_backups)
 
       self
     },
-
-    file = NULL,
-    backup_dir = NULL,
-    max_backups = NULL,
-    compression = NULL,
 
     prune = function(
       max_backups
@@ -103,13 +98,16 @@ BackupQueue <- R6::R6Class(
       invisible(self)
     },
 
+
+# ... setters -------------------------------------------------------------
+
+
+
     set_file = function(
       x
     ){
-      assert(
-        is_scalar_character(x)
-      )
-      self$file <- x
+      assert(is_scalar_character(x))
+      private[[".file"]] <- x
       self
     },
 
@@ -120,13 +118,47 @@ BackupQueue <- R6::R6Class(
         is_scalar_character(x) && dir.exists(x),
         "backup dir '", x, "' does not exist."
       )
-      self$backup_dir <- x
+      private[[".backup_dir"]] <- x
+      self
+    },
+
+    set_compression = function(
+      x
+    ){
+      assert_valid_compression(x)
+      private[[".compression"]] <- x
+      self
+    },
+
+    set_max_backups = function(
+      x
+    ){
+      private[[".max_backups"]] <- x
       self
     }
   ),
 
 
+# ... getters -------------------------------------------------------------
+
+
   active = list(
+    file = function(){
+      get(".file", envir = private)
+    },
+
+    backup_dir = function(){
+      get(".backup_dir", envir = private)
+    },
+
+    compression = function(){
+      get(".compression", envir = private)
+    },
+
+    max_backups = function(){
+      get(".max_backups", envir = private)
+    },
+
     has_backups = function(){
       self$n_backups > 0
     },
@@ -167,6 +199,13 @@ BackupQueue <- R6::R6Class(
 
       res
     }
+  ),
+
+  private = list(
+    .file = NULL,
+    .backup_dir = NULL,
+    .compression = NULL,
+    .max_backups = NULL
   )
 )
 
@@ -283,9 +322,9 @@ BackupQueueIndex <- R6::R6Class(
 
       self
     }
-
   ),
 
+  # ... getters -------------------------------------------------------------
   active = list(
     backups = function(){
       res <- super$backups
@@ -298,6 +337,10 @@ BackupQueueIndex <- R6::R6Class(
 
       res[order(res$sfx, decreasing = FALSE), ]
     }
+  ),
+
+  private = list(
+    .fmt = NULL
   )
 )
 
@@ -316,22 +359,18 @@ BackupQueueDateTime <- R6::R6Class(
       backup_dir = dirname(file),
       max_backups = Inf,
       compression = FALSE,
-      format = "%Y-%m-%d--%H-%M-%S",
+      fmt = "%Y-%m-%d--%H-%M-%S",
       cache_backups = FALSE
     ){
-      assert(is_scalar_bool(cache_backups))
       self$set_file(file)
       self$set_backup_dir(backup_dir)
-      self$fmt <- format
-      self$compression <- compression
-      self$max_backups <- max_backups
+      self$set_compression(compression)
+      self$set_max_backups(max_backups)
+      self$set_fmt(fmt)
       self$set_cache_backups(cache_backups)
 
-      self
+      self$update_backups_cache()
     },
-
-    fmt = NULL,
-    cache_backups = NULL,
 
     push_backup = function(
       compression = FALSE,
@@ -411,17 +450,10 @@ BackupQueueDateTime <- R6::R6Class(
         res <- res[sel, ]
         res$timestamp <- parse_datetime(res$sfx)
         res <- res[order(res$timestamp, decreasing = TRUE), ]
-
       }
 
       private[["backups_cache"]] <- res
       self
-    },
-
-    set_cache_backups = function(x){
-      assert(is_scalar_bool(x))
-      private$.cache_backups <- x
-      self$update_backups_cache()
     },
 
     prune = function(
@@ -480,9 +512,32 @@ BackupQueueDateTime <- R6::R6Class(
       file_remove(to_remove)
       self$update_backups_cache()
       self
-    }),
+    },
 
+    # setters -----------------------------------------------------------------
+    set_fmt = function(x){
+      assert(is_scalar_character(x))
+      private[[".fmt"]] <- x
+      self
+    },
+
+    set_cache_backups = function(x){
+      assert(is_scalar_bool(x))
+      private$.cache_backups <- x
+      self$update_backups_cache()
+    }
+  ),
+
+  # ... getters -------------------------------------------------------------
   active = list(
+    fmt = function(){
+      get(".fmt", envir = private, mode = "character")
+    },
+
+    cache_backups = function(){
+      get(".cache_backups", envir = private, mode = "logical")
+    },
+
     last_rotation = function() {
       bus <- get("backups", envir = self)
       if (nrow(bus) < 1) {
@@ -502,7 +557,8 @@ BackupQueueDateTime <- R6::R6Class(
 
   private = list(
     backups_cache = NULL,
-    .cache_backups = NULL
+    .cache_backups = NULL,
+    .fmt = NULL
   )
 )
 
@@ -519,19 +575,23 @@ BackupQueueDate <- R6::R6Class(
     initialize = function(
       file,
       backup_dir = dirname(file),
-      format = "%Y-%m-%d",
+      max_backups = Inf,
+      compression = FALSE,
+      fmt = "%Y-%m-%d",
       cache_backups = FALSE
     ){
       self$set_file(file)
       self$set_backup_dir(backup_dir)
-      self$fmt <- format
+      self$set_compression(compression)
+      self$set_max_backups(max_backups)
+      self$set_fmt(fmt)
       self$set_cache_backups(cache_backups)
 
       self$update_backups_cache()
-      self
     }
   ),
 
+  # ... getters -------------------------------------------------------------
   active = list(
     last_rotation = function() {
       bus <- get("backups", envir = self)

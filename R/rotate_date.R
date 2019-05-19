@@ -108,7 +108,7 @@ rotate_date_internal <- function(
     on.exit(DRY_RUN$deactivate())
   }
 
-  bq <- BackupQueueDate$new(file, format = format, backup_dir = backup_dir)
+  bq <- BackupQueueDate$new(file, fmt = format, backup_dir = backup_dir)
 
   # Warn if indexed backups exist
   if (BackupQueue$new(file, backup_dir = backup_dir)$has_backups){

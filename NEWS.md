@@ -9,6 +9,8 @@
   determines whether rotation/backup should take place. 
 * R6 API: BackupQueueDate and -DateTime now have a caching mechanism for 
   backups (defaults to `FALSE`). 
+* R6 API: BackupQueue* now use setters/getters for all fields. 
+
 
 # rotor 0.2.1 (2019-05-15)
 
