@@ -27,8 +27,8 @@ BackupQueue <- R6::R6Class(
       max_backups = Inf,
       compression = FALSE
     ){
-      self$file <- file
-      self$backup_dir <- backup_dir
+      self$set_file(file)
+      self$set_backup_dir(backup_dir)
       self$compression <- compression
       self$max_backups <- max_backups
 
@@ -101,6 +101,27 @@ BackupQueue <- R6::R6Class(
 
       apply(dd, 1, cat, "\n")
       invisible(self)
+    },
+
+    set_file = function(
+      x
+    ){
+      assert(
+        is_scalar_character(x)
+      )
+      self$file <- x
+      self
+    },
+
+    set_backup_dir = function(
+      x
+    ){
+      assert(
+        is_scalar_character(x) && dir.exists(x),
+        "backup dir '", x, "' does not exist."
+      )
+      self$backup_dir <- x
+      self
     }
   ),
 
@@ -299,8 +320,8 @@ BackupQueueDateTime <- R6::R6Class(
       cache_backups = FALSE
     ){
       assert(is_scalar_bool(cache_backups))
-      self$file <- file
-      self$backup_dir <- backup_dir
+      self$set_file(file)
+      self$set_backup_dir(backup_dir)
       self$fmt <- format
       self$compression <- compression
       self$max_backups <- max_backups
@@ -501,8 +522,8 @@ BackupQueueDate <- R6::R6Class(
       format = "%Y-%m-%d",
       cache_backups = FALSE
     ){
-      self$file <- file
-      self$backup_dir <- backup_dir
+      self$set_file(file)
+      self$set_backup_dir(backup_dir)
       self$fmt <- format
       self$set_cache_backups(cache_backups)
 
