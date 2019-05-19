@@ -75,6 +75,3 @@ test_that("parse_datetime works as expected", {
     as.POSIXct(c(d1, d2, d3))
   )
 })
-
-
-

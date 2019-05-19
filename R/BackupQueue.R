@@ -1,15 +1,16 @@
-#' An internal R6 class for managing backups
+#' An R6 class for managing backups
+#' @description
+#' `BackupQueue` & co are part of the [R6][R6::R6] API of **rotor**. They are
+#' used internally by [rotate()] and related functions and are not designed
+#' for interactive use. Rather, if you are a package developer and want to
+#' integrate rotor in one of your package, the `BackupQueue` subclasses give
+#' you a bit of extra control.
 #'
-#' **documentation under development**
-#' `BackupQueue` and its subclasses are [R6::R6Class] for rotating files and
-#' managing backup. They are the internal constructs on which [rotate()] and
-#' co. are based. The `BackupQueue` constructor is exported for use by other
-#' package developers and not intended for direct use. It is still experimental
-#' and die API is sure to change.
+#' As of now, **the R6 API is still under development and subject to change**.
+#' More documentation will follow in the foreseable future.
 #'
 #' @name BackupQueue
 NULL
-
 
 
 

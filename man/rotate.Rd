@@ -43,7 +43,7 @@ backup_time(file, age = NULL, size = 1, max_backups = Inf,
 \arguments{
 \item{file}{\code{character} scalar: file to backup/rotate}
 
-\item{size}{scalar \code{integer} or \code{character}. Backup/rotate if \code{file} is
+\item{size}{scalar \code{integer}, \code{character} or \code{Inf}. Backup/rotate if \code{file} is
 larger than this size. \code{Integers} are interpreted as
 bytes. You can pass \code{character} vectors that contain a file size suffix
 like \code{1k} (kilobytes), \code{3M} (megabytes), \code{4G} (gigabytes),
