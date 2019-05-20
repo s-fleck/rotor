@@ -36,6 +36,7 @@ BackupQueue <- R6::R6Class(
       self
     },
 
+
     prune = function(
       max_backups = self$max_backups
     ){
@@ -49,7 +50,6 @@ BackupQueue <- R6::R6Class(
       )}
       to_keep   <- self$backups$path[seq_len(max_backups)]
       to_remove <- setdiff(self$backups$path, to_keep)
-
       file_remove(to_remove)
 
       self
@@ -61,14 +61,11 @@ BackupQueue <- R6::R6Class(
 
       ori <- file.info(self$file)
       bus <- self$backups
-
       info <- data.frame(
         file = c(row.names(ori), bus$path),
         size = c(ori$size, bus$size)
       )
-
       dd <- as.matrix(info)
-
 
       if (nrow(dd) == 1){
         dd[, "size"] <- fmt_bytes(dd[, "size"])
@@ -91,6 +88,7 @@ BackupQueue <- R6::R6Class(
         assert(nrow(dd) >= 3)
         sel <- 2:(nrow(dd) - 1)
         dd[sel, ] <-  apply(dd[sel, ,drop = FALSE], 1:2, style_subtle)
+
       } else {
         stop("Error while printing backup queue. Please file an issue.")
       }
@@ -100,7 +98,7 @@ BackupQueue <- R6::R6Class(
     },
 
 
-# ... setters -------------------------------------------------------------
+    # ... setters -------------------------------------------------------------
     set_file = function(
       x
     ){
@@ -109,6 +107,7 @@ BackupQueue <- R6::R6Class(
       private[[".file"]] <- x
       self
     },
+
 
     set_backup_dir = function(
       x
@@ -121,6 +120,7 @@ BackupQueue <- R6::R6Class(
       self
     },
 
+
     set_compression = function(
       x
     ){
@@ -129,18 +129,18 @@ BackupQueue <- R6::R6Class(
       self
     },
 
+
     set_max_backups = function(
       x
     ){
+      assert(is.infinite(x) || is_n0(x))
       private[[".max_backups"]] <- x
       self
     }
   ),
 
 
-# ... getters -------------------------------------------------------------
-
-
+  # ... getters -------------------------------------------------------------
   active = list(
     file = function(){
       get(".file", envir = private)
@@ -217,6 +217,35 @@ BackupQueueIndex <- R6::R6Class(
   "BackupQueueIndex",
   inherit = BackupQueue,
   public = list(
+
+    push_backup = function(){
+      # generate new filename
+        name <- file.path(
+          self$backup_dir,
+          tools::file_path_sans_ext(basename(self$file))
+        )
+        ext  <- tools::file_ext(self$file)
+        sfx <- "1"
+        if (is_blank(ext)) {
+          name_new <- paste(name, sfx, sep = ".")
+        } else {
+          name_new <- paste(name, sfx, ext, sep = ".")
+        }
+
+      self$increment_index()
+
+      copy_or_compress(
+        self$file,
+        outname = name_new,
+        compression = self$compression,
+        add_ext = TRUE,
+        overwrite = FALSE
+      )
+
+      self$pad_index( )
+    },
+
+
     prune = function(
       max_backups = self$max_backups
     ){
@@ -229,6 +258,7 @@ BackupQueueIndex <- R6::R6Class(
       file_remove(to_remove)
       self$pad_index()
     },
+
 
     should_rotate = function(size){
       size <- parse_size(size)
@@ -243,37 +273,8 @@ BackupQueueIndex <- R6::R6Class(
       file.size(self$file) > size
     },
 
-    push_backup = function(
-    ){
-      self$increment_index()
 
-      # generate new filename
-      name <- file.path(
-        self$backup_dir,
-        tools::file_path_sans_ext(basename(self$file))
-      )
-      ext  <- tools::file_ext(self$file)
-      sfx <- "1"
-      if (is_blank(ext)) {
-        name_new <- paste(name, sfx, sep = ".")
-      } else {
-        name_new <- paste(name, sfx, ext, sep = ".")
-      }
-
-      copy_or_compress(
-        self$file,
-        outname = name_new,
-        compression = self$compression,
-        add_ext = TRUE,
-        overwrite = FALSE
-      )
-
-      self$pad_index( )
-    },
-
-
-    pad_index = function(
-    ){
+    pad_index = function(){
       if (nrow(self$backups) <= 0)
         return(self)
 
@@ -296,13 +297,11 @@ BackupQueueIndex <- R6::R6Class(
     increment_index = function(
       n = 1
     ){
-      if (self$n_backups <= 0){
-        return(self)
-      }
       assert(is_scalar_integerish(n))
+      if (self$n_backups <= 0)
+        return(self)
 
       backups <- self$backups
-
       backups$index <- backups$index + as.integer(n)
       backups$path_new <- paste(
         file.path(backups$dir, backups$name),
@@ -321,20 +320,20 @@ BackupQueueIndex <- R6::R6Class(
     }
   ),
 
+
   # ... getters -------------------------------------------------------------
   active = list(
     backups = function(){
       res <- super$backups
-
-      if (nrow(res) < 1){
+      if (nrow(res) < 1)
         return(EMPTY_BACKUPS_INDEX)
-      }
+
       res <- res[grep("^\\d+$", res$sfx), ]
       res$index <- as.integer(res$sfx)
-
       res[order(res$sfx, decreasing = FALSE), ]
     }
   ),
+
 
   private = list(
     .fmt = NULL
@@ -368,6 +367,7 @@ BackupQueueDateTime <- R6::R6Class(
 
       self$update_backups_cache()
     },
+
 
     push_backup = function(
       overwrite = FALSE,
@@ -405,50 +405,8 @@ BackupQueueDateTime <- R6::R6Class(
       )
 
       self$update_backups_cache()
-      self
     },
 
-    should_rotate = function(
-      size,
-      age,
-      now = Sys.time(),
-      last_rotation = self$last_rotation
-    ){
-      now  <- parse_datetime(now)
-      size <- parse_size(size)
-
-      # try to avoid costly file.size check
-      if (is.infinite(size) || file.size(self$file) < size)
-        return(FALSE)
-
-      if (is.null(age) || is.null(self$last_rotation))
-        return(TRUE)
-
-      else if (is_parsable_datetime(age))
-        return(is_backup_older_than_datetime(self$last_rotation, age))
-
-      else if (is_parsable_interval(age))
-        return(is_backup_older_than_interval(self$last_rotation, age, now))
-
-      stop("`age` must be a parsable date or datetime")
-    },
-
-    update_backups_cache = function(){
-      res <- super$backups
-
-      if (nrow(res) < 1){
-        res <- EMPTY_BACKUPS_DATETIME
-
-      } else {
-        sel <- vapply(res$sfx, is_parsable_datetime, logical(1))
-        res <- res[sel, ]
-        res$timestamp <- parse_datetime(res$sfx)
-        res <- res[order(res$timestamp, decreasing = TRUE), ]
-      }
-
-      private[["backups_cache"]] <- res
-      self
-    },
 
     prune = function(
       max_backups = self$max_backups
@@ -508,7 +466,52 @@ BackupQueueDateTime <- R6::R6Class(
       self
     },
 
-    # setters -----------------------------------------------------------------
+
+    should_rotate = function(
+      size,
+      age,
+      now = Sys.time(),
+      last_rotation = self$last_rotation
+    ){
+      now  <- parse_datetime(now)
+      size <- parse_size(size)
+
+      # try to avoid costly file.size check
+      if (is.infinite(size) || file.size(self$file) < size)
+        return(FALSE)
+
+      if (is.null(age) || is.null(self$last_rotation))
+        return(TRUE)
+
+      else if (is_parsable_datetime(age))
+        return(is_backup_older_than_datetime(self$last_rotation, age))
+
+      else if (is_parsable_interval(age))
+        return(is_backup_older_than_interval(self$last_rotation, age, now))
+
+      stop("`age` must be a parsable date or datetime")
+    },
+
+
+    update_backups_cache = function(){
+      res <- super$backups
+
+      if (nrow(res) < 1){
+        res <- EMPTY_BACKUPS_DATETIME
+
+      } else {
+        sel <- vapply(res$sfx, is_parsable_datetime, logical(1))
+        res <- res[sel, ]
+        res$timestamp <- parse_datetime(res$sfx)
+        res <- res[order(res$timestamp, decreasing = TRUE), ]
+      }
+
+      private[["backups_cache"]] <- res
+      self
+    },
+
+
+    # ... setters --------------------------------------------------------------
     set_max_backups = function(
       x
     ){
@@ -517,11 +520,13 @@ BackupQueueDateTime <- R6::R6Class(
       self
     },
 
+
     set_fmt = function(x){
       assert_valid_datetime_format(x)
       private[[".fmt"]] <- x
       self
     },
+
 
     set_cache_backups = function(x){
       assert(is_scalar_bool(x))
@@ -530,15 +535,18 @@ BackupQueueDateTime <- R6::R6Class(
     }
   ),
 
+
   # ... getters -------------------------------------------------------------
   active = list(
     fmt = function(){
       get(".fmt", envir = private, mode = "character")
     },
 
+
     cache_backups = function(){
       get(".cache_backups", envir = private, mode = "logical")
     },
+
 
     last_rotation = function() {
       bus <- get("backups", envir = self)
@@ -549,6 +557,7 @@ BackupQueueDateTime <- R6::R6Class(
       }
     },
 
+
     backups = function(){
       if (!get(".cache_backups", envir = private, mode = "logical")){
         self$update_backups_cache()
@@ -556,6 +565,7 @@ BackupQueueDateTime <- R6::R6Class(
       get("backups_cache", envir = private)
     }
   ),
+
 
   private = list(
     backups_cache = NULL,
@@ -574,6 +584,7 @@ BackupQueueDate <- R6::R6Class(
   inherit = BackupQueueDateTime,
   "BackupQueueDate",
   public = list(
+
     initialize = function(
       file,
       backup_dir = dirname(file),
@@ -592,6 +603,7 @@ BackupQueueDate <- R6::R6Class(
       self$update_backups_cache()
     },
 
+
     # ... setters -------------------------------------------------------------
     set_fmt = function(x){
       assert_valid_date_format(x)
@@ -603,6 +615,7 @@ BackupQueueDate <- R6::R6Class(
 
   # ... getters -------------------------------------------------------------
   active = list(
+
     last_rotation = function() {
       bus <- get("backups", envir = self)
       if (nrow(bus) < 1) {
@@ -640,8 +653,10 @@ parse_interval <- function(x){
   unit <- gsub("s$", "", tolower(trimws(unit)))
 
   assert(unit %in% valid_units)
+  value <- as.integer(value)
+  assert(!is.na(value))
 
-  list(value = as.integer(value), unit = unit)
+  list(value = value, unit = unit)
 }
 
 
@@ -651,9 +666,8 @@ filenames_as_matrix <- function(
   file,
   backups
 ){
-  if (length(backups) < 1){
+  if (length(backups) < 1)
     return(NULL)
-  }
 
   file_dir  <- dirname(file)
   file_name <- basename(tools::file_path_sans_ext(file))
