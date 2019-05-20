@@ -54,7 +54,11 @@ strsplit_at_seperator_pos <- function(
   pos,
   seps = "."
 ){
-  assert(all(substr(x, pos, pos) %in% seps))
+  assert(
+    all(substr(x, pos, pos) %in% seps),
+    "Not all names have a '.' sepparator at pos ", pos, ":\n",
+    paste0("* ", x, collapse = "\n")
+  )
   matrix(data = c(substr(x, 1, pos - 1L), substr(x, pos + 1L, nchar(x))), ncol = 2)
 }
 
