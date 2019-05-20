@@ -646,7 +646,7 @@ BackupQueueDate <- R6::R6Class(
 # utils -------------------------------------------------------------------
 
 parse_rotation_interval <- function(x){
-  if (inherits(x, "rotation_interval"))
+  if (is_rotation_interval(x))
     return(x)
 
   assert(is_scalar(x) && !is.na(x))
@@ -677,11 +677,14 @@ parse_rotation_interval <- function(x){
 
 
 
+
 is_rotation_interval <- function(
   x
 ){
   inherits(x, "rotation_interval")
 }
+
+
 
 
 filenames_as_matrix <- function(

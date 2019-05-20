@@ -25,6 +25,9 @@ parse_size <- function(x){
 
 
 
+#' @param x a `character` scalar, see the `size` argument of `rotate()`
+#' @return an `integer` scalar (bytes)
+#' @noRd
 parse_info_unit <- function(x){
   assert(is_scalar_character(x))
   x <- tolower(x)
