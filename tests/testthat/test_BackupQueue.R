@@ -32,6 +32,8 @@ test_that("get_backups works as expected", {
 
 
 
+
+
 test_that("BackupQueue works as expected", {
   tf <- file.path(td, "test")
   file.create(tf)
@@ -715,6 +717,31 @@ test_that("BackupQueueDateTime: $should_rotate", {
 
 # BackupQueueDate ---------------------------------------------------------
 context("BackupQueueDate")
+
+test_that("BackupQueueDate: $set_max_backups", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+  on.exit(unlink(tf))
+
+  bq <- BackupQueueDateTime$new(tf)
+
+  bq$set_max_backups(1)
+  expect_identical(bq$max_backups, 1L)
+
+  bq$set_max_backups("1 day")
+  expect_s3_class(bq$max_backups, "rotation_interval")
+  expect_identical(bq$max_backups$value, 1L)
+  expect_identical(bq$max_backups$unit, "day")
+
+  bq$set_max_backups("2019-01-01")
+  expect_identical(bq$max_backups, as.Date("2019-01-01"))
+
+  bq$set_max_backups(as.Date("2019-01-01"))
+  expect_identical(bq$max_backups, as.Date("2019-01-01"))
+})
+
+
+
 
 test_that("BackupQueueDate can find and prune backup trails", {
   tf <- file.path(td, "test.log")

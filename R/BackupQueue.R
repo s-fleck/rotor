@@ -435,26 +435,24 @@ BackupQueueDateTime <- R6::R6Class(
           limit     <- parse_datetime(max_backups)
           to_remove <- self$backups$path[self$backups$timestamp < limit]
 
-        } else if (is_parsable_interval(max_backups)){
-          # interval like strings
-          interval <- parse_interval(max_backups)
-
+        } else if (is_parsable_rotation_interval(max_backups)){
+          max_backups <- parse_rotation_interval(max_backups)
           last_rotation <- as.Date(as.character(self$last_rotation))
 
-          if (identical(interval[["unit"]], "year")){
-            limit <- dint::first_of_year(dint::get_year(last_rotation) - interval$value + 1L)
+          if (identical(max_backups[["unit"]], "year")){
+            limit <- dint::first_of_year(dint::get_year(last_rotation) - max_backups$value + 1L)
 
-          } else if (identical(interval[["unit"]], "quarter")){
-            limit <- dint::first_of_quarter(dint::as_date_yq(last_rotation) - interval$value + 1L)
+          } else if (identical(max_backups[["unit"]], "quarter")){
+            limit <- dint::first_of_quarter(dint::as_date_yq(last_rotation) - max_backups$value + 1L)
 
-          } else if (identical(interval[["unit"]], "month")) {
-            limit <- dint::first_of_month(dint::as_date_ym(last_rotation) - interval$value + 1L)
+          } else if (identical(max_backups[["unit"]], "month")) {
+            limit <- dint::first_of_month(dint::as_date_ym(last_rotation) - max_backups$value + 1L)
 
-          } else if (identical(interval[["unit"]], "week")){
-            limit <- dint::first_of_isoweek(dint::as_date_yw(last_rotation) - interval$value + 1L)
+          } else if (identical(max_backups[["unit"]], "week")){
+            limit <- dint::first_of_isoweek(dint::as_date_yw(last_rotation) - max_backups$value + 1L)
 
-          } else if (identical(interval[["unit"]], "day")){
-            limit <- as.Date(last_rotation) - interval$value + 1L
+          } else if (identical(max_backups[["unit"]], "day")){
+            limit <- as.Date(last_rotation) - max_backups$value + 1L
           }
 
           to_remove <- self$backups$path[as.Date(as.character(self$backups$timestamp)) < limit]
@@ -486,7 +484,7 @@ BackupQueueDateTime <- R6::R6Class(
       else if (is_parsable_datetime(age))
         return(is_backup_older_than_datetime(self$last_rotation, age))
 
-      else if (is_parsable_interval(age))
+      else if (is_parsable_rotation_interval(age))
         return(is_backup_older_than_interval(self$last_rotation, age, now))
 
       stop("`age` must be a parsable date or datetime")
@@ -516,6 +514,21 @@ BackupQueueDateTime <- R6::R6Class(
       x
     ){
       assert(is.infinite(x) || is_n0(x) || is.character(x) || is_Date(x))
+
+      if (is.infinite(x)){
+        # do nothing
+
+      } else if (is.character(x)){
+        if (is_parsable_rotation_interval(x)){
+          x <- parse_rotation_interval(x)
+        } else {
+          x <- parse_date(x)
+        }
+
+      } else if (is_n0(x)){
+        x <- as.integer(x)
+      }
+
       private[[".max_backups"]] <- x
       self
     },
@@ -632,7 +645,10 @@ BackupQueueDate <- R6::R6Class(
 
 # utils -------------------------------------------------------------------
 
-parse_interval <- function(x){
+parse_rotation_interval <- function(x){
+  if (inherits(x, "rotation_interval"))
+    return(x)
+
   assert(is_scalar(x) && !is.na(x))
 
   if (is_integerish(x)){
@@ -656,10 +672,16 @@ parse_interval <- function(x){
   value <- as.integer(value)
   assert(!is.na(value))
 
-  list(value = value, unit = unit)
+  structure(list(value = value, unit = unit), class = "rotation_interval")
 }
 
 
+
+is_rotation_interval <- function(
+  x
+){
+  inherits(x, "rotation_interval")
+}
 
 
 filenames_as_matrix <- function(

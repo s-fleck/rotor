@@ -67,9 +67,9 @@ assert_pure_BackupQueue <- function(
 
 
 
-is_parsable_interval <- function(x){
+is_parsable_rotation_interval <- function(x){
   tryCatch(
-    {parse_interval(x); TRUE},
+    {is_rotation_interval(parse_rotation_interval(x))},
     error = function(e) FALSE
   )
 }
@@ -203,9 +203,9 @@ is_backup_older_than_interval <- function(
 
   assert(is_scalar_Date(backup_date))
   assert(is_scalar_Date(now))
-  assert(is_parsable_interval(interval))
+  assert(is_parsable_rotation_interval(interval))
 
-  iv <- parse_interval(interval)
+  iv <- parse_rotation_interval(interval)
 
   as_period <- switch(
     iv$unit,
