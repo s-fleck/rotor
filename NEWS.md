@@ -4,7 +4,8 @@
   functions to be more intuitive
 * default `size` for all all `rotate_*()` and `backup_*()` functions is now
   consistently `1` (Byte)
-* support for `Inf` size
+* support for `Inf` `size`
+* More robust regex for discovering backups of files
 * R6 API: BackupQueue subclasses gain a `should_rotate(...)` method that 
   determines whether rotation/backup should take place. 
 * R6 API: BackupQueueDate and -DateTime now have a caching mechanism for 

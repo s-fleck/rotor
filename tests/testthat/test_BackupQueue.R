@@ -12,13 +12,17 @@ teardown({
 # BackupQueue -------------------------------------------------------------
 
 test_that("get_backups works as expected", {
-  tf <- file.path(td, "test")
-  file.create(tf)
+  expect_identical(
+    get_backups("foo.txt", c("foo.1.txt", "bar"), sfx_patterns = "\\d{1}"),
+    "foo.1.txt"
+  )
+
 
   expect_identical(
     get_backups("foo.txt", c("foo.1.txt", "bar"), sfx_patterns = "\\d{1}"),
     "foo.1.txt"
   )
+
 
   expect_path_equal(
     get_backups("foo.txt", c("path/to/foo.1.txt", "path/to/bar"), sfx_patterns = "\\d{1}"),
@@ -27,6 +31,59 @@ test_that("get_backups works as expected", {
 
   expect_error(
     get_backups("foo.txt", c("path/to/foo.1.txt", "path/bar"), sfx_patterns = "\\d{1}")
+  )
+
+
+  expect_setequal(
+    get_backups(
+      "foo.txt",
+      c("foo.1.txt", "foo.1.txt.zip", "foo.1.txt.tar.gz", "foo.1.txt.7z", "foo.7z"),
+      sfx_patterns = "\\d+"
+    ),
+    c("foo.1.txt", "foo.1.txt.zip", "foo.1.txt.tar.gz", "foo.1.txt.7z")
+  )
+
+
+  expect_setequal(
+    get_backups(
+      "foo",
+      c("foo.1", "foo.1.zip", "foo.1.tar.gz", "foo.1.7z", "foo.7z"),
+      sfx_patterns = "\\d+"
+    ),
+    c("foo.1", "foo.1.zip", "foo.1.tar.gz", "foo.1.7z")
+  )
+
+
+  sfx_real <- c(
+    "\\d+",
+    "\\d{4}-\\d{2}-\\d{2}",
+    "\\d{4}-\\d{2}-\\d{2}(-*|",
+    "\\d{4}-\\d{2}"
+  )
+
+
+
+  expect_length(
+    get_backups("test.jsonl", "test.7z", sfx_patterns = sfx_real), 0
+  )
+
+
+  bus <- c(
+    "test.1.log.zip", "test.2.log.tar.gz", "test.2019-01-01T22-22-22.log.zip",
+    "test.2019-02-01--00-00-00.log", "test.2019-03-01--00-00-00.log.zip",
+    "test.3.log"
+  )
+
+  bad_bus <- c(
+    "test.log.zip", "test.7z", "test.2019-01-01X22-22-22.log.zip", "test.2019-01-01T22-22-222.log.zip"
+  )
+
+  bus     <- file.path("fake","path", bus)
+  bad_bus <- file.path("fake","path", bad_bus)
+
+  expect_identical(
+    get_backups("foo/bar/test.log", c(bus, bad_bus), sfx_real),
+    bus
   )
 })
 

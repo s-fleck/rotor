@@ -704,12 +704,12 @@ filenames_as_matrix <- function(
     "All backups of `file` must be in the same directory, not \n",
     paste("*", unique(back_dir), collapse = "\n")
   )
-  back_name <- basename(backups)
+  back_names <- basename(backups)
 
   filename_end <-
-    attr(gregexpr(file_name, back_name[[1]])[[1]], "match.length") + 1L
+    attr(gregexpr(file_name, back_names[[1]])[[1]], "match.length") + 1L
 
-  a <- strsplit_at_seperator_pos(back_name, filename_end)
+  a <- strsplit_at_seperator_pos(back_names, filename_end)
   assert(
     all_are_identical(a[, 1]),
     "All backups of `file` must have the same basename, not  \n",
@@ -746,26 +746,36 @@ get_backups <- function(
   if (!length(potential_backups))
     return(character())
 
-  # compare tidy paths against each other, so tha we do not miss matches on
-  # equivalent paths because of inconsistent path sepparators
-  bu_dir <- path_tidy(as_scalar(dirname(potential_backups)))
-
-  name <- basename(tools::file_path_sans_ext(file))
-  ext  <- tools::file_ext(file)
   sfx_patterns <- paste0("(", sfx_patterns, ")", collapse = "|")
 
-  path_pat <- {if (bu_dir %in% c(".", "")) "" else paste0(bu_dir, "[\\/\\\\]")}
+  file_dir  <- dirname(file)
+  file_name <- basename(tools::file_path_sans_ext(file))
+  file_ext  <- tools::file_ext(file)
 
-  if (is_blank(ext)){
-    pat <- sprintf("^%s%s\\.%s\\.*$", path_pat, name, sfx_patterns)
+  back_dir  <- dirname(potential_backups)
+  assert(
+    all_are_identical(back_dir),
+    "All backups of `file` must be in the same directory, not \n",
+    paste("*", unique(back_dir), collapse = "\n")
+  )
+  back_names <- basename(potential_backups)
 
-  } else {
-    pat <- sprintf("^%s%s\\.%s\\.%s\\.*$", path_pat, name, sfx_patterns, ext)
-  }
+  sel <- grepl(paste0("^", file_name), back_names)
+  backups    <- potential_backups[sel]
+  back_names <- basename(backups)
+
+  if (!length(backups))
+    return(character())
+
+  # most file systems just support 255 character filenames
+  file_sufext <- substr(back_names, nchar(file_name) + 2L, 64000L)
+
+  sfx <- gsub("\\..*", "", file_sufext)
+  sfx <- standardize_datetime_stamp(sfx)
+  sel <- grepl( "^\\d{1,14}$", sfx)
 
   # compare tidy paths, but return original paths
-  sel <- grep(pat, path_tidy(potential_backups))
-  sort(potential_backups[sel])
+  sort(backups[sel])
 }
 
 
