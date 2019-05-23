@@ -150,3 +150,54 @@ standardize_datetime_stamp <- function(x){
 standardize_date_stamp <- function(x){
   gsub("-|_|\\s", "", as.character(x))
 }
+
+
+
+
+
+# rotation interval -------------------------------------------------------
+
+
+parse_rotation_interval <- function(x){
+  if (is_rotation_interval(x))
+    return(x)
+
+  assert(is_scalar(x) && !is.na(x))
+
+  if (is_integerish(x)){
+    return(rotation_interval(value = as.integer(x), unit = "day"))
+  } else {
+    assert(is.character(x))
+  }
+
+  splt <- strsplit(x, "\\s")[[1]]
+  assert(identical(length(splt), 2L))
+
+  value <- splt[[1]]
+  unit  <- splt[[2]]
+
+  valid_units <- c("day", "week", "month", "quarter", "year")
+  unit <- gsub("s$", "", tolower(trimws(unit)))
+
+  assert(unit %in% valid_units)
+  value <- as.integer(value)
+  assert(!is.na(value))
+
+  rotation_interval(value = value, unit = unit)
+}
+
+
+
+
+rotation_interval <- function(value, unit){
+  structure(list(value = value, unit = unit), class = "rotation_interval")
+}
+
+
+
+
+is_rotation_interval <- function(
+  x
+){
+  inherits(x, "rotation_interval")
+}
