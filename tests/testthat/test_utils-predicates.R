@@ -88,3 +88,30 @@ test_that("is_parsable_date works as expected", {
   expect_false(is_parsable_datetime("1 week"))
   expect_false(is_parsable_datetime("2 years"))
 })
+
+
+
+
+test_that("is_backup_older_than_interval works as expected", {
+  now <- as.POSIXct("2019-12-11 00:12:13")
+
+  expect_true(is_backup_older_than_interval(as.Date("2019-12-11"), "0 days", now))
+  expect_true(is_backup_older_than_interval(as.Date("2019-12-11"), "-1 days", now))
+  expect_true(is_backup_older_than_interval(as.Date("2019-12-11"), 0, now))
+  expect_true(is_backup_older_than_interval(as.Date("2019-12-11"), -1, now))
+
+  expect_false(is_backup_older_than_interval(as.Date("2019-01-01"), "1 year", now))
+  expect_true(is_backup_older_than_interval(as.Date("2018-12-12"), "1 year", now))
+  expect_true(is_backup_older_than_interval(as.Date("2018-12-12"), "0 year", now))
+})
+
+
+
+
+test_that("is_backup_older_than_datetime works as expected", {
+  now <- as.POSIXct("2019-12-11 00:12:13")
+
+  expect_true(is_backup_older_than_datetime(as.Date("2019-12-11"), now))
+  expect_false(is_backup_older_than_datetime(as.Date("2019-12-11"), as.Date(now)))
+  expect_false(is_backup_older_than_datetime(as.Date("2019-12-12"), now))
+})
