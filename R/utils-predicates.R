@@ -203,12 +203,11 @@ is_backup_older_than_interval <- function(
 
   assert(is_scalar_Date(backup_date))
   assert(is_scalar_Date(now))
-  assert(is_parsable_rotation_interval(interval))
-
   iv <- parse_rotation_interval(interval)
 
   as_period <- switch(
     iv$unit,
+    day     = identity,
     week    = dint::as_date_yw,
     month   = dint::as_date_ym,
     quarter = dint::as_date_yq,
