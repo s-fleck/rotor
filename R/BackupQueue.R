@@ -475,10 +475,10 @@ BackupQueueDateTime <- R6::R6Class(
       size <- parse_size(size)
 
       # try to avoid costly file.size check
-      if (is.infinite(size) || file.size(self$file) < size)
+      if (is.infinite(size) || is.infinite(age) || file.size(self$file) < size)
         return(FALSE)
 
-      if (is.null(age) || is.null(self$last_rotation))
+      if (is.null(self$last_rotation))
         return(TRUE)
 
       else if (is_parsable_datetime(age))

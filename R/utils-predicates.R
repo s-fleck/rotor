@@ -205,6 +205,7 @@ is_backup_older_than_interval <- function(
   assert(is_scalar_Date(now))
   iv <- parse_rotation_interval(interval)
 
+
   as_period <- switch(
     iv$unit,
     day     = identity,

@@ -70,8 +70,9 @@ test_that("backup/rotate_date fails if backup already exists for that period", {
 
   now <- Sys.Date()
   backup_date(tf, now = now)
-  expect_error(backup_date(tf, now = now), "exists")
-  expect_error(rotate_date(tf, now = now, age = -1), "exists")
+  expect_identical(n_backups(tf), 1L)
+
+  expect_error(backup_date(tf, now = now, age = -1), "exists")
   prune_backups(tf, 0)
   unlink(tf)
   expect_dir_empty(td)
@@ -189,6 +190,7 @@ test_that("backup_date works as expected for quarters", {
 
 
 
+
 test_that("backup_date works as expected for months", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
@@ -256,6 +258,31 @@ test_that("backup_date works as expected for weeks", {
 
 
 
+test_that("backup_date works as expected for Inf", {
+  tf <- file.path(td, "test.log")
+  saveRDS(iris, tf)
+  on.exit({
+    prune_backups(tf, 0)
+    unlink(tf)
+  })
+
+  # no backup younger than 1 week exists, so rotate
+  bu <- backup_date(tf, Inf)
+  expect_true(file.size(bu) > 0)
+  expect_identical(n_backups(tf), 0L)
+  prune_backups(tf, 0)
+
+
+  # no backup because last backup is less than a week old
+  backup_date(tf, -1, now = "2019-01-28")
+  expect_identical(n_backups(tf), 1L)
+  backup_date(tf, Inf, now = "2999-01-30")
+  expect_identical(n_backups(tf), 1L)
+})
+
+
+
+
 test_that("rotate_date works as expected", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
@@ -268,39 +295,6 @@ test_that("rotate_date works as expected", {
 
   BackupQueueDate$new(tf)$prune(0)
   file.remove(tf)
-})
-
-
-
-
-test_that("is_backup_older_than_interval", {
-  # week
-  expect_false(
-    is_backup_older_than_interval(interval = "1 week", as.Date("2019-04-01"), as.Date("2019-04-07"))  # 2019-W14
-  )
-  expect_true(
-    is_backup_older_than_interval(interval = "1 week", as.Date("2019-04-01"), as.Date("2019-04-08"))  # 2019-W14
-  )
-  expect_false(
-    is_backup_older_than_interval(interval = "6 week", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
-  )
-  expect_true(
-    is_backup_older_than_interval(interval = "5 weeks", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
-  )
-
-  # month
-  expect_false(
-    is_backup_older_than_interval(interval = "1 month", as.Date("2019-04-01"), as.Date("2019-04-30"))  # 2019-W14
-  )
-  expect_true(
-    is_backup_older_than_interval(interval = "1 month", as.Date("2019-04-01"), as.Date("2019-05-01"))  # 2019-W14
-  )
-  expect_false(
-    is_backup_older_than_interval(interval = "6 month", as.Date("2019-04-01"),  as.Date("2019-09-01")) # 2019-W19
-  )
-  expect_true(
-    is_backup_older_than_interval(interval = "5 months", as.Date("2019-04-01"),  as.Date("2019-09-06")) # 2019-W19
-  )
 })
 
 

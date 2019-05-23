@@ -38,8 +38,8 @@ rotate_time <- function(
 #' @export
 backup_time <- function(
   file,
-  age = NULL,
-  size = 1,
+  age  = -1,
+  size =  1,
   max_backups = Inf,
   compression = FALSE,
   format = "%Y-%m-%d--%H-%M-%S",

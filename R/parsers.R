@@ -164,6 +164,9 @@ parse_rotation_interval <- function(x){
 
   assert(is_scalar(x) && !is.na(x))
 
+  if (is.infinite(x))
+    return(rotation_interval(value = Inf, unit = "day"))
+
   if (is_integerish(x)){
     return(rotation_interval(value = as.integer(x), unit = "day"))
   } else {

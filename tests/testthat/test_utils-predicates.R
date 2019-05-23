@@ -103,8 +103,43 @@ test_that("is_backup_older_than_interval works as expected", {
   expect_false(is_backup_older_than_interval(as.Date("2019-01-01"), "1 year", now))
   expect_true(is_backup_older_than_interval(as.Date("2018-12-12"), "1 year", now))
   expect_true(is_backup_older_than_interval(as.Date("2018-12-12"), "0 year", now))
+
+  expect_false(is_backup_older_than_interval(as.Date("2999-12-12"), Inf, now))
 })
 
+
+
+
+
+test_that("is_backup_older_than_interval works with weeks", {
+  # week
+  expect_false(
+    is_backup_older_than_interval(interval = "1 week", as.Date("2019-04-01"), as.Date("2019-04-07"))  # 2019-W14
+  )
+  expect_true(
+    is_backup_older_than_interval(interval = "1 week", as.Date("2019-04-01"), as.Date("2019-04-08"))  # 2019-W14
+  )
+  expect_false(
+    is_backup_older_than_interval(interval = "6 week", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
+  )
+  expect_true(
+    is_backup_older_than_interval(interval = "5 weeks", as.Date("2019-04-01"),  as.Date("2019-05-06")) # 2019-W19
+  )
+
+  # month
+  expect_false(
+    is_backup_older_than_interval(interval = "1 month", as.Date("2019-04-01"), as.Date("2019-04-30"))  # 2019-W14
+  )
+  expect_true(
+    is_backup_older_than_interval(interval = "1 month", as.Date("2019-04-01"), as.Date("2019-05-01"))  # 2019-W14
+  )
+  expect_false(
+    is_backup_older_than_interval(interval = "6 month", as.Date("2019-04-01"),  as.Date("2019-09-01")) # 2019-W19
+  )
+  expect_true(
+    is_backup_older_than_interval(interval = "5 months", as.Date("2019-04-01"),  as.Date("2019-09-06")) # 2019-W19
+  )
+})
 
 
 

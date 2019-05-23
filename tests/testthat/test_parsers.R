@@ -16,6 +16,8 @@ test_that("parse_rotation_interval", {
   expect_identical(parse_rotation_interval("-1 days")$value, -1L)
   expect_identical(parse_rotation_interval(-1)$value, -1L)
   expect_identical(parse_rotation_interval(-1)$unit, "day")
+
+  expect_identical(parse_rotation_interval(Inf)$value, Inf)
 })
 
 

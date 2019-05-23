@@ -38,7 +38,7 @@ rotate_date <- function(
 #' @export
 backup_date <- function(
   file,
-  age = NULL,
+  age  = 1,
   size = 1,
   max_backups = Inf,
   compression = FALSE,

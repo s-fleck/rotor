@@ -20,22 +20,22 @@ backup(file, size = 0, max_backups = Inf, compression = FALSE,
 prune_backups(file, max_backups, backup_dir = dirname(file),
   dry_run = FALSE, verbose = dry_run)
 
-rotate_date(file, age = NULL, size = 1, max_backups = Inf,
+rotate_date(file, age = 1, size = 1, max_backups = Inf,
   compression = FALSE, format = "\%Y-\%m-\%d",
   backup_dir = dirname(file), overwrite = FALSE, create_file = TRUE,
   now = Sys.Date(), dry_run = FALSE, verbose = dry_run)
 
-backup_date(file, age = NULL, size = 1, max_backups = Inf,
+backup_date(file, age = 1, size = 1, max_backups = Inf,
   compression = FALSE, format = "\%Y-\%m-\%d",
   backup_dir = dirname(file), overwrite = FALSE, now = Sys.Date(),
   dry_run = FALSE, verbose = dry_run)
 
-rotate_time(file, age = NULL, size = 1, max_backups = Inf,
+rotate_time(file, age = -1, size = 1, max_backups = Inf,
   compression = FALSE, format = "\%Y-\%m-\%d--\%H-\%M-\%S",
   backup_dir = dirname(file), overwrite = FALSE, create_file = TRUE,
   now = Sys.time(), dry_run = FALSE, verbose = dry_run)
 
-backup_time(file, age = NULL, size = 1, max_backups = Inf,
+backup_time(file, age = -1, size = 1, max_backups = Inf,
   compression = FALSE, format = "\%Y-\%m-\%d--\%H-\%M-\%S",
   backup_dir = dirname(file), overwrite = FALSE, now = Sys.time(),
   dry_run = FALSE, verbose = dry_run)
