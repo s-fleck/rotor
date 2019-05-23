@@ -83,7 +83,7 @@ test_that("get_backups works as expected", {
 
   expect_identical(
     get_backups("foo/bar/test.log", c(bus, bad_bus), sfx_real),
-    bus
+    sort(bus)
   )
 })
 
@@ -472,8 +472,6 @@ test_that("BackupQueueIndex: $should_rotate", {
 
 # BackupQueueDatetime -----------------------------------------------------
 context("BackupQueueDateTime")
-
-
 
 
 
