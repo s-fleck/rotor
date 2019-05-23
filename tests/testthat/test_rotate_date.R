@@ -71,7 +71,7 @@ test_that("backup/rotate_date fails if backup already exists for that period", {
   now <- Sys.Date()
   backup_date(tf, now = now)
   expect_error(backup_date(tf, now = now), "exists")
-  expect_error(rotate_date(tf, now = now), "exists")
+  expect_error(rotate_date(tf, now = now, age = -1), "exists")
   prune_backups(tf, 0)
   unlink(tf)
   expect_dir_empty(td)
