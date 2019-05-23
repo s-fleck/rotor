@@ -1,12 +1,21 @@
 context("parsers")
 
 
+
+
 test_that("parse_rotation_interval", {
   expect_identical(parse_rotation_interval(9)$unit, "day")
   expect_identical(parse_rotation_interval("1 week")$unit, "week")
   expect_identical(parse_rotation_interval("2 months")$unit, "month")
   expect_identical(parse_rotation_interval("3 quarters")$unit, "quarter")
   expect_identical(parse_rotation_interval("4 years")$unit, "year")
+
+
+  expect_identical(parse_rotation_interval("-1 years")$unit, "year")
+  expect_identical(parse_rotation_interval("-1 years")$value, -1L)
+  expect_identical(parse_rotation_interval("-1 days")$value, -1L)
+  expect_identical(parse_rotation_interval(-1)$value, -1L)
+  expect_identical(parse_rotation_interval(-1)$unit, "day")
 })
 
 
@@ -24,7 +33,6 @@ test_that("parse_info_unit works", {
   expect_equal(parse_size("1.5 gIb"), parse_size("1.5g"))
   expect_equal(parse_size("1 gIb"), parse_size("1024mb"))
 })
-
 
 
 
