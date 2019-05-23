@@ -2,7 +2,7 @@
 #' @export
 rotate_time <- function(
   file,
-  age = NULL,
+  age  = -1,
   size = 1,
   max_backups = Inf,
   compression = FALSE,
