@@ -94,6 +94,7 @@ test_that("get_backups works as expected", {
 test_that("BackupQueue works as expected", {
   tf <- file.path(td, "test")
   file.create(tf)
+  expect_identical(n_backups(tf), 0L)
 
   bq <- BackupQueue$new(tf)
   expect_path_equal(bq$file, tf)
@@ -107,6 +108,7 @@ test_that("BackupQueue works as expected", {
 test_that("BackupQueue finding backups works as expected for files with extension", {
   tf <- file.path(td, "test.log")
   file.create(tf)
+  expect_identical(n_backups(tf), 0L)
   bq <- BackupQueue$new(tf)
 
   sfxs <-c(1:12, "2019-12-31")
@@ -121,9 +123,12 @@ test_that("BackupQueue finding backups works as expected for files with extensio
 
 
 
+
 test_that("BackupQueue finding backups works as expected for files without extension", {
   tf <- file.path(td, "test")
   file.create(tf)
+  on.exit(unlink(bus))
+  expect_identical(n_backups(tf), 0L)
   bq <- BackupQueue$new(tf)
 
   sfxs <-c(1:12, "2019-12-31")
@@ -141,6 +146,7 @@ test_that("BackupQueue finding backups works as expected for files without exten
 test_that("dryrun/verbose prune", {
   tf <- file.path(td, "test")
   file.create(tf)
+  expect_identical(n_backups(tf), 0L)
   bq <- BackupQueue$new(tf)
 
   sfxs <-c(1:12, "2019-12-31")
@@ -304,6 +310,7 @@ test_that("BackupQueue pruning works as expected for files without extension", {
 test_that("BackupQueue works as expected for files with extension", {
   tf <- file.path(td, "test.log")
   file.create(tf)
+  expect_identical(n_backups(tf), 0L)
   bt <- BackupQueueIndex$new(tf)
 
   # finding and pruning backups works
@@ -323,6 +330,7 @@ test_that("BackupQueue works as expected for files with extension", {
 test_that("BackupQueue$pad_index works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
+  expect_identical(n_backups(tf), 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:12, ".log")
   padded_bus <- sort(paste0(
     tools::file_path_sans_ext(tf), ".", pad_left(1:12, pad = 0), ".log"
@@ -343,6 +351,7 @@ test_that("BackupQueue$pad_index works as expected", {
 test_that("BackupQueue$increment_index works as expected", {
   tf <- file.path(td, "test.log")
   file.create(tf)
+  expect_identical(n_backups(tf), 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:9, ".log")
   pushed_bus <- paste0(tools::file_path_sans_ext(tf), ".", pad_left(2:10, pad = "0"), ".log")
   file.create(bus)
@@ -364,6 +373,7 @@ test_that("BackupQueue$push_backup() works as expected", {
 
   tf <- file.path(td, "test.log")
   file.create(tf)
+  expect_identical(n_backups(tf), 0L)
   bus <- paste0(tools::file_path_sans_ext(tf), ".", 1:9, ".log")
   padded_bus <- sort(paste0(
     tools::file_path_sans_ext(tf), ".", pad_left(1:10, pad = 0), ".log"
@@ -395,6 +405,7 @@ test_that("BackupQueueIndex$push_backup() can push to different directory", {
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
   file.create(tf)
+  expect_identical(n_backups(tf), 0L)
   on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
 
 
@@ -417,13 +428,15 @@ test_that("BackupQueueIndex$push_backup() can push to different directory", {
 test_that("BackupQueueIndex dry run doesnt modify file system", {
   tf <- file.path(td, "test.log")
   file.create(tf)
+  expect_identical(n_backups(tf), 0L)
   bt <- BackupQueueIndex$new(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(".1.log.zip", ".2.log.tar.gz", ".3.log"))
   file.create(bus)
 
   DRY_RUN$activate()
   on.exit({
-    file.remove(tf)
+    unlink(tf)
+    unlink(bus)
     DRY_RUN$deactivate()
   })
 
@@ -448,6 +461,7 @@ test_that("BackupQueueIndex dry run doesnt modify file system", {
 test_that("BackupQueueIndex: $should_rotate", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
+  expect_identical(n_backups(tf), 0L)
   on.exit(file.remove(tf))
 
   bq <- BackupQueueIndex$new(tf)
@@ -468,6 +482,7 @@ test_that("BackupQueueDatetime: backups_cache", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   on.exit(unlink(tf))
+  expect_identical(n_backups(tf), 0L)
   bq <- BackupQueueDateTime$new(tf, cache_backups = TRUE)
   file.create(paste0(tools::file_path_sans_ext(tf), ".2019-01-01T22-22-22.log.zip"))
 
@@ -687,7 +702,7 @@ test_that("Prune BackupQueueDate based on week interval", {
 
 
 
-test_that("Prune BackupQueueDate based on dayss interval", {
+test_that("Prune BackupQueueDate based on days interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(

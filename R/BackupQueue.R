@@ -456,6 +456,8 @@ BackupQueueDateTime <- R6::R6Class(
           }
 
           to_remove <- self$backups$path[as.Date(as.character(self$backups$timestamp)) < limit]
+        } else {
+          stop("Illegal `max_backups`")
         }
       }
 

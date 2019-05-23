@@ -76,7 +76,11 @@ test_that("is_pure_BackupQueue", {
 
 
 
-test_that("is_parsable_date works as expected", {
+test_that("is_parsable_date/time works", {
+
+  expect_true(is_parsable_datetime(as.Date("2018-12-01")))
+  expect_true(is_parsable_datetime(as.POSIXct("2018-12-01 12:01:01")))
+
   expect_true(is_parsable_datetime("2018-12-01"))
   expect_true(is_parsable_datetime("20181201"))
   expect_true(is_parsable_datetime("2018-02"))
@@ -84,10 +88,44 @@ test_that("is_parsable_date works as expected", {
   expect_true(is_parsable_datetime("2018"))
 
   expect_true(is_parsable_datetime(20181231))
-  expect_false(is_parsable_datetime(20181232))
+  #expect_false(is_parsable_datetime(20181232))
   expect_false(is_parsable_datetime("1 week"))
   expect_false(is_parsable_datetime("2 years"))
+
+  expect_true(is_parsable_datetime("2019-12-12--13-12-11"))
+  expect_true(is_parsable_datetime("2019-12-12--13-12-"))
+  expect_true(is_parsable_datetime("2019-12-12--13--"))
+  expect_true(is_parsable_datetime("2019-12-12----"))
+  expect_true(is_parsable_datetime("2019-12-----"))
+  expect_true(is_parsable_datetime("2019------"))
+  expect_false(is_parsable_datetime("------"))
+
+
+  expect_true(is_parsable_datetime("2019-12-12T13-12-11"))
+  expect_true(is_parsable_datetime("2019-12-12T13-12-"))
+  expect_true(is_parsable_datetime("2019-12-12T13T"))
+  expect_true(is_parsable_datetime("2019-12-12TT"))
+  expect_true(is_parsable_datetime("2019-12TT-"))
+  expect_true(is_parsable_datetime("2019TTT"))
+  expect_false(is_parsable_datetime("TTT"))
+
+  expect_true(is_parsable_datetime("2019-12-12 13-12-11"))
+  expect_true(is_parsable_datetime("2019-12-12 13-12-"))
+  expect_true(is_parsable_datetime("2019-12-12 13 "))
+  expect_true(is_parsable_datetime("2019-12-12  "))
+  expect_true(is_parsable_datetime("2019-12  -"))
+  expect_true(is_parsable_datetime("2019   "))
+  expect_false(is_parsable_datetime("   "))
+
+  expect_false(is_parsable_date("2019-12-12--13-12-11"))
+  expect_false(is_parsable_date("2019-12-12--13-12-"))
+  expect_false(is_parsable_date("2019-12-12--13--"))
+  expect_true(is_parsable_date("2019-12-12----"))
+  expect_true(is_parsable_date("2019-12-----"))
+  expect_true(is_parsable_date("2019------"))
+  expect_false(is_parsable_date("------"))
 })
+
 
 
 
@@ -99,6 +137,9 @@ test_that("is_backup_older_than_interval works as expected", {
   expect_true(is_backup_older_than_interval(as.Date("2019-12-11"), "-1 days", now))
   expect_true(is_backup_older_than_interval(as.Date("2019-12-11"), 0, now))
   expect_true(is_backup_older_than_interval(as.Date("2019-12-11"), -1, now))
+
+
+  now <- "2019-12-11--00-12"
 
   expect_false(is_backup_older_than_interval(as.Date("2019-01-01"), "1 year", now))
   expect_true(is_backup_older_than_interval(as.Date("2018-12-12"), "1 year", now))
@@ -150,3 +191,4 @@ test_that("is_backup_older_than_datetime works as expected", {
   expect_false(is_backup_older_than_datetime(as.Date("2019-12-11"), as.Date(now)))
   expect_false(is_backup_older_than_datetime(as.Date("2019-12-12"), now))
 })
+

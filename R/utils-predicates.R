@@ -32,7 +32,7 @@ is_pure_BackupQueue <- function(
     # check if min index is 1 to filter out BackupQueueIndex that are truely
     # BackupQueueDate but only have integer like timestamps
     identical(
-      BackupQueueDateTime$new(file, backup_dir = backup_dir)$n_backups,
+      try(BackupQueueDateTime$new(file, backup_dir = backup_dir)$n_backups, silent = TRUE),
       0L
     )
   } else {
@@ -68,9 +68,10 @@ assert_pure_BackupQueue <- function(
 
 
 is_parsable_rotation_interval <- function(x){
-  tryCatch(
-    {is_rotation_interval(parse_rotation_interval(x))},
-    error = function(e) FALSE
+  is_scalar(x) && (
+    is_integerish(x) ||
+    is.infinite(x) ||
+    grepl("\\d+\\syear|quarter|month|week|day", x)
   )
 }
 
@@ -156,19 +157,21 @@ is_valid_datetime_format <- function(
 
 
 is_parsable_datetime <- function(x){
-  tryCatch(
-    {parse_datetime(x); TRUE},
-    error = function(...) FALSE
+  is_scalar(x) && (
+    is_Date(x) ||
+    is_POSIXct(x) ||
+    grepl("^\\d{4,14}$", standardize_datetime_stamp(x))
   )
 }
 
 
 
 
+
 is_parsable_date <- function(x){
-  tryCatch(
-    {parse_date(x); TRUE},
-    error = function(...) FALSE
+  is_scalar(x) && (
+    is_Date(x) ||
+    is_scalar(x) && grepl("^\\d{4,8}$", standardize_datetime_stamp(x))
   )
 }
 
@@ -198,8 +201,11 @@ is_backup_older_than_interval <- function(
   if (is_POSIXct(backup_date))
     backup_date <- as.Date(as.character(backup_date))
 
-  if (is_POSIXct(now))
+  if (is_POSIXct(now)){
     now <- as.Date(as.character(now))
+  } else if (is.character(now)){
+    now <- as.Date(parse_datetime(now))
+  }
 
   assert(is_scalar_Date(backup_date))
   assert(is_scalar_Date(now))
