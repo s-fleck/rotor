@@ -16,6 +16,71 @@ you a bit of extra control.
 As of now, \strong{the R6 API is still under development and subject to change}.
 More documentation will follow in the foreseable future.
 }
+\section{Methods}{
+
+
+\describe{
+\item{\code{pad_index()}}{Pad the indices in the filenames of indexed backups
+to the number of digits of the largest index. Usually does not have to
+be called manually.
+}
+
+\item{\code{prune()}}{Delet all backups except \code{max_backups}. See \code{\link[=prune_backups]{prune_backups()}}}
+
+\item{\code{push_backup() <BackupQueueIndex>}}{
+Create a new backup with index 1, push back all other indices.
+Always calls \code{$prune()} before it terminates.
+}
+
+\item{\code{push_backup(overwrite = FALSE, now = Sys.time()) <BackupQueueDate> <BackupQueueDateteime>}}{
+Create a new backup with a timestamp. The \code{now} paramter override the
+real system time. If \code{overwrite} is \code{TRUE} exisiting backups with the
+same filename (i.e timestamp) are overwritten. Always calls
+\code{$prune()} before it terminates.
+}
+
+\item{\code{backup_dir}, \code{set_backup_dir(x)}}{
+\code{character} scalar. Set a directory in which to place the backups
+}
+
+\item{\code{cache_backups}, \code{set_cache_backups(x)}}{
+\code{TRUE} or \code{FALSE}. If \code{TRUE} (the default) the list of backups is cached,
+if \code{FALSE} it is read from disk every time this appender triggers.
+Caching brings a significant speedup for checking whether to rotate or
+not based on the \code{age} of the last backup, but is only safe if
+there are no other programs/functions (except this appender) interacting
+with the backups.
+}
+
+\item{\code{compression}, \code{set_compression}}{See \code{compression} argument of \code{\link[=rotate]{rotate()}}}
+
+\item{\code{file}, \code{set_file(x)}}{\code{character} scalar. The file to backup/rotate}
+
+\item{\code{fmt}, \code{set_fmt(x)}}{
+\code{character} scalar. See \code{format} argument of \code{\link[=rotate_date]{rotate_date()}}
+}
+
+\item{\code{max_backups}, \code{set_max_backups(x)}}{
+See \code{max_backups} argument of \code{\link[=rotate]{rotate()}}
+}
+
+\item{\code{should_rotate(size) <BackupQueueIndex>}}{
+Should a file of \code{size} be rotated? See \code{size} argument of \code{\link[=rotate]{rotate()}}
+}
+
+\item{\code{should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation)  <BackupQueueDate> <BackupQueueDateteime>}}{
+Should a file of \code{size} and \code{age} be rotated? See \code{size} and \code{age}
+arguments of \code{\link[=rotate_date]{rotate_date()}}. \code{now} overrides the current system time,
+`last_rotation`` overrieds the date of the last rotation.
+}
+
+\item{\code{update_backups_cache()}}{
+Force update of the backups_bache. Only does something if \code{$cache_backups}
+is \code{TRUE}.
+}
+}
+}
+
 \section{Usage}{
 \preformatted{
 x <- BackupQueueIndex$new(file, backup_dir = dirname(file), max_backups = Inf,

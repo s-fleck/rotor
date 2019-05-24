@@ -9,6 +9,70 @@
 #' As of now, **the R6 API is still under development and subject to change**.
 #' More documentation will follow in the foreseable future.
 #'
+#'
+#' @section Methods:
+#'
+#' \describe{
+#'   \item{`pad_index()`}{Pad the indices in the filenames of indexed backups
+#'     to the number of digits of the largest index. Usually does not have to
+#'     be called manually.
+#'   }
+#'
+#'   \item{`prune()`}{Delet all backups except `max_backups`. See [prune_backups()]}
+#'
+#'   \item{`push_backup() <BackupQueueIndex>`}{
+#'     Create a new backup with index 1, push back all other indices.
+#'     Always calls `$prune()` before it terminates.
+#'   }
+#'
+#'   \item{`push_backup(overwrite = FALSE, now = Sys.time()) <BackupQueueDate> <BackupQueueDateteime>`}{
+#'     Create a new backup with a timestamp. The `now` paramter override the
+#'     real system time. If `overwrite` is `TRUE` exisiting backups with the
+#'     same filename (i.e timestamp) are overwritten. Always calls
+#'     `$prune()` before it terminates.
+#'   }
+#'
+#'   \item{`backup_dir`, `set_backup_dir(x)`}{
+#'     `character` scalar. Set a directory in which to place the backups
+#'   }
+#'
+#'   \item{`cache_backups`, `set_cache_backups(x)`}{
+#'     `TRUE` or `FALSE`. If `TRUE` (the default) the list of backups is cached,
+#'     if `FALSE` it is read from disk every time this appender triggers.
+#'     Caching brings a significant speedup for checking whether to rotate or
+#'     not based on the `age` of the last backup, but is only safe if
+#'     there are no other programs/functions (except this appender) interacting
+#'     with the backups.
+#'   }
+#'
+#'   \item{`compression`, `set_compression`}{See `compression` argument of [rotate()]}
+#'
+#'   \item{`file`, `set_file(x)`}{`character` scalar. The file to backup/rotate}
+#'
+#'   \item{`fmt`, `set_fmt(x)`}{
+#'     `character` scalar. See `format` argument of [rotate_date()]
+#'   }
+#'
+#'   \item{`max_backups`, `set_max_backups(x)`}{
+#'     See `max_backups` argument of [rotate()]
+#'   }
+#'
+#'   \item{`should_rotate(size) <BackupQueueIndex>`}{
+#'     Should a file of `size` be rotated? See `size` argument of [`rotate()`]
+#'   }
+#'
+#'   \item{`should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation)  <BackupQueueDate> <BackupQueueDateteime>`}{
+#'     Should a file of `size` and `age` be rotated? See `size` and `age`
+#'     arguments of [`rotate_date()`]. `now` overrides the current system time,
+#'     `last_rotation`` overrieds the date of the last rotation.
+#'   }
+#'
+#'   \item{`update_backups_cache()`}{
+#'     Force update of the backups_bache. Only does something if `$cache_backups`
+#'     is `TRUE`.
+#'   }
+#' }
+#'
 #' @eval r6_usage(list(BackupQueueIndex, BackupQueueDate, BackupQueueDateTime))
 #' @name BackupQueue
 #' @aliases BackupQueueIndex BackupQueueDateTime BackupQueueDate
