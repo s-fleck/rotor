@@ -107,7 +107,7 @@ which Date/Datetime formats are supported by rotor.
 \item \code{T} and \code{_} can also be used as separators. For example, the following
 datetime formats are also possible:
 \code{\%Y-\%m-\%d_\%H-\%M-\%S} (Python logging default),
-\code{\%Y\%m\%dT\%H\%M\%S} \href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601}
+\code{\%Y\%m\%dT\%H\%M\%S} (\href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601})
 \item All datetime components except \code{\%Y} are optional. If you leave out part
 of the timestamp, the first point in time in the period is assumed. For
 example (assuming the current year is 2019) \code{\%Y} is identical to

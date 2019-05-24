@@ -9,7 +9,9 @@
 #' As of now, **the R6 API is still under development and subject to change**.
 #' More documentation will follow in the foreseable future.
 #'
+#' @eval r6_usage(list(BackupQueueIndex, BackupQueueDate, BackupQueueDateTime))
 #' @name BackupQueue
+#' @aliases BackupQueueIndex BackupQueueDateTime BackupQueueDate
 NULL
 
 
@@ -17,10 +19,10 @@ NULL
 
 # BackupQueue -------------------------------------------------------------
 
-#' @rdname BackupQueue
 #' @export
 BackupQueue <- R6::R6Class(
   "BackupQueue",
+  cloneable = FALSE,
   public = list(
     initialize = function(
       file,
@@ -211,11 +213,11 @@ BackupQueue <- R6::R6Class(
 
 # BackupQueueIndex --------------------------------------------------------
 
-#' @rdname BackupQueue
 #' @export
 BackupQueueIndex <- R6::R6Class(
   "BackupQueueIndex",
   inherit = BackupQueue,
+  cloneable = FALSE,
   public = list(
 
     push_backup = function(){
@@ -344,11 +346,11 @@ BackupQueueIndex <- R6::R6Class(
 
 # BackupQueueDateTime -----------------------------------------------------
 
-#' @rdname BackupQueue
 #' @export
 BackupQueueDateTime <- R6::R6Class(
   "BackupQueueDateTime",
   inherit = BackupQueue,
+  cloneable = FALSE,
   public = list(
     initialize = function(
       file,
@@ -593,11 +595,11 @@ BackupQueueDateTime <- R6::R6Class(
 
 # BackupQueueDate ---------------------------------------------------------
 
-#' @rdname BackupQueue
 #' @export
 BackupQueueDate <- R6::R6Class(
   inherit = BackupQueueDateTime,
   "BackupQueueDate",
+  cloneable = FALSE,
   public = list(
 
     initialize = function(
