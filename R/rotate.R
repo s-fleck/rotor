@@ -21,7 +21,7 @@
 #'   * `T` and `_` can also be used as separators. For example, the following
 #'     datetime formats are also possible:
 #'       `%Y-%m-%d_%H-%M-%S` (Python logging default),
-#'       `%Y%m%dT%H%M%S` [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601)
+#'       `%Y%m%dT%H%M%S` ([ISO 8601](https://en.wikipedia.org/wiki/ISO_8601))
 #'   * All datetime components except `%Y` are optional. If you leave out part
 #'     of the timestamp, the first point in time in the period is assumed. For
 #'     example (assuming the current year is 2019) `%Y` is identical to
@@ -48,7 +48,7 @@
 #' @param size scalar `integer`, `character` or `Inf`. Backup/rotate only if
 #'   `file` is larger than this size. `Integers` are interpreted as bytes. You
 #'   can pass `character` vectors that contain a file size suffix like `1k`
-#'   (kilobytes), `3M` (megabytes), `4G` (gigabytes), `5T`` (terabytes). Instead
+#'   (kilobytes), `3M` (megabytes), `4G` (gigabytes), `5T` (terabytes). Instead
 #'   of these short forms you can also be explicit and use the IEC suffixes
 #'   `KiB`, `MiB`, `GiB`, `TiB`. In Both cases `1` kilobyte is `1024` bytes, 1
 #'   `megabyte` is `1024` kilobytes, etc... .

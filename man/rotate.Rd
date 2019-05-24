@@ -46,7 +46,10 @@ backup_time(file, age = -1, size = 1, max_backups = Inf,
 \item{size}{scalar \code{integer}, \code{character} or \code{Inf}. Backup/rotate only if
 \code{file} is larger than this size. \code{Integers} are interpreted as bytes. You
 can pass \code{character} vectors that contain a file size suffix like \code{1k}
-(kilobytes), \code{3M} (megabytes), \code{4G} (gigabytes), \code{5T`` (terabytes). Instead of these short forms you can also be explicit and use the IEC suffixes }KiB\code{, }MiB\code{, }GiB\code{, }TiB\code{. In Both cases }1\code{kilobyte is}1024\code{bytes, 1}megabyte\code{is}1024` kilobytes, etc... .}
+(kilobytes), \code{3M} (megabytes), \code{4G} (gigabytes), \code{5T} (terabytes). Instead
+of these short forms you can also be explicit and use the IEC suffixes
+\code{KiB}, \code{MiB}, \code{GiB}, \code{TiB}. In Both cases \code{1} kilobyte is \code{1024} bytes, 1
+\code{megabyte} is \code{1024} kilobytes, etc... .}
 
 \item{max_backups}{maximum number of backups to keep
 \itemize{
