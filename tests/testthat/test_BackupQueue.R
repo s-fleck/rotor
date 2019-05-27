@@ -1061,36 +1061,6 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
 
 
 
-test_that("parse_date works as expected", {
-  expect_equal(parse_date("2018-12-01"), as.Date("2018-12-01"))
-  expect_equal(parse_date("20181201"), as.Date("2018-12-01"))
-  expect_equal(parse_date("2018-02"), as.Date("2018-02-01"))
-  expect_equal(parse_date("201802"), as.Date("2018-02-01"))
-  expect_equal(parse_date("2018"), as.Date("2018-01-01"))
-
-  expect_equal(
-    parse_date(c("2018-12-02", "20181201", "2018")),
-    as.Date(c("2018-12-02", "2018-12-01", "2018-01-01"))
-  )
-
-  d  <- as.Date("2019-04-12")
-  dt <- as.POSIXct("2019-04-12 23:59:01")
-  expect_identical(parse_date(d), d)
-  expect_identical(parse_date(dt), d)
-
-  expect_equal(parse_date("2019-04-12"), d)
-  expect_equal(parse_date("2019-04"), as.Date("2019-04-01"))
-  expect_equal(parse_date("2019"), as.Date("2019-01-01"))
-
-  expect_equal(parse_date("20190412"), d)
-  expect_equal(parse_date("201904"), as.Date("2019-04-01"))
-  expect_equal(parse_date("2019"), as.Date("2019-01-01"))
-
-})
-
-
-
-
 test_that("BackupQueueDate: $should_rotate", {
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)

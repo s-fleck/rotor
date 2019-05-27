@@ -72,7 +72,7 @@ parse_date <- function(x){
     return(x)
 
   } else if (is_POSIXct(x)){
-    return(as.Date(x))
+    return(as.Date(as.character(x)))
 
   } else if (!is.character(x) && !is_integerish(x)) {
     stop(
