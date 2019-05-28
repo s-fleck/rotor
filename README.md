@@ -18,12 +18,11 @@ status](https://www.r-pkg.org/badges/version/rotor)](https://cran.r-project.org/
 **rotor** provides a cross platform R reimagination of
 [logrotate](https://linux.die.net/man/8/logrotate). It is a companion
 package to the logging package [lgr](https://github.com/s-fleck/lgr). In
-addition to rotating log files, it can also be used as a (primitive)
-backup tool. For conditionally creating and deleting backups, rotor
-relies solely on information encoded in a suffix of the backup file
-names (i.e. a timestamp or index). It therefore also works with backups
-created by other tools, as long as the filename has a format that rotor
-can understand.
+contrast to logrotate, rotor relies solely on information encoded in a
+suffixes of file names for conditionally creating backups (i.e. a
+timestamp or index). It therefore also works with backups created by
+other tools, as long as the filename has a format that rotor can
+understand.
 
 `rotate()`, `rotate_date()`, and `rotate_time()` move a file and insert
 a suffix (either an integer or a timestamp) into the filename. In
@@ -80,8 +79,8 @@ backup(tf, compression = TRUE)
 
 # display backups of a file
 list_backups(tf)  
-#> [1] "/tmp/RtmplvAoSn/rotor/mylogfile.1.log.zip"
-#> [2] "/tmp/RtmplvAoSn/rotor/mylogfile.2.log"
+#> [1] "/tmp/RtmplU947x/rotor/mylogfile.1.log.zip"
+#> [2] "/tmp/RtmplU947x/rotor/mylogfile.2.log"
 ```
 
 `rotate()` also backs up a file, but replaces the original file with an
@@ -90,9 +89,9 @@ empty one.
 ``` r
 rotate(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmplvAoSn/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmplvAoSn/rotor/mylogfile.2.log.zip"
-#> [3] "/tmp/RtmplvAoSn/rotor/mylogfile.3.log"
+#> [1] "/tmp/RtmplU947x/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmplU947x/rotor/mylogfile.2.log.zip"
+#> [3] "/tmp/RtmplU947x/rotor/mylogfile.3.log"
 
 # the original file is now empty
 readLines(tf)
@@ -115,10 +114,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/RtmplvAoSn/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmplvAoSn/rotor/mylogfile.2.log"    
-#> [3] "/tmp/RtmplvAoSn/rotor/mylogfile.3.log"    
-#> [4] "/tmp/RtmplvAoSn/rotor/mylogfile.4.log.zip"
+#> [1] "/tmp/RtmplU947x/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmplU947x/rotor/mylogfile.2.log"    
+#> [3] "/tmp/RtmplU947x/rotor/mylogfile.3.log"    
+#> [4] "/tmp/RtmplU947x/rotor/mylogfile.4.log.zip"
 ```
 
 We can also use `prune_backups()` to delete old backups. Other than
@@ -137,8 +136,8 @@ timestamped backups.
 backup_date(tf)
 rotate_time(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmplvAoSn/rotor/mylogfile.2019-05-16--14-47-44.log"
-#> [2] "/tmp/RtmplvAoSn/rotor/mylogfile.2019-05-16.log"
+#> [1] "/tmp/RtmplU947x/rotor/mylogfile.2019-05-28--07-51-44.log"
+#> [2] "/tmp/RtmplU947x/rotor/mylogfile.2019-05-28.log"
 ```
 
 ``` r

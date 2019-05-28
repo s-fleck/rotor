@@ -17,3 +17,10 @@ subclasses
 TiB
 Codecov
 covr
+BackupQueue
+BackupQueueDate
+BackupQueueDateTime
+DateTime
+appender
+IEC
+getters

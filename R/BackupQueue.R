@@ -6,8 +6,7 @@
 #' integrate rotor in one of your package, the `BackupQueue` subclasses give
 #' you a bit of extra control.
 #'
-#' As of now, **the R6 API is still under development and subject to change**.
-#' More documentation will follow in the foreseable future.
+#' As of now, **the R6 API is still experimental and subject to change**.
 #'
 #'
 #' @section Methods:
@@ -18,7 +17,7 @@
 #'     be called manually.
 #'   }
 #'
-#'   \item{`prune()`}{Delet all backups except `max_backups`. See [prune_backups()]}
+#'   \item{`prune()`}{Delete all backups except `max_backups`. See [prune_backups()]}
 #'
 #'   \item{`push_backup() <BackupQueueIndex>`}{
 #'     Create a new backup with index 1, push back all other indices.
@@ -26,8 +25,8 @@
 #'   }
 #'
 #'   \item{`push_backup(overwrite = FALSE, now = Sys.time()) <BackupQueueDate> <BackupQueueDateteime>`}{
-#'     Create a new backup with a timestamp. The `now` paramter override the
-#'     real system time. If `overwrite` is `TRUE` exisiting backups with the
+#'     Create a new backup with a timestamp. The `now` parameter override the
+#'     real system time. If `overwrite` is `TRUE` existing backups with the
 #'     same filename (i.e timestamp) are overwritten. Always calls
 #'     `$prune()` before it terminates.
 #'   }
@@ -64,11 +63,11 @@
 #'   \item{`should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation)  <BackupQueueDate> <BackupQueueDateteime>`}{
 #'     Should a file of `size` and `age` be rotated? See `size` and `age`
 #'     arguments of [`rotate_date()`]. `now` overrides the current system time,
-#'     `last_rotation`` overrieds the date of the last rotation.
+#'     `last_rotation`` overrides the date of the last rotation.
 #'   }
 #'
 #'   \item{`update_backups_cache()`}{
-#'     Force update of the backups_bache. Only does something if `$cache_backups`
+#'     Force update of the backups cache. Only does something if `$cache_backups`
 #'     is `TRUE`.
 #'   }
 #' }

@@ -22,8 +22,9 @@
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -38,8 +39,7 @@ used internally by rotate() and related functions and are not designed
 for interactive use. Rather, if you are a package developer and want to
 integrate rotor in one of your package, the BackupQueue subclasses give
 you a bit of extra control.
-As of now, the R6 API is still under development and subject to change.
-More documentation will follow in the foreseable future." />
+As of now, the R6 API is still experimental and subject to change." />
 <meta name="twitter:card" content="summary" />
 
 
@@ -70,7 +70,7 @@ More documentation will follow in the foreseable future." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.1.9004</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
       </span>
     </div>
 
@@ -116,22 +116,79 @@ used internally by <code><a href='rotate.html'>rotate()</a></code> and related f
 for interactive use. Rather, if you are a package developer and want to
 integrate rotor in one of your package, the <code>BackupQueue</code> subclasses give
 you a bit of extra control.</p>
-<p>As of now, <strong>the R6 API is still under development and subject to change</strong>.
-More documentation will follow in the foreseable future.</p>
+<p>As of now, <strong>the R6 API is still experimental and subject to change</strong>.</p>
     
     </div>
 
-    <pre class="usage"><span class='no'>BackupQueue</span>
-
-<span class='no'>BackupQueueIndex</span>
-
-<span class='no'>BackupQueueDateTime</span>
-
-<span class='no'>BackupQueueDate</span></pre>
         
-    <h2 class="hasAnchor" id="format"><a class="anchor" href="#format"></a>Format</h2>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
-    <p>An object of class <code>R6ClassGenerator</code> of length 24.</p>
+    
+    <dl class='dl-horizontal'>
+<dt><code>pad_index()</code></dt><dd><p>Pad the indices in the filenames of indexed backups
+to the number of digits of the largest index. Usually does not have to
+be called manually.</p></dd>
+    <dt><code>prune()</code></dt><dd><p>Delete all backups except <code>max_backups</code>. See <code><a href='rotate.html'>prune_backups()</a></code></p></dd>
+    <dt><code>push_backup() &lt;BackupQueueIndex&gt;</code></dt><dd><p>Create a new backup with index 1, push back all other indices.
+Always calls <code>$prune()</code> before it terminates.</p></dd>
+    <dt><code>push_backup(overwrite = FALSE, now = Sys.time()) &lt;BackupQueueDate&gt; &lt;BackupQueueDateteime&gt;</code></dt><dd><p>Create a new backup with a timestamp. The <code>now</code> parameter override the
+real system time. If <code>overwrite</code> is <code>TRUE</code> existing backups with the
+same filename (i.e timestamp) are overwritten. Always calls
+<code>$prune()</code> before it terminates.</p></dd>
+    <dt><code>backup_dir</code>, <code>set_backup_dir(x)</code></dt><dd><p><code>character</code> scalar. Set a directory in which to place the backups</p></dd>
+    <dt><code>cache_backups</code>, <code>set_cache_backups(x)</code></dt><dd><p><code>TRUE</code> or <code>FALSE</code>. If <code>TRUE</code> (the default) the list of backups is cached,
+if <code>FALSE</code> it is read from disk every time this appender triggers.
+Caching brings a significant speedup for checking whether to rotate or
+not based on the <code>age</code> of the last backup, but is only safe if
+there are no other programs/functions (except this appender) interacting
+with the backups.</p></dd>
+    <dt><code>compression</code>, <code>set_compression</code></dt><dd><p>See <code>compression</code> argument of <code><a href='rotate.html'>rotate()</a></code></p></dd>
+    <dt><code>file</code>, <code>set_file(x)</code></dt><dd><p><code>character</code> scalar. The file to backup/rotate</p></dd>
+    <dt><code>fmt</code>, <code>set_fmt(x)</code></dt><dd><p><code>character</code> scalar. See <code>format</code> argument of <code><a href='rotate.html'>rotate_date()</a></code></p></dd>
+    <dt><code>max_backups</code>, <code>set_max_backups(x)</code></dt><dd><p>See <code>max_backups</code> argument of <code><a href='rotate.html'>rotate()</a></code></p></dd>
+    <dt><code>should_rotate(size) &lt;BackupQueueIndex&gt;</code></dt><dd><p>Should a file of <code>size</code> be rotated? See <code>size</code> argument of <code><a href='rotate.html'>rotate()</a></code></p></dd>
+    <dt><code>should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation)  &lt;BackupQueueDate&gt; &lt;BackupQueueDateteime&gt;</code></dt><dd><p>Should a file of <code>size</code> and <code>age</code> be rotated? See <code>size</code> and <code>age</code>
+arguments of <code><a href='rotate.html'>rotate_date()</a></code>. <code>now</code> overrides the current system time,
+`last_rotation`` overrides the date of the last rotation.</p></dd>
+    <dt><code>update_backups_cache()</code></dt><dd><p>Force update of the backups cache. Only does something if <code>$cache_backups</code>
+is <code>TRUE</code>.</p></dd>
+</dl>
+    
+    <h2 class="hasAnchor" id="usage"><a class="anchor" href="#usage"></a>Usage</h2>
+
+    <pre>
+x &lt;- BackupQueueIndex$new(file, backup_dir = dirname(file), max_backups = Inf,
+  compression = FALSE)
+    x &lt;- BackupQueueDate$new(file, backup_dir = dirname(file), max_backups = Inf,
+  compression = FALSE, fmt = "%Y-%m-%d", cache_backups = FALSE)
+    x &lt;- BackupQueueDateTime$new(file, backup_dir = dirname(file), max_backups =
+  Inf, compression = FALSE, fmt = "%Y-%m-%d--%H-%M-%S", cache_backups = FALSE)
+    x$increment_index(n = 1)
+x$pad_index()
+x$print()
+x$prune(max_backups = self$max_backups)
+x$push_backup()
+x$push_backup(overwrite = FALSE, now = Sys.time())
+x$set_backup_dir(x)
+x$set_cache_backups(x)
+x$set_compression(x)
+x$set_file(x)
+x$set_fmt(x)
+x$set_max_backups(x)
+x$should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation)
+x$should_rotate(size)
+x$update_backups_cache()
+    x$backup_dir
+x$backups
+x$cache_backups
+x$compression
+x$file
+x$fmt
+x$has_backups
+x$last_rotation
+x$max_backups
+x$n_backups
+    </pre>
     
 
   </div>
@@ -139,7 +196,9 @@ More documentation will follow in the foreseable future.</p>
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       
-      <li><a href="#format">Format</a></li>
+      <li><a href="#methods">Methods</a></li>
+
+      <li><a href="#usage">Usage</a></li>
           </ul>
 
   </div>
@@ -151,7 +210,7 @@ More documentation will follow in the foreseable future.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.9100.</p>
 </div>
       </footer>
    </div>

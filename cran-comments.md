@@ -9,6 +9,6 @@
 
 0 errors | 0 warnings | 1 note
 
-* Resubmission 
-* Added examples to the documentation of rotate() and co.
-* This is a new release.
+* fleshed out R6 API
+* fixed edge-case bug on macOS related to timezones
+* new features and bugfixes
