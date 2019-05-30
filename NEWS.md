@@ -1,3 +1,5 @@
+# rotor (development version)
+
 # rotor 0.2.2
 
 * Reordered the arguments of `rotate_*()` and `backup_*()` for more consistency 
