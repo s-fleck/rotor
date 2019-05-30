@@ -10,6 +10,14 @@ Conditionally rotate or back-up files based on
     their size or the date of the last backup; inspired by the 'Linux'
     utility 'logrotate'.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://s-fleck.github.io/rotor/}
+  \item Report bugs at \url{https://github.com/s-fleck/rotor/issues}
+}
+
+}
 \author{
 \strong{Maintainer}: Stefan Fleck \email{stefan.b.fleck@gmail.com} (0000-0003-3344-9851)
 

@@ -51,7 +51,7 @@ test_that("backup/rotate_date works with size", {
   expect_identical(n_backups(tf), 0L)
   expect_equal(file.size(tf), size_ori)
 
-  rotate_date(tf, size = "0.5kb")
+  rotate_date(tf, size = "0.5kb", age = 0)
   expect_identical(n_backups(tf), 1L)
   expect_equal(file.size(tf), 0)
 
@@ -69,7 +69,7 @@ test_that("backup/rotate_date fails if backup already exists for that period", {
   saveRDS(iris, tf)
 
   now <- Sys.Date()
-  backup_date(tf, now = now)
+  backup_date(tf, now = now, age = 0)
   expect_identical(n_backups(tf), 1L)
 
   expect_error(backup_date(tf, now = now, age = -1), "exists")
@@ -127,9 +127,9 @@ test_that("backup_date works as expected for years", {
   # no backup younger than 1 year exists, so rotate
 
   # dry run does nothing
-  expect_message(bu <- backup_date(tf, "1 year", dry_run = TRUE), "copy")
+  expect_message(bu <- backup_date(tf, age = -1, dry_run = TRUE), "copy")
   expect_snapshot_unchanged(snap)
-  bu <- backup_date(tf, "1 year")
+  bu <- backup_date(tf, age = -1)
   expect_true(file.size(bu) > 1)
 
   bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
@@ -160,11 +160,12 @@ test_that("backup_date works as expected for years", {
 
 test_that("backup_date works as expected for quarters", {
   tf <- file.path(td, "test.log")
+  on.exit(unlink(tf))
   saveRDS(iris, tf)
   bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
 
   # no backup younger than 1 quarter exists, so rotate
-  bu <- backup_date(tf, "1 quarter")
+  bu <- backup_date(tf, age = 0)
   expect_true(file.size(bu) > 1)
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
@@ -185,7 +186,6 @@ test_that("backup_date works as expected for quarters", {
   expect_true(length(bq$backups$path) == 2)
 
   bq$prune(0)
-  file.remove(tf)
 })
 
 
@@ -193,11 +193,12 @@ test_that("backup_date works as expected for quarters", {
 
 test_that("backup_date works as expected for months", {
   tf <- file.path(td, "test.log")
+  on.exit(unlink(tf))
   saveRDS(iris, tf)
   bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
 
   # no backup younger than 1 month exists, so rotate
-  bu <- backup_date(tf, "1 month")
+  bu <- backup_date(tf, -1)
   expect_true(file.size(bu) > 1)
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
@@ -218,7 +219,6 @@ test_that("backup_date works as expected for months", {
   expect_true(length(bq$backups$path) == 2)
 
   bq$prune(0)
-  file.remove(tf)
 })
 
 
@@ -226,11 +226,12 @@ test_that("backup_date works as expected for months", {
 
 test_that("backup_date works as expected for weeks", {
   tf <- file.path(td, "test.log")
+  on.exit(unlink(tf))
   saveRDS(iris, tf)
   bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
 
   # no backup younger than 1 week exists, so rotate
-  bu <- backup_date(tf, "1 week")
+  bu <- backup_date(tf, -1)
   expect_true(file.size(bu) > 1)
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
@@ -252,7 +253,6 @@ test_that("backup_date works as expected for weeks", {
   expect_true(length(bq$backups$path) == 2)
 
   bq$prune(0)
-  file.remove(tf)
 })
 
 
@@ -266,15 +266,14 @@ test_that("backup_date works as expected for Inf", {
     unlink(tf)
   })
 
-  # no backup younger than 1 week exists, so rotate
+  # create initial backup
   bu <- backup_date(tf, Inf)
   expect_true(file.size(bu) > 0)
   expect_identical(n_backups(tf), 0L)
   prune_backups(tf, 0)
 
-
   # no backup because last backup is less than a week old
-  backup_date(tf, -1, now = "2019-01-28")
+  backup_date(tf, age = "-99999 years", now = "2019-01-28")
   expect_identical(n_backups(tf), 1L)
   backup_date(tf, Inf, now = "2999-01-30")
   expect_identical(n_backups(tf), 1L)
@@ -285,16 +284,15 @@ test_that("backup_date works as expected for Inf", {
 
 test_that("rotate_date works as expected", {
   tf <- file.path(td, "test.log")
+  on.exit(unlink(tf))
   saveRDS(iris, tf)
   checksum <- tools::md5sum(tf)
 
-  # ensure backup_date believes it is 2019-01-01
-  rotate_date(tf)
+  rotate_date(tf, age = "-9999 years")
   expect_identical(unname(checksum), unname(tools::md5sum(newest_backup(tf))))
   expect_equal(file.size(tf), 0)
 
   BackupQueueDate$new(tf)$prune(0)
-  file.remove(tf)
 })
 
 
@@ -352,7 +350,7 @@ test_that("backup/rotate_time works to different directory", {
   file.create(tf)
   writeLines("foobar", tf)
 
-  backup_time(tf, backup_dir = bu_dir, now = as.Date("2019-01-01"))
+  backup_time(tf, backup_dir = bu_dir, now = as.Date("2019-01-01"), age = "-99999 years")
 
   expect_identical(
     readLines(tf),
@@ -377,7 +375,7 @@ test_that("backup/rotate_time works with custom format", {
   file.create(tf)
   writeLines("foobar", tf)
 
-  backup_time(tf, backup_dir = bu_dir, now = as.Date("2019-01-01"), format = "%Y-%m")
+  backup_time(tf, backup_dir = bu_dir, now = as.Date("2019-01-01"), format = "%Y-%m", age = "-99999 years")
 
   expect_identical(
     readLines(tf),

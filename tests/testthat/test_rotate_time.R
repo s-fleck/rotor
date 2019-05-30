@@ -90,7 +90,7 @@ test_that("backup/rotate date works to different directory", {
   file.create(tf)
   writeLines("foobar", tf)
 
-  backup_time(tf, backup_dir = bu_dir, now = as.POSIXct("2019-01-01 12:12:12"), verbose = TRUE)
+  backup_time(tf, backup_dir = bu_dir, now = as.POSIXct("2019-01-01 12:12:12"), verbose = TRUE, age = "-99999 years")
 
   expect_identical(
     readLines(tf),

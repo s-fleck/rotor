@@ -785,8 +785,28 @@ test_that("BackupQueueDateTime: $should_rotate", {
 })
 
 
+
+
+test_that("BackupQueueDateTime: `age` works with no backups", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+  on.exit(unlink(tf))
+
+  now <- as.Date(as.character(file.info(tf)$ctime))
+  bq <- BackupQueueDateTime$new(tf)
+  expect_false(bq$should_rotate(age = "10 day", now = now, size = 0))
+  expect_true(bq$should_rotate(age = "0 day", now = now, size = 0))
+})
+
+
+
 # BackupQueueDate ---------------------------------------------------------
 context("BackupQueueDate")
+
+
+
+
+
 
 test_that("BackupQueueDate: $set_max_backups", {
   tf <- file.path(td, "test")
@@ -1112,6 +1132,18 @@ test_that("BackupQueueDate: backups_cache", {
 })
 
 
+
+
+test_that("BackupQueueDateTime: `age` works with no backups", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+  on.exit(unlink(tf))
+
+  now <- as.Date(as.character(file.info(tf)$ctime))
+  bq <- BackupQueueDate$new(tf)
+  expect_false(bq$should_rotate(age = "10 day", now = now, size = 0))
+  expect_true(bq$should_rotate(age = "0 day", now = now, size = 0))
+})
 
 
 # cleanup -----------------------------------------------------------------

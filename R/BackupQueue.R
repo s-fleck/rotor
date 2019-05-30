@@ -536,7 +536,7 @@ BackupQueueDateTime <- R6::R6Class(
       size,
       age,
       now = Sys.time(),
-      last_rotation = self$last_rotation
+      last_rotation = self$last_rotation %||% file.info(self$file)$ctime
     ){
       now  <- parse_datetime(now)
       size <- parse_size(size)
@@ -545,14 +545,14 @@ BackupQueueDateTime <- R6::R6Class(
       if (is.infinite(size) || is.infinite(age) || file.size(self$file) < size)
         return(FALSE)
 
-      if (is.null(self$last_rotation))
+      if (is.null(last_rotation))
         return(TRUE)
 
       else if (is_parsable_datetime(age))
-        return(is_backup_older_than_datetime(self$last_rotation, age))
+        return(is_backup_older_than_datetime(last_rotation, age))
 
       else if (is_parsable_rotation_interval(age))
-        return(is_backup_older_than_interval(self$last_rotation, age, now))
+        return(is_backup_older_than_interval(last_rotation, age, now))
 
       stop("`age` must be a parsable date or datetime")
     },

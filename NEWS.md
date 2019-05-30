@@ -1,5 +1,10 @@
 # rotor (development version)
 
+* Changed default behaviour of `rotate_date()`, `rotate_time()`, etc...: If
+  no backups exist of target file, use the "created" timestamp 
+  to determine whether rotation should take place or not. 
+  
+
 # rotor 0.2.2
 
 * Reordered the arguments of `rotate_*()` and `backup_*()` for more consistency 
