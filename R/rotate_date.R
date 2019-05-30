@@ -106,7 +106,7 @@ rotate_date_internal <- function(
   )
 
   # backup
-  if (bq$should_rotate(size = size, age = age, now = now)){
+  if (bq$should_rotate(size = size, age = age, now = now, verbose = verbose)){
     bq$push_backup(
       now = now,
       overwrite = overwrite

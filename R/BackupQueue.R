@@ -325,17 +325,31 @@ BackupQueueIndex <- R6::R6Class(
     },
 
 
-    should_rotate = function(size){
+    should_rotate = function(size, verbose = FALSE){
       size <- parse_size(size)
 
       # try to avoid costly file.size check
       if (size <= 0)
         return(TRUE)
 
-      if (is.infinite(size))
+      if (is.infinite(size)){
+        if (verbose) message("Not rotating: rotation `size` is infinite")
         return(FALSE)
+      }
 
-      file.size(self$file) > size
+      fsize <- file.size(self$file)
+
+      if (fsize < size){
+        if (verbose){
+          message(sprintf(
+            "Not rotating: size of '%s'(%s) is smaller than %s.",
+            self$file, fmt_bytes(file.size(self$file)), fmt_bytes(size)
+          ))
+        }
+        FALSE
+      } else {
+        TRUE
+      }
     },
 
 
@@ -536,23 +550,43 @@ BackupQueueDateTime <- R6::R6Class(
       size,
       age,
       now = Sys.time(),
-      last_rotation = self$last_rotation %||% file.info(self$file)$ctime
+      last_rotation = self$last_rotation %||% file.info(self$file)$ctime,
+      verbose = FALSE
     ){
       now  <- parse_datetime(now)
       size <- parse_size(size)
 
       # try to avoid costly file.size check
-      if (is.infinite(size) || is.infinite(age) || file.size(self$file) < size)
+      if (is.infinite(size) || is.infinite(age) || is.null(last_rotation) || file.size(self$file) < size){
+        if (verbose){
+            reasons <- character()
+
+            if (is.infinite(age))
+              reasons[["age"]] <- "rotation `age` is infinite"
+
+            if (is.infinite(size)){
+              reasons[["size"]] <- "rotation `size` is infinite"
+
+            } else if (file.size(self$file) < size) {
+              reasons[["size"]] <- sprintf(
+                "size of '%s'(%s) is smaller than %s.",
+                self$file, fmt_bytes(file.size(self$file)), fmt_bytes(size)
+              )
+            }
+
+          message("Not rotating: ", paste(reasons, collapse = ", "))
+        }
         return(FALSE)
+      }
 
       if (is.null(last_rotation))
         return(TRUE)
 
       else if (is_parsable_datetime(age))
-        return(is_backup_older_than_datetime(last_rotation, age))
+        return(is_backup_older_than_datetime(last_rotation, age, verbose = verbose))
 
       else if (is_parsable_rotation_interval(age))
-        return(is_backup_older_than_interval(last_rotation, age, now))
+        return(is_backup_older_than_interval(last_rotation, age, now, verbose = verbose))
 
       stop("`age` must be a parsable date or datetime")
     },

@@ -3,6 +3,8 @@
 * Changed default behaviour of `rotate_date()`, `rotate_time()`, etc...: If
   no backups exist of target file, use the "created" timestamp 
   to determine whether rotation should take place or not. 
+* `verbose == TRUE` now also displays information on why rotation was NOT 
+  triggered 
   
 
 # rotor 0.2.2

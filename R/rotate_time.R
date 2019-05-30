@@ -100,7 +100,7 @@ rotate_time_internal <- function(
 
   bq <- BackupQueueDateTime$new(file, fmt = format, backup_dir = backup_dir)
 
-  if (bq$should_rotate(size = size, age = age, now = now)){
+  if (bq$should_rotate(size = size, age = age, now = now, verbose = verbose)){
     bq$push_backup(
       now = now,
       overwrite = overwrite

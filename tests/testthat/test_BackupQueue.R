@@ -470,6 +470,21 @@ test_that("BackupQueueIndex: $should_rotate", {
 })
 
 
+
+
+
+test_that("BackupQueueIndex: $should_rotate(verbose = TRUE) displays helpful messages", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+  on.exit(unlink(tf))
+  bq <- BackupQueueIndex$new(tf)
+
+  expect_message(bq$should_rotate(size = "1 tb", verbose = TRUE), "1 TiB")
+  expect_message(bq$should_rotate(size = Inf, verbose = TRUE), "infinite")
+})
+
+
+
 # BackupQueueDatetime -----------------------------------------------------
 context("BackupQueueDateTime")
 
@@ -800,10 +815,25 @@ test_that("BackupQueueDateTime: `age` works with no backups", {
 
 
 
+
+
+test_that("BackupQueueDateTime: $should_rotate(verbose = TRUE) displays helpful messages", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+  on.exit(unlink(tf))
+  bq <- BackupQueueDateTime$new(tf)
+
+  expect_message(bq$should_rotate(age = Inf, size = "1 tb", verbose = TRUE), "age.*size")
+  expect_message(bq$should_rotate(age = 1, size = "1 tb", verbose = TRUE), "size")
+  expect_message(bq$should_rotate(age = "9999 years", size = -1, verbose = TRUE), "9999")
+  expect_message(bq$should_rotate(age = "1000-12-31", size = -1, verbose = TRUE), "1000")
+})
+
+
+
+
 # BackupQueueDate ---------------------------------------------------------
 context("BackupQueueDate")
-
-
 
 
 
@@ -1144,6 +1174,23 @@ test_that("BackupQueueDateTime: `age` works with no backups", {
   expect_false(bq$should_rotate(age = "10 day", now = now, size = 0))
   expect_true(bq$should_rotate(age = "0 day", now = now, size = 0))
 })
+
+
+
+
+test_that("BackupQueueDate: $should_rotate(verbose = TRUE) displays helpful messages", {
+  tf <- file.path(td, "test")
+  file.create(tf)
+  on.exit(unlink(tf))
+  bq <- BackupQueueDate$new(tf)
+
+  expect_message(bq$should_rotate(age = Inf, size = "1 tb", verbose = TRUE), "age.*size")
+  expect_message(bq$should_rotate(age = 1, size = "1 tb", verbose = TRUE), "size")
+  expect_message(bq$should_rotate(age = "9999 years", size = -1, verbose = TRUE), "9999")
+  expect_message(bq$should_rotate(age = "1000-12-31", size = -1, verbose = TRUE), "1000")
+})
+
+
 
 
 # cleanup -----------------------------------------------------------------

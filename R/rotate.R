@@ -256,7 +256,7 @@ rotate_internal <- function(
     compression = compression
   )
 
-  if (bq$should_rotate(size = size)){
+  if (bq$should_rotate(size = size, verbose = verbose)){
     bq$push_backup()
   } else {
     do_rotate <- FALSE

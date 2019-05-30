@@ -180,14 +180,26 @@ is_parsable_date <- function(x){
 
 is_backup_older_than_datetime <- function(
   backup_date,
-  datetime
+  datetime,
+  verbose = FALSE
 ){
   if (is_Date(backup_date))
     backup_date <- as.POSIXct(as.character(backup_date))
 
   assert(is_scalar_POSIXct(backup_date))
   assert(is_parsable_datetime(datetime))
-  backup_date < parse_datetime(datetime)
+  parsed_td <- parse_datetime(datetime)
+
+  res <- backup_date < parsed_td
+
+  if (verbose && !res){
+    message(sprintf(
+      "Not rotating: last backup (%s) is newer than %s" ,
+      format(backup_date), format(parsed_td)
+    ))
+  }
+
+  res
 }
 
 
@@ -196,7 +208,8 @@ is_backup_older_than_datetime <- function(
 is_backup_older_than_interval <- function(
   backup_date,
   interval,
-  now
+  now,
+  verbose = FALSE
 ){
   if (is_POSIXct(backup_date))
     backup_date <- as.Date(as.character(backup_date))
@@ -221,7 +234,16 @@ is_backup_older_than_interval <- function(
     year    = dint::get_year
   )
 
-  as_period(backup_date) + 1L * iv$value <= as_period(now)
+  res <-  as_period(backup_date) + 1L * iv$value <= as_period(now)
+
+  if (verbose && !res){
+    message(sprintf(
+      "Not rotating: last backup (%s) is younger than '%s'" ,
+      format(backup_date), paste(interval, collapse = " ")
+    ))
+  }
+
+  res
 }
 
 
