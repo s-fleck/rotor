@@ -13,6 +13,8 @@ Description: Conditionally rotate or back-up files based on
     their size or the date of the last backup; inspired by the 'Linux'
     utility 'logrotate'.
 License: MIT + file LICENSE
+URL: https://s-fleck.github.io/rotor/
+BugReports: https://github.com/s-fleck/rotor/issues
 Imports:
     dint,
     R6,
