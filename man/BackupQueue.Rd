@@ -103,8 +103,8 @@ x$set_compression(x)
 x$set_file(x)
 x$set_fmt(x)
 x$set_max_backups(x)
-x$should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation \%||\% file.info(self$file)$ctime)
-x$should_rotate(size)
+x$should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation \%||\% file.info(self$file)$ctime, verbose = FALSE)
+x$should_rotate(size, verbose = FALSE)
 x$update_backups_cache()
 
 x$backup_dir

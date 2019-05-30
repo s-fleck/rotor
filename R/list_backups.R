@@ -16,6 +16,7 @@
 #' backup(tf)
 #' backup(tf)
 #'
+#' backup_info(tf)
 #' list_backups(tf)
 #' n_backups(tf)
 #' newest_backup(tf)
@@ -30,6 +31,24 @@ list_backups <- function(
   backup_dir = dirname(file)
 ){
   BackupQueue$new(file, backup_dir = backup_dir)$backups$path
+}
+
+
+
+
+#' @rdname list_backups
+#' @export
+#' @return `backup_info()` returns a `data.frame` similar to [file.info()]
+backup_info <- function(
+  file,
+  backup_dir = dirname(file)
+){
+  if (is_pure_BackupQueueIndex(file, backup_dir = backup_dir))
+    BackupQueueIndex$new(file, backup_dir = backup_dir)$backups
+  else if (is_pure_BackupQueueDateTime(file, backup_dir = backup_dir))
+    BackupQueueDateTime$new(file, backup_dir = backup_dir)$backups
+  else
+    BackupQueue$new(file, backup_dir = backup_dir)$backups
 }
 
 

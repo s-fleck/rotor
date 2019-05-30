@@ -2,12 +2,15 @@
 % Please edit documentation in R/list_backups.R
 \name{list_backups}
 \alias{list_backups}
+\alias{backup_info}
 \alias{n_backups}
 \alias{newest_backup}
 \alias{oldest_backup}
 \title{Helpers for working with backups}
 \usage{
 list_backups(file, backup_dir = dirname(file))
+
+backup_info(file, backup_dir = dirname(file))
 
 n_backups(file, backup_dir = dirname(file))
 
@@ -22,6 +25,8 @@ oldest_backup(file, backup_dir = dirname(file))
 of \code{file} are stored (defaults to \code{dirname(file)})}
 }
 \value{
+\code{backup_info()} returns a \code{data.frame} similar to \code{\link[=file.info]{file.info()}}
+
 \code{list_backups()} returns the paths to all backups of \code{file}
 
 \code{newest_backup()} and \code{oldest_backup()} return the paths to the
@@ -65,6 +70,7 @@ saveRDS(cars, tf)
 backup(tf)
 backup(tf)
 
+backup_info(tf)
 list_backups(tf)
 n_backups(tf)
 newest_backup(tf)
