@@ -62,7 +62,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
       </span>
     </div>
 
@@ -102,13 +102,12 @@
 
     <div id="rotor-0-2-2" class="section level1">
 <h1 class="page-header">
-<a href="#rotor-0-2-2" class="anchor"></a>rotor 0.2.2<small> Unreleased </small>
+<a href="#rotor-0-2-2" class="anchor"></a>rotor 0.2.2<small> 2019-05-28 </small>
 </h1>
 <ul>
 <li>Reordered the arguments of <code>rotate_*()</code> and <code>backup_*()</code> for more consistency</li>
 <li>default <code>size</code> for all all <code>rotate_*()</code> and <code>backup_*()</code> functions is now <code>1</code> (Byte). This means empty files are never rotated by default.</li>
-<li>support for <code>Inf</code> <code>size</code> and <code>age</code>
-</li>
+<li>added support for <code>Inf</code> <code>size</code> and <code>age</code> (= never rotate)</li>
 <li>More robust regex for discovering backups of files</li>
 <li>R6 API: BackupQueue subclasses gain a <code>should_rotate(...)</code> method that determines whether rotation/backup should take place.</li>
 <li>R6 API: BackupQueueDate and BackupQueueDateTime now have a caching mechanism for backups (defaults to <code>FALSE</code>).</li>

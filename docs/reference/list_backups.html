@@ -67,7 +67,7 @@ rotor) of a single file." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
       </span>
     </div>
 
@@ -116,6 +116,8 @@ rotor) of a single file.</p>
 
     <pre class="usage"><span class='fu'>list_backups</span>(<span class='no'>file</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>))
 
+<span class='fu'>backup_info</span>(<span class='no'>file</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>))
+
 <span class='fu'>n_backups</span>(<span class='no'>file</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>))
 
 <span class='fu'>newest_backup</span>(<span class='no'>file</span>, <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>))
@@ -138,7 +140,8 @@ of <code>file</code> are stored (defaults to <code><a href='https://rdrr.io/r/ba
     
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>list_backups()</code> returns the paths to all backups of <code>file</code></p>
+    <p><code>backup_info()</code> returns a <code>data.frame</code> similar to <code><a href='https://rdrr.io/r/base/file.info.html'>file.info()</a></code></p>
+<p><code>list_backups()</code> returns the paths to all backups of <code>file</code></p>
 <p><code>newest_backup()</code> and <code>oldest_backup()</code> return the paths to the
 newest or oldest backup of <code>file</code> (or an empty <code>character</code> vector if none exist)</p>
     
@@ -176,8 +179,16 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 <span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
 <span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
 
-<span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpCuEO94/test164f542bb569.1.rds"
-#&gt; [2] "/tmp/RtmpCuEO94/test164f542bb569.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpCuEO94/test164f542bb569.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpCuEO94/test164f542bb569.2.rds"</div><div class='input'>
+<span class='fu'>backup_info</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt;                                     path             dir             name sfx
+#&gt; 1 /tmp/Rtmpmq2SLn/test4ee442b4dd9c.1.rds /tmp/Rtmpmq2SLn test4ee442b4dd9c   1
+#&gt; 2 /tmp/Rtmpmq2SLn/test4ee442b4dd9c.2.rds /tmp/Rtmpmq2SLn test4ee442b4dd9c   2
+#&gt;   ext size isdir mode               mtime               ctime
+#&gt; 1 rds  282 FALSE  664 2019-05-30 23:15:50 2019-05-30 23:15:50
+#&gt; 2 rds  282 FALSE  664 2019-05-30 23:15:50 2019-05-30 23:15:50
+#&gt;                 atime  uid  gid uname grname index
+#&gt; 1 2019-05-30 23:15:50 1000 1000 hoelk  hoelk     1
+#&gt; 2 2019-05-30 23:15:50 1000 1000 hoelk  hoelk     2</div><div class='input'><span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmpmq2SLn/test4ee442b4dd9c.1.rds"
+#&gt; [2] "/tmp/Rtmpmq2SLn/test4ee442b4dd9c.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmpmq2SLn/test4ee442b4dd9c.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmpmq2SLn/test4ee442b4dd9c.2.rds"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='rotate.html'>prune_backups</a></span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
 <span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>

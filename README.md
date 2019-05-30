@@ -30,9 +30,11 @@ addition, they create an empty file in place of the original one. This
 is useful for log rotation. `backup()`, `backup_date()` and
 `backup_time()` do the same but keep the original file.
 
-See the [function
+rotor also includes a few utility functions for examining backups of a
+file: `list_backups()`, `backup_info()`, `n_backups`, `newest_backup()`,
+`oldest_backup()`. See the [function
 reference](https://s-fleck.github.io/rotor/reference/index.html) for
-more details
+details.
 
 ## Installation
 
@@ -67,6 +69,8 @@ tf <- file.path(td, "mylogfile.log")
 writeLines("An important message", tf)
 ```
 
+### Indexed backups
+
 `backup()` makes a copy of a file and inserts an index between the
 filename and the file extension. The file with the index `1` is always
 the most recently made backup.
@@ -79,8 +83,8 @@ backup(tf, compression = TRUE)
 
 # display backups of a file
 list_backups(tf)  
-#> [1] "/tmp/RtmplU947x/rotor/mylogfile.1.log.zip"
-#> [2] "/tmp/RtmplU947x/rotor/mylogfile.2.log"
+#> [1] "/tmp/RtmppxEUB8/rotor/mylogfile.1.log.zip"
+#> [2] "/tmp/RtmppxEUB8/rotor/mylogfile.2.log"
 ```
 
 `rotate()` also backs up a file, but replaces the original file with an
@@ -89,9 +93,9 @@ empty one.
 ``` r
 rotate(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmplU947x/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmplU947x/rotor/mylogfile.2.log.zip"
-#> [3] "/tmp/RtmplU947x/rotor/mylogfile.3.log"
+#> [1] "/tmp/RtmppxEUB8/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmppxEUB8/rotor/mylogfile.2.log.zip"
+#> [3] "/tmp/RtmppxEUB8/rotor/mylogfile.3.log"
 
 # the original file is now empty
 readLines(tf)
@@ -114,10 +118,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/RtmplU947x/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmplU947x/rotor/mylogfile.2.log"    
-#> [3] "/tmp/RtmplU947x/rotor/mylogfile.3.log"    
-#> [4] "/tmp/RtmplU947x/rotor/mylogfile.4.log.zip"
+#> [1] "/tmp/RtmppxEUB8/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmppxEUB8/rotor/mylogfile.2.log"    
+#> [3] "/tmp/RtmppxEUB8/rotor/mylogfile.3.log"    
+#> [4] "/tmp/RtmppxEUB8/rotor/mylogfile.4.log.zip"
 ```
 
 We can also use `prune_backups()` to delete old backups. Other than
@@ -129,16 +133,57 @@ delete all backups.
 prune_backups(tf, max_backups = 0)
 ```
 
-Besides creating backup up with an index, **rotor** can also create
-timestamped backups.
+## Timestamped backups
+
+**rotor** can also create timestamped backups. `backup_date()` creates
+uses a Date (`yyyy-mm-dd`) timestamp, `backup_time()` uses a full
+datetime-stamp by default (`yyyy-mm-dd--hh-mm-ss`). The format of the
+timestamp can be modified with a subset of the formatting tokens
+understood by `strftime()` (within certain restrictions). Backups
+created with both functions are compatible with each other (but not with
+those created with
+`backup_index()`).
 
 ``` r
-backup_date(tf)
-rotate_time(tf)
-list_backups(tf)
-#> [1] "/tmp/RtmplU947x/rotor/mylogfile.2019-05-28--07-51-44.log"
-#> [2] "/tmp/RtmplU947x/rotor/mylogfile.2019-05-28.log"
+# be default backup_date() only makes a backup if the last backups is younger
+# than 1 day, so we set `age` to -1 for this example
+backup_date(tf, age = -1)  
+backup_date(tf, format = "%Y-%m", age = -1)
+backup_time(tf)
+backup_time(tf, format = "%Y-%m-%d_%H-%M-%S")  # Python logging
+backup_time(tf, format = "%Y%m%dT%H%M%S")  # ISO 8601 compatible
+
+backup_info(tf)
+#>                                                       path
+#> 1  /tmp/RtmppxEUB8/rotor/mylogfile.2019-05-30_23-15-33.log
+#> 2 /tmp/RtmppxEUB8/rotor/mylogfile.2019-05-30--23-15-33.log
+#> 5      /tmp/RtmppxEUB8/rotor/mylogfile.20190530T231533.log
+#> 3           /tmp/RtmppxEUB8/rotor/mylogfile.2019-05-30.log
+#> 4              /tmp/RtmppxEUB8/rotor/mylogfile.2019-05.log
+#>                     dir      name                  sfx ext size isdir mode
+#> 1 /tmp/RtmppxEUB8/rotor mylogfile  2019-05-30_23-15-33 log   26 FALSE  664
+#> 2 /tmp/RtmppxEUB8/rotor mylogfile 2019-05-30--23-15-33 log   26 FALSE  664
+#> 5 /tmp/RtmppxEUB8/rotor mylogfile      20190530T231533 log   26 FALSE  664
+#> 3 /tmp/RtmppxEUB8/rotor mylogfile           2019-05-30 log   26 FALSE  664
+#> 4 /tmp/RtmppxEUB8/rotor mylogfile              2019-05 log   26 FALSE  664
+#>                 mtime               ctime               atime  uid  gid
+#> 1 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
+#> 2 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
+#> 5 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
+#> 3 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
+#> 4 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
+#>   uname grname           timestamp
+#> 1 hoelk  hoelk 2019-05-30 23:15:33
+#> 2 hoelk  hoelk 2019-05-30 23:15:33
+#> 5 hoelk  hoelk 2019-05-30 23:15:33
+#> 3 hoelk  hoelk 2019-05-30 00:00:00
+#> 4 hoelk  hoelk 2019-05-01 00:00:00
 ```
+
+If we examine the “timestamp” column in the example above, we see that
+missing date information is always interpreted as the start of the
+period; i.e. so `"2019-01"` is equivalent to `"2019-01-01--00--00--00"`
+for all intentds and purposes.
 
 ``` r
 prune_backups(tf, max_backups = 0)  # cleanup

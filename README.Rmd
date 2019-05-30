@@ -35,9 +35,11 @@ an empty file in place of the original one. This is useful for log rotation.
 `backup()`, `backup_date()` and `backup_time()` do the same but keep the
 original file.
 
-See the 
+rotor also includes a few utility functions for examining backups of a 
+file: `list_backups()`, `backup_info()`, `n_backups`, `newest_backup()`, 
+`oldest_backup()`. See the 
 [function reference](https://s-fleck.github.io/rotor/reference/index.html) for 
-more details
+details.
 
 ## Installation
 
@@ -67,6 +69,8 @@ dir.create(td, recursive = TRUE)
 tf <- file.path(td, "mylogfile.log")
 writeLines("An important message", tf)
 ```
+
+### Indexed backups
 
 `backup()` makes a copy of a file and inserts an index between the filename
 and the file extension. The file with the index `1` is always the most recently
@@ -115,13 +119,31 @@ the `max_backups` parameter. By setting it to `0`, we delete all backups.
 prune_backups(tf, max_backups = 0)
 ```
 
-Besides creating backup up with an index, **rotor** can also create timestamped 
-backups. 
+## Timestamped backups
+
+**rotor** can also create timestamped backups. `backup_date()` creates uses a 
+Date (`yyyy-mm-dd`) timestamp, `backup_time()` uses a full datetime-stamp by 
+default (`yyyy-mm-dd--hh-mm-ss`). The format of the timestamp can be modified
+with a subset of the formatting tokens understood by `strftime()` (within 
+certain restrictions). Backups created with both functions are compatible with 
+each other (but not with those created with `backup_index()`).
+
 ```{r timestamp}
-backup_date(tf)
-rotate_time(tf)
-list_backups(tf)
+# be default backup_date() only makes a backup if the last backups is younger
+# than 1 day, so we set `age` to -1 for this example
+backup_date(tf, age = -1)  
+backup_date(tf, format = "%Y-%m", age = -1)
+backup_time(tf)
+backup_time(tf, format = "%Y-%m-%d_%H-%M-%S")  # Python logging
+backup_time(tf, format = "%Y%m%dT%H%M%S")  # ISO 8601 compatible
+
+backup_info(tf)
 ```
+If we examine the "timestamp" column in the example above, we see that missing 
+date information is always interpreted as the start of the period; i.e. so 
+`"2019-01"` is equivalent to `"2019-01-01--00--00--00"` for all intentds and 
+purposes.
+
 ```{r}
 prune_backups(tf, max_backups = 0)  # cleanup
 list_backups(tf)
