@@ -7,6 +7,7 @@
   triggered.
 * added `backup_info()` which is similar to `file.info()` but with additional
   backup related infos.
+* removed `"dir"` column from `$backups`/`backup_info()`
   
 
 # rotor 0.2.2

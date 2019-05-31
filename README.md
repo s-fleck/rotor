@@ -30,9 +30,9 @@ addition, they create an empty file in place of the original one. This
 is useful for log rotation. `backup()`, `backup_date()` and
 `backup_time()` do the same but keep the original file.
 
-rotor also includes a few utility functions for examining backups of a
-file: `list_backups()`, `backup_info()`, `n_backups`, `newest_backup()`,
-`oldest_backup()`. See the [function
+rotor also includes utility functions for finding and examining the
+backups of a file: `list_backups()`, `backup_info()`, `n_backups`,
+`newest_backup()`, `oldest_backup()`. See the [function
 reference](https://s-fleck.github.io/rotor/reference/index.html) for
 details.
 
@@ -83,8 +83,8 @@ backup(tf, compression = TRUE)
 
 # display backups of a file
 list_backups(tf)  
-#> [1] "/tmp/RtmppxEUB8/rotor/mylogfile.1.log.zip"
-#> [2] "/tmp/RtmppxEUB8/rotor/mylogfile.2.log"
+#> [1] "/tmp/RtmpT5fN3W/rotor/mylogfile.1.log.zip"
+#> [2] "/tmp/RtmpT5fN3W/rotor/mylogfile.2.log"
 ```
 
 `rotate()` also backs up a file, but replaces the original file with an
@@ -93,9 +93,9 @@ empty one.
 ``` r
 rotate(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmppxEUB8/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmppxEUB8/rotor/mylogfile.2.log.zip"
-#> [3] "/tmp/RtmppxEUB8/rotor/mylogfile.3.log"
+#> [1] "/tmp/RtmpT5fN3W/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmpT5fN3W/rotor/mylogfile.2.log.zip"
+#> [3] "/tmp/RtmpT5fN3W/rotor/mylogfile.3.log"
 
 # the original file is now empty
 readLines(tf)
@@ -118,10 +118,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/RtmppxEUB8/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmppxEUB8/rotor/mylogfile.2.log"    
-#> [3] "/tmp/RtmppxEUB8/rotor/mylogfile.3.log"    
-#> [4] "/tmp/RtmppxEUB8/rotor/mylogfile.4.log.zip"
+#> [1] "/tmp/RtmpT5fN3W/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmpT5fN3W/rotor/mylogfile.2.log"    
+#> [3] "/tmp/RtmpT5fN3W/rotor/mylogfile.3.log"    
+#> [4] "/tmp/RtmpT5fN3W/rotor/mylogfile.4.log.zip"
 ```
 
 We can also use `prune_backups()` to delete old backups. Other than
@@ -154,30 +154,30 @@ backup_time(tf, format = "%Y-%m-%d_%H-%M-%S")  # Python logging
 backup_time(tf, format = "%Y%m%dT%H%M%S")  # ISO 8601 compatible
 
 backup_info(tf)
-#>                                                       path
-#> 1  /tmp/RtmppxEUB8/rotor/mylogfile.2019-05-30_23-15-33.log
-#> 2 /tmp/RtmppxEUB8/rotor/mylogfile.2019-05-30--23-15-33.log
-#> 5      /tmp/RtmppxEUB8/rotor/mylogfile.20190530T231533.log
-#> 3           /tmp/RtmppxEUB8/rotor/mylogfile.2019-05-30.log
-#> 4              /tmp/RtmppxEUB8/rotor/mylogfile.2019-05.log
-#>                     dir      name                  sfx ext size isdir mode
-#> 1 /tmp/RtmppxEUB8/rotor mylogfile  2019-05-30_23-15-33 log   26 FALSE  664
-#> 2 /tmp/RtmppxEUB8/rotor mylogfile 2019-05-30--23-15-33 log   26 FALSE  664
-#> 5 /tmp/RtmppxEUB8/rotor mylogfile      20190530T231533 log   26 FALSE  664
-#> 3 /tmp/RtmppxEUB8/rotor mylogfile           2019-05-30 log   26 FALSE  664
-#> 4 /tmp/RtmppxEUB8/rotor mylogfile              2019-05 log   26 FALSE  664
-#>                 mtime               ctime               atime  uid  gid
-#> 1 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
-#> 2 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
-#> 5 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
-#> 3 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
-#> 4 2019-05-30 23:15:33 2019-05-30 23:15:33 2019-05-30 23:15:33 1000 1000
-#>   uname grname           timestamp
-#> 1 hoelk  hoelk 2019-05-30 23:15:33
-#> 2 hoelk  hoelk 2019-05-30 23:15:33
-#> 5 hoelk  hoelk 2019-05-30 23:15:33
-#> 3 hoelk  hoelk 2019-05-30 00:00:00
-#> 4 hoelk  hoelk 2019-05-01 00:00:00
+#>                                                       path      name
+#> 1  /tmp/RtmpT5fN3W/rotor/mylogfile.2019-05-31_06-48-27.log mylogfile
+#> 2 /tmp/RtmpT5fN3W/rotor/mylogfile.2019-05-31--06-48-27.log mylogfile
+#> 5      /tmp/RtmpT5fN3W/rotor/mylogfile.20190531T064827.log mylogfile
+#> 3           /tmp/RtmpT5fN3W/rotor/mylogfile.2019-05-31.log mylogfile
+#> 4              /tmp/RtmpT5fN3W/rotor/mylogfile.2019-05.log mylogfile
+#>                    sfx ext size isdir mode               mtime
+#> 1  2019-05-31_06-48-27 log   26 FALSE  664 2019-05-31 06:48:27
+#> 2 2019-05-31--06-48-27 log   26 FALSE  664 2019-05-31 06:48:27
+#> 5      20190531T064827 log   26 FALSE  664 2019-05-31 06:48:27
+#> 3           2019-05-31 log   26 FALSE  664 2019-05-31 06:48:26
+#> 4              2019-05 log   26 FALSE  664 2019-05-31 06:48:26
+#>                 ctime               atime  uid  gid uname grname
+#> 1 2019-05-31 06:48:27 2019-05-31 06:48:27 1000 1000 hoelk  hoelk
+#> 2 2019-05-31 06:48:27 2019-05-31 06:48:27 1000 1000 hoelk  hoelk
+#> 5 2019-05-31 06:48:27 2019-05-31 06:48:27 1000 1000 hoelk  hoelk
+#> 3 2019-05-31 06:48:26 2019-05-31 06:48:26 1000 1000 hoelk  hoelk
+#> 4 2019-05-31 06:48:26 2019-05-31 06:48:26 1000 1000 hoelk  hoelk
+#>             timestamp
+#> 1 2019-05-31 06:48:27
+#> 2 2019-05-31 06:48:27
+#> 5 2019-05-31 06:48:27
+#> 3 2019-05-31 00:00:00
+#> 4 2019-05-01 00:00:00
 ```
 
 If we examine the “timestamp” column in the example above, we see that

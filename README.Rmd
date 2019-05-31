@@ -35,7 +35,7 @@ an empty file in place of the original one. This is useful for log rotation.
 `backup()`, `backup_date()` and `backup_time()` do the same but keep the
 original file.
 
-rotor also includes a few utility functions for examining backups of a 
+rotor also includes utility functions for finding and examining the backups of a 
 file: `list_backups()`, `backup_info()`, `n_backups`, `newest_backup()`, 
 `oldest_backup()`. See the 
 [function reference](https://s-fleck.github.io/rotor/reference/index.html) for 

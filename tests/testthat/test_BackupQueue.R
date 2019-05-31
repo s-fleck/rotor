@@ -412,7 +412,7 @@ test_that("BackupQueueIndex$push_backup() can push to different directory", {
   bt <- BackupQueueIndex$new(tf, backup_dir = bu_dir)
   bt$push_backup()
 
-  expect_match(bt$backups$dir, "rotor.backups")
+  expect_match(dirname(bt$backups$path), "rotor.backups")
   bt$set_compression(TRUE)
   bt$push_backup()
 
@@ -773,7 +773,7 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
   bt <- BackupQueueDateTime$new(tf, backup_dir = bu_dir)
   bt$push_backup()
 
-  expect_match(bt$backups$dir, "rotor.backups")
+  expect_match(dirname(bt$backups$path), "rotor.backups")
   bt$set_compression(TRUE)
   bt$push_backup()
 
@@ -1099,7 +1099,7 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
   bt <- BackupQueueDate$new(tf, backup_dir = bu_dir)
   bt$push_backup()
 
-  expect_match(bt$backups$dir, "rotor.backups")
+  expect_match(dirname(bt$backups$path), "rotor.backups")
   bt$set_compression(TRUE)
   bt$push_backup()
 

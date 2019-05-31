@@ -251,11 +251,14 @@ BackupQueue <- R6::R6Class(
       }
 
       fname_matrix <- filenames_as_matrix(self$file, backups = backup_files)
-      fname_df     <- as.data.frame(fname_matrix, stringsAsFactors = FALSE)
+      fname_df     <- as.data.frame(
+        fname_matrix[, c("name", "sfx", "ext"), drop = FALSE],
+        stringsAsFactors = FALSE
+      )
       finfo <- file.info(backup_files)
 
       res <- cbind(
-        data.frame(path = row.names(finfo), stringsAsFactors = FALSE),
+        path = data.frame(path = rownames(finfo), stringsAsFactors = FALSE),
         fname_df,
         finfo
       )
@@ -360,7 +363,7 @@ BackupQueueIndex <- R6::R6Class(
       backups <- self$backups
       backups$sfx_new <- pad_left(backups$index, pad = "0")
       backups$path_new <-
-        paste(file.path(backups$dir, backups$name), backups$sfx_new, backups$ext, sep = ".")
+        paste(file.path(dirname(backups$path), backups$name), backups$sfx_new, backups$ext, sep = ".")
 
       backups$path_new <- gsub("\\.$", "", backups$path_new)
 
@@ -383,7 +386,7 @@ BackupQueueIndex <- R6::R6Class(
       backups <- self$backups
       backups$index <- backups$index + as.integer(n)
       backups$path_new <- paste(
-        file.path(backups$dir, backups$name),
+        file.path(dirname(backups$path), backups$name),
         pad_left(backups$index, pad = "0"),
         backups$ext,
         sep = "."
@@ -842,7 +845,6 @@ get_backups <- function(
 
 EMPTY_BACKUPS <- data.frame(
   path = character(0),
-  dir = character(0),
   name = character(0),
   sfx = character(0),
   ext = character(0),
