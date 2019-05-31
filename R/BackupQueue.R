@@ -1,4 +1,5 @@
 #' An R6 class for managing backups
+#'
 #' @description
 #' `BackupQueue` & co are part of the [R6][R6::R6] API of **rotor**. They are
 #' used internally by [rotate()] and related functions and are not designed

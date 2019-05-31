@@ -1,8 +1,6 @@
-#' Helpers for working with backups
+#' Discover existing backups
 #'
-#' `n_backups()`, `list_backups()`, `newest_backup()` and `oldest_backup()`
-#' display information on the backups (that follow the naming conventions of
-#' rotor) of a single file.
+#' These function return information on the backups of a file (if any exist)
 #'
 #' @param file `character` scalar: Path to a file.
 #' @inheritSection rotate Intervals
@@ -26,19 +24,9 @@
 #' prune_backups(tf, 0)
 #' n_backups(tf)
 #' file.remove(tf)
-list_backups <- function(
-  file,
-  backup_dir = dirname(file)
-){
-  BackupQueue$new(file, backup_dir = backup_dir)$backups$path
-}
-
-
-
-
-#' @rdname list_backups
 #' @export
-#' @return `backup_info()` returns a `data.frame` similar to [file.info()]
+#' @return `backup_info()` returns a `data.frame` similar to the output of
+#'   [file.info()]
 backup_info <- function(
   file,
   backup_dir = dirname(file)
@@ -54,9 +42,21 @@ backup_info <- function(
 
 
 
-#' @rdname list_backups
-#' @export
 #' @return `list_backups()` returns the paths to all backups of `file`
+#' @rdname backup_info
+list_backups <- function(
+  file,
+  backup_dir = dirname(file)
+){
+  BackupQueue$new(file, backup_dir = backup_dir)$backups$path
+}
+
+
+
+#' @rdname backup_info
+#' @export
+#' @return `n_backups()` returns the number of backups of `file` as an `integer`
+#'   scalar
 n_backups <- function(
   file,
   backup_dir = dirname(file)
@@ -78,7 +78,7 @@ n_backups <- function(
 #' @return `newest_backup()` and `oldest_backup()` return the paths to the
 #'   newest or oldest backup of `file` (or an empty `character` vector if none exist)
 #' @export
-#' @rdname list_backups
+#' @rdname backup_info
 newest_backup <- function(
   file,
   backup_dir = dirname(file)
@@ -109,7 +109,7 @@ newest_backup <- function(
 
 
 #' @export
-#' @rdname list_backups
+#' @rdname backup_info
 oldest_backup <- function(
   file,
   backup_dir = dirname(file)

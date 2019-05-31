@@ -1,4 +1,4 @@
-# rotor (development version)
+# rotor 0.2.2.9000
 
 * Changed default behaviour of `rotate_date()`, `rotate_time()`, etc...: If
   no backups exist of target file, use the "created" timestamp 
@@ -24,7 +24,7 @@
 * R6 API: BackupQueue* now use setters/getters for all fields. 
 
 
-# rotor 0.2.1 (2019-05-15)
+# rotor 0.2.1
 
 * added examples to `rotate()` documentation
 * `dry_run` status is now tracked internally instead of a potentially user 

@@ -100,6 +100,19 @@
       
     </div>
 
+    <div id="rotor-0-2-2-9000" class="section level1">
+<h1 class="page-header">
+<a href="#rotor-0-2-2-9000" class="anchor"></a>rotor 0.2.2.9000<small> Unreleased </small>
+</h1>
+<ul>
+<li>Changed default behaviour of <code><a href="../reference/rotate.html">rotate_date()</a></code>, <code><a href="../reference/rotate.html">rotate_time()</a></code>, etc…: If no backups exist of target file, use the “created” timestamp to determine whether rotation should take place or not.</li>
+<li>
+<code>verbose == TRUE</code> now also displays information on why rotation was NOT triggered.</li>
+<li>added <code><a href="../reference/backup_info.html">backup_info()</a></code> which is similar to <code><a href="https://rdrr.io/r/base/file.info.html">file.info()</a></code> but with additional backup related infos.</li>
+<li>removed <code>"dir"</code> column from <code>$backups</code>/<code><a href="../reference/backup_info.html">backup_info()</a></code>
+</li>
+</ul>
+</div>
     <div id="rotor-0-2-2" class="section level1">
 <h1 class="page-header">
 <a href="#rotor-0-2-2" class="anchor"></a>rotor 0.2.2<small> 2019-05-28 </small>
@@ -114,9 +127,9 @@
 <li>R6 API: BackupQueue* now use setters/getters for all fields.</li>
 </ul>
 </div>
-    <div id="rotor-0-2-1-2019-05-15" class="section level1">
+    <div id="rotor-0-2-1" class="section level1">
 <h1 class="page-header">
-<a href="#rotor-0-2-1-2019-05-15" class="anchor"></a>rotor 0.2.1 (2019-05-15)<small> 2019-05-16 </small>
+<a href="#rotor-0-2-1" class="anchor"></a>rotor 0.2.1<small> 2019-05-16 </small>
 </h1>
 <ul>
 <li>added examples to <code><a href="../reference/rotate.html">rotate()</a></code> documentation</li>
@@ -132,8 +145,9 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#rotor-0-2-2-9000">0.2.2.9000</a></li>
         <li><a href="#rotor-0-2-2">0.2.2</a></li>
-        <li><a href="#rotor-0-2-1-2019-05-15">0.2.1</a></li>
+        <li><a href="#rotor-0-2-1">0.2.1</a></li>
       </ul>
     </div>
   </div>
