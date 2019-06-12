@@ -42,6 +42,7 @@ backup_info <- function(
 
 
 
+#' @export
 #' @return `list_backups()` returns the paths to all backups of `file`
 #' @rdname backup_info
 list_backups <- function(
