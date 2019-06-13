@@ -141,7 +141,7 @@ backup_info(tf)
 ```
 If we examine the "timestamp" column in the example above, we see that missing 
 date information is always interpreted as the start of the period; i.e. so 
-`"2019-01"` is equivalent to `"2019-01-01--00--00--00"` for all intentds and 
+`"2019-01"` is equivalent to `"2019-01-01--00--00--00"` for all intents and 
 purposes.
 
 ```{r}
