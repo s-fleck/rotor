@@ -7,8 +7,7 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 0 notes
 
-* fleshed out R6 API
-* fixed edge-case bug on macOS related to timezones
-* new features and bugfixes
+maintenance release with saner default behaviour for rotate() and backup() if
+no backups exist yet

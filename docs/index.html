@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -109,14 +109,14 @@
 <a class="sourceLine" id="cb4-5" data-line-number="5"></a>
 <a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co"># display backups of a file</span></a>
 <a class="sourceLine" id="cb4-7" data-line-number="7"><span class="kw"><a href="reference/backup_info.html">list_backups</a></span>(tf)  </a>
-<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; [1] "/tmp/RtmpTBrRRH/rotor/mylogfile.1.log.zip"</span></a>
-<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; [2] "/tmp/RtmpTBrRRH/rotor/mylogfile.2.log"</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-8" data-line-number="8"><span class="co">#&gt; [1] "/tmp/Rtmp9bus6U/rotor/mylogfile.1.log.zip"</span></a>
+<a class="sourceLine" id="cb4-9" data-line-number="9"><span class="co">#&gt; [2] "/tmp/Rtmp9bus6U/rotor/mylogfile.2.log"</span></a></code></pre></div>
 <p><code><a href="reference/rotate.html">rotate()</a></code> also backs up a file, but replaces the original file with an empty one.</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">rotate</a></span>(tf)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="kw"><a href="reference/backup_info.html">list_backups</a></span>(tf)</a>
-<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; [1] "/tmp/RtmpTBrRRH/rotor/mylogfile.1.log"    </span></a>
-<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; [2] "/tmp/RtmpTBrRRH/rotor/mylogfile.2.log.zip"</span></a>
-<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [3] "/tmp/RtmpTBrRRH/rotor/mylogfile.3.log"</span></a>
+<a class="sourceLine" id="cb5-3" data-line-number="3"><span class="co">#&gt; [1] "/tmp/Rtmp9bus6U/rotor/mylogfile.1.log"    </span></a>
+<a class="sourceLine" id="cb5-4" data-line-number="4"><span class="co">#&gt; [2] "/tmp/Rtmp9bus6U/rotor/mylogfile.2.log.zip"</span></a>
+<a class="sourceLine" id="cb5-5" data-line-number="5"><span class="co">#&gt; [3] "/tmp/Rtmp9bus6U/rotor/mylogfile.3.log"</span></a>
 <a class="sourceLine" id="cb5-6" data-line-number="6"></a>
 <a class="sourceLine" id="cb5-7" data-line-number="7"><span class="co"># the original file is now empty</span></a>
 <a class="sourceLine" id="cb5-8" data-line-number="8"><span class="kw"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(tf)</a>
@@ -133,10 +133,10 @@
 <a class="sourceLine" id="cb6-2" data-line-number="2"><span class="kw"><a href="reference/rotate.html">backup</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">4</span>)</a>
 <a class="sourceLine" id="cb6-3" data-line-number="3"></a>
 <a class="sourceLine" id="cb6-4" data-line-number="4"><span class="kw"><a href="reference/backup_info.html">list_backups</a></span>(tf)</a>
-<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] "/tmp/RtmpTBrRRH/rotor/mylogfile.1.log"    </span></a>
-<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; [2] "/tmp/RtmpTBrRRH/rotor/mylogfile.2.log"    </span></a>
-<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; [3] "/tmp/RtmpTBrRRH/rotor/mylogfile.3.log"    </span></a>
-<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [4] "/tmp/RtmpTBrRRH/rotor/mylogfile.4.log.zip"</span></a></code></pre></div>
+<a class="sourceLine" id="cb6-5" data-line-number="5"><span class="co">#&gt; [1] "/tmp/Rtmp9bus6U/rotor/mylogfile.1.log"    </span></a>
+<a class="sourceLine" id="cb6-6" data-line-number="6"><span class="co">#&gt; [2] "/tmp/Rtmp9bus6U/rotor/mylogfile.2.log"    </span></a>
+<a class="sourceLine" id="cb6-7" data-line-number="7"><span class="co">#&gt; [3] "/tmp/Rtmp9bus6U/rotor/mylogfile.3.log"    </span></a>
+<a class="sourceLine" id="cb6-8" data-line-number="8"><span class="co">#&gt; [4] "/tmp/Rtmp9bus6U/rotor/mylogfile.4.log.zip"</span></a></code></pre></div>
 <p>We can also use <code><a href="reference/rotate.html">prune_backups()</a></code> to delete old backups. Other than ensuring that no new backups is created, it works identically to using <code><a href="reference/rotate.html">backup()</a></code> with the <code>max_backups</code> parameter. By setting it to <code>0</code>, we delete all backups.</p>
 <div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb7-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">prune_backups</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">0</span>)</a></code></pre></div>
 </div>
@@ -155,30 +155,30 @@
 <a class="sourceLine" id="cb8-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb8-9" data-line-number="9"><span class="kw"><a href="reference/backup_info.html">backup_info</a></span>(tf)</a>
 <a class="sourceLine" id="cb8-10" data-line-number="10"><span class="co">#&gt;                                                       path      name</span></a>
-<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; 1  /tmp/RtmpTBrRRH/rotor/mylogfile.2019-05-31_07-00-41.log mylogfile</span></a>
-<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; 2 /tmp/RtmpTBrRRH/rotor/mylogfile.2019-05-31--07-00-41.log mylogfile</span></a>
-<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; 5      /tmp/RtmpTBrRRH/rotor/mylogfile.20190531T070041.log mylogfile</span></a>
-<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; 3           /tmp/RtmpTBrRRH/rotor/mylogfile.2019-05-31.log mylogfile</span></a>
-<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; 4              /tmp/RtmpTBrRRH/rotor/mylogfile.2019-05.log mylogfile</span></a>
+<a class="sourceLine" id="cb8-11" data-line-number="11"><span class="co">#&gt; 1  /tmp/Rtmp9bus6U/rotor/mylogfile.2019-06-17_09-55-55.log mylogfile</span></a>
+<a class="sourceLine" id="cb8-12" data-line-number="12"><span class="co">#&gt; 2 /tmp/Rtmp9bus6U/rotor/mylogfile.2019-06-17--09-55-55.log mylogfile</span></a>
+<a class="sourceLine" id="cb8-13" data-line-number="13"><span class="co">#&gt; 5      /tmp/Rtmp9bus6U/rotor/mylogfile.20190617T095555.log mylogfile</span></a>
+<a class="sourceLine" id="cb8-14" data-line-number="14"><span class="co">#&gt; 3           /tmp/Rtmp9bus6U/rotor/mylogfile.2019-06-17.log mylogfile</span></a>
+<a class="sourceLine" id="cb8-15" data-line-number="15"><span class="co">#&gt; 4              /tmp/Rtmp9bus6U/rotor/mylogfile.2019-06.log mylogfile</span></a>
 <a class="sourceLine" id="cb8-16" data-line-number="16"><span class="co">#&gt;                    sfx ext size isdir mode               mtime</span></a>
-<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; 1  2019-05-31_07-00-41 log   26 FALSE  664 2019-05-31 07:00:41</span></a>
-<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; 2 2019-05-31--07-00-41 log   26 FALSE  664 2019-05-31 07:00:41</span></a>
-<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; 5      20190531T070041 log   26 FALSE  664 2019-05-31 07:00:41</span></a>
-<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; 3           2019-05-31 log   26 FALSE  664 2019-05-31 07:00:41</span></a>
-<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; 4              2019-05 log   26 FALSE  664 2019-05-31 07:00:41</span></a>
+<a class="sourceLine" id="cb8-17" data-line-number="17"><span class="co">#&gt; 1  2019-06-17_09-55-55 log   26 FALSE  664 2019-06-17 09:55:55</span></a>
+<a class="sourceLine" id="cb8-18" data-line-number="18"><span class="co">#&gt; 2 2019-06-17--09-55-55 log   26 FALSE  664 2019-06-17 09:55:55</span></a>
+<a class="sourceLine" id="cb8-19" data-line-number="19"><span class="co">#&gt; 5      20190617T095555 log   26 FALSE  664 2019-06-17 09:55:55</span></a>
+<a class="sourceLine" id="cb8-20" data-line-number="20"><span class="co">#&gt; 3           2019-06-17 log   26 FALSE  664 2019-06-17 09:55:55</span></a>
+<a class="sourceLine" id="cb8-21" data-line-number="21"><span class="co">#&gt; 4              2019-06 log   26 FALSE  664 2019-06-17 09:55:55</span></a>
 <a class="sourceLine" id="cb8-22" data-line-number="22"><span class="co">#&gt;                 ctime               atime  uid  gid uname grname</span></a>
-<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt; 1 2019-05-31 07:00:41 2019-05-31 07:00:41 1000 1000 hoelk  hoelk</span></a>
-<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt; 2 2019-05-31 07:00:41 2019-05-31 07:00:41 1000 1000 hoelk  hoelk</span></a>
-<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt; 5 2019-05-31 07:00:41 2019-05-31 07:00:41 1000 1000 hoelk  hoelk</span></a>
-<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; 3 2019-05-31 07:00:41 2019-05-31 07:00:41 1000 1000 hoelk  hoelk</span></a>
-<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; 4 2019-05-31 07:00:41 2019-05-31 07:00:41 1000 1000 hoelk  hoelk</span></a>
+<a class="sourceLine" id="cb8-23" data-line-number="23"><span class="co">#&gt; 1 2019-06-17 09:55:55 2019-06-17 09:55:55 1000 1000 hoelk  hoelk</span></a>
+<a class="sourceLine" id="cb8-24" data-line-number="24"><span class="co">#&gt; 2 2019-06-17 09:55:55 2019-06-17 09:55:55 1000 1000 hoelk  hoelk</span></a>
+<a class="sourceLine" id="cb8-25" data-line-number="25"><span class="co">#&gt; 5 2019-06-17 09:55:55 2019-06-17 09:55:55 1000 1000 hoelk  hoelk</span></a>
+<a class="sourceLine" id="cb8-26" data-line-number="26"><span class="co">#&gt; 3 2019-06-17 09:55:55 2019-06-17 09:55:55 1000 1000 hoelk  hoelk</span></a>
+<a class="sourceLine" id="cb8-27" data-line-number="27"><span class="co">#&gt; 4 2019-06-17 09:55:55 2019-06-17 09:55:55 1000 1000 hoelk  hoelk</span></a>
 <a class="sourceLine" id="cb8-28" data-line-number="28"><span class="co">#&gt;             timestamp</span></a>
-<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; 1 2019-05-31 07:00:41</span></a>
-<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; 2 2019-05-31 07:00:41</span></a>
-<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; 5 2019-05-31 07:00:41</span></a>
-<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; 3 2019-05-31 00:00:00</span></a>
-<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; 4 2019-05-01 00:00:00</span></a></code></pre></div>
-<p>If we examine the “timestamp” column in the example above, we see that missing date information is always interpreted as the start of the period; i.e. so <code>"2019-01"</code> is equivalent to <code>"2019-01-01--00--00--00"</code> for all intentds and purposes.</p>
+<a class="sourceLine" id="cb8-29" data-line-number="29"><span class="co">#&gt; 1 2019-06-17 09:55:55</span></a>
+<a class="sourceLine" id="cb8-30" data-line-number="30"><span class="co">#&gt; 2 2019-06-17 09:55:55</span></a>
+<a class="sourceLine" id="cb8-31" data-line-number="31"><span class="co">#&gt; 5 2019-06-17 09:55:55</span></a>
+<a class="sourceLine" id="cb8-32" data-line-number="32"><span class="co">#&gt; 3 2019-06-17 00:00:00</span></a>
+<a class="sourceLine" id="cb8-33" data-line-number="33"><span class="co">#&gt; 4 2019-06-01 00:00:00</span></a></code></pre></div>
+<p>If we examine the “timestamp” column in the example above, we see that missing date information is always interpreted as the start of the period; i.e. so <code>"2019-01"</code> is equivalent to <code>"2019-01-01--00--00--00"</code> for all intents and purposes.</p>
 <div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb9-1" data-line-number="1"><span class="kw"><a href="reference/rotate.html">prune_backups</a></span>(tf, <span class="dt">max_backups =</span> <span class="dv">0</span>)  <span class="co"># cleanup</span></a>
 <a class="sourceLine" id="cb9-2" data-line-number="2"><span class="kw"><a href="reference/backup_info.html">list_backups</a></span>(tf)</a>
 <a class="sourceLine" id="cb9-3" data-line-number="3"><span class="co">#&gt; character(0)</span></a></code></pre></div>
@@ -198,7 +198,7 @@
 <li>
 <a href="https://github.com/r-lib/R6">R6</a>: A light weight system for encapsulated object-oriented programming.</li>
 <li>
-<a href="https://github.com/s-fleck/dint">dint</a>: A toolkit for working year-quarter and year-month dates that I am also the author of. It is used by <code><a href="reference/rotate.html">rotate_date()</a></code> and <code><a href="reference/rotate.html">rotate_time()</a></code> to deal with calendar periods.</li>
+<a href="https://github.com/s-fleck/dint">dint</a>: A toolkit for working year-quarter and year-month dates that I am also the author of. It is used by <code><a href="reference/rotate.html">rotate_date()</a></code> and <code><a href="reference/rotate.html">rotate_time()</a></code> to deal with calendar periods (such as weeks or months).</li>
 </ul>
 <p>Both packages have no transitive dependencies (i.e they do not depend on anything outside of base R)</p>
 </div>

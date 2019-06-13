@@ -69,7 +69,7 @@ based on max_backups" />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.2.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.3</span>
       </span>
     </div>
 
@@ -306,21 +306,25 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 <span class='co'># create two backups of `tf``</span>
 <span class='fu'>backup</span>(<span class='no'>tf</span>)
 <span class='fu'>backup</span>(<span class='no'>tf</span>)
-<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)  <span class='co'># find all backups of a file</span></div><div class='output co'>#&gt; <span class='error'>Error in list_backups(tf): could not find function "list_backups"</span></div><div class='input'>
+<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)  <span class='co'># find all backups of a file</span></div><div class='output co'>#&gt; [1] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.1.rds"
+#&gt; [2] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.2.rds"</div><div class='input'>
 <span class='co'># If `size` is set, a backup is only created if the target file is at least</span>
 <span class='co'># that big. This is more useful for log rotation than for backups.</span>
 <span class='fu'>backup</span>(<span class='no'>tf</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"100 mb"</span>)  <span class='co'># no backup becuase `tf` is to small</span>
-<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; <span class='error'>Error in list_backups(tf): could not find function "list_backups"</span></div><div class='input'>
+<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.1.rds"
+#&gt; [2] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.2.rds"</div><div class='input'>
 <span class='co'># If `dry_run` is TRUE, backup() only shows what would happen without</span>
 <span class='co'># actually creating or deleting files</span>
-<span class='fu'>backup</span>(<span class='no'>tf</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"0.1kb"</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>[dry_run] renaming:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] ~ /tmp/RtmpJz3VIN/test2ae72ba8e5c.2.rds -&gt; test2ae72ba8e5c.3.rds</span>
-#&gt; <span class='message'>[dry_run] ~ /tmp/RtmpJz3VIN/test2ae72ba8e5c.1.rds -&gt; test2ae72ba8e5c.2.rds</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] copying:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] + /tmp/RtmpJz3VIN/test2ae72ba8e5c.rds -&gt; test2ae72ba8e5c.1.rds</span></div><div class='input'>
+<span class='fu'>backup</span>(<span class='no'>tf</span>, <span class='kw'>size</span> <span class='kw'>=</span> <span class='st'>"0.1kb"</span>, <span class='kw'>dry_run</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; <span class='message'>[dry_run] renaming:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] ~ /tmp/Rtmp3pLPpS/teste8f2e69b8ff.2.rds -&gt; teste8f2e69b8ff.3.rds</span>
+#&gt; <span class='message'>[dry_run] ~ /tmp/Rtmp3pLPpS/teste8f2e69b8ff.1.rds -&gt; teste8f2e69b8ff.2.rds</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] copying:</span></div><div class='output co'>#&gt; <span class='message'>[dry_run] + /tmp/Rtmp3pLPpS/teste8f2e69b8ff.rds -&gt; teste8f2e69b8ff.1.rds</span></div><div class='input'>
 <span class='co'># rotate() is the same as backup(), but replaces `tf`` with an empty file</span>
 <span class='fu'>rotate</span>(<span class='no'>tf</span>)
-<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; <span class='error'>Error in list_backups(tf): could not find function "list_backups"</span></div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span>(<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>))</div><div class='output co'>#&gt; <span class='error'>Error in list_backups(tf): could not find function "list_backups"</span></div><div class='input'>
+<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.1.rds"
+#&gt; [2] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.2.rds"
+#&gt; [3] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.3.rds"</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.size</a></span>(<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>))</div><div class='output co'>#&gt; [1] 282 282 282</div><div class='input'>
 <span class='co'># prune_backups() can remove old backups</span>
 <span class='fu'>prune_backups</span>(<span class='no'>tf</span>, <span class='fl'>1</span>)  <span class='co'># keep only one backup</span>
-<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; <span class='error'>Error in list_backups(tf): could not find function "list_backups"</span></div><div class='input'>
+<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.1.rds"</div><div class='input'>
 <span class='co'># rotate/backup_date() adds a date instead of an index</span>
 <span class='co'># you should not mix index backups and timestamp backups</span>
 <span class='co'># so we clean up first</span>
@@ -337,12 +341,12 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 
 <span class='co'># `now` overrides the current date.</span>
 <span class='fu'>backup_date</span>(<span class='no'>tf</span>, <span class='kw'>age</span> <span class='kw'>=</span> <span class='st'>"1 year"</span>, <span class='kw'>now</span> <span class='kw'>=</span> <span class='st'>"2999-12-31"</span>)
-<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; <span class='error'>Error in list_backups(tf): could not find function "list_backups"</span></div><div class='input'>
+<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.2999-12-31.rds"</div><div class='input'>
 <span class='co'># backup_time() creates backups with a full timestamp</span>
 <span class='fu'>backup_time</span>(<span class='no'>tf</span>)
 
 <span class='co'># It's okay to mix backup_date() and backup_time()</span>
-<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; <span class='error'>Error in list_backups(tf): could not find function "list_backups"</span></div><div class='input'>
+<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp3pLPpS/teste8f2e69b8ff.2999-12-31.rds"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'>prune_backups</span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
 <span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>

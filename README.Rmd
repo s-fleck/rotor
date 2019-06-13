@@ -141,7 +141,7 @@ backup_info(tf)
 ```
 If we examine the "timestamp" column in the example above, we see that missing 
 date information is always interpreted as the start of the period; i.e. so 
-`"2019-01"` is equivalent to `"2019-01-01--00--00--00"` for all intentds and 
+`"2019-01"` is equivalent to `"2019-01-01--00--00--00"` for all intents and 
 purposes.
 
 ```{r}
@@ -173,7 +173,8 @@ non-base dependencies:
   encapsulated object-oriented programming.
 * [dint](https://github.com/s-fleck/dint): A toolkit for working year-quarter 
   and year-month dates that I am also the author of. It is used by 
-  `rotate_date()` and `rotate_time()` to deal with calendar periods. 
+  `rotate_date()` and `rotate_time()` to deal with calendar periods (such as
+  weeks or months).
   
 Both packages have no transitive dependencies (i.e they do not depend on 
 anything outside of base R)

@@ -1,4 +1,4 @@
-# rotor 0.2.2.9000
+# rotor 0.2.3
 
 * Changed default behaviour of `rotate_date()`, `rotate_time()`, etc...: If
   no backups exist of target file, use the "created" timestamp 
