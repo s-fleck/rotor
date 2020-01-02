@@ -173,7 +173,8 @@ non-base dependencies:
   encapsulated object-oriented programming.
 * [dint](https://github.com/s-fleck/dint): A toolkit for working year-quarter 
   and year-month dates that I am also the author of. It is used by 
-  `rotate_date()` and `rotate_time()` to deal with calendar periods. 
+  `rotate_date()` and `rotate_time()` to deal with calendar periods (such as
+  weeks or months).
   
 Both packages have no transitive dependencies (i.e they do not depend on 
 anything outside of base R)
