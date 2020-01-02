@@ -1,4 +1,4 @@
-# sfmisc utils 0.0.1.9028
+# sfmisc utils 0.0.1.9031
 
 
 
@@ -19,7 +19,7 @@
 #' @return a `character` scalar
 #' @noRd
 #'
-#' @example
+#' @examples
 #'   ptrunc(month.abb)
 #'   ptrunc(month.abb, month.name)
 #'
@@ -536,6 +536,12 @@ is_distinct_from <- function(x, y){
 
 
 
+is_windows_path <- function(x){
+  nchar(x) >= 2 & grepl("^[A-Za-z].*", x) & substr(x, 2, 2) == ":"
+}
+
+
+
 # equalish ----------------------------------------------------------------
 
 #' Check for equality within a tolerance level
@@ -761,6 +767,37 @@ preview_object <- function(
   res
 }
 
+
+
+
+#' Clean up paths to make them comparable, inspired by fs::path_tidy
+#'
+#' @param x `character` vector
+#'
+#' @return a `character` vector
+#' @noRd
+path_tidy <- function(x){
+  x <- gsub("\\\\", "/", x)
+  x <- gsub("(?!^)/+", "/", x, perl = TRUE)
+
+  sel <- x != "/"
+  x[sel] <- gsub("/$", "", x[sel])
+
+  sel <- is_windows_path(x)
+
+  if (any(sel)){
+    clean_win <- function(.x){
+      substr(.x, 1, 1)  <- toupper(substr(.x, 1 ,1))
+      .sel <- nchar(.x) == 2
+      .x[.sel] <- paste0(.x[.sel], "/")
+      .x
+    }
+
+    x[sel] <- clean_win(x[sel])
+  }
+
+  x
+}
 
 
 

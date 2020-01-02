@@ -485,7 +485,7 @@ test_that("BackupQueueIndex: $should_rotate(verbose = TRUE) displays helpful mes
 
 
 
-# BackupQueueDatetime -----------------------------------------------------
+# BackupQueueDateTime -----------------------------------------------------
 context("BackupQueueDateTime")
 
 
@@ -794,7 +794,7 @@ test_that("BackupQueueDateTime: $should_rotate", {
   bq$push_backup(now = "2019-01-01")
   on.exit(bq$prune(0), add = TRUE, after = FALSE)
 
-  expect_false(bq$should_rotate("0.5kb", age = "1 year"))
+  expect_false(bq$should_rotate("0.5kb", age = "1 year", now = "2019-12-31"))
   expect_true(bq$should_rotate("0.5kb", age = "1 year", now = "2020-01-01"))
   expect_true(bq$should_rotate("0.5kb", age = "0 year"))
 })
@@ -1040,7 +1040,7 @@ test_that("Prune BackupQueueDate based on week interval", {
 
 
 
-test_that("Prune BackupQueueDate based on dayss interval", {
+test_that("Prune BackupQueueDate based on days interval", {
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -1120,7 +1120,7 @@ test_that("BackupQueueDate: $should_rotate", {
   bq$push_backup(now = "2019-01-01")
   on.exit(bq$prune(0), add = TRUE, after = FALSE)
 
-  expect_false(bq$should_rotate("0.5kb", age = "1 year"))
+  expect_false(bq$should_rotate("0.5kb", age = "1 year", now = "2019-12-31"))
   expect_true(bq$should_rotate("0.5kb", age = "1 year", now = "2020-01-01"))
   expect_true(bq$should_rotate("0.5kb", age = "0 year"))
 })

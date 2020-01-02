@@ -26,16 +26,16 @@ be called manually.
 
 \item{\code{prune()}}{Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{prune_backups()}}}
 
-\item{\code{push_backup() <BackupQueueIndex>}}{
+\item{\verb{push_backup() <BackupQueueIndex>}}{
 Create a new backup with index 1, push back all other indices.
-Always calls \code{$prune()} before it terminates.
+Always calls \verb{$prune()} before it terminates.
 }
 
-\item{\code{push_backup(overwrite = FALSE, now = Sys.time()) <BackupQueueDate> <BackupQueueDateteime>}}{
+\item{\verb{push_backup(overwrite = FALSE, now = Sys.time()) <BackupQueueDate> <BackupQueueDateteime>}}{
 Create a new backup with a timestamp. The \code{now} parameter override the
 real system time. If \code{overwrite} is \code{TRUE} existing backups with the
 same filename (i.e timestamp) are overwritten. Always calls
-\code{$prune()} before it terminates.
+\verb{$prune()} before it terminates.
 }
 
 \item{\code{backup_dir}, \code{set_backup_dir(x)}}{
@@ -63,18 +63,18 @@ with the backups.
 See \code{max_backups} argument of \code{\link[=rotate]{rotate()}}
 }
 
-\item{\code{should_rotate(size) <BackupQueueIndex>}}{
+\item{\verb{should_rotate(size) <BackupQueueIndex>}}{
 Should a file of \code{size} be rotated? See \code{size} argument of \code{\link[=rotate]{rotate()}}
 }
 
-\item{\code{should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation)  <BackupQueueDate> <BackupQueueDateteime>}}{
+\item{\verb{should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation)  <BackupQueueDate> <BackupQueueDateteime>}}{
 Should a file of \code{size} and \code{age} be rotated? See \code{size} and \code{age}
 arguments of \code{\link[=rotate_date]{rotate_date()}}. \code{now} overrides the current system time,
 `last_rotation`` overrides the date of the last rotation.
 }
 
 \item{\code{update_backups_cache()}}{
-Force update of the backups cache. Only does something if \code{$cache_backups}
+Force update of the backups cache. Only does something if \verb{$cache_backups}
 is \code{TRUE}.
 }
 }

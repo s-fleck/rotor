@@ -9,5 +9,4 @@
 
 0 errors | 0 warnings | 0 notes
 
-maintenance release with saner default behaviour for rotate() and backup() if
-no backups exist yet
+fixes system-time dependent unit tests that broke due to year change

@@ -139,15 +139,15 @@ test_that("backup_date works as expected for years", {
   # no backup because last backup is less than a year old
   file.create(file.path(td, "test.2019-12-31.log"))
   bu <- backup_date(tf, "1 year", now = "2019-01-01")
-  bu <- backup_date(tf, "1 year", now = Sys.time())
+  bu <- backup_date(tf, "1 year", now = "2019-12-31")
   expect_identical(bq$n_backups, 1L)
   bq$prune(0)
 
   # rotate because backup is from last year
   file.create(file.path(td, "test.2018-12-31.log"))
-  bu <- backup_date(tf, "2 year")  # dont rotate
+  bu <- backup_date(tf, "2 year", now = "2019-12-31")  # dont rotate
   expect_identical(bq$n_backups, 1L)
-  bu <- backup_date(tf, "1 year")  # rotate
+  bu <- backup_date(tf, "1 year", now = "2019-12-31")  # rotate
   expect_true(length(bq$backups$path) == 2)
 
   bq$prune(0)

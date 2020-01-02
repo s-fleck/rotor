@@ -10,43 +10,100 @@
 \alias{backup_time}
 \title{Rotate or backup files}
 \usage{
-rotate(file, size = 1, max_backups = Inf, compression = FALSE,
-  backup_dir = dirname(file), create_file = TRUE, dry_run = FALSE,
-  verbose = dry_run)
+rotate(
+  file,
+  size = 1,
+  max_backups = Inf,
+  compression = FALSE,
+  backup_dir = dirname(file),
+  create_file = TRUE,
+  dry_run = FALSE,
+  verbose = dry_run
+)
 
-backup(file, size = 0, max_backups = Inf, compression = FALSE,
-  backup_dir = dirname(file), dry_run = FALSE, verbose = dry_run)
+backup(
+  file,
+  size = 0,
+  max_backups = Inf,
+  compression = FALSE,
+  backup_dir = dirname(file),
+  dry_run = FALSE,
+  verbose = dry_run
+)
 
-prune_backups(file, max_backups, backup_dir = dirname(file),
-  dry_run = FALSE, verbose = dry_run)
+prune_backups(
+  file,
+  max_backups,
+  backup_dir = dirname(file),
+  dry_run = FALSE,
+  verbose = dry_run
+)
 
-rotate_date(file, age = 1, size = 1, max_backups = Inf,
-  compression = FALSE, format = "\%Y-\%m-\%d",
-  backup_dir = dirname(file), overwrite = FALSE, create_file = TRUE,
-  now = Sys.Date(), dry_run = FALSE, verbose = dry_run)
+rotate_date(
+  file,
+  age = 1,
+  size = 1,
+  max_backups = Inf,
+  compression = FALSE,
+  format = "\%Y-\%m-\%d",
+  backup_dir = dirname(file),
+  overwrite = FALSE,
+  create_file = TRUE,
+  now = Sys.Date(),
+  dry_run = FALSE,
+  verbose = dry_run
+)
 
-backup_date(file, age = 1, size = 1, max_backups = Inf,
-  compression = FALSE, format = "\%Y-\%m-\%d",
-  backup_dir = dirname(file), overwrite = FALSE, now = Sys.Date(),
-  dry_run = FALSE, verbose = dry_run)
+backup_date(
+  file,
+  age = 1,
+  size = 1,
+  max_backups = Inf,
+  compression = FALSE,
+  format = "\%Y-\%m-\%d",
+  backup_dir = dirname(file),
+  overwrite = FALSE,
+  now = Sys.Date(),
+  dry_run = FALSE,
+  verbose = dry_run
+)
 
-rotate_time(file, age = -1, size = 1, max_backups = Inf,
-  compression = FALSE, format = "\%Y-\%m-\%d--\%H-\%M-\%S",
-  backup_dir = dirname(file), overwrite = FALSE, create_file = TRUE,
-  now = Sys.time(), dry_run = FALSE, verbose = dry_run)
+rotate_time(
+  file,
+  age = -1,
+  size = 1,
+  max_backups = Inf,
+  compression = FALSE,
+  format = "\%Y-\%m-\%d--\%H-\%M-\%S",
+  backup_dir = dirname(file),
+  overwrite = FALSE,
+  create_file = TRUE,
+  now = Sys.time(),
+  dry_run = FALSE,
+  verbose = dry_run
+)
 
-backup_time(file, age = -1, size = 1, max_backups = Inf,
-  compression = FALSE, format = "\%Y-\%m-\%d--\%H-\%M-\%S",
-  backup_dir = dirname(file), overwrite = FALSE, now = Sys.time(),
-  dry_run = FALSE, verbose = dry_run)
+backup_time(
+  file,
+  age = -1,
+  size = 1,
+  max_backups = Inf,
+  compression = FALSE,
+  format = "\%Y-\%m-\%d--\%H-\%M-\%S",
+  backup_dir = dirname(file),
+  overwrite = FALSE,
+  now = Sys.time(),
+  dry_run = FALSE,
+  verbose = dry_run
+)
 }
 \arguments{
 \item{file}{\code{character} scalar: file to backup/rotate}
 
 \item{size}{scalar \code{integer}, \code{character} or \code{Inf}. Backup/rotate only if
 \code{file} is larger than this size. \code{Integers} are interpreted as bytes. You
-can pass \code{character} vectors that contain a file size suffix like \code{1k}
-(kilobytes), \code{3M} (megabytes), \code{4G} (gigabytes), \code{5T} (terabytes). Instead
+can pass \code{character} vectors that contain a file size suffix like \verb{1k}
+(kilobytes), \verb{3M} (megabytes), \verb{4G} (gigabytes), \verb{5T} (terabytes). Instead
 of these short forms you can also be explicit and use the IEC suffixes
 \code{KiB}, \code{MiB}, \code{GiB}, \code{TiB}. In Both cases \code{1} kilobyte is \code{1024} bytes, 1
 \code{megabyte} is \code{1024} kilobytes, etc... .}
@@ -104,16 +161,16 @@ which Date/Datetime formats are supported by rotor.
 \itemize{
 \item You can use an arbitrary number of dashes anywhere in the format, so
 \code{"\%Y-\%m-\%d--\%H-\%M-\%S"} and \code{"\%Y\%m\%d\%H\%M\%S"} are both legal.
-\item \code{T} and \code{_} can also be used as separators. For example, the following
+\item \code{T} and \verb{_} can also be used as separators. For example, the following
 datetime formats are also possible:
-\code{\%Y-\%m-\%d_\%H-\%M-\%S} (Python logging default),
-\code{\%Y\%m\%dT\%H\%M\%S} (\href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601})
-\item All datetime components except \code{\%Y} are optional. If you leave out part
+\verb{\%Y-\%m-\%d_\%H-\%M-\%S} (Python logging default),
+\verb{\%Y\%m\%dT\%H\%M\%S} (\href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601})
+\item All datetime components except \verb{\%Y} are optional. If you leave out part
 of the timestamp, the first point in time in the period is assumed. For
-example (assuming the current year is 2019) \code{\%Y} is identical to
+example (assuming the current year is 2019) \verb{\%Y} is identical to
 \code{2019-01-01--00-00-00}.
 \item The timestamps must be lexically sortable, so \code{"\%Y-\%m-\%d"} is legal,
-\code{"\%m-\%d-\%Y"} and \code{\%Y-\%d} are not.
+\code{"\%m-\%d-\%Y"} and \verb{\%Y-\%d} are not.
 }}
 
 \item{overwrite}{\code{logical} scalar. If \code{TRUE} overwrite backups if a backup
