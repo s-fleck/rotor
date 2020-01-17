@@ -168,7 +168,10 @@ BackupQueue <- R6::R6Class(
     set_file = function(
       x
     ){
-      assert(is_scalar_character(x) && file_exists(x))
+      assert(
+        is_scalar_character(x) && file_exists(x),
+        "File '", x, "' does not exist"
+      )
       assert(!is_dir(x))
       private[[".file"]] <- x
       self
