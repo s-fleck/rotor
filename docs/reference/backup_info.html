@@ -180,15 +180,15 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 <span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
 
 <span class='fu'>backup_info</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt;                                     path             name sfx ext size isdir
-#&gt; 1 /tmp/RtmpKoS58Y/test42cc4c2b7d05.1.rds test42cc4c2b7d05   1 rds  289 FALSE
-#&gt; 2 /tmp/RtmpKoS58Y/test42cc4c2b7d05.2.rds test42cc4c2b7d05   2 rds  289 FALSE
+#&gt; 1 /tmp/RtmpFDrb0U/test215e1a2996e7.1.rds test215e1a2996e7   1 rds  289 FALSE
+#&gt; 2 /tmp/RtmpFDrb0U/test215e1a2996e7.2.rds test215e1a2996e7   2 rds  289 FALSE
 #&gt;   mode               mtime               ctime               atime  uid  gid
-#&gt; 1  664 2020-01-02 10:06:14 2020-01-02 10:06:14 2020-01-02 10:06:14 1032 1032
-#&gt; 2  664 2020-01-02 10:06:14 2020-01-02 10:06:14 2020-01-02 10:06:14 1032 1032
+#&gt; 1  664 2020-01-07 09:38:05 2020-01-07 09:38:05 2020-01-07 09:38:05 1000 1000
+#&gt; 2  664 2020-01-07 09:38:05 2020-01-07 09:38:05 2020-01-07 09:38:05 1000 1000
 #&gt;   uname grname index
-#&gt; 1 fleck  fleck     1
-#&gt; 2 fleck  fleck     2</div><div class='input'><span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpKoS58Y/test42cc4c2b7d05.1.rds"
-#&gt; [2] "/tmp/RtmpKoS58Y/test42cc4c2b7d05.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpKoS58Y/test42cc4c2b7d05.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpKoS58Y/test42cc4c2b7d05.2.rds"</div><div class='input'>
+#&gt; 1 hoelk  hoelk     1
+#&gt; 2 hoelk  hoelk     2</div><div class='input'><span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpFDrb0U/test215e1a2996e7.1.rds"
+#&gt; [2] "/tmp/RtmpFDrb0U/test215e1a2996e7.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpFDrb0U/test215e1a2996e7.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpFDrb0U/test215e1a2996e7.2.rds"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='rotate.html'>prune_backups</a></span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
 <span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
