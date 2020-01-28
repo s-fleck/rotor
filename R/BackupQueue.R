@@ -202,7 +202,10 @@ BackupQueue <- R6::R6Class(
     set_max_backups = function(
       x
     ){
-      assert(is.infinite(x) || is_n0(x))
+      assert(
+        is.infinite(x) || is_n0(x),
+        "`max_backups` must be a positive integer (or `Inf` for no max)"
+      )
       private[[".max_backups"]] <- x
       self
     }
@@ -383,7 +386,10 @@ BackupQueueIndex <- R6::R6Class(
     increment_index = function(
       n = 1
     ){
-      assert(is_scalar_integerish(n))
+      assert(
+        is_scalar_integerish(n) & n > 0,
+        "indices can only be incremented by positive integers, but `n` is ", preview_object(n), "."
+      )
       if (self$n_backups <= 0)
         return(self)
 

@@ -360,6 +360,9 @@ test_that("BackupQueue$increment_index works as expected", {
   expect_path_setequal(bt$backups$path, bus)
   expect_path_equal(bt$increment_index()$backups$path, pushed_bus)
 
+  expect_error(bt$increment_index(-1), "positive integers")
+
+
   expect_length(bt$prune(0)$backups$path, 0)
   file.remove(tf)
 })

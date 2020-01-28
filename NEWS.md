@@ -1,3 +1,8 @@
+# rotor (dev version)
+
+* Improved some error messages
+
+
 # rotor 0.2.4
 
 * Fixes unit tests sensitive to year change.
