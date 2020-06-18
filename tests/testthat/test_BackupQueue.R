@@ -795,7 +795,10 @@ test_that("BackupQueueDateTime: $should_rotate", {
 
   bq <- BackupQueueDateTime$new(tf)
   bq$push_backup(now = "2019-01-01")
-  on.exit(bq$prune(0), add = TRUE, after = FALSE)
+  on.exit({
+    bq$prune(0)
+    file.remove(tf)
+  })
 
   expect_false(bq$should_rotate("0.5kb", age = "1 year", now = "2019-12-31"))
   expect_true(bq$should_rotate("0.5kb", age = "1 year", now = "2020-01-01"))
@@ -1121,7 +1124,10 @@ test_that("BackupQueueDate: $should_rotate", {
 
   bq <- BackupQueueDate$new(tf)
   bq$push_backup(now = "2019-01-01")
-  on.exit(bq$prune(0), add = TRUE, after = FALSE)
+  on.exit({
+    bq$prune(0)
+    file.remove(tf)
+  })
 
   expect_false(bq$should_rotate("0.5kb", age = "1 year", now = "2019-12-31"))
   expect_true(bq$should_rotate("0.5kb", age = "1 year", now = "2020-01-01"))
