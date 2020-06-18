@@ -1,6 +1,9 @@
 # rotor (dev version)
 
 * Improved some error messages
+* Added `rotate_rds()`, `rotate_rds_time()`, and `rotate_rds_date()` as a
+  replacement for `base::saveRDS()` that supports creating backups instead of
+  just overwriting the destination file.
 
 
 # rotor 0.2.4

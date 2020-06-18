@@ -1,7 +1,7 @@
 #' An R6 class for managing backups
 #'
 #' @description
-#' `BackupQueue` & co are part of the [R6][R6::R6] API of **rotor**. They are
+#' `BackupQueue` & co are part of the [R6][R6::R6Class] API of **rotor**. They are
 #' used internally by [rotate()] and related functions and are not designed
 #' for interactive use. Rather, if you are a package developer and want to
 #' integrate rotor in one of your package, the `BackupQueue` subclasses give

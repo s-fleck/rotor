@@ -7,7 +7,7 @@
 \alias{BackupQueueDate}
 \title{An R6 class for managing backups}
 \description{
-\code{BackupQueue} & co are part of the \link[R6:R6]{R6} API of \strong{rotor}. They are
+\code{BackupQueue} & co are part of the \link[R6:R6Class]{R6} API of \strong{rotor}. They are
 used internally by \code{\link[=rotate]{rotate()}} and related functions and are not designed
 for interactive use. Rather, if you are a package developer and want to
 integrate rotor in one of your package, the \code{BackupQueue} subclasses give
