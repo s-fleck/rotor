@@ -178,3 +178,12 @@ non-base dependencies:
   
 Both packages have no transitive dependencies (i.e they do not depend on 
 anything outside of base R)
+
+
+Optional dependencies:
+* [digest](https://github.com/eddelbuettel/digest) and 
+  [uuid](https://CRAN.R-project.org/package=uuid ) for generating
+  hashes when using Cache. If storage keys for cache files are set manually,
+  none of these packages are required.
+* [zip](https://CRAN.R-project.org/package=zip) as an alternative to the 
+  integrated zip function in R. 

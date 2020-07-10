@@ -4,6 +4,7 @@
 * Added `rotate_rds()`, `rotate_rds_time()`, and `rotate_rds_date()` as a
   replacement for `base::saveRDS()` that supports creating backups instead of
   just overwriting the destination file.
+* added `Cache`, an R6 class for managing cache directories
 
 
 # rotor 0.2.4
