@@ -73,6 +73,7 @@ Cache <- R6::R6Class(
         " custom `$hashfun` that can return vectors of length > 1?"
       )
       saveRDS(x, file = file.path(self$dir, key))
+      self$prune()
       key
     },
 
@@ -107,18 +108,18 @@ Cache <- R6::R6Class(
       max_size  = self$max_size,
       max_age   = self$max_age
     ){
-      assert(is.null(max_files) || is_n0(max_files))
+      assert(is.null(max_files) || is.infinite(max_files) || is_n0(max_files))
       files <- self$files
       files <- files[order(files$mtime), ]
 
       rem <- list()
 
-      if (!is.null(max_age)){
+      if (!is.null(max_age) && !is.infinite(max_age)){
         max_age  <- parse_datetime(max_age)
         rem$age <- NULL
       }
 
-      if (!is.null(max_size)){
+      if (!is.null(max_size) && !is.infinite(max_size)){
         max_size  <- parse_size(max_size)
         files <- files[order(files$mtime, decreasing = TRUE), ]
         files$cumsize <- cumsum(files$size)
@@ -199,7 +200,7 @@ Cache <- R6::R6Class(
     set_max_age = function(
       x
     ){
-      if (is.infinite(x))
+      if (!is.null(x))
         x <- NULL
 
       assert(is.null(x) || is_parsable_rotation_interval(x))

@@ -69,8 +69,8 @@ assert_pure_BackupQueue <- function(
 
 is_parsable_rotation_interval <- function(x){
   is_scalar(x) && (
-    is_integerish(x) ||
     is.infinite(x) ||
+    is_integerish(x) ||
     grepl("\\d+\\syear|quarter|month|week|day", x)
   )
 }

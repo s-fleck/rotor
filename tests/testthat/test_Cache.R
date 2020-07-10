@@ -115,3 +115,35 @@ test_that("pruning by size works", {
   expect_identical(cache$read(cache$files$key[[2]]), cars)
   cache$purge
 })
+
+
+
+
+test_that("Inf max_* do not prunes", {
+  td <- file.path(tempdir(), "cache-test")
+  on.exit(unlink(td, recursive = TRUE))
+
+  # When using a real hash function as hashfun, identical objects will only
+  # be added to the cache once
+  cache <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate())
+  cache$push(iris)
+  Sys.sleep(0.1)
+  cache$push(iris)
+  Sys.sleep(0.1)
+  cache$push(iris)
+  Sys.sleep(0.1)
+  cache$push(iris)
+  Sys.sleep(0.1)
+  cache$push(iris)
+  Sys.sleep(0.1)
+  cache$push(cars)
+  expect_identical(cache$n_files, 6L)
+
+  cache$prune(max_files = Inf, max_age = Inf, max_size = Inf)
+  expect_identical(cache$n_files, 6L)
+
+  cache$prune(max_files = NULL, max_age = NULL, max_size = NULL)
+  expect_identical(cache$n_files, 6L)
+
+  cache$purge()
+})
