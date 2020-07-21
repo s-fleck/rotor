@@ -2,16 +2,13 @@
 
 #' A simple file system cache
 #'
+#' An [R6::R6Class] for managing a folder that contains temporary cache files.
+#'
 #' @export
 Cache <- R6::R6Class(
   "Cache",
   cloneable = FALSE,
   public = list(
-  #' @param dir
-  #' @param max_files
-  #' @param max_size
-  #' @param max_age
-  #' @param compression
   #'
   #' @param create_dir `logical` scalar. If `TRUE` `dir` is created if it
   #'   does not exist.
@@ -72,11 +69,13 @@ Cache <- R6::R6Class(
         "`key` must be a scalar, not ", preview_object(key), ". Did you set a",
         " custom `$hashfun` that can return vectors of length > 1?"
       )
-      saveRDS(x, file = file.path(self$dir, key))
+      saveRDS(x, file = file.path(self$dir, key), compress = self$compression)
       self$prune()
       key
     },
 
+    #' @description read a cached file
+    #' @param key `character` scalar. key of the cached file to read.
     read = function(
       key
     ){
@@ -88,6 +87,8 @@ Cache <- R6::R6Class(
       readRDS(file.path(self$dir, key))
     },
 
+    #' @description remove a single file from the cache
+    #' @param key `character` scalar. key of the cached file to remove
     remove = function(
       key
     ){
@@ -95,6 +96,8 @@ Cache <- R6::R6Class(
       invisible(NULL)
     },
 
+    #' @description Read anr remove a single file from the cache
+    #' @param key `character` scalar. key of the cached file to read/remove
     pop = function(
       key
     ){
@@ -103,6 +106,9 @@ Cache <- R6::R6Class(
       res
     },
 
+    #' @description Prune the cache
+    #' @param max_files,max_size,max_age see section Active Bindings.
+    #' @param now a `POSIXct` datetime scalar. The current time (for max_age)
     prune = function(
       max_files = self$max_files,
       max_size  = self$max_size,
@@ -144,6 +150,7 @@ Cache <- R6::R6Class(
       self
     },
 
+    #' @description purge the cache (remove all cached files)
     purge = function(
     ){
       unlink(self$files$path)
@@ -230,7 +237,6 @@ Cache <- R6::R6Class(
     set_compression = function(
       x
     ){
-      assert_valid_compression(x)
       private[[".compression"]] <- x
       self
     },
@@ -256,20 +262,42 @@ Cache <- R6::R6Class(
       self$set_dir(dir, create = FALSE)
     },
 
+    #' @field max_files see the `compress` argument of [base::saveRDS()].
+    #' **Note**: this differs from the `$compress` argument of [rotate()].
     compression = function(){
       get(".compression", envir = private)
     },
 
+    #' @field max_files `integer` scalar: maximum number of files to keep in
+    #' the cache
     max_files = function(){
       get(".max_files", envir = private)
     },
 
-    max_size = function(){
-      get(".max_size", envir = private)
+    #' @field max_size size scalar `integer`, `character` or `Inf`. Delete
+    #'   cached files (starting with the oldest) until the total size of the
+    #'   cache is below `max_size`. `Integers` are interpreted as bytes. You
+    #'   can pass `character` vectors that contain a file size suffix like `1k`
+    #'   (kilobytes), `3M` (megabytes), `4G` (gigabytes), `5T` (terabytes). Instead
+    #'   of these short forms you can also be explicit and use the IEC suffixes
+    #'   `KiB`, `MiB`, `GiB`, `TiB`. In Both cases `1` kilobyte is `1024` bytes, 1
+    #'   `megabyte` is `1024` kilobytes, etc... .
+    max_size = function(x){
+      if (missing(x))
+        get(".max_size", envir = private)
+
+      self$set_max_size(x)
     },
 
-    max_age = function(){
-      get(".max_age", envir = private)
+    #' @field max_age
+    #'  - a `Date` scalar: Remove all backups before this date
+    #' - a `character` scalar representing a Date in ISO format (e.g. `"2019-12-31"`)
+    #' - a `character` scalar representing an Interval in the form `"<number> <interval>"` (see [?rotate()])
+    max_age = function(x){
+      if (missing(x))
+        get(".max_age", envir = private)
+
+      self$set_max_age(x)
     },
 
 

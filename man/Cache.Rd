@@ -8,6 +8,9 @@ A simple file system cache
 
 A simple file system cache
 }
+\details{
+An \link[R6:R6Class]{R6::R6Class} for managing a folder that contains temporary cache files.
+}
 \examples{
 
 ## ------------------------------------------------
@@ -40,6 +43,27 @@ unlink(td, recursive = TRUE)
 \describe{
 \item{\code{dir}}{a \code{character} scalar. path of the directory in which to store
 the cache files}
+
+\item{\code{max_files}}{see the \code{compress} argument of \code{\link[base:readRDS]{base::saveRDS()}}.
+\strong{Note}: this differs from the \verb{$compress} argument of \code{\link[=rotate]{rotate()}}.}
+
+\item{\code{max_files}}{\code{integer} scalar: maximum number of files to keep in
+the cache}
+
+\item{\code{max_size}}{size scalar \code{integer}, \code{character} or \code{Inf}. Delete
+cached files (starting with the oldest) until the total size of the
+cache is below \code{max_size}. \code{Integers} are interpreted as bytes. You
+can pass \code{character} vectors that contain a file size suffix like \verb{1k}
+(kilobytes), \verb{3M} (megabytes), \verb{4G} (gigabytes), \verb{5T} (terabytes). Instead
+of these short forms you can also be explicit and use the IEC suffixes
+\code{KiB}, \code{MiB}, \code{GiB}, \code{TiB}. In Both cases \code{1} kilobyte is \code{1024} bytes, 1
+\code{megabyte} is \code{1024} kilobytes, etc... .}
+
+\item{\code{max_age}}{\itemize{
+\item a \code{Date} scalar: Remove all backups before this date
+\item a \code{character} scalar representing a Date in ISO format (e.g. \code{"2019-12-31"})
+\item a \code{character} scalar representing an Interval in the form \code{"<number> <interval>"} (see \code{\link[=?rotate]{?rotate()}})
+}}
 
 \item{\code{hashfun}}{\code{NULL} or a \code{function} to generate a unique hash from the
 object to be cached (see example). The hash \emph{must} be a text string
@@ -86,8 +110,6 @@ a storage key must be supplied manually in \code{cache$push()}.}
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{compression}}{}
-
 \item{\code{create_dir}}{\code{logical} scalar. If \code{TRUE} \code{dir} is created if it
 does not exist.}
 }
@@ -147,33 +169,58 @@ a \code{character} scalar: the key of the newly added object
 \if{html}{\out{<a id="method-read"></a>}}
 \if{latex}{\out{\hypertarget{method-read}{}}}
 \subsection{Method \code{read()}}{
+read a cached file
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$read(key)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{key}}{\code{character} scalar. key of the cached file to read.}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-remove"></a>}}
 \if{latex}{\out{\hypertarget{method-remove}{}}}
 \subsection{Method \code{remove()}}{
+remove a single file from the cache
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$remove(key)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{key}}{\code{character} scalar. key of the cached file to remove}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-pop"></a>}}
 \if{latex}{\out{\hypertarget{method-pop}{}}}
 \subsection{Method \code{pop()}}{
+Read anr remove a single file from the cache
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$pop(key)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{key}}{\code{character} scalar. key of the cached file to read/remove}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-prune"></a>}}
 \if{latex}{\out{\hypertarget{method-prune}{}}}
 \subsection{Method \code{prune()}}{
+Prune the cache
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$prune(
   max_files = self$max_files,
@@ -183,11 +230,21 @@ a \code{character} scalar: the key of the newly added object
 )}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{max_files, max_size, max_age}}{see section Active Bindings.}
+
+\item{\code{now}}{a \code{POSIXct} datetime scalar. The current time (for max_age)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-purge"></a>}}
 \if{latex}{\out{\hypertarget{method-purge}{}}}
 \subsection{Method \code{purge()}}{
+purge the cache (remove all cached files)
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$purge()}\if{html}{\out{</div>}}
 }

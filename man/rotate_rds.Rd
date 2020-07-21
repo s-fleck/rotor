@@ -70,10 +70,8 @@ rotate_rds_date(
 In addition for timestamped backups the following value are supported:
 \itemize{
 \item a \code{Date} scalar: Remove all backups before this date
-\item a \code{character} scalar representing a Date in ISO format
-(e.g. \code{"2019-12-31"})
-\item a \code{character} scalar representing an Interval in the form
-\code{"<number> <interval>"} (see below for more info)
+\item a \code{character} scalar representing a Date in ISO format (e.g. \code{"2019-12-31"})
+\item a \code{character} scalar representing an Interval in the form \code{"<number> <interval>"} (see below for more info)
 }}
     \item{\code{size}}{scalar \code{integer}, \code{character} or \code{Inf}. Backup/rotate only if
 \code{file} is larger than this size. \code{Integers} are interpreted as bytes. You

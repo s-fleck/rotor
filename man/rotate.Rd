@@ -116,10 +116,8 @@ of these short forms you can also be explicit and use the IEC suffixes
 In addition for timestamped backups the following value are supported:
 \itemize{
 \item a \code{Date} scalar: Remove all backups before this date
-\item a \code{character} scalar representing a Date in ISO format
-(e.g. \code{"2019-12-31"})
-\item a \code{character} scalar representing an Interval in the form
-\code{"<number> <interval>"} (see below for more info)
+\item a \code{character} scalar representing a Date in ISO format (e.g. \code{"2019-12-31"})
+\item a \code{character} scalar representing an Interval in the form \code{"<number> <interval>"} (see below for more info)
 }}
 
 \item{compression}{Whether or not backups should be compressed

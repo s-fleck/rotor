@@ -40,10 +40,8 @@
 #'
 #'   In addition for timestamped backups the following value are supported:
 #'   - a `Date` scalar: Remove all backups before this date
-#'   - a `character` scalar representing a Date in ISO format
-#'     (e.g. `"2019-12-31"`)
-#'   - a `character` scalar representing an Interval in the form
-#'     `"<number> <interval>"` (see below for more info)
+#'   - a `character` scalar representing a Date in ISO format (e.g. `"2019-12-31"`)
+#'   - a `character` scalar representing an Interval in the form `"<number> <interval>"` (see below for more info)
 #'
 #' @param size scalar `integer`, `character` or `Inf`. Backup/rotate only if
 #'   `file` is larger than this size. `Integers` are interpreted as bytes. You
