@@ -106,17 +106,23 @@ Cache <- R6::R6Class(
     prune = function(
       max_files = self$max_files,
       max_size  = self$max_size,
-      max_age   = self$max_age
+      max_age   = self$max_age,
+      now = Sys.time()
     ){
       assert(is.null(max_files) || is.infinite(max_files) || is_n0(max_files))
       files <- self$files
       files <- files[order(files$mtime), ]
+      now <- as.Date(now)
 
       rem <- list()
 
       if (!is.null(max_age) && !is.infinite(max_age)){
-        max_age  <- parse_datetime(max_age)
-        rem$age <- NULL
+        rem$age  <- list(path = select_prune_files_by_age(
+          path = files$path,
+          timestamp = files$mtime,
+          max_age = max_age,
+          now = now
+        ))
       }
 
       if (!is.null(max_size) && !is.infinite(max_size)){
@@ -344,3 +350,52 @@ EMPTY_CACHE_INDEX <-
     row.names = integer(0),
     class = "data.frame"
   )
+
+
+
+
+select_prune_files_by_age <- function(
+  path,
+  timestamp,
+  max_age,
+  now
+){
+  assert(is.character(path))
+  assert(is_POSIXct(timestamp))
+  assert(is_Date(now))
+  assert(is_equal_length(path, timestamp))
+
+  if (is_parsable_date(max_age)){
+    limit     <- parse_date(max_age)
+    to_remove <- path[as.Date(as.character(timestamp)) < limit]
+
+  } else if (is_parsable_datetime(max_age)){
+    limit     <- parse_datetime(max_age)
+    to_remove <- path[timestamp < limit]
+
+  } else if (is_parsable_rotation_interval(max_age)){
+    max_age <- parse_rotation_interval(max_age)
+    now <- as.Date(now)
+
+    if (identical(max_age[["unit"]], "year")){
+      limit <- dint::first_of_year(dint::get_year(now) - max_age$value + 1L)
+
+    } else if (identical(max_age[["unit"]], "quarter")){
+      limit <- dint::first_of_quarter(dint::as_date_yq(now) - max_age$value + 1L)
+
+    } else if (identical(max_age[["unit"]], "month")) {
+      limit <- dint::first_of_month(dint::as_date_ym(now) - max_age$value + 1L)
+
+    } else if (identical(max_age[["unit"]], "week")){
+      limit <- dint::first_of_isoweek(dint::as_date_yw(now) - max_age$value + 1L)
+
+    } else if (identical(max_age[["unit"]], "day")){
+      limit <- as.Date(now) - max_age$value + 1L
+    }
+
+    to_remove <- path[as.Date(as.character(timestamp)) < limit]
+  } else {
+    stop("Illegal `max_age`")
+  }
+  to_remove
+}

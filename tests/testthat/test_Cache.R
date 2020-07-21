@@ -62,7 +62,7 @@ test_that("setting hash functions work", {
 
 
 
-test_that("pruning works", {
+test_that("pruning works by number of files works", {
   td <- file.path(tempdir(), "cache-test")
   on.exit(unlink(td, recursive = TRUE))
 
@@ -146,4 +146,81 @@ test_that("Inf max_* do not prunes", {
   expect_identical(cache$n_files, 6L)
 
   cache$purge()
+})
+
+
+
+
+test_that("pruning by age works", {
+  td <- file.path(tempdir(), "cache-test")
+  on.exit(unlink(td, recursive = TRUE))
+
+
+  # create mock class that always
+  MockCache <-  R6::R6Class(
+    inherit = Cache,
+
+    public = list(
+      mock_timestamp = NULL
+    ),
+
+    active = list(
+      files = function(){
+        files <- list.files(self$dir, full.names = TRUE)
+
+        if (!length(files)){
+          return(EMPTY_CACHE_INDEX)
+        }
+
+        finfo <- file.info(files)
+
+        res <- cbind(
+          data.frame(path = rownames(finfo), stringsAsFactors = FALSE),
+          data.frame(key = basename(rownames(finfo)), stringsAsFactors = FALSE),
+          finfo
+        )
+
+        if (!is.null(self$mock_timestamp)){
+          assert(length(self$mock_timestamp) >= nrow(res))
+          res$atime <- res$ctime <- res$mtime <- self$mock_timestamp[1:nrow(res)]
+        }
+
+        row.names(res) <- NULL
+
+        res[order(res$mtime), ]
+      }
+    )
+  )
+
+  cache <- MockCache$new(td, hashfun = function(x) uuid::UUIDgenerate())
+  on.exit(cache$purge, add = TRUE)
+  cache$push(iris)
+  Sys.sleep(0.1)
+  cache$push(iris)
+  Sys.sleep(0.1)
+  cache$push(iris)
+  Sys.sleep(0.1)
+  cache$push(iris)
+  Sys.sleep(0.1)
+  cache$push(iris)
+  Sys.sleep(0.1)
+
+  cache$mock_timestamp <- as.POSIXct(c(
+    "2020-01-01",
+    "2020-01-02",
+    "2020-01-03",
+    "2020-01-04",
+    "2020-01-05"
+  ))
+  keep <- cache$files$key[2:5]
+  cache$prune(max_age = "2020-01-02")
+  expect_setequal(cache$files$key, keep)
+
+  cache$mock_timestamp <- as.POSIXct(c(
+    Sys.Date() - 0:4
+  ))
+
+  keep <- cache$files$key[3:4]
+  cache$prune(max_age = "2 days", now = max(cache$files$mtime))
+  expect_setequal(cache$files$key, keep)
 })
