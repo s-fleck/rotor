@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 # rotor
 
 <!-- badges: start -->
-[![Travis build status](https://travis-ci.org/s-fleck/rotor.svg?branch=master)](https://travis-ci.org/s-fleck/rotor)
+[![Travis build status](https://travis-ci.com/s-fleck/rotor.svg?branch=master)](https://travis-ci.com/s-fleck/rotor)
 [![Lifecycle: maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test coverage](https://codecov.io/gh/s-fleck/rotor/branch/master/graph/badge.svg)](https://codecov.io/gh/s-fleck/rotor?branch=master)
 [![CRAN status](https://www.r-pkg.org/badges/version/rotor)](https://cran.r-project.org/package=rotor)

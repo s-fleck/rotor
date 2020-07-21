@@ -6,7 +6,7 @@
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.org/s-fleck/rotor.svg?branch=master)](https://travis-ci.org/s-fleck/rotor)
+status](https://travis-ci.com/s-fleck/rotor.svg?branch=master)](https://travis-ci.com/s-fleck/rotor)
 [![Lifecycle:
 maturing](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
 [![Codecov test
@@ -83,8 +83,8 @@ backup(tf, compression = TRUE)
 
 # display backups of a file
 list_backups(tf)  
-#> [1] "/tmp/RtmpTB9vY3/rotor/mylogfile.1.log.zip"
-#> [2] "/tmp/RtmpTB9vY3/rotor/mylogfile.2.log"
+#> [1] "/tmp/RtmpdTEt4s/rotor/mylogfile.1.log.zip"
+#> [2] "/tmp/RtmpdTEt4s/rotor/mylogfile.2.log"
 ```
 
 `rotate()` also backs up a file, but replaces the original file with an
@@ -93,9 +93,9 @@ empty one.
 ``` r
 rotate(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmpTB9vY3/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmpTB9vY3/rotor/mylogfile.2.log.zip"
-#> [3] "/tmp/RtmpTB9vY3/rotor/mylogfile.3.log"
+#> [1] "/tmp/RtmpdTEt4s/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmpdTEt4s/rotor/mylogfile.2.log.zip"
+#> [3] "/tmp/RtmpdTEt4s/rotor/mylogfile.3.log"
 
 # the original file is now empty
 readLines(tf)
@@ -118,10 +118,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/RtmpTB9vY3/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmpTB9vY3/rotor/mylogfile.2.log"    
-#> [3] "/tmp/RtmpTB9vY3/rotor/mylogfile.3.log"    
-#> [4] "/tmp/RtmpTB9vY3/rotor/mylogfile.4.log.zip"
+#> [1] "/tmp/RtmpdTEt4s/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmpdTEt4s/rotor/mylogfile.2.log"    
+#> [3] "/tmp/RtmpdTEt4s/rotor/mylogfile.3.log"    
+#> [4] "/tmp/RtmpdTEt4s/rotor/mylogfile.4.log.zip"
 ```
 
 We can also use `prune_backups()` to delete old backups. Other than
@@ -141,8 +141,7 @@ datetime-stamp by default (`yyyy-mm-dd--hh-mm-ss`). The format of the
 timestamp can be modified with a subset of the formatting tokens
 understood by `strftime()` (within certain restrictions). Backups
 created with both functions are compatible with each other (but not with
-those created with
-`backup_index()`).
+those created with `backup_index()`).
 
 ``` r
 # be default backup_date() only makes a backup if the last backups is younger
@@ -155,29 +154,29 @@ backup_time(tf, format = "%Y%m%dT%H%M%S")  # ISO 8601 compatible
 
 backup_info(tf)
 #>                                                       path      name
-#> 1  /tmp/RtmpTB9vY3/rotor/mylogfile.2020-01-02_10-05-52.log mylogfile
-#> 2 /tmp/RtmpTB9vY3/rotor/mylogfile.2020-01-02--10-05-52.log mylogfile
-#> 5      /tmp/RtmpTB9vY3/rotor/mylogfile.20200102T100552.log mylogfile
-#> 3           /tmp/RtmpTB9vY3/rotor/mylogfile.2020-01-02.log mylogfile
-#> 4              /tmp/RtmpTB9vY3/rotor/mylogfile.2020-01.log mylogfile
+#> 1  /tmp/RtmpdTEt4s/rotor/mylogfile.2020-07-21_07-26-46.log mylogfile
+#> 2 /tmp/RtmpdTEt4s/rotor/mylogfile.2020-07-21--07-26-46.log mylogfile
+#> 5      /tmp/RtmpdTEt4s/rotor/mylogfile.20200721T072646.log mylogfile
+#> 3           /tmp/RtmpdTEt4s/rotor/mylogfile.2020-07-21.log mylogfile
+#> 4              /tmp/RtmpdTEt4s/rotor/mylogfile.2020-07.log mylogfile
 #>                    sfx ext size isdir mode               mtime
-#> 1  2020-01-02_10-05-52 log   26 FALSE  664 2020-01-02 10:05:52
-#> 2 2020-01-02--10-05-52 log   26 FALSE  664 2020-01-02 10:05:52
-#> 5      20200102T100552 log   26 FALSE  664 2020-01-02 10:05:52
-#> 3           2020-01-02 log   26 FALSE  664 2020-01-02 10:05:52
-#> 4              2020-01 log   26 FALSE  664 2020-01-02 10:05:52
-#>                 ctime               atime  uid  gid uname grname
-#> 1 2020-01-02 10:05:52 2020-01-02 10:05:52 1032 1032 fleck  fleck
-#> 2 2020-01-02 10:05:52 2020-01-02 10:05:52 1032 1032 fleck  fleck
-#> 5 2020-01-02 10:05:52 2020-01-02 10:05:52 1032 1032 fleck  fleck
-#> 3 2020-01-02 10:05:52 2020-01-02 10:05:52 1032 1032 fleck  fleck
-#> 4 2020-01-02 10:05:52 2020-01-02 10:05:52 1032 1032 fleck  fleck
+#> 1  2020-07-21_07-26-46 log   26 FALSE  664 2020-07-21 07:26:46
+#> 2 2020-07-21--07-26-46 log   26 FALSE  664 2020-07-21 07:26:46
+#> 5      20200721T072646 log   26 FALSE  664 2020-07-21 07:26:46
+#> 3           2020-07-21 log   26 FALSE  664 2020-07-21 07:26:46
+#> 4              2020-07 log   26 FALSE  664 2020-07-21 07:26:46
+#>                 ctime               atime   uid   gid uname grname
+#> 1 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
+#> 2 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
+#> 5 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
+#> 3 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
+#> 4 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
 #>             timestamp
-#> 1 2020-01-02 10:05:52
-#> 2 2020-01-02 10:05:52
-#> 5 2020-01-02 10:05:52
-#> 3 2020-01-02 00:00:00
-#> 4 2020-01-01 00:00:00
+#> 1 2020-07-21 07:26:46
+#> 2 2020-07-21 07:26:46
+#> 5 2020-07-21 07:26:46
+#> 3 2020-07-21 00:00:00
+#> 4 2020-07-01 00:00:00
 ```
 
 If we examine the “timestamp” column in the example above, we see that
@@ -216,3 +215,11 @@ two non-base dependencies:
 
 Both packages have no transitive dependencies (i.e they do not depend on
 anything outside of base R)
+
+Optional dependencies: \*
+[digest](https://github.com/eddelbuettel/digest) and
+[uuid](https://CRAN.R-project.org/package=uuid) for generating hashes
+when using Cache. If storage keys for cache files are set manually, none
+of these packages are required. \*
+[zip](https://CRAN.R-project.org/package=zip) as an alternative to the
+integrated zip function in R.
