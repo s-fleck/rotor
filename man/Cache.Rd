@@ -178,7 +178,8 @@ a \code{character} scalar: the key of the newly added object
 \if{html}{\out{<div class="r">}}\preformatted{Cache$prune(
   max_files = self$max_files,
   max_size = self$max_size,
-  max_age = self$max_age
+  max_age = self$max_age,
+  now = Sys.time()
 )}\if{html}{\out{</div>}}
 }
 

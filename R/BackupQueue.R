@@ -518,39 +518,12 @@ BackupQueueDateTime <- R6::R6Class(
         to_remove <- backups[(max_backups + 1):length(backups)]
 
       } else {
-        # prune based on dates and intervals
-        if (is_parsable_date(max_backups)){
-          limit     <- parse_date(max_backups)
-          to_remove <- self$backups$path[as.Date(as.character(self$backups$timestamp)) < limit]
-
-        } else if (is_parsable_datetime(max_backups)){
-          limit     <- parse_datetime(max_backups)
-          to_remove <- self$backups$path[self$backups$timestamp < limit]
-
-        } else if (is_parsable_rotation_interval(max_backups)){
-          max_backups <- parse_rotation_interval(max_backups)
-          last_rotation <- as.Date(as.character(self$last_rotation))
-
-          if (identical(max_backups[["unit"]], "year")){
-            limit <- dint::first_of_year(dint::get_year(last_rotation) - max_backups$value + 1L)
-
-          } else if (identical(max_backups[["unit"]], "quarter")){
-            limit <- dint::first_of_quarter(dint::as_date_yq(last_rotation) - max_backups$value + 1L)
-
-          } else if (identical(max_backups[["unit"]], "month")) {
-            limit <- dint::first_of_month(dint::as_date_ym(last_rotation) - max_backups$value + 1L)
-
-          } else if (identical(max_backups[["unit"]], "week")){
-            limit <- dint::first_of_isoweek(dint::as_date_yw(last_rotation) - max_backups$value + 1L)
-
-          } else if (identical(max_backups[["unit"]], "day")){
-            limit <- as.Date(last_rotation) - max_backups$value + 1L
-          }
-
-          to_remove <- self$backups$path[as.Date(as.character(self$backups$timestamp)) < limit]
-        } else {
-          stop("Illegal `max_backups`")
-        }
+        to_remove <- select_prune_files_by_age(
+          self$backups$path,
+          self$backups$timestamp,
+          max_age = max_backups,
+          now = as.Date(as.character(self$last_rotation))
+        )
       }
 
       file_remove(to_remove)

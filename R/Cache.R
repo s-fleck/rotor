@@ -395,7 +395,7 @@ select_prune_files_by_age <- function(
 
     to_remove <- path[as.Date(as.character(timestamp)) < limit]
   } else {
-    stop("Illegal `max_age`")
+    stop(value_error(paste0(preview_object(max_age), " is not a valid timestamp or interval. See ?rotate_time for more info.")))
   }
   to_remove
 }

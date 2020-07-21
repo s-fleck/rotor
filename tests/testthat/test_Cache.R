@@ -223,4 +223,9 @@ test_that("pruning by age works", {
   keep <- cache$files$key[3:4]
   cache$prune(max_age = "2 days", now = max(cache$files$mtime))
   expect_setequal(cache$files$key, keep)
+
+  expect_error(
+    cache$prune(max_age = "2 foos", now = max(cache$files$mtime)),
+    class = "value_error"
+  )
 })
