@@ -264,17 +264,19 @@ Cache <- R6::R6Class(
 
     #' @field max_files see the `compress` argument of [base::saveRDS()].
     #' **Note**: this differs from the `$compress` argument of [rotate()].
-    compression = function(){
-      get(".compression", envir = private)
+    compression = function(x){
+      if (missing(x)) return(get(".compression", envir = private))
+      self$set_compression(x)
     },
 
     #' @field max_files `integer` scalar: maximum number of files to keep in
     #' the cache
-    max_files = function(){
-      get(".max_files", envir = private)
+    max_files = function(x){
+      if (missing(x)) return(get(".max_files", envir = private))
+      self$set_max_files(x)
     },
 
-    #' @field max_size size scalar `integer`, `character` or `Inf`. Delete
+    #' @field max_size scalar `integer`, `character` or `Inf`. Delete
     #'   cached files (starting with the oldest) until the total size of the
     #'   cache is below `max_size`. `Integers` are interpreted as bytes. You
     #'   can pass `character` vectors that contain a file size suffix like `1k`
@@ -283,20 +285,16 @@ Cache <- R6::R6Class(
     #'   `KiB`, `MiB`, `GiB`, `TiB`. In Both cases `1` kilobyte is `1024` bytes, 1
     #'   `megabyte` is `1024` kilobytes, etc... .
     max_size = function(x){
-      if (missing(x))
-        get(".max_size", envir = private)
-
+      if (missing(x)) return(get(".max_size", envir = private))
       self$set_max_size(x)
     },
 
     #' @field max_age
-    #'  - a `Date` scalar: Remove all backups before this date
+    #' - a `Date` scalar: Remove all backups before this date
     #' - a `character` scalar representing a Date in ISO format (e.g. `"2019-12-31"`)
     #' - a `character` scalar representing an Interval in the form `"<number> <interval>"` (see [?rotate()])
     max_age = function(x){
-      if (missing(x))
-        get(".max_age", envir = private)
-
+      if (missing(x)) return(get(".max_age", envir = private))
       self$set_max_age(x)
     },
 
