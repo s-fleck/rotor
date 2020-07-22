@@ -39,7 +39,7 @@ Cache <- R6::R6Class(
       max_files = Inf,
       max_size  = Inf,
       max_age   = Inf,
-      compression = FALSE,
+      compression = TRUE,
       hashfun  = digest::digest,
       create_dir = TRUE
     ){

@@ -108,7 +108,6 @@ test_that("pruning by size works", {
 
   expect_true(cache$size > 2048)
   cache$prune(max_size = "2kb")
-  cache$files
   expect_true(cache$size <= 2048)
 
   cache$prune(max_files = 2)
