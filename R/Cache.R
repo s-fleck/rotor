@@ -1,8 +1,11 @@
 # CacheQueue --------------------------------------------------------------
 
-#' A simple file system cache
+#' An R6 class for managing a persistent file-based cache
 #'
-#' An [R6::R6Class] for managing a folder that contains temporary cache files.
+#' `Cache` provides an [R6][R6::R6Class] API for managing a folder that
+#' contains cached \R objects as `.rds` files. `Cache` supports
+#' automatic removal of old files if the the cache exceeds a predetermined
+#' number of files, total size, or if the files exceed a certain age.
 #'
 #' @export
 Cache <- R6::R6Class(

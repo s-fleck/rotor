@@ -2,14 +2,17 @@
 % Please edit documentation in R/Cache.R
 \name{Cache}
 \alias{Cache}
-\title{A simple file system cache}
+\title{An R6 class for managing a persistent file-based cache}
 \description{
-A simple file system cache
+An R6 class for managing a persistent file-based cache
 
-A simple file system cache
+An R6 class for managing a persistent file-based cache
 }
 \details{
-An \link[R6:R6Class]{R6::R6Class} for managing a folder that contains temporary cache files.
+\code{Cache} provides an \link[R6:R6Class]{R6} API for managing a folder that
+contains cached \R objects as \code{.rds} files. \code{Cache} supports
+automatic removal of old files if the the cache exceeds a predetermined
+number of files, total size, or if the files exceed a certain age.
 }
 \examples{
 
