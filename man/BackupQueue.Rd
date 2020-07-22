@@ -2,122 +2,112 @@
 % Please edit documentation in R/BackupQueue.R
 \name{BackupQueue}
 \alias{BackupQueue}
-\alias{BackupQueueIndex}
-\alias{BackupQueueDateTime}
-\alias{BackupQueueDate}
 \title{An R6 class for managing backups}
 \description{
-\code{BackupQueue} & co are part of the \link[R6:R6Class]{R6} API of \strong{rotor}. They are
-used internally by \code{\link[=rotate]{rotate()}} and related functions and are not designed
+\code{BackupQueue} & co are part of the \link[R6:R6Class]{R6} API of \strong{rotor}. They
+are used internally by \code{\link[=rotate]{rotate()}} and related functions and are not designed
 for interactive use. Rather, if you are a package developer and want to
-integrate rotor in one of your package, the \code{BackupQueue} subclasses give
-you a bit of extra control.
+integrate rotor in one of your package, the \code{BackupQueue} subclasses give you
+a bit of extra control.
 
 As of now, \strong{the R6 API is still experimental and subject to change}.
 }
-\section{Methods}{
-
-
+\section{Active bindings}{
+\if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{pad_index()}}{Pad the indices in the filenames of indexed backups
-to the number of digits of the largest index. Usually does not have to
-be called manually.
+\item{\code{backup_dir}}{\code{character} scalar. Directory in which to place the backups.}
+
+\item{\code{compression}}{(Optional) compression to use \code{compression} argument of \code{\link[=rotate]{rotate()}}.}
+
+\item{\code{max_backups}}{Maximum number/size/age of backups. See \code{max_backups}
+argument of \code{\link[=rotate]{rotate()}}}
+
+\item{\code{has_backups}}{Returns \code{TRUE} if at least one backup of \code{BackupQueue$file}
+exists}
+
+\item{\code{n_backups}}{Returns the number of backups that exist for \code{BackupQueue$file}}
 }
-
-\item{\code{prune()}}{Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{prune_backups()}}}
-
-\item{\verb{push_backup() <BackupQueueIndex>}}{
-Create a new backup with index 1, push back all other indices.
-Always calls \verb{$prune()} before it terminates.
+\if{html}{\out{</div>}}
 }
-
-\item{\verb{push_backup(overwrite = FALSE, now = Sys.time()) <BackupQueueDate> <BackupQueueDateteime>}}{
-Create a new backup with a timestamp. The \code{now} parameter override the
-real system time. If \code{overwrite} is \code{TRUE} existing backups with the
-same filename (i.e timestamp) are overwritten. Always calls
-\verb{$prune()} before it terminates.
-}
-
-\item{\code{backup_dir}, \code{set_backup_dir(x)}}{
-\code{character} scalar. Set a directory in which to place the backups
-}
-
-\item{\code{cache_backups}, \code{set_cache_backups(x)}}{
-\code{TRUE} or \code{FALSE}. If \code{TRUE} (the default) the list of backups is cached,
-if \code{FALSE} it is read from disk every time this appender triggers.
-Caching brings a significant speedup for checking whether to rotate or
-not based on the \code{age} of the last backup, but is only safe if
-there are no other programs/functions (except this appender) interacting
-with the backups.
-}
-
-\item{\code{compression}, \code{set_compression}}{See \code{compression} argument of \code{\link[=rotate]{rotate()}}}
-
-\item{\code{file}, \code{set_file(x)}}{\code{character} scalar. The file to backup/rotate}
-
-\item{\code{fmt}, \code{set_fmt(x)}}{
-\code{character} scalar. See \code{format} argument of \code{\link[=rotate_date]{rotate_date()}}
-}
-
-\item{\code{max_backups}, \code{set_max_backups(x)}}{
-See \code{max_backups} argument of \code{\link[=rotate]{rotate()}}
-}
-
-\item{\verb{should_rotate(size) <BackupQueueIndex>}}{
-Should a file of \code{size} be rotated? See \code{size} argument of \code{\link[=rotate]{rotate()}}
-}
-
-\item{\verb{should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation)  <BackupQueueDate> <BackupQueueDateteime>}}{
-Should a file of \code{size} and \code{age} be rotated? See \code{size} and \code{age}
-arguments of \code{\link[=rotate_date]{rotate_date()}}. \code{now} overrides the current system time,
-`last_rotation`` overrides the date of the last rotation.
-}
-
-\item{\code{update_backups_cache()}}{
-Force update of the backups cache. Only does something if \verb{$cache_backups}
-is \code{TRUE}.
+\section{Methods}{
+\subsection{Public methods}{
+\itemize{
+\item \href{#method-new}{\code{BackupQueue$new()}}
+\item \href{#method-prune}{\code{BackupQueue$prune()}}
+\item \href{#method-print}{\code{BackupQueue$print()}}
+\item \href{#method-set_file}{\code{BackupQueue$set_file()}}
+\item \href{#method-set_backup_dir}{\code{BackupQueue$set_backup_dir()}}
+\item \href{#method-set_compression}{\code{BackupQueue$set_compression()}}
+\item \href{#method-set_max_backups}{\code{BackupQueue$set_max_backups()}}
 }
 }
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-new"></a>}}
+\if{latex}{\out{\hypertarget{method-new}{}}}
+\subsection{Method \code{new()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$new(
+  file,
+  backup_dir = dirname(file),
+  max_backups = Inf,
+  compression = FALSE
+)}\if{html}{\out{</div>}}
 }
 
-\section{Usage}{
-\preformatted{
-x <- BackupQueueIndex$new(file, backup_dir = dirname(file), max_backups = Inf,
-  compression = FALSE)
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-prune"></a>}}
+\if{latex}{\out{\hypertarget{method-prune}{}}}
+\subsection{Method \code{prune()}}{
+Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{prune_backups()}}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$prune(max_backups = self$max_backups)}\if{html}{\out{</div>}}
+}
 
-x <- BackupQueueDate$new(file, backup_dir = dirname(file), max_backups = Inf,
-  compression = FALSE, fmt = "\%Y-\%m-\%d", cache_backups = FALSE)
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-print"></a>}}
+\if{latex}{\out{\hypertarget{method-print}{}}}
+\subsection{Method \code{print()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$print()}\if{html}{\out{</div>}}
+}
 
-x <- BackupQueueDateTime$new(file, backup_dir = dirname(file), max_backups =
-  Inf, compression = FALSE, fmt = "\%Y-\%m-\%d--\%H-\%M-\%S", cache_backups = FALSE)
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_file"></a>}}
+\if{latex}{\out{\hypertarget{method-set_file}{}}}
+\subsection{Method \code{set_file()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_file(x)}\if{html}{\out{</div>}}
+}
 
-x$increment_index(n = 1)
-x$pad_index()
-x$print()
-x$prune(max_backups = self$max_backups)
-x$push_backup()
-x$push_backup(overwrite = FALSE, now = Sys.time())
-x$set_backup_dir(x)
-x$set_cache_backups(x)
-x$set_compression(x)
-x$set_file(x)
-x$set_fmt(x)
-x$set_max_backups(x)
-x$should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation \%||\% file.info(self$file)$ctime, verbose = FALSE)
-x$should_rotate(size, verbose = FALSE)
-x$update_backups_cache()
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_backup_dir"></a>}}
+\if{latex}{\out{\hypertarget{method-set_backup_dir}{}}}
+\subsection{Method \code{set_backup_dir()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_backup_dir(x)}\if{html}{\out{</div>}}
+}
 
-x$backup_dir
-x$backups
-x$cache_backups
-x$compression
-x$file
-x$fmt
-x$has_backups
-x$last_rotation
-x$max_backups
-x$n_backups
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_compression"></a>}}
+\if{latex}{\out{\hypertarget{method-set_compression}{}}}
+\subsection{Method \code{set_compression()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_compression(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_max_backups"></a>}}
+\if{latex}{\out{\hypertarget{method-set_max_backups}{}}}
+\subsection{Method \code{set_max_backups()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_max_backups(x)}\if{html}{\out{</div>}}
+}
 
 }
 }
-

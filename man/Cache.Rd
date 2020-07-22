@@ -50,7 +50,7 @@ the cache files}
 \item{\code{max_files}}{\code{integer} scalar: maximum number of files to keep in
 the cache}
 
-\item{\code{max_size}}{size scalar \code{integer}, \code{character} or \code{Inf}. Delete
+\item{\code{max_size}}{scalar \code{integer}, \code{character} or \code{Inf}. Delete
 cached files (starting with the oldest) until the total size of the
 cache is below \code{max_size}. \code{Integers} are interpreted as bytes. You
 can pass \code{character} vectors that contain a file size suffix like \verb{1k}
@@ -101,7 +101,7 @@ a storage key must be supplied manually in \code{cache$push()}.}
   max_files = Inf,
   max_size = Inf,
   max_age = Inf,
-  compression = FALSE,
+  compression = TRUE,
   hashfun = digest::digest,
   create_dir = TRUE
 )}\if{html}{\out{</div>}}

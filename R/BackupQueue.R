@@ -1,88 +1,16 @@
+# BackupQueue -------------------------------------------------------------
+
 #' An R6 class for managing backups
 #'
 #' @description
-#' `BackupQueue` & co are part of the [R6][R6::R6Class] API of **rotor**. They are
-#' used internally by [rotate()] and related functions and are not designed
+#' `BackupQueue` & co are part of the [R6][R6::R6Class] API of **rotor**. They
+#' are used internally by [rotate()] and related functions and are not designed
 #' for interactive use. Rather, if you are a package developer and want to
-#' integrate rotor in one of your package, the `BackupQueue` subclasses give
-#' you a bit of extra control.
+#' integrate rotor in one of your package, the `BackupQueue` subclasses give you
+#' a bit of extra control.
 #'
 #' As of now, **the R6 API is still experimental and subject to change**.
-#'
-#'
-#' @section Methods:
-#'
-#' \describe{
-#'   \item{`pad_index()`}{Pad the indices in the filenames of indexed backups
-#'     to the number of digits of the largest index. Usually does not have to
-#'     be called manually.
-#'   }
-#'
-#'   \item{`prune()`}{Delete all backups except `max_backups`. See [prune_backups()]}
-#'
-#'   \item{`push_backup() <BackupQueueIndex>`}{
-#'     Create a new backup with index 1, push back all other indices.
-#'     Always calls `$prune()` before it terminates.
-#'   }
-#'
-#'   \item{`push_backup(overwrite = FALSE, now = Sys.time()) <BackupQueueDate> <BackupQueueDateteime>`}{
-#'     Create a new backup with a timestamp. The `now` parameter override the
-#'     real system time. If `overwrite` is `TRUE` existing backups with the
-#'     same filename (i.e timestamp) are overwritten. Always calls
-#'     `$prune()` before it terminates.
-#'   }
-#'
-#'   \item{`backup_dir`, `set_backup_dir(x)`}{
-#'     `character` scalar. Set a directory in which to place the backups
-#'   }
-#'
-#'   \item{`cache_backups`, `set_cache_backups(x)`}{
-#'     `TRUE` or `FALSE`. If `TRUE` (the default) the list of backups is cached,
-#'     if `FALSE` it is read from disk every time this appender triggers.
-#'     Caching brings a significant speedup for checking whether to rotate or
-#'     not based on the `age` of the last backup, but is only safe if
-#'     there are no other programs/functions (except this appender) interacting
-#'     with the backups.
-#'   }
-#'
-#'   \item{`compression`, `set_compression`}{See `compression` argument of [rotate()]}
-#'
-#'   \item{`file`, `set_file(x)`}{`character` scalar. The file to backup/rotate}
-#'
-#'   \item{`fmt`, `set_fmt(x)`}{
-#'     `character` scalar. See `format` argument of [rotate_date()]
-#'   }
-#'
-#'   \item{`max_backups`, `set_max_backups(x)`}{
-#'     See `max_backups` argument of [rotate()]
-#'   }
-#'
-#'   \item{`should_rotate(size) <BackupQueueIndex>`}{
-#'     Should a file of `size` be rotated? See `size` argument of [`rotate()`]
-#'   }
-#'
-#'   \item{`should_rotate(size, age, now = Sys.time(), last_rotation = self$last_rotation)  <BackupQueueDate> <BackupQueueDateteime>`}{
-#'     Should a file of `size` and `age` be rotated? See `size` and `age`
-#'     arguments of [`rotate_date()`]. `now` overrides the current system time,
-#'     `last_rotation`` overrides the date of the last rotation.
-#'   }
-#'
-#'   \item{`update_backups_cache()`}{
-#'     Force update of the backups cache. Only does something if `$cache_backups`
-#'     is `TRUE`.
-#'   }
-#' }
-#'
-#' @eval r6_usage(list(BackupQueueIndex, BackupQueueDate, BackupQueueDateTime))
-#' @name BackupQueue
-#' @aliases BackupQueueIndex BackupQueueDateTime BackupQueueDate
-NULL
-
-
-
-
-# BackupQueue -------------------------------------------------------------
-
+#' @family BackupQueue
 #' @export
 BackupQueue <- R6::R6Class(
   "BackupQueue",
@@ -103,6 +31,7 @@ BackupQueue <- R6::R6Class(
     },
 
 
+    #' @description Delete all backups except `max_backups`. See [prune_backups()].
     prune = function(
       max_backups = self$max_backups
     ){
@@ -214,27 +143,34 @@ BackupQueue <- R6::R6Class(
 
   # ... getters -------------------------------------------------------------
   active = list(
+    #' @feld file `character` scalar. The file to backup/rotate.
     file = function(){
       get(".file", envir = private)
     },
 
+    #' @field backup_dir `character` scalar. Directory in which to place the backups.
     backup_dir = function(){
       get(".backup_dir", envir = private)
     },
 
+    #' @field compression (Optional) compression to use `compression` argument of [rotate()].
     compression = function(){
       get(".compression", envir = private)
     },
 
+    #' @field max_backups Maximum number/size/age of backups. See `max_backups`
+    #'   argument of [rotate()]
     max_backups = function(){
       get(".max_backups", envir = private)
     },
 
+    #' @field has_backups Returns `TRUE` if at least one backup of `BackupQueue$file`
+    #'   exists
     has_backups = function(){
       self$n_backups > 0
     },
 
-
+    #' @field n_backups Returns the number of backups that exist for `BackupQueue$file`
     n_backups = function(){
       nrow(self$backups)
     },
@@ -286,6 +222,11 @@ BackupQueue <- R6::R6Class(
 
 # BackupQueueIndex --------------------------------------------------------
 
+#' An R6 class for managing indexed backups
+#'
+#' As of now, **the R6 API is still experimental and subject to change**.
+#'
+#' @family BackupQueue
 #' @export
 BackupQueueIndex <- R6::R6Class(
   "BackupQueueIndex",
@@ -293,6 +234,8 @@ BackupQueueIndex <- R6::R6Class(
   cloneable = FALSE,
   public = list(
 
+
+    #' @description Create a new index-stamped backup (e.g. \file{logfile.1.log})
     push_backup = function(){
       # generate new filename
         name <- file.path(
@@ -335,6 +278,8 @@ BackupQueueIndex <- R6::R6Class(
     },
 
 
+    #' @descirption Should a file of `size` be rotated? See `size` argument of [`rotate()`]
+    #' @return `TRUE` or `FALSE`
     should_rotate = function(size, verbose = FALSE){
       size <- parse_size(size)
 
@@ -363,6 +308,9 @@ BackupQueueIndex <- R6::R6Class(
     },
 
 
+    #' @description Pad the indices in the filenames of indexed backups
+    #'  to the number of digits of the largest index. Usually does not have to
+    #'  be called manually.
     pad_index = function(){
       if (nrow(self$backups) <= 0)
         return(self)
@@ -436,6 +384,11 @@ BackupQueueIndex <- R6::R6Class(
 
 # BackupQueueDateTime -----------------------------------------------------
 
+#' An R6 class for managing timestamped backups
+#'
+#' As of now, **the R6 API is still experimental and subject to change**.
+#'
+#' @family BackupQueue
 #' @export
 BackupQueueDateTime <- R6::R6Class(
   "BackupQueueDateTime",
@@ -460,7 +413,11 @@ BackupQueueDateTime <- R6::R6Class(
       self$update_backups_cache()
     },
 
-
+    #' @description Create a new time-stamped backup (e.g. \file{logfile.2020-07-22_12-26-29.log})
+    #' @param overwrite `logical` scalar. Overwrite backups with the same
+    #'   fielename (i.e timestamp)?
+    #' @param now `POSIXct` scalar. Can be used as an override meachanism for
+    #'   the current system time if necessary.
     push_backup = function(
       overwrite = FALSE,
       now = Sys.time()
@@ -532,6 +489,13 @@ BackupQueueDateTime <- R6::R6Class(
     },
 
 
+
+    #' @description
+    #' Should a file of `size` and `age` be rotated? See `size` and `age`
+    #' arguments of [`rotate_date()`]. `now` overrides the current system time,
+    #' `last_rotation`` overrides the date of the last rotation.
+    #'
+    #' @return `TRUE` or `FALSE`
     should_rotate = function(
       size,
       age,
@@ -578,6 +542,7 @@ BackupQueueDateTime <- R6::R6Class(
     },
 
 
+    #' @description Force update of the backups cache (only if `$cache_backups == TRUE`).
     update_backups_cache = function(){
       res <- super$backups
 
@@ -638,11 +603,20 @@ BackupQueueDateTime <- R6::R6Class(
 
   # ... getters -------------------------------------------------------------
   active = list(
+
+    #' @field fmt See `format` argument of [rotate_date()]
     fmt = function(){
       get(".fmt", envir = private, mode = "character")
     },
 
 
+    #' `logical` scalar. If `TRUE` (the default) the list of backups is cached,
+    #' if `FALSE` it is read from disk every time this appender triggers.
+    #' Caching brings a significant speedup for checking whether to rotate or
+    #' not based on the `age` of the last backup, but is only safe if there are
+    #' no other programs/functions interacting with the backups. This is only
+    #' advantagous for high frequency file rotation (i.e. several times per
+    #' second)
     cache_backups = function(){
       get(".cache_backups", envir = private, mode = "logical")
     },
@@ -678,6 +652,9 @@ BackupQueueDateTime <- R6::R6Class(
 
 # BackupQueueDate ---------------------------------------------------------
 
+#' An R6 class for managing datestamped backups
+#'
+#' As of now, **the R6 API is still experimental and subject to change**.
 #' @export
 BackupQueueDate <- R6::R6Class(
   inherit = BackupQueueDateTime,

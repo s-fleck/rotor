@@ -83,8 +83,8 @@ backup(tf, compression = TRUE)
 
 # display backups of a file
 list_backups(tf)  
-#> [1] "/tmp/RtmpdTEt4s/rotor/mylogfile.1.log.zip"
-#> [2] "/tmp/RtmpdTEt4s/rotor/mylogfile.2.log"
+#> [1] "/tmp/RtmpOM2N5E/rotor/mylogfile.1.log.zip"
+#> [2] "/tmp/RtmpOM2N5E/rotor/mylogfile.2.log"
 ```
 
 `rotate()` also backs up a file, but replaces the original file with an
@@ -93,9 +93,9 @@ empty one.
 ``` r
 rotate(tf)
 list_backups(tf)
-#> [1] "/tmp/RtmpdTEt4s/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmpdTEt4s/rotor/mylogfile.2.log.zip"
-#> [3] "/tmp/RtmpdTEt4s/rotor/mylogfile.3.log"
+#> [1] "/tmp/RtmpOM2N5E/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmpOM2N5E/rotor/mylogfile.2.log.zip"
+#> [3] "/tmp/RtmpOM2N5E/rotor/mylogfile.3.log"
 
 # the original file is now empty
 readLines(tf)
@@ -118,10 +118,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/RtmpdTEt4s/rotor/mylogfile.1.log"    
-#> [2] "/tmp/RtmpdTEt4s/rotor/mylogfile.2.log"    
-#> [3] "/tmp/RtmpdTEt4s/rotor/mylogfile.3.log"    
-#> [4] "/tmp/RtmpdTEt4s/rotor/mylogfile.4.log.zip"
+#> [1] "/tmp/RtmpOM2N5E/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmpOM2N5E/rotor/mylogfile.2.log"    
+#> [3] "/tmp/RtmpOM2N5E/rotor/mylogfile.3.log"    
+#> [4] "/tmp/RtmpOM2N5E/rotor/mylogfile.4.log.zip"
 ```
 
 We can also use `prune_backups()` to delete old backups. Other than
@@ -154,28 +154,28 @@ backup_time(tf, format = "%Y%m%dT%H%M%S")  # ISO 8601 compatible
 
 backup_info(tf)
 #>                                                       path      name
-#> 1  /tmp/RtmpdTEt4s/rotor/mylogfile.2020-07-21_07-26-46.log mylogfile
-#> 2 /tmp/RtmpdTEt4s/rotor/mylogfile.2020-07-21--07-26-46.log mylogfile
-#> 5      /tmp/RtmpdTEt4s/rotor/mylogfile.20200721T072646.log mylogfile
-#> 3           /tmp/RtmpdTEt4s/rotor/mylogfile.2020-07-21.log mylogfile
-#> 4              /tmp/RtmpdTEt4s/rotor/mylogfile.2020-07.log mylogfile
+#> 1  /tmp/RtmpOM2N5E/rotor/mylogfile.2020-07-22_12-26-29.log mylogfile
+#> 2 /tmp/RtmpOM2N5E/rotor/mylogfile.2020-07-22--12-26-29.log mylogfile
+#> 5      /tmp/RtmpOM2N5E/rotor/mylogfile.20200722T122629.log mylogfile
+#> 3           /tmp/RtmpOM2N5E/rotor/mylogfile.2020-07-22.log mylogfile
+#> 4              /tmp/RtmpOM2N5E/rotor/mylogfile.2020-07.log mylogfile
 #>                    sfx ext size isdir mode               mtime
-#> 1  2020-07-21_07-26-46 log   26 FALSE  664 2020-07-21 07:26:46
-#> 2 2020-07-21--07-26-46 log   26 FALSE  664 2020-07-21 07:26:46
-#> 5      20200721T072646 log   26 FALSE  664 2020-07-21 07:26:46
-#> 3           2020-07-21 log   26 FALSE  664 2020-07-21 07:26:46
-#> 4              2020-07 log   26 FALSE  664 2020-07-21 07:26:46
+#> 1  2020-07-22_12-26-29 log   26 FALSE  664 2020-07-22 12:26:29
+#> 2 2020-07-22--12-26-29 log   26 FALSE  664 2020-07-22 12:26:29
+#> 5      20200722T122629 log   26 FALSE  664 2020-07-22 12:26:29
+#> 3           2020-07-22 log   26 FALSE  664 2020-07-22 12:26:29
+#> 4              2020-07 log   26 FALSE  664 2020-07-22 12:26:29
 #>                 ctime               atime   uid   gid uname grname
-#> 1 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
-#> 2 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
-#> 5 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
-#> 3 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
-#> 4 2020-07-21 07:26:46 2020-07-21 07:26:46 11861 11861 fleck  fleck
+#> 1 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck
+#> 2 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck
+#> 5 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck
+#> 3 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck
+#> 4 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck
 #>             timestamp
-#> 1 2020-07-21 07:26:46
-#> 2 2020-07-21 07:26:46
-#> 5 2020-07-21 07:26:46
-#> 3 2020-07-21 00:00:00
+#> 1 2020-07-22 12:26:29
+#> 2 2020-07-22 12:26:29
+#> 5 2020-07-22 12:26:29
+#> 3 2020-07-22 00:00:00
 #> 4 2020-07-01 00:00:00
 ```
 
