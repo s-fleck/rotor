@@ -8,20 +8,20 @@
 \alias{oldest_backup}
 \title{Discover existing backups}
 \usage{
-backup_info(file, backup_dir = dirname(file))
+backup_info(file, dir = dirname(file))
 
-list_backups(file, backup_dir = dirname(file))
+list_backups(file, dir = dirname(file))
 
-n_backups(file, backup_dir = dirname(file))
+n_backups(file, dir = dirname(file))
 
-newest_backup(file, backup_dir = dirname(file))
+newest_backup(file, dir = dirname(file))
 
-oldest_backup(file, backup_dir = dirname(file))
+oldest_backup(file, dir = dirname(file))
 }
 \arguments{
 \item{file}{\code{character} scalar: Path to a file.}
 
-\item{backup_dir}{\code{character} scalar. The directory in which the backups
+\item{dir}{\code{character} scalar. The directory in which the backups
 of \code{file} are stored (defaults to \code{dirname(file)})}
 }
 \value{

@@ -80,7 +80,7 @@ can pass \code{character} vectors that contain a file size suffix like \verb{1k}
 of these short forms you can also be explicit and use the IEC suffixes
 \code{KiB}, \code{MiB}, \code{GiB}, \code{TiB}. In Both cases \code{1} kilobyte is \code{1024} bytes, 1
 \code{megabyte} is \code{1024} kilobytes, etc... .}
-    \item{\code{backup_dir}}{\code{character} scalar. The directory in which the backups
+    \item{\code{dir}}{\code{character} scalar. The directory in which the backups
 of \code{file} are stored (defaults to \code{dirname(file)})}
     \item{\code{compression}}{Whether or not backups should be compressed
 \itemize{

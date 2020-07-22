@@ -29,14 +29,14 @@
 #'   [file.info()]
 backup_info <- function(
   file,
-  backup_dir = dirname(file)
+  dir = dirname(file)
 ){
-  if (is_pure_BackupQueueIndex(file, backup_dir = backup_dir))
-    BackupQueueIndex$new(file, backup_dir = backup_dir)$backups
-  else if (is_pure_BackupQueueDateTime(file, backup_dir = backup_dir))
-    BackupQueueDateTime$new(file, backup_dir = backup_dir)$backups
+  if (is_pure_BackupQueueIndex(file, dir = dir))
+    BackupQueueIndex$new(file, dir = dir)$backups
+  else if (is_pure_BackupQueueDateTime(file, dir = dir))
+    BackupQueueDateTime$new(file, dir = dir)$backups
   else
-    BackupQueue$new(file, backup_dir = backup_dir)$backups
+    BackupQueue$new(file, dir = dir)$backups
 }
 
 
@@ -47,9 +47,9 @@ backup_info <- function(
 #' @rdname backup_info
 list_backups <- function(
   file,
-  backup_dir = dirname(file)
+  dir = dirname(file)
 ){
-  BackupQueue$new(file, backup_dir = backup_dir)$backups$path
+  BackupQueue$new(file, dir = dir)$backups$path
 }
 
 
@@ -60,9 +60,9 @@ list_backups <- function(
 #'   scalar
 n_backups <- function(
   file,
-  backup_dir = dirname(file)
+  dir = dirname(file)
 ){
-  if (!is_pure_BackupQueue(file, backup_dir = backup_dir)){
+  if (!is_pure_BackupQueue(file, dir = dir)){
     warning(
       "Found index as well as timestamped backups for '", file, "'. ",
       "This is fine, but some rotor functions might not work as expected",
@@ -70,7 +70,7 @@ n_backups <- function(
       call. = FALSE
     )
   }
-  BackupQueue$new(file, backup_dir = backup_dir)$n_backups
+  BackupQueue$new(file, dir = dir)$n_backups
 }
 
 
@@ -82,25 +82,25 @@ n_backups <- function(
 #' @rdname backup_info
 newest_backup <- function(
   file,
-  backup_dir = dirname(file)
+  dir = dirname(file)
 ){
-  bq <- BackupQueue$new(file, backup_dir = backup_dir)
+  bq <- BackupQueue$new(file, dir = dir)
   if (!bq$has_backups){
     return(character())
   }
 
   assert(
-    is_pure_BackupQueueIndex(file, backup_dir = backup_dir) ||
-    is_pure_BackupQueueDateTime(file, backup_dir = backup_dir),
+    is_pure_BackupQueueIndex(file, dir = dir) ||
+    is_pure_BackupQueueDateTime(file, dir = dir),
     "Can only determine newest backup for files that only have either indexed ",
     "or timestamped backups, but '", file, "' has both:\n",
     paste("~ ", bq$backups$path, collapse = "\n")
   )
 
-  bq <- BackupQueueDateTime$new(file, backup_dir = backup_dir)
+  bq <- BackupQueueDateTime$new(file, dir = dir)
 
   if (!bq$has_backups){
-    bq <- BackupQueueIndex$new(file, backup_dir = backup_dir)
+    bq <- BackupQueueIndex$new(file, dir = dir)
   }
 
   first(bq$backups$path)
@@ -113,25 +113,25 @@ newest_backup <- function(
 #' @rdname backup_info
 oldest_backup <- function(
   file,
-  backup_dir = dirname(file)
+  dir = dirname(file)
 ){
-  bq <- BackupQueue$new(file, backup_dir = backup_dir)
+  bq <- BackupQueue$new(file, dir = dir)
   if (!bq$has_backups){
     return(character())
   }
 
   assert(
-    is_pure_BackupQueueIndex(file, backup_dir = backup_dir) ||
-    is_pure_BackupQueueDateTime(file, backup_dir = backup_dir),
+    is_pure_BackupQueueIndex(file, dir = dir) ||
+    is_pure_BackupQueueDateTime(file, dir = dir),
     "Can only determine newest backup for files that only have either indexed ",
     "or timestamped backups, but '", file, "' has both:\n",
     paste("~ ", bq$backups$path, collapse = "\n")
   )
 
-  bq <- BackupQueueDateTime$new(file, backup_dir = backup_dir)
+  bq <- BackupQueueDateTime$new(file, dir = dir)
 
   if (!bq$has_backups){
-    bq <- BackupQueueIndex$new(file, backup_dir = backup_dir)
+    bq <- BackupQueueIndex$new(file, dir = dir)
   }
 
   last(bq$backups$path)

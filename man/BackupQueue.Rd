@@ -12,10 +12,16 @@ a bit of extra control.
 
 As of now, \strong{the R6 API is still experimental and subject to change}.
 }
+\seealso{
+Other BackupQueue: 
+\code{\link{BackupQueueDateTime}},
+\code{\link{BackupQueueIndex}}
+}
+\concept{BackupQueue}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
-\item{\code{backup_dir}}{\code{character} scalar. Directory in which to place the backups.}
+\item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
 
 \item{\code{compression}}{(Optional) compression to use \code{compression} argument of \code{\link[=rotate]{rotate()}}.}
 
@@ -36,7 +42,7 @@ exists}
 \item \href{#method-prune}{\code{BackupQueue$prune()}}
 \item \href{#method-print}{\code{BackupQueue$print()}}
 \item \href{#method-set_file}{\code{BackupQueue$set_file()}}
-\item \href{#method-set_backup_dir}{\code{BackupQueue$set_backup_dir()}}
+\item \href{#method-set_dir}{\code{BackupQueue$set_dir()}}
 \item \href{#method-set_compression}{\code{BackupQueue$set_compression()}}
 \item \href{#method-set_max_backups}{\code{BackupQueue$set_max_backups()}}
 }
@@ -48,7 +54,7 @@ exists}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$new(
   file,
-  backup_dir = dirname(file),
+  dir = dirname(file),
   max_backups = Inf,
   compression = FALSE
 )}\if{html}{\out{</div>}}
@@ -84,11 +90,11 @@ Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{pr
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_backup_dir"></a>}}
-\if{latex}{\out{\hypertarget{method-set_backup_dir}{}}}
-\subsection{Method \code{set_backup_dir()}}{
+\if{html}{\out{<a id="method-set_dir"></a>}}
+\if{latex}{\out{\hypertarget{method-set_dir}{}}}
+\subsection{Method \code{set_dir()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_backup_dir(x)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_dir(x)}\if{html}{\out{</div>}}
 }
 
 }

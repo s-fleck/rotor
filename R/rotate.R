@@ -51,7 +51,7 @@
 #'   `KiB`, `MiB`, `GiB`, `TiB`. In Both cases `1` kilobyte is `1024` bytes, 1
 #'   `megabyte` is `1024` kilobytes, etc... .
 #'
-#' @param backup_dir `character` scalar. The directory in which the backups
+#' @param dir `character` scalar. The directory in which the backups
 #'   of `file` are stored (defaults to `dirname(file)`)
 #'
 #' @param compression Whether or not backups should be compressed
@@ -174,7 +174,7 @@ rotate <- function(
   size = 1,
   max_backups = Inf,
   compression = FALSE,
-  backup_dir = dirname(file),
+  dir = dirname(file),
   create_file = TRUE,
   dry_run = FALSE,
   verbose = dry_run
@@ -184,7 +184,7 @@ rotate <- function(
     size = size,
     max_backups = max_backups,
     compression = compression,
-    backup_dir = backup_dir,
+    dir = dir,
     create_file = create_file,
     dry_run = dry_run,
     verbose = verbose,
@@ -202,7 +202,7 @@ backup <- function(
   size = 0,
   max_backups = Inf,
   compression = FALSE,
-  backup_dir = dirname(file),
+  dir = dirname(file),
   dry_run = FALSE,
   verbose = dry_run
 ){
@@ -211,7 +211,7 @@ backup <- function(
     size = size,
     max_backups = max_backups,
     compression = compression,
-    backup_dir = backup_dir,
+    dir = dir,
     dry_run = dry_run,
     verbose = verbose,
     create_file = FALSE,
@@ -228,7 +228,7 @@ rotate_internal <- function(
   max_backups,
   compression,
   create_file,
-  backup_dir,
+  dir,
   dry_run,
   verbose,
   do_rotate
@@ -240,7 +240,7 @@ rotate_internal <- function(
     is_scalar_bool(create_file)
   )
 
-  assert_pure_BackupQueue(file, backup_dir = backup_dir, warn_only = TRUE)
+  assert_pure_BackupQueue(file, dir = dir, warn_only = TRUE)
 
   if (dry_run){
     DRY_RUN$activate()
@@ -249,13 +249,13 @@ rotate_internal <- function(
 
   bq <- BackupQueueIndex$new(
     file,
-    backup_dir = backup_dir,
+    dir = dir,
     max_backups = max_backups,
     compression = compression
   )
 
   if (bq$should_rotate(size = size, verbose = verbose)){
-    bq$push_backup()
+    bq$push()
   } else {
     do_rotate <- FALSE
   }
@@ -286,11 +286,11 @@ rotate_internal <- function(
 prune_backups <- function(
   file,
   max_backups,
-  backup_dir = dirname(file),
+  dir = dirname(file),
   dry_run = FALSE,
   verbose = dry_run
 ){
-  assert_pure_BackupQueue(file, backup_dir = backup_dir)
+  assert_pure_BackupQueue(file, dir = dir)
   assert(is_scalar_character(file))
 
   if (dry_run){
@@ -298,10 +298,10 @@ prune_backups <- function(
     on.exit(DRY_RUN$deactivate())
   }
 
-  bq <- BackupQueueIndex$new(file, backup_dir = backup_dir)
+  bq <- BackupQueueIndex$new(file, dir = dir)
 
   if (!bq$has_backups)
-    bq <- BackupQueueDateTime$new(file, backup_dir = backup_dir)
+    bq <- BackupQueueDateTime$new(file, dir = dir)
 
   bq$prune(max_backups = max_backups)
   invisible(file)

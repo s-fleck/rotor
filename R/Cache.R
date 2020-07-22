@@ -292,7 +292,7 @@ Cache <- R6::R6Class(
     #' @field max_age
     #' - a `Date` scalar: Remove all backups before this date
     #' - a `character` scalar representing a Date in ISO format (e.g. `"2019-12-31"`)
-    #' - a `character` scalar representing an Interval in the form `"<number> <interval>"` (see [?rotate()])
+    #' - a `character` scalar representing an Interval in the form `"<number> <interval>"` (see [rotate()])
     max_age = function(x){
       if (missing(x)) return(get(".max_age", envir = private))
       self$set_max_age(x)

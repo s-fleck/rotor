@@ -64,19 +64,19 @@ test_that("backup/rotate works to different directory", {
 
   # dry run does nothing
   snap <- fileSnapshot(bu_dir)
-  expect_message(backup(tf, backup_dir = bu_dir, dry_run = TRUE))
+  expect_message(backup(tf, dir = bu_dir, dry_run = TRUE))
   expect_snapshot_unchanged(snap)
 
   # create backup in different dir
-  backup(tf, backup_dir = bu_dir)
+  backup(tf, dir = bu_dir)
   expect_identical(
     readLines(tf),
     readLines(file.path(dirname(tf), "backups", "test.1.log"))
   )
 
-  expect_identical(n_backups(tf, backup_dir = bu_dir), 1L)
-  prune_backups(tf, 0, backup_dir = bu_dir)
-  expect_identical(n_backups(tf, backup_dir = bu_dir), 0L)
+  expect_identical(n_backups(tf, dir = bu_dir), 1L)
+  prune_backups(tf, 0, dir = bu_dir)
+  expect_identical(n_backups(tf, dir = bu_dir), 0L)
   expect_length(list.files(bu_dir), 0)
 })
 

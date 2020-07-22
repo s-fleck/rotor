@@ -98,7 +98,7 @@ test_that("BackupQueue works as expected", {
 
   bq <- BackupQueue$new(tf)
   expect_path_equal(bq$file, tf)
-  expect_path_equal(bq$backup_dir, dirname(tf))
+  expect_path_equal(bq$dir, dirname(tf))
   file.remove(tf)
 })
 
@@ -370,7 +370,7 @@ test_that("BackupQueue$increment_index works as expected", {
 
 
 
-test_that("BackupQueue$push_backup() works as expected", {
+test_that("BackupQueue$push() works as expected", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -384,11 +384,11 @@ test_that("BackupQueue$push_backup() works as expected", {
   file.create(bus)
 
   bt <- BackupQueueIndex$new(tf)
-  bt$push_backup()
+  bt$push()
   expect_length(bt$backups$path, 10)
 
   bt$set_compression(TRUE)
-  bt$push_backup()
+  bt$push()
   expect_length(bt$backups$path, 11)
   expect_identical(tools::file_ext(bt$backups$path[[1]]), "zip")
   expect_setequal(tools::file_ext(bt$backups$path[2:11]), "log")
@@ -400,7 +400,7 @@ test_that("BackupQueue$push_backup() works as expected", {
 
 
 
-test_that("BackupQueueIndex$push_backup() can push to different directory", {
+test_that("BackupQueueIndex$push() can push to different directory", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -412,12 +412,12 @@ test_that("BackupQueueIndex$push_backup() can push to different directory", {
   on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
 
 
-  bt <- BackupQueueIndex$new(tf, backup_dir = bu_dir)
-  bt$push_backup()
+  bt <- BackupQueueIndex$new(tf, dir = bu_dir)
+  bt$push()
 
   expect_match(dirname(bt$backups$path), "rotor.backups")
   bt$set_compression(TRUE)
-  bt$push_backup()
+  bt$push()
 
   expect_identical(bt$n_backups, 2L)
 
@@ -451,7 +451,7 @@ test_that("BackupQueueIndex dry run doesnt modify file system", {
   expect_silent(bt$pad_index())
   expect_snapshot_unchanged(snap)
 
-  expect_message(bt$push_backup(), "test.log -> test.1.log")
+  expect_message(bt$push(), "test.log -> test.1.log")
   expect_snapshot_unchanged(snap)
 
   expect_message(bt$prune(0), "test.01.log")
@@ -514,7 +514,7 @@ test_that("BackupQueueDatetime: backups_cache", {
 
   # last rotation cache is updated on backup push
   bq <- BackupQueueDateTime$new(tf, cache_backups = TRUE)
-  bq$push_backup(now = "2019-02-01--00-00-00")
+  bq$push(now = "2019-02-01--00-00-00")
   expect_equal(bq$last_rotation, parse_datetime("2019-02-01--00-00-00"))
 
   # last rotation cache is set on creation
@@ -565,7 +565,7 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
   bq <- BackupQueueDateTime$new(tf)
   expect_identical(bq$n_backups, 0L)
   for (i in 1:10) {
-    bq$push_backup(now = datetime + i * 5)
+    bq$push(now = datetime + i * 5)
   }
   bq$prune(5)
   expect_length(bq$backups$path, 5)
@@ -762,7 +762,7 @@ test_that("BackupQueueDate $last_date", {
 
 
 
-test_that("BackupQueueDateTime$push_backup() can push to different directory", {
+test_that("BackupQueueDateTime$push() can push to different directory", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -773,12 +773,12 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
   on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
 
 
-  bt <- BackupQueueDateTime$new(tf, backup_dir = bu_dir)
-  bt$push_backup()
+  bt <- BackupQueueDateTime$new(tf, dir = bu_dir)
+  bt$push()
 
   expect_match(dirname(bt$backups$path), "rotor.backups")
   bt$set_compression(TRUE)
-  bt$push_backup()
+  bt$push()
 
   expect_identical(bt$n_backups, 2L)
 
@@ -794,7 +794,7 @@ test_that("BackupQueueDateTime: $should_rotate", {
   on.exit(file.remove(tf))
 
   bq <- BackupQueueDateTime$new(tf)
-  bq$push_backup(now = "2019-01-01")
+  bq$push(now = "2019-01-01")
   on.exit({
     bq$prune(0)
     file.remove(tf)
@@ -901,7 +901,7 @@ test_that("BackupQueueDate works with supported datestamp formats", {
   bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
   expect_identical(bq$n_backups, 0L)
   for (i in 1:10) {
-    bq$push_backup(now = as.POSIXct(date + i * 5))
+    bq$push(now = as.POSIXct(date + i * 5))
   }
   bq$prune(5)
   expect_length(bq$backups$path, 5)
@@ -1091,7 +1091,7 @@ test_that("BackupQueueDate $last_rotation", {
 
 
 
-test_that("BackupQueueDateTime$push_backup() can push to different directory", {
+test_that("BackupQueueDateTime$push() can push to different directory", {
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -1102,12 +1102,12 @@ test_that("BackupQueueDateTime$push_backup() can push to different directory", {
   on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
 
 
-  bt <- BackupQueueDate$new(tf, backup_dir = bu_dir)
-  bt$push_backup()
+  bt <- BackupQueueDate$new(tf, dir = bu_dir)
+  bt$push()
 
   expect_match(dirname(bt$backups$path), "rotor.backups")
   bt$set_compression(TRUE)
-  bt$push_backup()
+  bt$push()
 
   expect_identical(bt$n_backups, 2L)
   expect_length(bt$prune(0)$backups$path, 0)
@@ -1123,7 +1123,7 @@ test_that("BackupQueueDate: $should_rotate", {
   on.exit(file.remove(tf))
 
   bq <- BackupQueueDate$new(tf)
-  bq$push_backup(now = "2019-01-01")
+  bq$push(now = "2019-01-01")
   on.exit({
     bq$prune(0)
     file.remove(tf)
@@ -1155,7 +1155,7 @@ test_that("BackupQueueDate: backups_cache", {
 
   # last rotation cache is updated on backup push
   bq <- BackupQueueDate$new(tf, cache_backups = TRUE)
-  bq$push_backup(now = "2019-02-01--00-00-00")
+  bq$push(now = "2019-02-01--00-00-00")
   expect_equal(bq$last_rotation, parse_date("2019-02-01"))
 
   # don't cache if set to FALSE

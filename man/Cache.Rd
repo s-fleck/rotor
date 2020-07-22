@@ -62,7 +62,7 @@ of these short forms you can also be explicit and use the IEC suffixes
 \item{\code{max_age}}{\itemize{
 \item a \code{Date} scalar: Remove all backups before this date
 \item a \code{character} scalar representing a Date in ISO format (e.g. \code{"2019-12-31"})
-\item a \code{character} scalar representing an Interval in the form \code{"<number> <interval>"} (see \code{\link[=?rotate]{?rotate()}})
+\item a \code{character} scalar representing an Interval in the form \code{"<number> <interval>"} (see \code{\link[=rotate]{rotate()}})
 }}
 
 \item{\code{hashfun}}{\code{NULL} or a \code{function} to generate a unique hash from the

@@ -20,11 +20,11 @@ As of now, \strong{the R6 API is still experimental and subject to change}.
 \out{<details ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir">}\href{../../rotor/html/BackupQueue.html#method-set_backup_dir}{\code{rotor::BackupQueue$set_backup_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_dir">}\href{../../rotor/html/BackupQueue.html#method-set_dir}{\code{rotor::BackupQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="prune">}\href{../../rotor/html/BackupQueueDateTime.html#method-prune}{\code{rotor::BackupQueueDateTime$prune()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="push_backup">}\href{../../rotor/html/BackupQueueDateTime.html#method-push_backup}{\code{rotor::BackupQueueDateTime$push_backup()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="push">}\href{../../rotor/html/BackupQueueDateTime.html#method-push}{\code{rotor::BackupQueueDateTime$push()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="set_cache_backups">}\href{../../rotor/html/BackupQueueDateTime.html#method-set_cache_backups}{\code{rotor::BackupQueueDateTime$set_cache_backups()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="set_max_backups">}\href{../../rotor/html/BackupQueueDateTime.html#method-set_max_backups}{\code{rotor::BackupQueueDateTime$set_max_backups()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="should_rotate">}\href{../../rotor/html/BackupQueueDateTime.html#method-should_rotate}{\code{rotor::BackupQueueDateTime$should_rotate()}}\out{</span>}
@@ -39,7 +39,7 @@ As of now, \strong{the R6 API is still experimental and subject to change}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDate$new(
   file,
-  backup_dir = dirname(file),
+  dir = dirname(file),
   max_backups = Inf,
   compression = FALSE,
   fmt = "\%Y-\%m-\%d",

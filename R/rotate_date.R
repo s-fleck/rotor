@@ -7,7 +7,7 @@ rotate_date <- function(
   max_backups = Inf,
   compression = FALSE,
   format = "%Y-%m-%d",
-  backup_dir = dirname(file),
+  dir = dirname(file),
   overwrite = FALSE,
   create_file = TRUE,
   now = Sys.Date(),
@@ -22,7 +22,7 @@ rotate_date <- function(
     max_backups = max_backups,
     compression = compression,
     overwrite = overwrite,
-    backup_dir = backup_dir,
+    dir = dir,
     now = now,
     dry_run = dry_run,
     verbose = verbose,
@@ -43,7 +43,7 @@ backup_date <- function(
   max_backups = Inf,
   compression = FALSE,
   format = "%Y-%m-%d",
-  backup_dir = dirname(file),
+  dir = dirname(file),
   overwrite = FALSE,
   now = Sys.Date(),
   dry_run = FALSE,
@@ -57,7 +57,7 @@ backup_date <- function(
     max_backups = max_backups,
     compression = compression,
     overwrite = overwrite,
-    backup_dir = backup_dir,
+    dir = dir,
     now = now,
     dry_run = dry_run,
     verbose = verbose,
@@ -78,7 +78,7 @@ rotate_date_internal <- function(
   compression,
   overwrite,
   create_file,
-  backup_dir,
+  dir,
   now,
   do_rotate,
   dry_run,
@@ -91,7 +91,7 @@ rotate_date_internal <- function(
     is_scalar_bool(create_file)
   )
 
-  assert_pure_BackupQueue(file, backup_dir = backup_dir, warn_only = TRUE)
+  assert_pure_BackupQueue(file, dir = dir, warn_only = TRUE)
 
   if (dry_run){
     DRY_RUN$activate()
@@ -101,13 +101,13 @@ rotate_date_internal <- function(
   bq <- BackupQueueDate$new(
     file,
     fmt = format,
-    backup_dir = backup_dir,
+    dir = dir,
     compression = compression
   )
 
   # backup
   if (bq$should_rotate(size = size, age = age, now = now, verbose = verbose)){
-    bq$push_backup(
+    bq$push(
       now = now,
       overwrite = overwrite
     )

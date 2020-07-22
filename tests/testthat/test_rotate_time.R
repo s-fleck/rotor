@@ -90,16 +90,16 @@ test_that("backup/rotate date works to different directory", {
   file.create(tf)
   writeLines("foobar", tf)
 
-  backup_time(tf, backup_dir = bu_dir, now = as.POSIXct("2019-01-01 12:12:12"), verbose = TRUE, age = "-99999 years")
+  backup_time(tf, dir = bu_dir, now = as.POSIXct("2019-01-01 12:12:12"), verbose = TRUE, age = "-99999 years")
 
   expect_identical(
     readLines(tf),
     readLines(file.path(dirname(tf), "backups", "test.2019-01-01--12-12-12.log"))
   )
 
-  expect_identical(n_backups(tf, backup_dir = bu_dir), 1L)
-  prune_backups(tf, 0, backup_dir = bu_dir)
-  expect_identical(n_backups(tf, backup_dir = bu_dir), 0L)
+  expect_identical(n_backups(tf, dir = bu_dir), 1L)
+  prune_backups(tf, 0, dir = bu_dir)
+  expect_identical(n_backups(tf, dir = bu_dir), 0L)
   expect_length(list.files(bu_dir), 0)
 })
 

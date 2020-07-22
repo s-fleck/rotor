@@ -11,6 +11,12 @@ An R6 class for managing timestamped backups
 \details{
 As of now, \strong{the R6 API is still experimental and subject to change}.
 }
+\seealso{
+Other BackupQueue: 
+\code{\link{BackupQueueIndex}},
+\code{\link{BackupQueue}}
+}
+\concept{BackupQueue}
 \section{Super class}{
 \code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{BackupQueueDateTime}
 }
@@ -32,7 +38,7 @@ second)}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-new}{\code{BackupQueueDateTime$new()}}
-\item \href{#method-push_backup}{\code{BackupQueueDateTime$push_backup()}}
+\item \href{#method-push}{\code{BackupQueueDateTime$push()}}
 \item \href{#method-prune}{\code{BackupQueueDateTime$prune()}}
 \item \href{#method-should_rotate}{\code{BackupQueueDateTime$should_rotate()}}
 \item \href{#method-update_backups_cache}{\code{BackupQueueDateTime$update_backups_cache()}}
@@ -45,8 +51,8 @@ second)}
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir">}\href{../../rotor/html/BackupQueue.html#method-set_backup_dir}{\code{rotor::BackupQueue$set_backup_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_dir">}\href{../../rotor/html/BackupQueue.html#method-set_dir}{\code{rotor::BackupQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
 }
 \out{</details>}
@@ -58,7 +64,7 @@ second)}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDateTime$new(
   file,
-  backup_dir = dirname(file),
+  dir = dirname(file),
   max_backups = Inf,
   compression = FALSE,
   fmt = "\%Y-\%m-\%d--\%H-\%M-\%S",
@@ -68,12 +74,12 @@ second)}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-push_backup"></a>}}
-\if{latex}{\out{\hypertarget{method-push_backup}{}}}
-\subsection{Method \code{push_backup()}}{
+\if{html}{\out{<a id="method-push"></a>}}
+\if{latex}{\out{\hypertarget{method-push}{}}}
+\subsection{Method \code{push()}}{
 Create a new time-stamped backup (e.g. \file{logfile.2020-07-22_12-26-29.log})
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueueDateTime$push_backup(overwrite = FALSE, now = Sys.time())}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueueDateTime$push(overwrite = FALSE, now = Sys.time())}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

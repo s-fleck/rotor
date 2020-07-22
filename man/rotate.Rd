@@ -15,7 +15,7 @@ rotate(
   size = 1,
   max_backups = Inf,
   compression = FALSE,
-  backup_dir = dirname(file),
+  dir = dirname(file),
   create_file = TRUE,
   dry_run = FALSE,
   verbose = dry_run
@@ -26,7 +26,7 @@ backup(
   size = 0,
   max_backups = Inf,
   compression = FALSE,
-  backup_dir = dirname(file),
+  dir = dirname(file),
   dry_run = FALSE,
   verbose = dry_run
 )
@@ -34,7 +34,7 @@ backup(
 prune_backups(
   file,
   max_backups,
-  backup_dir = dirname(file),
+  dir = dirname(file),
   dry_run = FALSE,
   verbose = dry_run
 )
@@ -46,7 +46,7 @@ rotate_date(
   max_backups = Inf,
   compression = FALSE,
   format = "\%Y-\%m-\%d",
-  backup_dir = dirname(file),
+  dir = dirname(file),
   overwrite = FALSE,
   create_file = TRUE,
   now = Sys.Date(),
@@ -61,7 +61,7 @@ backup_date(
   max_backups = Inf,
   compression = FALSE,
   format = "\%Y-\%m-\%d",
-  backup_dir = dirname(file),
+  dir = dirname(file),
   overwrite = FALSE,
   now = Sys.Date(),
   dry_run = FALSE,
@@ -75,7 +75,7 @@ rotate_time(
   max_backups = Inf,
   compression = FALSE,
   format = "\%Y-\%m-\%d--\%H-\%M-\%S",
-  backup_dir = dirname(file),
+  dir = dirname(file),
   overwrite = FALSE,
   create_file = TRUE,
   now = Sys.time(),
@@ -90,7 +90,7 @@ backup_time(
   max_backups = Inf,
   compression = FALSE,
   format = "\%Y-\%m-\%d--\%H-\%M-\%S",
-  backup_dir = dirname(file),
+  dir = dirname(file),
   overwrite = FALSE,
   now = Sys.time(),
   dry_run = FALSE,
@@ -132,7 +132,7 @@ see its documentation for details)
 specific zip command
 }}
 
-\item{backup_dir}{\code{character} scalar. The directory in which the backups
+\item{dir}{\code{character} scalar. The directory in which the backups
 of \code{file} are stored (defaults to \code{dirname(file)})}
 
 \item{create_file}{\code{logical} scalar. If \code{TRUE} create an empty file in

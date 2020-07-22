@@ -18,12 +18,12 @@ BackupQueue <- R6::R6Class(
   public = list(
     initialize = function(
       file,
-      backup_dir = dirname(file),
+      dir = dirname(file),
       max_backups = Inf,
       compression = FALSE
     ){
       self$set_file(file)
-      self$set_backup_dir(backup_dir)
+      self$set_dir(dir)
       self$set_compression(compression)
       self$set_max_backups(max_backups)
 
@@ -107,14 +107,14 @@ BackupQueue <- R6::R6Class(
     },
 
 
-    set_backup_dir = function(
+    set_dir = function(
       x
     ){
       assert(
         is_scalar_character(x) && dir.exists(x),
         "backup dir '", x, "' does not exist."
       )
-      private[[".backup_dir"]] <- x
+      private[[".dir"]] <- x
       self
     },
 
@@ -148,9 +148,9 @@ BackupQueue <- R6::R6Class(
       get(".file", envir = private)
     },
 
-    #' @field backup_dir `character` scalar. Directory in which to place the backups.
-    backup_dir = function(){
-      get(".backup_dir", envir = private)
+    #' @field dir `character` scalar. Directory in which to place the backups.
+    dir = function(){
+      get(".dir", envir = private)
     },
 
     #' @field compression (Optional) compression to use `compression` argument of [rotate()].
@@ -180,7 +180,7 @@ BackupQueue <- R6::R6Class(
       backup_files <- get_backups(
         file = self$file,
         potential_backups =
-          list_files(self$backup_dir, full.names = self$backup_dir != "."),
+          list_files(self$dir, full.names = self$dir != "."),
         sfx_patterns = c(
           "\\d+",
           "\\d{4}-\\d{2}-\\d{2}",
@@ -213,7 +213,7 @@ BackupQueue <- R6::R6Class(
 
   private = list(
     .file = NULL,
-    .backup_dir = NULL,
+    .dir = NULL,
     .compression = NULL,
     .max_backups = NULL
   )
@@ -236,10 +236,10 @@ BackupQueueIndex <- R6::R6Class(
 
 
     #' @description Create a new index-stamped backup (e.g. \file{logfile.1.log})
-    push_backup = function(){
+    push = function(){
       # generate new filename
         name <- file.path(
-          self$backup_dir,
+          self$dir,
           tools::file_path_sans_ext(basename(self$file))
         )
         ext  <- tools::file_ext(self$file)
@@ -397,14 +397,14 @@ BackupQueueDateTime <- R6::R6Class(
   public = list(
     initialize = function(
       file,
-      backup_dir = dirname(file),
+      dir = dirname(file),
       max_backups = Inf,
       compression = FALSE,
       fmt = "%Y-%m-%d--%H-%M-%S",
       cache_backups = FALSE
     ){
       self$set_file(file)
-      self$set_backup_dir(backup_dir)
+      self$set_dir(dir)
       self$set_compression(compression)
       self$set_max_backups(max_backups)
       self$set_fmt(fmt)
@@ -418,7 +418,7 @@ BackupQueueDateTime <- R6::R6Class(
     #'   fielename (i.e timestamp)?
     #' @param now `POSIXct` scalar. Can be used as an override meachanism for
     #'   the current system time if necessary.
-    push_backup = function(
+    push = function(
       overwrite = FALSE,
       now = Sys.time()
     ){
@@ -432,7 +432,7 @@ BackupQueueDateTime <- R6::R6Class(
 
       # generate new filename
       name <- file.path(
-        self$backup_dir,
+        self$dir,
         tools::file_path_sans_ext(basename(self$file))
       )
 
@@ -664,14 +664,14 @@ BackupQueueDate <- R6::R6Class(
 
     initialize = function(
       file,
-      backup_dir = dirname(file),
+      dir = dirname(file),
       max_backups = Inf,
       compression = FALSE,
       fmt = "%Y-%m-%d",
       cache_backups = FALSE
     ){
       self$set_file(file)
-      self$set_backup_dir(backup_dir)
+      self$set_dir(dir)
       self$set_compression(compression)
       self$set_max_backups(max_backups)
       self$set_fmt(fmt)

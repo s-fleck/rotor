@@ -11,13 +11,19 @@ An R6 class for managing indexed backups
 \details{
 As of now, \strong{the R6 API is still experimental and subject to change}.
 }
+\seealso{
+Other BackupQueue: 
+\code{\link{BackupQueueDateTime}},
+\code{\link{BackupQueue}}
+}
+\concept{BackupQueue}
 \section{Super class}{
 \code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{BackupQueueIndex}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-push_backup}{\code{BackupQueueIndex$push_backup()}}
+\item \href{#method-push}{\code{BackupQueueIndex$push()}}
 \item \href{#method-prune}{\code{BackupQueueIndex$prune()}}
 \item \href{#method-should_rotate}{\code{BackupQueueIndex$should_rotate()}}
 \item \href{#method-pad_index}{\code{BackupQueueIndex$pad_index()}}
@@ -29,20 +35,20 @@ As of now, \strong{the R6 API is still experimental and subject to change}.
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="initialize">}\href{../../rotor/html/BackupQueue.html#method-initialize}{\code{rotor::BackupQueue$initialize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir">}\href{../../rotor/html/BackupQueue.html#method-set_backup_dir}{\code{rotor::BackupQueue$set_backup_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_dir">}\href{../../rotor/html/BackupQueue.html#method-set_dir}{\code{rotor::BackupQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_max_backups">}\href{../../rotor/html/BackupQueue.html#method-set_max_backups}{\code{rotor::BackupQueue$set_max_backups()}}\out{</span>}
 }
 \out{</details>}
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-push_backup"></a>}}
-\if{latex}{\out{\hypertarget{method-push_backup}{}}}
-\subsection{Method \code{push_backup()}}{
+\if{html}{\out{<a id="method-push"></a>}}
+\if{latex}{\out{\hypertarget{method-push}{}}}
+\subsection{Method \code{push()}}{
 Create a new index-stamped backup (e.g. \file{logfile.1.log})
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$push_backup()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$push()}\if{html}{\out{</div>}}
 }
 
 }

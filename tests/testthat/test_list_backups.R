@@ -42,7 +42,7 @@ test_that("n_backups and co work as expected", {
 
 
 
-test_that("n_backups and co work as expected with backup_dir", {
+test_that("n_backups and co work as expected with dir", {
   tf     <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
@@ -55,20 +55,20 @@ test_that("n_backups and co work as expected with backup_dir", {
 
   file.create(tf, files)
 
-  expect_path_equal(newest_backup(tf, backup_dir = bu_dir), files[[2]])
-  expect_path_equal(oldest_backup(tf, backup_dir = bu_dir), files[[1]])
+  expect_path_equal(newest_backup(tf, dir = bu_dir), files[[2]])
+  expect_path_equal(oldest_backup(tf, dir = bu_dir), files[[1]])
 
   files2 <- file.path(bu_dir, c("test.1.log", "test.2.log"))
   file.create(files2)
 
-  expect_error(newest_backup(tf, backup_dir = bu_dir))
-  expect_error(prune_backups(tf, 0, backup_dir = bu_dir))
-  expect_warning(expect_true(n_backups(tf, backup_dir = bu_dir) == 4))
+  expect_error(newest_backup(tf, dir = bu_dir))
+  expect_error(prune_backups(tf, 0, dir = bu_dir))
+  expect_warning(expect_true(n_backups(tf, dir = bu_dir) == 4))
   file.remove(files)
 
-  expect_path_equal(newest_backup(tf, backup_dir = bu_dir), files2[[1]])
-  expect_path_equal(oldest_backup(tf, backup_dir = bu_dir), files2[[2]])
-  prune_backups(tf, 0, backup_dir = bu_dir)
+  expect_path_equal(newest_backup(tf, dir = bu_dir), files2[[1]])
+  expect_path_equal(oldest_backup(tf, dir = bu_dir), files2[[2]])
+  prune_backups(tf, 0, dir = bu_dir)
   expect_true(n_backups(tf) == 0)
 
   file.remove(tf)
@@ -93,12 +93,12 @@ test_that("prune_backups dry run works with sepparate backup dir", {
   snap <- fileSnapshot(bu_dir)
 
   expect_message(
-    prune_backups(tf, 0, backup_dir = bu_dir, dry_run = TRUE),
+    prune_backups(tf, 0, dir = bu_dir, dry_run = TRUE),
     "removing"
   )
 
   expect_snapshot_unchanged(snap)
-  prune_backups(tf, 0, backup_dir = bu_dir)
+  prune_backups(tf, 0, dir = bu_dir)
   file.remove(tf)
   expect_length(list.files(bu_dir), 0)
 })
