@@ -225,6 +225,6 @@ test_that("pruning by age works", {
 
   expect_error(
     cache$prune(max_age = "2 foos", now = max(cache$files$mtime)),
-    class = "value_error"
+    class = "ValueError"
   )
 })

@@ -1,21 +1,21 @@
-not_implemented_error <- function(
+NotImplementedError <- function(
   message = "function not implemented",
   ...,
   class = NULL,
   call = NULL
 ){
-  error(message, ..., class = c(class, "value_error"))
+  error(message, ..., class = c(class, "NotImplementedError"))
 }
 
 
 
-value_error <- function(
+ValueError <- function(
   message,
   ...,
   class = NULL,
   call = NULL
 ){
-  error(message, ..., class = c(class, "value_error"))
+  error(message, ..., class = c(class, "ValueError"))
 }
 
 

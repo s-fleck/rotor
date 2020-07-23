@@ -803,6 +803,55 @@ get_backups <- function(
 
 
 
+select_prune_files_by_age <- function(
+  path,
+  timestamp,
+  max_age,
+  now
+){
+  assert(is.character(path))
+  assert(is_POSIXct(timestamp))
+  assert(is_Date(now))
+  assert(is_equal_length(path, timestamp))
+
+  if (is_parsable_date(max_age)){
+    limit     <- parse_date(max_age)
+    to_remove <- path[as.Date(as.character(timestamp)) < limit]
+
+  } else if (is_parsable_datetime(max_age)){
+    limit     <- parse_datetime(max_age)
+    to_remove <- path[timestamp < limit]
+
+  } else if (is_parsable_rotation_interval(max_age)){
+    max_age <- parse_rotation_interval(max_age)
+    now <- as.Date(now)
+
+    if (identical(max_age[["unit"]], "year")){
+      limit <- dint::first_of_year(dint::get_year(now) - max_age$value + 1L)
+
+    } else if (identical(max_age[["unit"]], "quarter")){
+      limit <- dint::first_of_quarter(dint::as_date_yq(now) - max_age$value + 1L)
+
+    } else if (identical(max_age[["unit"]], "month")) {
+      limit <- dint::first_of_month(dint::as_date_ym(now) - max_age$value + 1L)
+
+    } else if (identical(max_age[["unit"]], "week")){
+      limit <- dint::first_of_isoweek(dint::as_date_yw(now) - max_age$value + 1L)
+
+    } else if (identical(max_age[["unit"]], "day")){
+      limit <- as.Date(now) - max_age$value + 1L
+    }
+
+    to_remove <- path[as.Date(as.character(timestamp)) < limit]
+  } else {
+    stop(ValueError(paste0(preview_object(max_age), " is not a valid timestamp or interval. See ?rotate_time for more info.")))
+  }
+  to_remove
+}
+
+
+
+
 EMPTY_BACKUPS <- data.frame(
   path = character(0),
   name = character(0),
