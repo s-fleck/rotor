@@ -113,14 +113,14 @@
 
 <span class="co"># display backups of a file</span>
 <span class="fu"><a href="reference/backup_info.html">list_backups</a></span>(<span class="no">tf</span>)
-<span class="co">#&gt; [1] "/tmp/RtmpOM2N5E/rotor/mylogfile.1.log.zip"</span>
-<span class="co">#&gt; [2] "/tmp/RtmpOM2N5E/rotor/mylogfile.2.log"</span></pre></div>
+<span class="co">#&gt; [1] "/tmp/Rtmpw73XUg/rotor/mylogfile.1.log.zip"</span>
+<span class="co">#&gt; [2] "/tmp/Rtmpw73XUg/rotor/mylogfile.2.log"</span></pre></div>
 <p><code><a href="reference/rotate.html">rotate()</a></code> also backs up a file, but replaces the original file with an empty one.</p>
 <div class="sourceCode" id="cb5"><pre class="r"><span class="fu"><a href="reference/rotate.html">rotate</a></span>(<span class="no">tf</span>)
 <span class="fu"><a href="reference/backup_info.html">list_backups</a></span>(<span class="no">tf</span>)
-<span class="co">#&gt; [1] "/tmp/RtmpOM2N5E/rotor/mylogfile.1.log"    </span>
-<span class="co">#&gt; [2] "/tmp/RtmpOM2N5E/rotor/mylogfile.2.log.zip"</span>
-<span class="co">#&gt; [3] "/tmp/RtmpOM2N5E/rotor/mylogfile.3.log"</span>
+<span class="co">#&gt; [1] "/tmp/Rtmpw73XUg/rotor/mylogfile.1.log"    </span>
+<span class="co">#&gt; [2] "/tmp/Rtmpw73XUg/rotor/mylogfile.2.log.zip"</span>
+<span class="co">#&gt; [3] "/tmp/Rtmpw73XUg/rotor/mylogfile.3.log"</span>
 
 <span class="co"># the original file is now empty</span>
 <span class="fu"><a href="https://rdrr.io/r/base/readLines.html">readLines</a></span>(<span class="no">tf</span>)
@@ -137,10 +137,10 @@
 <span class="fu"><a href="reference/rotate.html">backup</a></span>(<span class="no">tf</span>, <span class="kw">max_backups</span> <span class="kw">=</span> <span class="fl">4</span>)
 
 <span class="fu"><a href="reference/backup_info.html">list_backups</a></span>(<span class="no">tf</span>)
-<span class="co">#&gt; [1] "/tmp/RtmpOM2N5E/rotor/mylogfile.1.log"    </span>
-<span class="co">#&gt; [2] "/tmp/RtmpOM2N5E/rotor/mylogfile.2.log"    </span>
-<span class="co">#&gt; [3] "/tmp/RtmpOM2N5E/rotor/mylogfile.3.log"    </span>
-<span class="co">#&gt; [4] "/tmp/RtmpOM2N5E/rotor/mylogfile.4.log.zip"</span></pre></div>
+<span class="co">#&gt; [1] "/tmp/Rtmpw73XUg/rotor/mylogfile.1.log"    </span>
+<span class="co">#&gt; [2] "/tmp/Rtmpw73XUg/rotor/mylogfile.2.log"    </span>
+<span class="co">#&gt; [3] "/tmp/Rtmpw73XUg/rotor/mylogfile.3.log"    </span>
+<span class="co">#&gt; [4] "/tmp/Rtmpw73XUg/rotor/mylogfile.4.log.zip"</span></pre></div>
 <p>We can also use <code><a href="reference/rotate.html">prune_backups()</a></code> to delete old backups. Other than ensuring that no new backups is created, it works identically to using <code><a href="reference/rotate.html">backup()</a></code> with the <code>max_backups</code> parameter. By setting it to <code>0</code>, we delete all backups.</p>
 <div class="sourceCode" id="cb7"><pre class="r"><span class="fu"><a href="reference/rotate.html">prune_backups</a></span>(<span class="no">tf</span>, <span class="kw">max_backups</span> <span class="kw">=</span> <span class="fl">0</span>)</pre></div>
 </div>
@@ -159,28 +159,28 @@
 
 <span class="fu"><a href="reference/backup_info.html">backup_info</a></span>(<span class="no">tf</span>)
 <span class="co">#&gt;                                                       path      name</span>
-<span class="co">#&gt; 1  /tmp/RtmpOM2N5E/rotor/mylogfile.2020-07-22_12-26-29.log mylogfile</span>
-<span class="co">#&gt; 2 /tmp/RtmpOM2N5E/rotor/mylogfile.2020-07-22--12-26-29.log mylogfile</span>
-<span class="co">#&gt; 5      /tmp/RtmpOM2N5E/rotor/mylogfile.20200722T122629.log mylogfile</span>
-<span class="co">#&gt; 3           /tmp/RtmpOM2N5E/rotor/mylogfile.2020-07-22.log mylogfile</span>
-<span class="co">#&gt; 4              /tmp/RtmpOM2N5E/rotor/mylogfile.2020-07.log mylogfile</span>
+<span class="co">#&gt; 1  /tmp/Rtmpw73XUg/rotor/mylogfile.2020-07-24_10-54-30.log mylogfile</span>
+<span class="co">#&gt; 2 /tmp/Rtmpw73XUg/rotor/mylogfile.2020-07-24--10-54-30.log mylogfile</span>
+<span class="co">#&gt; 5      /tmp/Rtmpw73XUg/rotor/mylogfile.20200724T105430.log mylogfile</span>
+<span class="co">#&gt; 3           /tmp/Rtmpw73XUg/rotor/mylogfile.2020-07-24.log mylogfile</span>
+<span class="co">#&gt; 4              /tmp/Rtmpw73XUg/rotor/mylogfile.2020-07.log mylogfile</span>
 <span class="co">#&gt;                    sfx ext size isdir mode               mtime</span>
-<span class="co">#&gt; 1  2020-07-22_12-26-29 log   26 FALSE  664 2020-07-22 12:26:29</span>
-<span class="co">#&gt; 2 2020-07-22--12-26-29 log   26 FALSE  664 2020-07-22 12:26:29</span>
-<span class="co">#&gt; 5      20200722T122629 log   26 FALSE  664 2020-07-22 12:26:29</span>
-<span class="co">#&gt; 3           2020-07-22 log   26 FALSE  664 2020-07-22 12:26:29</span>
-<span class="co">#&gt; 4              2020-07 log   26 FALSE  664 2020-07-22 12:26:29</span>
+<span class="co">#&gt; 1  2020-07-24_10-54-30 log   26 FALSE  664 2020-07-24 10:54:30</span>
+<span class="co">#&gt; 2 2020-07-24--10-54-30 log   26 FALSE  664 2020-07-24 10:54:30</span>
+<span class="co">#&gt; 5      20200724T105430 log   26 FALSE  664 2020-07-24 10:54:30</span>
+<span class="co">#&gt; 3           2020-07-24 log   26 FALSE  664 2020-07-24 10:54:30</span>
+<span class="co">#&gt; 4              2020-07 log   26 FALSE  664 2020-07-24 10:54:30</span>
 <span class="co">#&gt;                 ctime               atime   uid   gid uname grname</span>
-<span class="co">#&gt; 1 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck</span>
-<span class="co">#&gt; 2 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck</span>
-<span class="co">#&gt; 5 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck</span>
-<span class="co">#&gt; 3 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck</span>
-<span class="co">#&gt; 4 2020-07-22 12:26:29 2020-07-22 12:26:29 11861 11861 fleck  fleck</span>
+<span class="co">#&gt; 1 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck</span>
+<span class="co">#&gt; 2 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck</span>
+<span class="co">#&gt; 5 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck</span>
+<span class="co">#&gt; 3 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck</span>
+<span class="co">#&gt; 4 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck</span>
 <span class="co">#&gt;             timestamp</span>
-<span class="co">#&gt; 1 2020-07-22 12:26:29</span>
-<span class="co">#&gt; 2 2020-07-22 12:26:29</span>
-<span class="co">#&gt; 5 2020-07-22 12:26:29</span>
-<span class="co">#&gt; 3 2020-07-22 00:00:00</span>
+<span class="co">#&gt; 1 2020-07-24 10:54:30</span>
+<span class="co">#&gt; 2 2020-07-24 10:54:30</span>
+<span class="co">#&gt; 5 2020-07-24 10:54:30</span>
+<span class="co">#&gt; 3 2020-07-24 00:00:00</span>
 <span class="co">#&gt; 4 2020-07-01 00:00:00</span></pre></div>
 <p>If we examine the “timestamp” column in the example above, we see that missing date information is always interpreted as the start of the period; i.e. so <code>"2019-01"</code> is equivalent to <code>"2019-01-01--00--00--00"</code> for all intents and purposes.</p>
 <div class="sourceCode" id="cb9"><pre class="r"><span class="fu"><a href="reference/rotate.html">prune_backups</a></span>(<span class="no">tf</span>, <span class="kw">max_backups</span> <span class="kw">=</span> <span class="fl">0</span>)  <span class="co"># cleanup</span>
@@ -192,6 +192,36 @@
 
 <span class="co"># keep all backups from April 4th, 2018 and onwards</span>
 <span class="fu"><a href="reference/rotate.html">prune_backups</a></span>(<span class="no">tf</span>, <span class="st">"2018-04-01"</span>)</pre></div>
+</div>
+<div id="cache" class="section level2">
+<h2 class="hasAnchor">
+<a href="#cache" class="anchor"></a>Cache</h2>
+<p>rotor also provides a simple on-disk key-value store that can be used as a persistent cache.</p>
+<div class="sourceCode" id="cb11"><pre class="r"><span class="no">cache</span> <span class="kw">&lt;-</span> <span class="no">Cache</span>$<span class="fu">new</span>(<span class="fu"><a href="https://rdrr.io/r/base/file.path.html">file.path</a></span>(<span class="fu"><a href="https://rdrr.io/r/base/tempfile.html">tempdir</a></span>(), <span class="st">"cache-test"</span>), <span class="kw">hashfun</span> <span class="kw">=</span> <span class="kw pkg">digest</span><span class="kw ns">::</span><span class="no"><a href="https://rdrr.io/pkg/digest/man/digest.html">digest</a></span>)
+<span class="co">#&gt; creating directory '/tmp/Rtmpw73XUg/cache-test'</span>
+<span class="no">key1</span> <span class="kw">&lt;-</span> <span class="no">cache</span>$<span class="fu">push</span>(<span class="no">iris</span>)
+<span class="no">key2</span> <span class="kw">&lt;-</span> <span class="no">cache</span>$<span class="fu">push</span>(<span class="no">cars</span>)
+<span class="no">key3</span> <span class="kw">&lt;-</span> <span class="no">cache</span>$<span class="fu">push</span>(<span class="no">mtcars</span>)
+
+<span class="no">cache</span>$<span class="no">files</span>$<span class="no">path</span>
+<span class="co">#&gt; [1] "/tmp/Rtmpw73XUg/cache-test/d3c5d071001b61a9f6131d3004fd0988"</span>
+<span class="co">#&gt; [2] "/tmp/Rtmpw73XUg/cache-test/f98a59010652c8e1ee062ed4c43f648e"</span>
+<span class="co">#&gt; [3] "/tmp/Rtmpw73XUg/cache-test/a63c70e73b58d0823ab3bcbd3b543d6f"</span>
+
+<span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span>(<span class="no">cache</span>$<span class="fu">read</span>(<span class="no">key1</span>))
+<span class="co">#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species</span>
+<span class="co">#&gt; 1          5.1         3.5          1.4         0.2  setosa</span>
+<span class="co">#&gt; 2          4.9         3.0          1.4         0.2  setosa</span>
+<span class="co">#&gt; 3          4.7         3.2          1.3         0.2  setosa</span>
+<span class="co">#&gt; 4          4.6         3.1          1.5         0.2  setosa</span>
+<span class="co">#&gt; 5          5.0         3.6          1.4         0.2  setosa</span>
+<span class="co">#&gt; 6          5.4         3.9          1.7         0.4  setosa</span>
+
+<span class="no">cache</span>$<span class="fu">prune</span>(<span class="kw">max_files</span> <span class="kw">=</span> <span class="fl">1</span>)
+<span class="no">cache</span>$<span class="no">files</span>$<span class="no">path</span>
+<span class="co">#&gt; [1] "/tmp/Rtmpw73XUg/cache-test/a63c70e73b58d0823ab3bcbd3b543d6f"</span>
+<span class="no">cache</span>$<span class="fu">purge</span>()  <span class="co"># deletes all cached files</span>
+<span class="no">cache</span>$<span class="fu">destroy</span>()  <span class="co"># deletes the cache directory</span></pre></div>
 </div>
 </div>
 <div id="dependencies" class="section level1">
@@ -205,7 +235,13 @@
 <a href="https://github.com/s-fleck/dint">dint</a>: A toolkit for working year-quarter and year-month dates that I am also the author of. It is used by <code><a href="reference/rotate.html">rotate_date()</a></code> and <code><a href="reference/rotate.html">rotate_time()</a></code> to deal with calendar periods (such as weeks or months).</li>
 </ul>
 <p>Both packages have no transitive dependencies (i.e they do not depend on anything outside of base R)</p>
-<p>Optional dependencies: * <a href="https://github.com/eddelbuettel/digest">digest</a> and <a href="https://CRAN.R-project.org/package=uuid">uuid</a> for generating hashes when using Cache. If storage keys for cache files are set manually, none of these packages are required. * <a href="https://CRAN.R-project.org/package=zip">zip</a> as an alternative to the integrated zip function in R.</p>
+<p>Optional dependencies:</p>
+<ul>
+<li>
+<a href="https://github.com/eddelbuettel/digest">digest</a> or <a href="https://CRAN.R-project.org/package=uuid">uuid</a> for generating hashes or UIDs when using Cache. Storage keys for cache files can also be set manually, in which case no external dependencies are required.</li>
+<li>
+<a href="https://CRAN.R-project.org/package=zip">zip</a> is supported as an alternative to the integrated zip function in R. Might work better on some systems and worse on others.</li>
+</ul>
 </div>
 
   </div>

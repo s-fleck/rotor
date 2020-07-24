@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Function reference • rotor</title>
+<title>A Superclass — ex • rotor</title>
 
 
 <!-- jquery -->
@@ -39,7 +39,9 @@
 
 
 
-<meta property="og:title" content="Function reference" />
+<meta property="og:title" content="A Superclass — ex" />
+<meta property="og:description" content="A Superclass
+A Superclass" />
 
 
 
@@ -58,7 +60,7 @@
   </head>
 
   <body data-spy="scroll" data-target="#toc">
-    <div class="container template-reference-index">
+    <div class="container template-reference-topic">
       <header>
       <div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -108,102 +110,48 @@
       </header>
 
 <div class="row">
-  <div class="contents col-md-9">
+  <div class="col-md-9 contents">
     <div class="page-header">
-      <h1>Reference</h1>
+    <h1>A Superclass</h1>
+    <small class="dont-index">Source: <a href='https://github.com/s-fleck/rotor/blob/master/R/reprex.R'><code>R/reprex.R</code></a></small>
+    <div class="hidden name"><code>ex.Rd</code></div>
     </div>
 
-    <table class="ref-index">
+    <div class="ref-description">
+    <p>A Superclass</p>
+<p>A Superclass</p>
+    </div>
 
-    <colgroup>
-      
-      <col class="alias" />
-      <col class="title" />
-    </colgroup>
 
-    <tbody>
-      <tr>
-        <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
-          <p class="section-desc"></p>
-        </th>
-      </tr>
-      
-      
-    </tbody><tbody>
-      
-      
-      <tr>
-        
-        <td>
-          <p><code><a href="BackupQueue.html">BackupQueue</a></code> </p>
-        </td>
-        <td><p>An R6 class for managing backups</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="BackupQueueDate.html">BackupQueueDate</a></code> </p>
-        </td>
-        <td><p>An R6 class for managing datestamped backups</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="BackupQueueDateTime.html">BackupQueueDateTime</a></code> </p>
-        </td>
-        <td><p>An R6 class for managing timestamped backups</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="BackupQueueIndex.html">BackupQueueIndex</a></code> </p>
-        </td>
-        <td><p>An R6 class for managing indexed backups</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="Cache.html">Cache</a></code> </p>
-        </td>
-        <td><p>An R6 class for managing a persistent file-based cache</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="DirectoryQueue.html">DirectoryQueue</a></code> </p>
-        </td>
-        <td><p>An R6 class for managing a persistent file-based queue</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="backup_info.html">backup_info()</a></code> <code><a href="backup_info.html">list_backups()</a></code> <code><a href="backup_info.html">n_backups()</a></code> <code><a href="backup_info.html">newest_backup()</a></code> <code><a href="backup_info.html">oldest_backup()</a></code> </p>
-        </td>
-        <td><p>Discover existing backups</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="ex.html">ex</a></code> </p>
-        </td>
-        <td><p>A Superclass</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rotate.html">rotate()</a></code> <code><a href="rotate.html">backup()</a></code> <code><a href="rotate.html">prune_backups()</a></code> <code><a href="rotate.html">rotate_date()</a></code> <code><a href="rotate.html">backup_date()</a></code> <code><a href="rotate.html">rotate_time()</a></code> <code><a href="rotate.html">backup_time()</a></code> </p>
-        </td>
-        <td><p>Rotate or backup files</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="rotate_rds.html">rotate_rds()</a></code> <code><a href="rotate_rds.html">rotate_rds_time()</a></code> <code><a href="rotate_rds.html">rotate_rds_date()</a></code> </p>
-        </td>
-        <td><p>Serialize R objects to disk (with backup)</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="sub.html">sub</a></code> </p>
-        </td>
-        <td><p>A Subclass</p></td>
-      </tr>
-    </tbody>
-    </table>
+
+    <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
+
+    <p><div class="r6-active-bindings"></p><dl'>
+<dt><code>foo</code></dt><dd><p>returns "bar"</p></dd>
+
+</dl><p></div></p>
+    <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
+
+    
+<h3>Public methods</h3>
+
+<ul>
+<li><p><a href='#method-clone'><code>ex$clone()</code></a></p></li>
+</ul>
+<p><hr>
+<a id="method-clone"></a></p><h3>Method <code>clone()</code></h3>
+<p>The objects of this class are cloneable with this method.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>ex</span>$<span class='fu'>clone</span>(<span class='kw'>deep</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h3>Arguments</h3>
+<p><div class="arguments"></p><dl'>
+<dt><code>deep</code></dt><dd><p>Whether to make a deep clone.</p></dd>
+
+</dl><p></div></p>
+
+
+
   </div>
-
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
       <h2 data-toc-skip>Contents</h2>

@@ -44,8 +44,7 @@
 are used internally by rotate() and related functions and are not designed
 for interactive use. Rather, if you are a package developer and want to
 integrate rotor in one of your package, the BackupQueue subclasses give you
-a bit of extra control.
-As of now, the R6 API is still experimental and subject to change." />
+a bit of extra control." />
 
 
 
@@ -127,7 +126,6 @@ are used internally by <code><a href='rotate.html'>rotate()</a></code> and relat
 for interactive use. Rather, if you are a package developer and want to
 integrate rotor in one of your package, the <code>BackupQueue</code> subclasses give you
 a bit of extra control.</p>
-<p>As of now, <strong>the R6 API is still experimental and subject to change</strong>.</p>
     </div>
 
 
@@ -137,10 +135,25 @@ a bit of extra control.</p>
     <div class='dont-index'><p>Other BackupQueue: 
 <code><a href='BackupQueueDateTime.html'>BackupQueueDateTime</a></code>,
 <code><a href='BackupQueueIndex.html'>BackupQueueIndex</a></code></p></div>
+    <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
+
+    <p><code><a href='DirectoryQueue.html'>rotor::DirectoryQueue</a></code> -&gt; <code>BackupQueue</code></p>
+    <h2 class="hasAnchor" id="public-fields"><a class="anchor" href="#public-fields"></a>Public fields</h2>
+
+    <p><div class="r6-fields"></p><dl'>
+<dt><code>dir</code></dt><dd><p><code>character</code> scalar. Directory in which to place the backups.</p></dd>
+
+<dt><code>n</code></dt><dd><p><code>integer</code> scalar. The number of backups that exist for <code>BackupQueue$file</code> sdfgs</p></dd>
+
+</dl><p></div></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
     <p><div class="r6-active-bindings"></p><dl'>
 <dt><code>dir</code></dt><dd><p><code>character</code> scalar. Directory in which to place the backups.</p></dd>
+
+<dt><code>n</code></dt><dd><p><code>integer</code> scalar. The number of backups that exist for <code>BackupQueue$file</code> sdfgs</p></dd>
+
+<dt><code>file</code></dt><dd><p><code>character</code> scalar. The file to backup/rotate.</p></dd>
 
 <dt><code>compression</code></dt><dd><p>(Optional) compression to use <code>compression</code> argument of <code><a href='rotate.html'>rotate()</a></code>.</p></dd>
 
@@ -148,9 +161,8 @@ a bit of extra control.</p>
 argument of <code><a href='rotate.html'>rotate()</a></code></p></dd>
 
 <dt><code>has_backups</code></dt><dd><p>Returns <code>TRUE</code> if at least one backup of <code>BackupQueue$file</code>
-exists</p></dd>
-
-<dt><code>n_backups</code></dt><dd><p>Returns the number of backups that exist for <code>BackupQueue$file</code></p></dd>
+exists
+All backups of self$file</p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
@@ -163,11 +175,17 @@ exists</p></dd>
 <li><p><a href='#method-prune'><code>BackupQueue$prune()</code></a></p></li>
 <li><p><a href='#method-print'><code>BackupQueue$print()</code></a></p></li>
 <li><p><a href='#method-set_file'><code>BackupQueue$set_file()</code></a></p></li>
-<li><p><a href='#method-set_dir'><code>BackupQueue$set_dir()</code></a></p></li>
 <li><p><a href='#method-set_compression'><code>BackupQueue$set_compression()</code></a></p></li>
 <li><p><a href='#method-set_max_backups'><code>BackupQueue$set_max_backups()</code></a></p></li>
 </ul>
-<p><hr>
+<p><details open ><summary>Inherited methods</summary>
+<ul>
+<li><p><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="push"><a href='../../rotor/html/DirectoryQueue.html#method-push'><code>rotor::DirectoryQueue$push()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></p></li>
+</ul>
+</details>
+
+<hr>
 <a id="method-new"></a></p><h3>Method <code>new()</code></h3>
 
 <h3>Usage</h3>
@@ -194,12 +212,6 @@ exists</p></dd>
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>BackupQueue</span>$<span class='fu'>set_file</span>(<span class='no'>x</span>)</pre><p></div></p>
-
-<p><hr>
-<a id="method-set_dir"></a></p><h3>Method <code>set_dir()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>BackupQueue</span>$<span class='fu'>set_dir</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_compression"></a></p><h3>Method <code>set_compression()</code></h3>
