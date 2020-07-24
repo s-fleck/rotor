@@ -24,27 +24,27 @@ test_that("backup/rotate happy path", {
 
   # no backup because dry run
   expect_message(backup(tf, dry_run = TRUE), "dry_run")
-  expect_identical(bq$n_backups, 0L)
+  expect_identical(bq$n, 0L)
 
   # not rotating because file is to small
   backup(tf, size = 1e6)
-  expect_identical(bq$n_backups, 0L)
+  expect_identical(bq$n, 0L)
 
   # backup
   backup(tf, size = 1)
-  expect_identical(bq$n_backups, 1L)
+  expect_identical(bq$n, 1L)
 
   # backup (zip)
   backup(tf, compression = TRUE)
-  expect_identical(bq$n_backups, 2L)
-  expect_identical(tools::file_ext(bq$backups$path[[1]]), "zip")
+  expect_identical(bq$n, 2L)
+  expect_identical(tools::file_ext(bq$files$path[[1]]), "zip")
 
   # rotating
   rotate(tf, compression = FALSE)
-  expect_identical(bq$n_backups, 3L)
+  expect_identical(bq$n, 3L)
   expect_equal(file.size(tf), 0)
-  expect_equal(file.size(bq$backups$path[[1]]), tf_size)
-  expect_equal(bq$backups$sfx, as.character(1:3))
+  expect_equal(file.size(bq$files$path[[1]]), tf_size)
+  expect_equal(bq$files$sfx, as.character(1:3))
 
   bq$prune(0)
   file.remove(tf)

@@ -8,17 +8,14 @@ An R6 class for managing timestamped backups
 
 An R6 class for managing timestamped backups
 }
-\details{
-As of now, \strong{the R6 API is still experimental and subject to change}.
-}
 \seealso{
 Other BackupQueue: 
 \code{\link{BackupQueueIndex}},
 \code{\link{BackupQueue}}
 }
 \concept{BackupQueue}
-\section{Super class}{
-\code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{BackupQueueDateTime}
+\section{Super classes}{
+\code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{BackupQueueDateTime}
 }
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
@@ -50,9 +47,9 @@ second)}
 \if{html}{
 \out{<details open ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_dir">}\href{../../rotor/html/BackupQueue.html#method-set_dir}{\code{rotor::BackupQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
 }
 \out{</details>}

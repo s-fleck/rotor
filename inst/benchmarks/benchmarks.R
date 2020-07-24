@@ -16,11 +16,11 @@ bq_cached <- BackupQueueDate$new(tf, cache_backups = TRUE)
 bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
 
 res <- bench::mark(
-  bq$n_backups,
-  bq$backups,
+  bq$n,
+  bq$files,
   bq$should_rotate(age = "1 year", size = -1),
-  bq_cached$n_backups,
-  bq_cached$backups,
+  bq_cached$n,
+  bq_cached$files,
   bq_cached$should_rotate(age = "1 year", size = -1),
   check = FALSE
 )

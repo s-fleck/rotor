@@ -17,8 +17,8 @@ Other BackupQueue:
 \code{\link{BackupQueue}}
 }
 \concept{BackupQueue}
-\section{Super class}{
-\code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{BackupQueueIndex}
+\section{Super classes}{
+\code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{BackupQueueIndex}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -33,10 +33,10 @@ Other BackupQueue:
 \if{html}{
 \out{<details ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="initialize">}\href{../../rotor/html/BackupQueue.html#method-initialize}{\code{rotor::BackupQueue$initialize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_dir">}\href{../../rotor/html/BackupQueue.html#method-set_dir}{\code{rotor::BackupQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_max_backups">}\href{../../rotor/html/BackupQueue.html#method-set_max_backups}{\code{rotor::BackupQueue$set_max_backups()}}\out{</span>}
 }
@@ -65,6 +65,7 @@ Create a new index-stamped backup (e.g. \file{logfile.1.log})
 \if{html}{\out{<a id="method-should_rotate"></a>}}
 \if{latex}{\out{\hypertarget{method-should_rotate}{}}}
 \subsection{Method \code{should_rotate()}}{
+Should a file of \code{size} be rotated? See \code{size} argument of \code{\link[=rotate]{rotate()}}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$should_rotate(size, verbose = FALSE)}\if{html}{\out{</div>}}
 }

@@ -32,11 +32,11 @@ backup_info <- function(
   dir = dirname(file)
 ){
   if (is_pure_BackupQueueIndex(file, dir = dir))
-    BackupQueueIndex$new(file, dir = dir)$backups
+    BackupQueueIndex$new(file, dir = dir)$files
   else if (is_pure_BackupQueueDateTime(file, dir = dir))
-    BackupQueueDateTime$new(file, dir = dir)$backups
+    BackupQueueDateTime$new(file, dir = dir)$files
   else
-    BackupQueue$new(file, dir = dir)$backups
+    BackupQueue$new(file, dir = dir)$files
 }
 
 
@@ -49,7 +49,7 @@ list_backups <- function(
   file,
   dir = dirname(file)
 ){
-  BackupQueue$new(file, dir = dir)$backups$path
+  BackupQueue$new(file, dir = dir)$files$path
 }
 
 
@@ -70,7 +70,7 @@ n_backups <- function(
       call. = FALSE
     )
   }
-  BackupQueue$new(file, dir = dir)$n_backups
+  BackupQueue$new(file, dir = dir)$n
 }
 
 
@@ -94,7 +94,7 @@ newest_backup <- function(
     is_pure_BackupQueueDateTime(file, dir = dir),
     "Can only determine newest backup for files that only have either indexed ",
     "or timestamped backups, but '", file, "' has both:\n",
-    paste("~ ", bq$backups$path, collapse = "\n")
+    paste("~ ", bq$files$path, collapse = "\n")
   )
 
   bq <- BackupQueueDateTime$new(file, dir = dir)
@@ -103,7 +103,7 @@ newest_backup <- function(
     bq <- BackupQueueIndex$new(file, dir = dir)
   }
 
-  first(bq$backups$path)
+  first(bq$files$path)
 }
 
 
@@ -125,7 +125,7 @@ oldest_backup <- function(
     is_pure_BackupQueueDateTime(file, dir = dir),
     "Can only determine newest backup for files that only have either indexed ",
     "or timestamped backups, but '", file, "' has both:\n",
-    paste("~ ", bq$backups$path, collapse = "\n")
+    paste("~ ", bq$files$path, collapse = "\n")
   )
 
   bq <- BackupQueueDateTime$new(file, dir = dir)
@@ -134,5 +134,5 @@ oldest_backup <- function(
     bq <- BackupQueueIndex$new(file, dir = dir)
   }
 
-  last(bq$backups$path)
+  last(bq$files$path)
 }

@@ -3,7 +3,7 @@ is_pure_BackupQueueIndex <- function(
   file,
   dir = dirname(file)
 ){
-  identical(BackupQueueDateTime$new(file, dir = dir)$n_backups, 0L)
+  identical(BackupQueueDateTime$new(file, dir = dir)$n, 0L)
 }
 
 
@@ -14,7 +14,7 @@ is_pure_BackupQueueDateTime <- function(
   dir = dirname(file)
 ){
   bi <- BackupQueueIndex$new(file, dir = dir)
-  identical(bi$n_backups, 0L) || min(bi$backups$index) > 1L
+  identical(bi$n, 0L) || min(bi$files$index) > 1L
 }
 
 
@@ -26,13 +26,13 @@ is_pure_BackupQueue <- function(
 ){
   bi <- BackupQueueIndex$new(file, dir = dir)
 
-  if (bi$n_backups < 1){
+  if (bi$n < 1){
     TRUE
-  } else if (identical(min(bi$backups$index), 1L)){
+  } else if (identical(min(bi$files$index), 1L)){
     # check if min index is 1 to filter out BackupQueueIndex that are truely
     # BackupQueueDate but only have integer like timestamps
     identical(
-      try(BackupQueueDateTime$new(file, dir = dir)$n_backups, silent = TRUE),
+      try(BackupQueueDateTime$new(file, dir = dir)$n, silent = TRUE),
       0L
     )
   } else {

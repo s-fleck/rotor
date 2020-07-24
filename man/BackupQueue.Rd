@@ -9,8 +9,6 @@ are used internally by \code{\link[=rotate]{rotate()}} and related functions and
 for interactive use. Rather, if you are a package developer and want to
 integrate rotor in one of your package, the \code{BackupQueue} subclasses give you
 a bit of extra control.
-
-As of now, \strong{the R6 API is still experimental and subject to change}.
 }
 \seealso{
 Other BackupQueue: 
@@ -18,10 +16,26 @@ Other BackupQueue:
 \code{\link{BackupQueueIndex}}
 }
 \concept{BackupQueue}
+\section{Super class}{
+\code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{BackupQueue}
+}
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
+
+\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$file} sdfgs}
+}
+\if{html}{\out{</div>}}
+}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{
 \item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
+
+\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$file} sdfgs}
+
+\item{\code{file}}{\code{character} scalar. The file to backup/rotate.}
 
 \item{\code{compression}}{(Optional) compression to use \code{compression} argument of \code{\link[=rotate]{rotate()}}.}
 
@@ -29,9 +43,8 @@ Other BackupQueue:
 argument of \code{\link[=rotate]{rotate()}}}
 
 \item{\code{has_backups}}{Returns \code{TRUE} if at least one backup of \code{BackupQueue$file}
-exists}
-
-\item{\code{n_backups}}{Returns the number of backups that exist for \code{BackupQueue$file}}
+exists
+All backups of self$file}
 }
 \if{html}{\out{</div>}}
 }
@@ -42,10 +55,17 @@ exists}
 \item \href{#method-prune}{\code{BackupQueue$prune()}}
 \item \href{#method-print}{\code{BackupQueue$print()}}
 \item \href{#method-set_file}{\code{BackupQueue$set_file()}}
-\item \href{#method-set_dir}{\code{BackupQueue$set_dir()}}
 \item \href{#method-set_compression}{\code{BackupQueue$set_compression()}}
 \item \href{#method-set_max_backups}{\code{BackupQueue$set_max_backups()}}
 }
+}
+\if{html}{
+\out{<details open ><summary>Inherited methods</summary>}
+\itemize{
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="push">}\href{../../rotor/html/DirectoryQueue.html#method-push}{\code{rotor::DirectoryQueue$push()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
+}
+\out{</details>}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-new"></a>}}
@@ -86,15 +106,6 @@ Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{pr
 \subsection{Method \code{set_file()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_file(x)}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_dir"></a>}}
-\if{latex}{\out{\hypertarget{method-set_dir}{}}}
-\subsection{Method \code{set_dir()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_dir(x)}\if{html}{\out{</div>}}
 }
 
 }

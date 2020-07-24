@@ -11,7 +11,7 @@ test_that("Cache works as expected", {
   # put elements into the cache
   key1 <- cache$push(iris)
   key2 <- cache$push(cars)
-  expect_identical(cache$n_files, 2L)
+  expect_identical(cache$n, 2L)
 
   # read elements from the cache
   expect_identical(cache$read(key1), iris)
@@ -19,13 +19,13 @@ test_that("Cache works as expected", {
 
   # remove
   cache$remove(key1)
-  expect_identical(cache$n_files, 1L)
+  expect_identical(cache$n, 1L)
   expect_error(cache$read(key1))
 
   # pop
   expect_error(cache$pop(key1))
   res <- cache$pop(key2)
-  expect_identical(cache$n_files, 0L)
+  expect_identical(cache$n, 0L)
   expect_identical(res, cars)
 })
 
@@ -41,16 +41,16 @@ test_that("setting hash functions work", {
   cache_hash <- Cache$new(td, hashfun = digest::digest)
   cache_hash$push(iris)
   cache_hash$push(iris)
-  expect_identical(cache_hash$n_files, 1L)
+  expect_identical(cache_hash$n, 1L)
   cache_hash$purge()
-  expect_identical(cache_hash$n_files, 0L)
+  expect_identical(cache_hash$n, 0L)
 
 
   # To override this behaviour use a generate for unique ids, such as
   cache_uid <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate())
   cache_uid$push(iris)
   cache_uid$push(iris)
-  expect_identical(cache_hash$n_files, 2L)
+  expect_identical(cache_hash$n, 2L)
   cache_hash$purge()
 
   # ensure hashfun allways returns a scalar
@@ -74,7 +74,7 @@ test_that("pruning works by number of files works", {
   k2 <- cache$push(letters)
   Sys.sleep(0.1)
   k3 <- cache$push(cars)
-  expect_identical(cache$n_files, 3L)
+  expect_identical(cache$n, 3L)
 
   cache$prune(max_files = 2)
   cache$files
@@ -104,7 +104,7 @@ test_that("pruning by size works", {
   cache$push(iris)
   Sys.sleep(0.1)
   cache$push(cars)
-  expect_identical(cache$n_files, 6L)
+  expect_identical(cache$n, 6L)
 
   expect_true(cache$size > 2048)
   cache$prune(max_size = "2kb")
@@ -136,13 +136,13 @@ test_that("Inf max_* do not prunes", {
   cache$push(iris)
   Sys.sleep(0.1)
   cache$push(cars)
-  expect_identical(cache$n_files, 6L)
+  expect_identical(cache$n, 6L)
 
   cache$prune(max_files = Inf, max_age = Inf, max_size = Inf)
-  expect_identical(cache$n_files, 6L)
+  expect_identical(cache$n, 6L)
 
   cache$prune(max_files = NULL, max_age = NULL, max_size = NULL)
-  expect_identical(cache$n_files, 6L)
+  expect_identical(cache$n, 6L)
 
   cache$purge()
 })
@@ -241,7 +241,7 @@ test_that("$destroy works as expected", {
   # put elements into the cache
   key1 <- cache$push(iris)
   key2 <- cache$push(cars)
-  expect_identical(cache$n_files, 2L)
+  expect_identical(cache$n, 2L)
 
   expect_error(cache$destroy(), class = "DirIsNotEmptyError")
   cache$purge()$destroy()

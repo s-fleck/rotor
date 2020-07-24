@@ -23,19 +23,19 @@ test_that("backup_time common usecases", {
   bq <- BackupQueueDateTime$new(tf, cache_backups = FALSE)
 
   backup_time(tf, age = "1 month", now = "2019-02-28--12-30-00")
-  expect_identical(bq$n_backups, 1L)
+  expect_identical(bq$n, 1L)
 
   backup_time(tf, age = "1 month", now = "2019-03-01--00-00-00")
-  expect_identical(bq$n_backups, 2L)
+  expect_identical(bq$n, 2L)
 
   file.create(file.path(td, "test.2019-01-01.log"))
   file.create(file.path(td, "test.2018-12-31.log"))
-  expect_identical(bq$n_backups, 4L)
+  expect_identical(bq$n, 4L)
   backup_time(tf, max_backups = "1 year", now = "2019-03-01--00-00-01")
-  expect_identical(bq$n_backups, 4L)
+  expect_identical(bq$n, 4L)
   expect_equal(bq$last_rotation, as.POSIXct("2019-03-01 00:00:01"))
   expect_identical(
-    as.character(min(bq$backups$timestamp)),
+    as.character(min(bq$files$timestamp)),
     "2019-01-01"
   )
 
@@ -55,13 +55,13 @@ test_that("backup_time works with timestamps", {
   on.exit(unlink(tf))
 
   bq <- BackupQueueDateTime$new(tf)
-  expect_identical(bq$n_backups, 1L)
+  expect_identical(bq$n, 1L)
 
   backup_time(tf, age = as.POSIXct("2019-02-01 11:59:59"))
-  expect_identical(bq$n_backups, 1L)
+  expect_identical(bq$n, 1L)
 
   backup_time(tf, age = as.POSIXct("2019-02-01 12:00:00"))
-  expect_identical(bq$n_backups, 1L)
+  expect_identical(bq$n, 1L)
 
   now <- as.POSIXct("2020-01-01 11:59:59")
 
@@ -70,10 +70,10 @@ test_that("backup_time works with timestamps", {
     newest_backup(tres),
     "2020-01-01"
   )
-  expect_identical(bq$n_backups, 2L)
+  expect_identical(bq$n, 2L)
 
-  expect_equal(min(bq$backups$timestamp), as.POSIXct("2019-02-01 12:00:00"))
-  expect_equal(max(bq$backups$timestamp), now)
+  expect_equal(min(bq$files$timestamp), as.POSIXct("2019-02-01 12:00:00"))
+  expect_equal(max(bq$files$timestamp), now)
 
   backup_time(tf, max_backups = 0)
 })

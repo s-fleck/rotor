@@ -9,11 +9,14 @@
 #' integrate rotor in one of your package, the `BackupQueue` subclasses give you
 #' a bit of extra control.
 #'
-#' As of now, **the R6 API is still experimental and subject to change**.
+#' @field dir `character` scalar. Directory in which to place the backups.
+#' @field n `integer` scalar. The number of backups that exist for `BackupQueue$file` sdfgs
+#'
 #' @family BackupQueue
 #' @export
 BackupQueue <- R6::R6Class(
   "BackupQueue",
+  inherit = DirectoryQueue,
   cloneable = FALSE,
   public = list(
     initialize = function(
@@ -43,8 +46,8 @@ BackupQueue <- R6::R6Class(
         "recommended, because it is not defined which backups will be",
         "deleted. Use BackupQueueIndex or BackupQueueDate instead."
       )}
-      to_keep   <- self$backups$path[seq_len(max_backups)]
-      to_remove <- setdiff(self$backups$path, to_keep)
+      to_keep   <- self$files$path[seq_len(max_backups)]
+      to_remove <- setdiff(self$files$path, to_keep)
       file_remove(to_remove)
 
       self
@@ -55,7 +58,7 @@ BackupQueue <- R6::R6Class(
       cat(fmt_class(class(self)[[1]]), "\n\n")
 
       ori <- file.info(self$file)
-      bus <- self$backups
+      bus <- self$files
       info <- data.frame(
         file = c(row.names(ori), bus$path),
         size = c(ori$size, bus$size)
@@ -107,18 +110,6 @@ BackupQueue <- R6::R6Class(
     },
 
 
-    set_dir = function(
-      x
-    ){
-      assert(
-        is_scalar_character(x) && dir.exists(x),
-        "backup dir '", x, "' does not exist."
-      )
-      private[[".dir"]] <- x
-      self
-    },
-
-
     set_compression = function(
       x
     ){
@@ -143,15 +134,11 @@ BackupQueue <- R6::R6Class(
 
   # ... getters -------------------------------------------------------------
   active = list(
-    #' @feld file `character` scalar. The file to backup/rotate.
+    #' @field file `character` scalar. The file to backup/rotate.
     file = function(){
       get(".file", envir = private)
     },
 
-    #' @field dir `character` scalar. Directory in which to place the backups.
-    dir = function(){
-      get(".dir", envir = private)
-    },
 
     #' @field compression (Optional) compression to use `compression` argument of [rotate()].
     compression = function(){
@@ -167,16 +154,14 @@ BackupQueue <- R6::R6Class(
     #' @field has_backups Returns `TRUE` if at least one backup of `BackupQueue$file`
     #'   exists
     has_backups = function(){
-      self$n_backups > 0
-    },
-
-    #' @field n_backups Returns the number of backups that exist for `BackupQueue$file`
-    n_backups = function(){
-      nrow(self$backups)
+      self$n > 0
     },
 
 
-    backups = function(){
+    #' All backups of self$file
+    #' @return a `data.frame` with a similar structure to what
+    #'   [base::file.info()] returns
+    files = function(){
       backup_files <- get_backups(
         file = self$file,
         potential_backups =
@@ -270,15 +255,15 @@ BackupQueueIndex <- R6::R6Class(
       if (!should_prune(self, max_backups))
         return(self)
 
-      to_keep   <- self$backups$path[seq_len(max_backups)]
-      to_remove <- setdiff(self$backups$path, to_keep)
+      to_keep   <- self$files$path[seq_len(max_backups)]
+      to_remove <- setdiff(self$files$path, to_keep)
 
       file_remove(to_remove)
       self$pad_index()
     },
 
 
-    #' @descirption Should a file of `size` be rotated? See `size` argument of [`rotate()`]
+    #' @description Should a file of `size` be rotated? See `size` argument of [`rotate()`]
     #' @return `TRUE` or `FALSE`
     should_rotate = function(size, verbose = FALSE){
       size <- parse_size(size)
@@ -312,10 +297,10 @@ BackupQueueIndex <- R6::R6Class(
     #'  to the number of digits of the largest index. Usually does not have to
     #'  be called manually.
     pad_index = function(){
-      if (nrow(self$backups) <= 0)
+      if (nrow(self$files) <= 0)
         return(self)
 
-      backups <- self$backups
+      backups <- self$files
       backups$sfx_new <- pad_left(backups$index, pad = "0")
       backups$path_new <-
         paste(file.path(dirname(backups$path), backups$name), backups$sfx_new, backups$ext, sep = ".")
@@ -338,10 +323,10 @@ BackupQueueIndex <- R6::R6Class(
         is_scalar_integerish(n) & n > 0,
         "indices can only be incremented by positive integers, but `n` is ", preview_object(n), "."
       )
-      if (self$n_backups <= 0)
+      if (self$n <= 0)
         return(self)
 
-      backups <- self$backups
+      backups <- self$files
       backups$index <- backups$index + as.integer(n)
       backups$path_new <- paste(
         file.path(dirname(backups$path), backups$name),
@@ -363,8 +348,8 @@ BackupQueueIndex <- R6::R6Class(
 
   # ... getters -------------------------------------------------------------
   active = list(
-    backups = function(){
-      res <- super$backups
+    files = function(){
+      res <- super$files
       if (nrow(res) < 1)
         return(EMPTY_BACKUPS_INDEX)
 
@@ -385,8 +370,6 @@ BackupQueueIndex <- R6::R6Class(
 # BackupQueueDateTime -----------------------------------------------------
 
 #' An R6 class for managing timestamped backups
-#'
-#' As of now, **the R6 API is still experimental and subject to change**.
 #'
 #' @family BackupQueue
 #' @export
@@ -471,13 +454,13 @@ BackupQueueDateTime <- R6::R6Class(
 
       if (is_integerish(max_backups) && is.finite(max_backups)){
         # prune based on number of backups
-        backups   <- rev(sort(self$backups$path))
+        backups   <- rev(sort(self$files$path))
         to_remove <- backups[(max_backups + 1):length(backups)]
 
       } else {
         to_remove <- select_prune_files_by_age(
-          self$backups$path,
-          self$backups$timestamp,
+          self$files$path,
+          self$files$timestamp,
           max_age = max_backups,
           now = as.Date(as.character(self$last_rotation))
         )
@@ -544,7 +527,7 @@ BackupQueueDateTime <- R6::R6Class(
 
     #' @description Force update of the backups cache (only if `$cache_backups == TRUE`).
     update_backups_cache = function(){
-      res <- super$backups
+      res <- super$files
 
       if (nrow(res) < 1){
         res <- EMPTY_BACKUPS_DATETIME
@@ -623,16 +606,16 @@ BackupQueueDateTime <- R6::R6Class(
 
 
     last_rotation = function() {
-      bus <- get("backups", envir = self)
+      bus <- get("files", envir = self)
       if (nrow(bus) < 1) {
         NULL
       } else {
-        max(get("backups", envir = self)$timestamp)
+        max(get("files", envir = self)$timestamp)
       }
     },
 
 
-    backups = function(){
+    files = function(){
       if (!get(".cache_backups", envir = private, mode = "logical")){
         self$update_backups_cache()
       }
@@ -654,7 +637,6 @@ BackupQueueDateTime <- R6::R6Class(
 
 #' An R6 class for managing datestamped backups
 #'
-#' As of now, **the R6 API is still experimental and subject to change**.
 #' @export
 BackupQueueDate <- R6::R6Class(
   inherit = BackupQueueDateTime,
@@ -694,11 +676,11 @@ BackupQueueDate <- R6::R6Class(
   active = list(
 
     last_rotation = function() {
-      bus <- get("backups", envir = self)
+      bus <- get("files", envir = self)
       if (nrow(bus) < 1) {
         NULL
       } else {
-        as.Date(as.character(max(get("backups", envir = self)$timestamp)))
+        as.Date(as.character(max(get("files", envir = self)$timestamp)))
       }
     }
   )

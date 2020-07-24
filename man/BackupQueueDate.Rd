@@ -4,10 +4,12 @@
 \alias{BackupQueueDate}
 \title{An R6 class for managing datestamped backups}
 \description{
-As of now, \strong{the R6 API is still experimental and subject to change}.
+An R6 class for managing datestamped backups
+
+An R6 class for managing datestamped backups
 }
 \section{Super classes}{
-\code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{\link[rotor:BackupQueueDateTime]{rotor::BackupQueueDateTime}} -> \code{BackupQueueDate}
+\code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{\link[rotor:BackupQueueDateTime]{rotor::BackupQueueDateTime}} -> \code{BackupQueueDate}
 }
 \section{Methods}{
 \subsection{Public methods}{
@@ -19,9 +21,9 @@ As of now, \strong{the R6 API is still experimental and subject to change}.
 \if{html}{
 \out{<details ><summary>Inherited methods</summary>}
 \itemize{
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_dir">}\href{../../rotor/html/BackupQueue.html#method-set_dir}{\code{rotor::BackupQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="prune">}\href{../../rotor/html/BackupQueueDateTime.html#method-prune}{\code{rotor::BackupQueueDateTime$prune()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="push">}\href{../../rotor/html/BackupQueueDateTime.html#method-push}{\code{rotor::BackupQueueDateTime$push()}}\out{</span>}
