@@ -20,6 +20,29 @@ ValueError <- function(
 
 
 
+DirIsNotEmptyError <- function(
+  message = sprintf("directory '%s' does not exist.", dir),
+  ...,
+  dir,
+  class = NULL,
+  call = NULL
+){
+  error(message, ..., class = c(class, "DirIsNotEmptyError"), call = call)
+}
+
+
+
+DirDoesNotExistError <- function(
+  message = sprintf("directory '%s' does not exist.", dir),
+  ...,
+  dir,
+  class = NULL,
+  call = NULL
+){
+  error(message, ..., class = c(class, "DirDoesNotExistError"), call = call)
+}
+
+
 
 error <- function(message, ..., class = NULL, call = NULL){
   structure(

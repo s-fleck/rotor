@@ -4,15 +4,12 @@
 \alias{Cache}
 \title{An R6 class for managing a persistent file-based cache}
 \description{
-An R6 class for managing a persistent file-based cache
-
-An R6 class for managing a persistent file-based cache
-}
-\details{
-\code{Cache} provides an \link[R6:R6Class]{R6} API for managing a folder that
-contains cached \R objects as \code{.rds} files. \code{Cache} supports
-automatic removal of old files if the the cache exceeds a predetermined
-number of files, total size, or if the files exceed a certain age.
+\code{Cache} provides an \link[R6:R6Class]{R6} API for managing an on-disk key-value
+store for \R objects. The objects are serialzed to a single folder as
+\link[=readRDS]{.rds} files and the key of the object equals the name of the file.
+\code{Cache} supports automatic removal of old files if the cache folder exceeds a
+predetermined number of files, total size, or if the individual files exceed
+a certain age.
 }
 \examples{
 
@@ -50,6 +47,8 @@ the cache files}
 \item{\code{max_files}}{see the \code{compress} argument of \code{\link[base:readRDS]{base::saveRDS()}}.
 \strong{Note}: this differs from the \verb{$compress} argument of \code{\link[=rotate]{rotate()}}.}
 
+\item{\code{n_files}}{\code{integer} scalar: number of files in the cache}
+
 \item{\code{max_files}}{\code{integer} scalar: maximum number of files to keep in
 the cache}
 
@@ -71,7 +70,9 @@ of these short forms you can also be explicit and use the IEC suffixes
 \item{\code{hashfun}}{\code{NULL} or a \code{function} to generate a unique hash from the
 object to be cached (see example). The hash \emph{must} be a text string
 that is a valid filename on the target system. If \verb{$hashfun} is \code{NULL},
-a storage key must be supplied manually in \code{cache$push()}.}
+a storage key must be supplied manually in \code{cache$push()}. If a new
+object is added with the same key as an existing object, the existing
+object will be overwritten without warning.}
 }
 \if{html}{\out{</div>}}
 }

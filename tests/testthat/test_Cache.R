@@ -55,7 +55,7 @@ test_that("setting hash functions work", {
 
   # ensure hashfun allways returns a scalar
   cache_err <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate(n = 2))
-  expect_error(cache_err$push(iris), "scalar")
+  expect_error(cache_err$push(iris), class = "ValueError")
 })
 
 
@@ -228,3 +228,24 @@ test_that("pruning by age works", {
     class = "ValueError"
   )
 })
+
+
+
+test_that("$destroy works as expected", {
+  td <- file.path(tempdir(), "cache-test")
+  on.exit(unlink(td, recursive = TRUE))
+
+  # cache can be created
+  cache <- Cache$new(td)
+
+  # put elements into the cache
+  key1 <- cache$push(iris)
+  key2 <- cache$push(cars)
+  expect_identical(cache$n_files, 2L)
+
+  expect_error(cache$destroy(), class = "DirIsNotEmptyError")
+  cache$purge()$destroy()
+  expect_false(dir.exists(cache$dir))
+  expect_error(cache$push(iris), class = "DirDoesNotExistError")
+})
+

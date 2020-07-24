@@ -164,6 +164,29 @@ unlink(td, recursive = TRUE)
 ```
 
 
+## Cache
+
+rotor also provides a simple on-disk key-value store that can be used as a
+persistent cache.
+ 
+```{r}
+cache <- Cache$new(file.path(tempdir(), "cache-test"), hashfun = digest::digest)
+key1 <- cache$push(iris)
+key2 <- cache$push(cars)
+key3 <- cache$push(mtcars)
+
+cache$files$path
+
+head(cache$read(key1))
+
+cache$prune(max_files = 1)
+cache$files$path
+cache$purge()  # deletes all cached files
+cache$destroy()  # deletes the cache directory
+```
+
+
+
 # Dependencies
 
 **rotor**'s dependencies are intentionally kept slim. It only comes with two
@@ -181,9 +204,11 @@ anything outside of base R)
 
 
 Optional dependencies:
-* [digest](https://github.com/eddelbuettel/digest) and 
+
+* [digest](https://github.com/eddelbuettel/digest) or 
   [uuid](https://CRAN.R-project.org/package=uuid ) for generating
-  hashes when using Cache. If storage keys for cache files are set manually,
-  none of these packages are required.
-* [zip](https://CRAN.R-project.org/package=zip) as an alternative to the 
-  integrated zip function in R. 
+  hashes or UIDs when using Cache. Storage keys for cache files can also be set 
+  manually, in which case no external dependencies are required.
+* [zip](https://CRAN.R-project.org/package=zip) is supported as an alternative 
+  to the integrated zip function in R. Might work better on some systems and
+  worse on others.

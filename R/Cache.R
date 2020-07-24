@@ -2,10 +2,13 @@
 
 #' An R6 class for managing a persistent file-based cache
 #'
-#' `Cache` provides an [R6][R6::R6Class] API for managing a folder that
-#' contains cached \R objects as `.rds` files. `Cache` supports
-#' automatic removal of old files if the the cache exceeds a predetermined
-#' number of files, total size, or if the files exceed a certain age.
+#' @description
+#' `Cache` provides an [R6][R6::R6Class] API for managing an on-disk key-value
+#' store for \R objects. The objects are serialzed to a single folder as
+#' [.rds][readRDS()] files and the key of the object equals the name of the file.
+#' `Cache` supports automatic removal of old files if the cache folder exceeds a
+#' predetermined number of files, total size, or if the individual files exceed
+#' a certain age.
 #'
 #' @export
 Cache <- R6::R6Class(
@@ -69,9 +72,13 @@ Cache <- R6::R6Class(
     ){
       assert(
         is_scalar(key),
+        ValueError(paste0(
         "`key` must be a scalar, not ", preview_object(key), ". Did you set a",
         " custom `$hashfun` that can return vectors of length > 1?"
+        ))
       )
+      assert(dir.exists(self$dir), DirDoesNotExistError(dir = self$dir))
+
       saveRDS(x, file = file.path(self$dir, key), compress = self$compression)
       self$prune()
       key
@@ -150,14 +157,25 @@ Cache <- R6::R6Class(
         file.remove(to_remove)
       }
 
-      self
+      invisible(self)
     },
 
     #' @description purge the cache (remove all cached files)
     purge = function(
     ){
       unlink(self$files$path)
-      self
+      invisible(self)
+    },
+
+
+    #' @description purge the cache (remove all cached files)
+    destroy = function(
+    ){
+      files <- list.files(self$dir, recursive = TRUE, all.files = TRUE)
+      assert(!length(files), DirIsNotEmptyError(dir = self$dir))
+
+      unlink(self$dir, recursive = TRUE)
+      invisible(self)
     },
 
 
@@ -197,7 +215,7 @@ Cache <- R6::R6Class(
 
       assert(is_dir(x), "'", x, "' is not a directory")
       private[[".dir"]] <- x
-      self
+      invisible(self)
     },
 
 
@@ -209,7 +227,7 @@ Cache <- R6::R6Class(
 
       assert(is.null(x) || is_n0(x))
       private[[".max_files"]] <- x
-      self
+      invisible(self)
     },
 
 
@@ -221,7 +239,7 @@ Cache <- R6::R6Class(
 
       assert(is.null(x) || is_parsable_rotation_interval(x))
       private[[".max_age"]] <- x
-      self
+      invisible(self)
     },
 
 
@@ -233,7 +251,7 @@ Cache <- R6::R6Class(
       else
         private[[".max_size"]] <- parse_size(x)
 
-      self
+      invisible(self)
     },
 
 
@@ -241,7 +259,7 @@ Cache <- R6::R6Class(
       x
     ){
       private[[".compression"]] <- x
-      self
+      invisible(self)
     },
 
     set_hashfun = function(
@@ -249,7 +267,7 @@ Cache <- R6::R6Class(
     ){
       assert(is.function(x) || is.null(x), "`hashfun` must be a function.")
       private[[".hashfun"]] <- x
-      self
+      invisible(self)
     }
   ),
 
@@ -311,7 +329,9 @@ Cache <- R6::R6Class(
     #' @field hashfun `NULL` or a `function` to generate a unique hash from the
     #'   object to be cached (see example). The hash *must* be a text string
     #'   that is a valid filename on the target system. If `$hashfun` is `NULL`,
-    #'   a storage key must be supplied manually in `cache$push()`.
+    #'   a storage key must be supplied manually in `cache$push()`. If a new
+    #'   object is added with the same key as an existing object, the existing
+    #'   object will be overwritten without warning.
     hashfun = function(fun){
       if (missing(fun)){
         res <- get(".hashfun", envir = private)
