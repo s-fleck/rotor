@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>An R6 class for managing backups — BackupQueue • rotor</title>
+<title>An R6 Class for managing backups (abstract base class) — BackupQueue • rotor</title>
 
 
 <!-- jquery -->
@@ -39,12 +39,9 @@
 
 
 
-<meta property="og:title" content="An R6 class for managing backups — BackupQueue" />
-<meta property="og:description" content="BackupQueue &amp;amp; co are part of the R6 API of rotor. They
-are used internally by rotate() and related functions and are not designed
-for interactive use. Rather, if you are a package developer and want to
-integrate rotor in one of your package, the BackupQueue subclasses give you
-a bit of extra control." />
+<meta property="og:title" content="An R6 Class for managing backups (abstract base class) — BackupQueue" />
+<meta property="og:description" content="BackupQueueis an abstract class not intended for direct usage, please refer to
+BackupQueueIndex, BackupQueueDateTime, BackupQueueDate instead." />
 
 
 
@@ -115,26 +112,31 @@ a bit of extra control." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>An R6 class for managing backups</h1>
+    <h1>An R6 Class for managing backups (abstract base class)</h1>
     <small class="dont-index">Source: <a href='https://github.com/s-fleck/rotor/blob/master/R/BackupQueue.R'><code>R/BackupQueue.R</code></a></small>
     <div class="hidden name"><code>BackupQueue.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>BackupQueue</code> &amp; co are part of the <a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6</a> API of <strong>rotor</strong>. They
-are used internally by <code><a href='rotate.html'>rotate()</a></code> and related functions and are not designed
-for interactive use. Rather, if you are a package developer and want to
-integrate rotor in one of your package, the <code>BackupQueue</code> subclasses give you
-a bit of extra control.</p>
+    <p><code>BackupQueue</code>is an abstract class not intended for direct usage, please refer to
+<a href='BackupQueueIndex.html'>BackupQueueIndex</a>, <a href='BackupQueueDateTime.html'>BackupQueueDateTime</a>, <a href='BackupQueueDate.html'>BackupQueueDate</a> instead.</p>
     </div>
 
 
 
+    <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
+
+    <p>This class is part of the <a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6</a> API of <strong>rotor</strong> which is
+intended for developers that want to extend this package. For normal usage,
+the simpler functional API is recommended (see <code><a href='rotate.html'>rotate()</a></code>).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
 
-    <div class='dont-index'><p>Other BackupQueue: 
+    <div class='dont-index'><p>Other R6 Classes: 
 <code><a href='BackupQueueDateTime.html'>BackupQueueDateTime</a></code>,
-<code><a href='BackupQueueIndex.html'>BackupQueueIndex</a></code></p></div>
+<code><a href='BackupQueueDate.html'>BackupQueueDate</a></code>,
+<code><a href='BackupQueueIndex.html'>BackupQueueIndex</a></code>,
+<code><a href='Cache.html'>Cache</a></code>,
+<code><a href='DirectoryQueue.html'>DirectoryQueue</a></code></p></div>
     <h2 class="hasAnchor" id="super-class"><a class="anchor" href="#super-class"></a>Super class</h2>
 
     <p><code><a href='DirectoryQueue.html'>rotor::DirectoryQueue</a></code> -&gt; <code>BackupQueue</code></p>
@@ -143,7 +145,7 @@ a bit of extra control.</p>
     <p><div class="r6-fields"></p><dl'>
 <dt><code>dir</code></dt><dd><p><code>character</code> scalar. Directory in which to place the backups.</p></dd>
 
-<dt><code>n</code></dt><dd><p><code>integer</code> scalar. The number of backups that exist for <code>BackupQueue$file</code> sdfgs</p></dd>
+<dt><code>n</code></dt><dd><p><code>integer</code> scalar. The number of backups that exist for <code>BackupQueue$file</code></p></dd>
 
 </dl><p></div></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
@@ -151,7 +153,7 @@ a bit of extra control.</p>
     <p><div class="r6-active-bindings"></p><dl'>
 <dt><code>dir</code></dt><dd><p><code>character</code> scalar. Directory in which to place the backups.</p></dd>
 
-<dt><code>n</code></dt><dd><p><code>integer</code> scalar. The number of backups that exist for <code>BackupQueue$file</code> sdfgs</p></dd>
+<dt><code>n</code></dt><dd><p><code>integer</code> scalar. The number of backups that exist for <code>BackupQueue$file</code></p></dd>
 
 <dt><code>file</code></dt><dd><p><code>character</code> scalar. The file to backup/rotate.</p></dd>
 
