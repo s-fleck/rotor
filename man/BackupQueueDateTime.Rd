@@ -4,16 +4,22 @@
 \alias{BackupQueueDateTime}
 \title{An R6 class for managing timestamped backups}
 \description{
-An R6 class for managing timestamped backups
-
-An R6 class for managing timestamped backups
+A BackupQueue for timestamped backups, e.g. \code{foo.log}, \verb{foo.2020-07-24_10-54-30.log}
+}
+\details{
+This class is part of the \link[R6:R6Class]{R6} API of \strong{rotor} which is
+intended for developers that want to extend this package. For normal usage,
+the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
 }
 \seealso{
-Other BackupQueue: 
+Other R6 Classes: 
+\code{\link{BackupQueueDate}},
 \code{\link{BackupQueueIndex}},
-\code{\link{BackupQueue}}
+\code{\link{BackupQueue}},
+\code{\link{Cache}},
+\code{\link{DirectoryQueue}}
 }
-\concept{BackupQueue}
+\concept{R6 Classes}
 \section{Super classes}{
 \code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{BackupQueueDateTime}
 }
@@ -27,7 +33,8 @@ Caching brings a significant speedup for checking whether to rotate or
 not based on the \code{age} of the last backup, but is only safe if there are
 no other programs/functions interacting with the backups. This is only
 advantagous for high frequency file rotation (i.e. several times per
-second)}
+second)
+\code{POSIXct} scalar. Timestamp of the last rotation (the last backup)}
 }
 \if{html}{\out{</div>}}
 }

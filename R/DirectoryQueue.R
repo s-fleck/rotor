@@ -1,7 +1,12 @@
-# CacheQueue --------------------------------------------------------------
+# DirectoryQueue --------------------------------------------------------------
 
-#' An R6 class for managing a persistent file-based queue
+#' An R6 class for managing persistent file-based queues (abstract base class)
 #'
+#' Abstract class from which all other classes in \pkg{rotor} inherit their
+#' basic fields and methods.
+#'
+#' @template r6_api
+#' @export
 DirectoryQueue <- R6::R6Class(
   "DirectoryQueue",
   cloneable = FALSE,
@@ -10,7 +15,7 @@ DirectoryQueue <- R6::R6Class(
     initialize = function(
       ...
     ){
-      not_implemented_error()
+      NotImplementedError()
     },
 
 
@@ -18,7 +23,7 @@ DirectoryQueue <- R6::R6Class(
       x,
       ...
     ){
-      not_implemented_error()
+      NotImplementedError()
     },
 
 
@@ -26,7 +31,7 @@ DirectoryQueue <- R6::R6Class(
       x,
       ...
     ){
-      not_implemented_error()
+      NotImplementedError()
     },
 
 

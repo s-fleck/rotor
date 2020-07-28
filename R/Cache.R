@@ -10,6 +10,8 @@
 #' predetermined number of files, total size, or if the individual files exceed
 #' a certain age.
 #'
+#' @template r6_api
+#'
 #' @field dir a `character` scalar. path of the directory in which to store the cache files
 #' @field n `integer` scalar: number of files in the cache
 #'

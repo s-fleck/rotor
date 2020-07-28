@@ -4,19 +4,22 @@
 \alias{BackupQueueIndex}
 \title{An R6 class for managing indexed backups}
 \description{
-An R6 class for managing indexed backups
-
-An R6 class for managing indexed backups
+A BackupQueue for indexed backups, e.g. \code{foo.log}, \code{foo.1.log}, \code{foo.2.log}, ...
 }
 \details{
-As of now, \strong{the R6 API is still experimental and subject to change}.
+This class is part of the \link[R6:R6Class]{R6} API of \strong{rotor} which is
+intended for developers that want to extend this package. For normal usage,
+the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
 }
 \seealso{
-Other BackupQueue: 
+Other R6 Classes: 
 \code{\link{BackupQueueDateTime}},
-\code{\link{BackupQueue}}
+\code{\link{BackupQueueDate}},
+\code{\link{BackupQueue}},
+\code{\link{Cache}},
+\code{\link{DirectoryQueue}}
 }
-\concept{BackupQueue}
+\concept{R6 Classes}
 \section{Super classes}{
 \code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{BackupQueueIndex}
 }

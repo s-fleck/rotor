@@ -2,12 +2,25 @@
 % Please edit documentation in R/DirectoryQueue.R
 \name{DirectoryQueue}
 \alias{DirectoryQueue}
-\title{An R6 class for managing a persistent file-based queue}
+\title{An R6 class for managing persistent file-based queues (abstract base class)}
 \description{
-An R6 class for managing a persistent file-based queue
-
-An R6 class for managing a persistent file-based queue
+Abstract class from which all other classes in \pkg{rotor} inherit their
+basic fields and methods.
 }
+\details{
+This class is part of the \link[R6:R6Class]{R6} API of \strong{rotor} which is
+intended for developers that want to extend this package. For normal usage,
+the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
+}
+\seealso{
+Other R6 Classes: 
+\code{\link{BackupQueueDateTime}},
+\code{\link{BackupQueueDate}},
+\code{\link{BackupQueueIndex}},
+\code{\link{BackupQueue}},
+\code{\link{Cache}}
+}
+\concept{R6 Classes}
 \section{Active bindings}{
 \if{html}{\out{<div class="r6-active-bindings">}}
 \describe{

@@ -1,18 +1,16 @@
 # BackupQueue -------------------------------------------------------------
 
-#' An R6 class for managing backups
+#' An R6 Class for managing backups (abstract base class)
 #'
 #' @description
-#' `BackupQueue` & co are part of the [R6][R6::R6Class] API of **rotor**. They
-#' are used internally by [rotate()] and related functions and are not designed
-#' for interactive use. Rather, if you are a package developer and want to
-#' integrate rotor in one of your package, the `BackupQueue` subclasses give you
-#' a bit of extra control.
+#' `BackupQueue`is an abstract class not intended for direct usage, please refer to
+#' [BackupQueueIndex], [BackupQueueDateTime], [BackupQueueDate] instead.
+#'
+#' @template r6_api
 #'
 #' @field dir `character` scalar. Directory in which to place the backups.
-#' @field n `integer` scalar. The number of backups that exist for `BackupQueue$file` sdfgs
+#' @field n `integer` scalar. The number of backups that exist for `BackupQueue$file`
 #'
-#' @family BackupQueue
 #' @export
 BackupQueue <- R6::R6Class(
   "BackupQueue",
@@ -209,9 +207,11 @@ BackupQueue <- R6::R6Class(
 
 #' An R6 class for managing indexed backups
 #'
-#' As of now, **the R6 API is still experimental and subject to change**.
+#' @description
+#' A BackupQueue for indexed backups, e.g. `foo.log`, `foo.1.log`, `foo.2.log`, ...
 #'
-#' @family BackupQueue
+#' @template r6_api
+#'
 #' @export
 BackupQueueIndex <- R6::R6Class(
   "BackupQueueIndex",
@@ -371,7 +371,10 @@ BackupQueueIndex <- R6::R6Class(
 
 #' An R6 class for managing timestamped backups
 #'
-#' @family BackupQueue
+#' @description
+#' A BackupQueue for timestamped backups, e.g. `foo.log`, `foo.2020-07-24_10-54-30.log`
+#'
+#' @template r6_api
 #' @export
 BackupQueueDateTime <- R6::R6Class(
   "BackupQueueDateTime",
@@ -605,6 +608,7 @@ BackupQueueDateTime <- R6::R6Class(
     },
 
 
+    #' `POSIXct` scalar. Timestamp of the last rotation (the last backup)
     last_rotation = function() {
       bus <- get("files", envir = self)
       if (nrow(bus) < 1) {
@@ -637,6 +641,10 @@ BackupQueueDateTime <- R6::R6Class(
 
 #' An R6 class for managing datestamped backups
 #'
+#' @description
+#' A BackupQueue for date-stamped backups, e.g. `foo.log`, `foo.2020-07-24.log`
+#'
+#' @template r6_api
 #' @export
 BackupQueueDate <- R6::R6Class(
   inherit = BackupQueueDateTime,

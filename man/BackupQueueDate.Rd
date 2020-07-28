@@ -4,10 +4,22 @@
 \alias{BackupQueueDate}
 \title{An R6 class for managing datestamped backups}
 \description{
-An R6 class for managing datestamped backups
-
-An R6 class for managing datestamped backups
+A BackupQueue for date-stamped backups, e.g. \code{foo.log}, \verb{foo.2020-07-24.log}
 }
+\details{
+This class is part of the \link[R6:R6Class]{R6} API of \strong{rotor} which is
+intended for developers that want to extend this package. For normal usage,
+the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
+}
+\seealso{
+Other R6 Classes: 
+\code{\link{BackupQueueDateTime}},
+\code{\link{BackupQueueIndex}},
+\code{\link{BackupQueue}},
+\code{\link{Cache}},
+\code{\link{DirectoryQueue}}
+}
+\concept{R6 Classes}
 \section{Super classes}{
 \code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{\link[rotor:BackupQueueDateTime]{rotor::BackupQueueDateTime}} -> \code{BackupQueueDate}
 }

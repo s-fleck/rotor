@@ -2,20 +2,25 @@
 % Please edit documentation in R/BackupQueue.R
 \name{BackupQueue}
 \alias{BackupQueue}
-\title{An R6 class for managing backups}
+\title{An R6 Class for managing backups (abstract base class)}
 \description{
-\code{BackupQueue} & co are part of the \link[R6:R6Class]{R6} API of \strong{rotor}. They
-are used internally by \code{\link[=rotate]{rotate()}} and related functions and are not designed
-for interactive use. Rather, if you are a package developer and want to
-integrate rotor in one of your package, the \code{BackupQueue} subclasses give you
-a bit of extra control.
+\code{BackupQueue}is an abstract class not intended for direct usage, please refer to
+\link{BackupQueueIndex}, \link{BackupQueueDateTime}, \link{BackupQueueDate} instead.
+}
+\details{
+This class is part of the \link[R6:R6Class]{R6} API of \strong{rotor} which is
+intended for developers that want to extend this package. For normal usage,
+the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
 }
 \seealso{
-Other BackupQueue: 
+Other R6 Classes: 
 \code{\link{BackupQueueDateTime}},
-\code{\link{BackupQueueIndex}}
+\code{\link{BackupQueueDate}},
+\code{\link{BackupQueueIndex}},
+\code{\link{Cache}},
+\code{\link{DirectoryQueue}}
 }
-\concept{BackupQueue}
+\concept{R6 Classes}
 \section{Super class}{
 \code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{BackupQueue}
 }
@@ -24,7 +29,7 @@ Other BackupQueue:
 \describe{
 \item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
 
-\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$file} sdfgs}
+\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$file}}
 }
 \if{html}{\out{</div>}}
 }
@@ -33,7 +38,7 @@ Other BackupQueue:
 \describe{
 \item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
 
-\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$file} sdfgs}
+\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$file}}
 
 \item{\code{file}}{\code{character} scalar. The file to backup/rotate.}
 

@@ -11,6 +11,11 @@ store for \R objects. The objects are serialzed to a single folder as
 predetermined number of files, total size, or if the individual files exceed
 a certain age.
 }
+\details{
+This class is part of the \link[R6:R6Class]{R6} API of \strong{rotor} which is
+intended for developers that want to extend this package. For normal usage,
+the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
+}
 \examples{
 
 ## ------------------------------------------------
@@ -38,6 +43,15 @@ if (requireNamespace("uuid")){
 
 unlink(td, recursive = TRUE)
 }
+\seealso{
+Other R6 Classes: 
+\code{\link{BackupQueueDateTime}},
+\code{\link{BackupQueueDate}},
+\code{\link{BackupQueueIndex}},
+\code{\link{BackupQueue}},
+\code{\link{DirectoryQueue}}
+}
+\concept{R6 Classes}
 \section{Super class}{
 \code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{Cache}
 }
