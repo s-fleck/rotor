@@ -49,11 +49,11 @@ DirectoryQueue <- R6::R6Class(
           message("creating directory '", x, "'")
           dir.create(x, recursive = TRUE)
         } else {
-          stop("directory '", x, "' does not exist")
+          stop(DirDoesNotExistError(dir = x))
         }
       }
 
-      assert(is_dir(x), "'", x, "' is not a directory")
+      assert(is_dir(x), PathIsNotADirError(dir = x))
       private[[".dir"]] <- x
       self
     }

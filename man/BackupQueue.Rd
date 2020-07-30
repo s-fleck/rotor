@@ -30,8 +30,6 @@ Other R6 Classes:
 \item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
 
 \item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$origin}}
-
-\item{\code{file}}{\code{character} scalar. The file to backup/rotate.}
 }
 \if{html}{\out{</div>}}
 }
@@ -61,9 +59,12 @@ All backups of self$origin}
 \item \href{#method-new}{\code{BackupQueue$new()}}
 \item \href{#method-prune}{\code{BackupQueue$prune()}}
 \item \href{#method-print}{\code{BackupQueue$print()}}
+\item \href{#method-push_backup}{\code{BackupQueue$push_backup()}}
 \item \href{#method-set_origin}{\code{BackupQueue$set_origin()}}
 \item \href{#method-set_compression}{\code{BackupQueue$set_compression()}}
 \item \href{#method-set_max_backups}{\code{BackupQueue$set_max_backups()}}
+\item \href{#method-set_file}{\code{BackupQueue$set_file()}}
+\item \href{#method-set_backup_dir}{\code{BackupQueue$set_backup_dir()}}
 }
 }
 \if{html}{
@@ -83,7 +84,8 @@ All backups of self$origin}
   origin,
   dir = dirname(origin),
   max_backups = Inf,
-  compression = FALSE
+  compression = FALSE,
+  backup_dir = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -104,6 +106,15 @@ Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{pr
 \subsection{Method \code{print()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$print()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-push_backup"></a>}}
+\if{latex}{\out{\hypertarget{method-push_backup}{}}}
+\subsection{Method \code{push_backup()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$push_backup(...)}\if{html}{\out{</div>}}
 }
 
 }
@@ -131,6 +142,24 @@ Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{pr
 \subsection{Method \code{set_max_backups()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_max_backups(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_file"></a>}}
+\if{latex}{\out{\hypertarget{method-set_file}{}}}
+\subsection{Method \code{set_file()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_file(x)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-set_backup_dir"></a>}}
+\if{latex}{\out{\hypertarget{method-set_backup_dir}{}}}
+\subsection{Method \code{set_backup_dir()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_backup_dir(x)}\if{html}{\out{</div>}}
 }
 
 }

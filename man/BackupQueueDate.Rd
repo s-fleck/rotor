@@ -35,7 +35,10 @@ Other R6 Classes:
 \itemize{
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="push_backup">}\href{../../rotor/html/BackupQueue.html#method-push_backup}{\code{rotor::BackupQueue$push_backup()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir">}\href{../../rotor/html/BackupQueue.html#method-set_backup_dir}{\code{rotor::BackupQueue$set_backup_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin">}\href{../../rotor/html/BackupQueue.html#method-set_origin}{\code{rotor::BackupQueue$set_origin()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="prune">}\href{../../rotor/html/BackupQueueDateTime.html#method-prune}{\code{rotor::BackupQueueDateTime$prune()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="push">}\href{../../rotor/html/BackupQueueDateTime.html#method-push}{\code{rotor::BackupQueueDateTime$push()}}\out{</span>}
@@ -57,7 +60,8 @@ Other R6 Classes:
   max_backups = Inf,
   compression = FALSE,
   fmt = "\%Y-\%m-\%d",
-  cache_backups = FALSE
+  cache_backups = FALSE,
+  backup_dir = NULL
 )}\if{html}{\out{</div>}}
 }
 

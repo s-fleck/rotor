@@ -21,8 +21,15 @@ BackupQueue <- R6::R6Class(
       origin,
       dir = dirname(origin),
       max_backups = Inf,
-      compression = FALSE
+      compression = FALSE,
+      # deprecated arguments
+      backup_dir = NULL
     ){
+      if (!is.null(backup_dir)){
+        .Deprecated(msg = "the `backup_dir` argument is deprecated, please use `dir` instead.")
+        dir <- backup_dir
+      }
+
       self$set_origin(origin)
       self$set_dir(dir)
       self$set_compression(compression)
@@ -93,6 +100,12 @@ BackupQueue <- R6::R6Class(
       invisible(self)
     },
 
+    # ... deprecated methods -----------
+    push_backup = function(...){
+      .Deprecated(new = "$push()", old = "$push_backup()")
+      self$push(...)
+    },
+
 
     # ... setters -------------------------------------------------------------
     set_origin = function(
@@ -126,8 +139,25 @@ BackupQueue <- R6::R6Class(
       )
       private[[".max_backups"]] <- x
       self
+    },
+
+    # ... deprecated setters ----------------------------------
+    set_file = function(
+      x
+    ){
+      .Deprecated(new = "$set_origin()", old = "$set_file()")
+      self$set_origin(x)
+    },
+
+    set_backup_dir = function(
+      x
+    ){
+      .Deprecated(new = "$set_dir()", old = "$set_backup_dir()")
+      self$set_dir(x, create = FALSE)
     }
   ),
+
+
 
 
   # ... getters -------------------------------------------------------------
@@ -191,7 +221,24 @@ BackupQueue <- R6::R6Class(
       row.names(res) <- NULL
 
       res
-    }
+    },
+
+# ... deprecated getters ------------------------------------------------
+
+  backups = function(){
+    .Deprecated(new = "$files", old = "$backups")
+    self$files
+  },
+
+  file = function(){
+    .Deprecated(new = "$origin", old = "$file")
+    self$origin
+  },
+
+  backup_dir = function(){
+    .Deprecated(new = "$dir", old = "$backup_dir")
+    self$dir
+  }
   ),
 
   private = list(
@@ -387,8 +434,14 @@ BackupQueueDateTime <- R6::R6Class(
       max_backups = Inf,
       compression = FALSE,
       fmt = "%Y-%m-%d--%H-%M-%S",
-      cache_backups = FALSE
+      cache_backups = FALSE,
+      backup_dir = NULL
     ){
+      if (!is.null(backup_dir)){
+        .Deprecated(msg = "the `backup_dir` argument is deprecated, please use `dir` instead.")
+        dir <- backup_dir
+      }
+
       self$set_origin(origin)
       self$set_dir(dir)
       self$set_compression(compression)
@@ -658,8 +711,14 @@ BackupQueueDate <- R6::R6Class(
       max_backups = Inf,
       compression = FALSE,
       fmt = "%Y-%m-%d",
-      cache_backups = FALSE
+      cache_backups = FALSE,
+      backup_dir = NULL
     ){
+      if (!is.null(backup_dir)){
+        .Deprecated(msg = "the `backup_dir` argument is deprecated, please use `dir` instead.")
+        dir <- backup_dir
+      }
+
       self$set_origin(origin)
       self$set_dir(dir)
       self$set_compression(compression)

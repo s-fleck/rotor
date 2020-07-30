@@ -44,6 +44,17 @@ DirDoesNotExistError <- function(
 
 
 
+PathIsNotADirError <- function(
+  message = sprintf("'%s' is not a directory.", dir),
+  ...,
+  dir,
+  class = NULL,
+  call = NULL
+){
+  error(message, ..., class = c(class, "PathIsNotADirError"), call = call)
+}
+
+
 
 NotImplementedError <- function(
   message = sprintf("functionality is not yet implemented", dir),
