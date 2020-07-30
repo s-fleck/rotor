@@ -147,8 +147,6 @@ the simpler functional API is recommended (see <code><a href='rotate.html'>rotat
 
 <dt><code>n</code></dt><dd><p><code>integer</code> scalar. The number of backups that exist for <code>BackupQueue$origin</code></p></dd>
 
-<dt><code>file</code></dt><dd><p><code>character</code> scalar. The file to backup/rotate.</p></dd>
-
 </dl><p></div></p>
     <h2 class="hasAnchor" id="active-bindings"><a class="anchor" href="#active-bindings"></a>Active bindings</h2>
 
@@ -178,9 +176,12 @@ All backups of self$origin</p></dd>
 <li><p><a href='#method-new'><code>BackupQueue$new()</code></a></p></li>
 <li><p><a href='#method-prune'><code>BackupQueue$prune()</code></a></p></li>
 <li><p><a href='#method-print'><code>BackupQueue$print()</code></a></p></li>
+<li><p><a href='#method-push_backup'><code>BackupQueue$push_backup()</code></a></p></li>
 <li><p><a href='#method-set_origin'><code>BackupQueue$set_origin()</code></a></p></li>
 <li><p><a href='#method-set_compression'><code>BackupQueue$set_compression()</code></a></p></li>
 <li><p><a href='#method-set_max_backups'><code>BackupQueue$set_max_backups()</code></a></p></li>
+<li><p><a href='#method-set_file'><code>BackupQueue$set_file()</code></a></p></li>
+<li><p><a href='#method-set_backup_dir'><code>BackupQueue$set_backup_dir()</code></a></p></li>
 </ul>
 <p><details open ><summary>Inherited methods</summary>
 <ul>
@@ -197,7 +198,8 @@ All backups of self$origin</p></dd>
   <span class='no'>origin</span>,
   <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>origin</span>),
   <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
-  <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre><p></div></p>
 
 <p><hr>
@@ -210,6 +212,12 @@ All backups of self$origin</p></dd>
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>BackupQueue</span>$<span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>()</pre><p></div></p>
+
+<p><hr>
+<a id="method-push_backup"></a></p><h3>Method <code>push_backup()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackupQueue</span>$<span class='fu'>push_backup</span>(<span class='no'>...</span>)</pre><p></div></p>
 
 <p><hr>
 <a id="method-set_origin"></a></p><h3>Method <code>set_origin()</code></h3>
@@ -228,6 +236,18 @@ All backups of self$origin</p></dd>
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>BackupQueue</span>$<span class='fu'>set_max_backups</span>(<span class='no'>x</span>)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_file"></a></p><h3>Method <code>set_file()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackupQueue</span>$<span class='fu'>set_file</span>(<span class='no'>x</span>)</pre><p></div></p>
+
+<p><hr>
+<a id="method-set_backup_dir"></a></p><h3>Method <code>set_backup_dir()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackupQueue</span>$<span class='fu'>set_backup_dir</span>(<span class='no'>x</span>)</pre><p></div></p>
 
 
 

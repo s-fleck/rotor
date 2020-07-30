@@ -167,11 +167,14 @@ second)
 <li><p><a href='#method-set_fmt'><code>BackupQueueDateTime$set_fmt()</code></a></p></li>
 <li><p><a href='#method-set_cache_backups'><code>BackupQueueDateTime$set_cache_backups()</code></a></p></li>
 </ul>
-<p><details open ><summary>Inherited methods</summary>
+<p><details ><summary>Inherited methods</summary>
 <ul>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print"><a href='../../rotor/html/BackupQueue.html#method-print'><code>rotor::BackupQueue$print()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="push_backup"><a href='../../rotor/html/BackupQueue.html#method-push_backup'><code>rotor::BackupQueue$push_backup()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir"><a href='../../rotor/html/BackupQueue.html#method-set_backup_dir'><code>rotor::BackupQueue$set_backup_dir()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression"><a href='../../rotor/html/BackupQueue.html#method-set_compression'><code>rotor::BackupQueue$set_compression()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file"><a href='../../rotor/html/BackupQueue.html#method-set_file'><code>rotor::BackupQueue$set_file()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin"><a href='../../rotor/html/BackupQueue.html#method-set_origin'><code>rotor::BackupQueue$set_origin()</code></a></span></p></li>
 </ul>
 </details>
@@ -186,7 +189,8 @@ second)
   <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d--%H-%M-%S"</span>,
-  <span class='kw'>cache_backups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>cache_backups</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>backup_dir</span> <span class='kw'>=</span> <span class='kw'>NULL</span>
 )</pre><p></div></p>
 
 <p><hr>
