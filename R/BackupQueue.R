@@ -9,7 +9,7 @@
 #' @template r6_api
 #'
 #' @field dir `character` scalar. Directory in which to place the backups.
-#' @field n `integer` scalar. The number of backups that exist for `BackupQueue$file`
+#' @field n `integer` scalar. The number of backups that exist for `BackupQueue$origin`
 #'
 #' @export
 BackupQueue <- R6::R6Class(
@@ -18,12 +18,12 @@ BackupQueue <- R6::R6Class(
   cloneable = FALSE,
   public = list(
     initialize = function(
-      file,
-      dir = dirname(file),
+      origin,
+      dir = dirname(origin),
       max_backups = Inf,
       compression = FALSE
     ){
-      self$set_file(file)
+      self$set_origin(origin)
       self$set_dir(dir)
       self$set_compression(compression)
       self$set_max_backups(max_backups)
@@ -55,7 +55,7 @@ BackupQueue <- R6::R6Class(
     print = function(){
       cat(fmt_class(class(self)[[1]]), "\n\n")
 
-      ori <- file.info(self$file)
+      ori <- file.info(self$origin)
       bus <- self$files
       info <- data.frame(
         file = c(row.names(ori), bus$path),
@@ -95,7 +95,7 @@ BackupQueue <- R6::R6Class(
 
 
     # ... setters -------------------------------------------------------------
-    set_file = function(
+    set_origin = function(
       x
     ){
       assert(
@@ -103,7 +103,7 @@ BackupQueue <- R6::R6Class(
         "File '", x, "' does not exist"
       )
       assert(!is_dir(x))
-      private[[".file"]] <- x
+      private[[".origin"]] <- x
       self
     },
 
@@ -133,8 +133,8 @@ BackupQueue <- R6::R6Class(
   # ... getters -------------------------------------------------------------
   active = list(
     #' @field file `character` scalar. The file to backup/rotate.
-    file = function(){
-      get(".file", envir = private)
+    origin = function(){
+      get(".origin", envir = private)
     },
 
 
@@ -149,19 +149,19 @@ BackupQueue <- R6::R6Class(
       get(".max_backups", envir = private)
     },
 
-    #' @field has_backups Returns `TRUE` if at least one backup of `BackupQueue$file`
+    #' @field has_backups Returns `TRUE` if at least one backup of `BackupQueue$origin`
     #'   exists
     has_backups = function(){
       self$n > 0
     },
 
 
-    #' All backups of self$file
+    #' All backups of self$origin
     #' @return a `data.frame` with a similar structure to what
     #'   [base::file.info()] returns
     files = function(){
       backup_files <- get_backups(
-        file = self$file,
+        origin = self$origin,
         potential_backups =
           list_files(self$dir, full.names = self$dir != "."),
         sfx_patterns = c(
@@ -176,7 +176,7 @@ BackupQueue <- R6::R6Class(
         return(EMPTY_BACKUPS_INDEX)
       }
 
-      fname_matrix <- filenames_as_matrix(self$file, backups = backup_files)
+      fname_matrix <- filenames_as_matrix(self$origin, backups = backup_files)
       fname_df     <- as.data.frame(
         fname_matrix[, c("name", "sfx", "ext"), drop = FALSE],
         stringsAsFactors = FALSE
@@ -195,7 +195,7 @@ BackupQueue <- R6::R6Class(
   ),
 
   private = list(
-    .file = NULL,
+    .origin = NULL,
     .dir = NULL,
     .compression = NULL,
     .max_backups = NULL
@@ -225,9 +225,9 @@ BackupQueueIndex <- R6::R6Class(
       # generate new filename
         name <- file.path(
           self$dir,
-          tools::file_path_sans_ext(basename(self$file))
+          tools::file_path_sans_ext(basename(self$origin))
         )
-        ext  <- tools::file_ext(self$file)
+        ext  <- tools::file_ext(self$origin)
         sfx <- "1"
         if (is_blank(ext)) {
           name_new <- paste(name, sfx, sep = ".")
@@ -238,7 +238,7 @@ BackupQueueIndex <- R6::R6Class(
       self$increment_index()
 
       copy_or_compress(
-        self$file,
+        self$origin,
         outname = name_new,
         compression = self$compression,
         add_ext = TRUE,
@@ -277,13 +277,13 @@ BackupQueueIndex <- R6::R6Class(
         return(FALSE)
       }
 
-      fsize <- file.size(self$file)
+      fsize <- file.size(self$origin)
 
       if (fsize < size){
         if (verbose){
           message(sprintf(
             "Not rotating: size of '%s'(%s) is smaller than %s.",
-            self$file, fmt_bytes(file.size(self$file)), fmt_bytes(size)
+            self$origin, fmt_bytes(file.size(self$origin)), fmt_bytes(size)
           ))
         }
         FALSE
@@ -382,14 +382,14 @@ BackupQueueDateTime <- R6::R6Class(
   cloneable = FALSE,
   public = list(
     initialize = function(
-      file,
-      dir = dirname(file),
+      origin,
+      dir = dirname(origin),
       max_backups = Inf,
       compression = FALSE,
       fmt = "%Y-%m-%d--%H-%M-%S",
       cache_backups = FALSE
     ){
-      self$set_file(file)
+      self$set_origin(origin)
       self$set_dir(dir)
       self$set_compression(compression)
       self$set_max_backups(max_backups)
@@ -419,10 +419,10 @@ BackupQueueDateTime <- R6::R6Class(
       # generate new filename
       name <- file.path(
         self$dir,
-        tools::file_path_sans_ext(basename(self$file))
+        tools::file_path_sans_ext(basename(self$origin))
       )
 
-      ext  <- tools::file_ext(self$file)
+      ext  <- tools::file_ext(self$origin)
       sfx  <- format(now, format = self$fmt)
 
       if (is_blank(ext)) {
@@ -432,7 +432,7 @@ BackupQueueDateTime <- R6::R6Class(
       }
 
       copy_or_compress(
-        self$file,
+        self$origin,
         outname = name_new,
         compression = self$compression,
         add_ext = TRUE,
@@ -486,14 +486,14 @@ BackupQueueDateTime <- R6::R6Class(
       size,
       age,
       now = Sys.time(),
-      last_rotation = self$last_rotation %||% file.info(self$file)$ctime,
+      last_rotation = self$last_rotation %||% file.info(self$origin)$ctime,
       verbose = FALSE
     ){
       now  <- parse_datetime(now)
       size <- parse_size(size)
 
       # try to avoid costly file.size check
-      if (is.infinite(size) || is.infinite(age) || is.null(last_rotation) || file.size(self$file) < size){
+      if (is.infinite(size) || is.infinite(age) || is.null(last_rotation) || file.size(self$origin) < size){
         if (verbose){
             reasons <- character()
 
@@ -503,10 +503,10 @@ BackupQueueDateTime <- R6::R6Class(
             if (is.infinite(size)){
               reasons[["size"]] <- "rotation `size` is infinite"
 
-            } else if (file.size(self$file) < size) {
+            } else if (file.size(self$origin) < size) {
               reasons[["size"]] <- sprintf(
                 "size of '%s'(%s) is smaller than %s.",
-                self$file, fmt_bytes(file.size(self$file)), fmt_bytes(size)
+                self$origin, fmt_bytes(file.size(self$origin)), fmt_bytes(size)
               )
             }
 
@@ -653,14 +653,14 @@ BackupQueueDate <- R6::R6Class(
   public = list(
 
     initialize = function(
-      file,
-      dir = dirname(file),
+      origin,
+      dir = dirname(origin),
       max_backups = Inf,
       compression = FALSE,
       fmt = "%Y-%m-%d",
       cache_backups = FALSE
     ){
-      self$set_file(file)
+      self$set_origin(origin)
       self$set_dir(dir)
       self$set_compression(compression)
       self$set_max_backups(max_backups)
@@ -746,12 +746,12 @@ filenames_as_matrix <- function(
 
 
 
-#' @param file `character` scalar: The base file.
+#' @param origin `character` scalar: The base file.
 #' @param potential_backups `chracter` vector: list of files that could
 #'   potentially be backups for `file` (and follow the rotor naming convention)
 #' @noRd
 get_backups <- function(
-  file,
+  origin,
   potential_backups,
   sfx_patterns
 ){
@@ -760,14 +760,14 @@ get_backups <- function(
 
   sfx_patterns <- paste0("(", sfx_patterns, ")", collapse = "|")
 
-  file_dir  <- dirname(file)
-  file_name <- basename(tools::file_path_sans_ext(file))
-  file_ext  <- tools::file_ext(file)
+  file_dir  <- dirname(origin)
+  file_name <- basename(tools::file_path_sans_ext(origin))
+  file_ext  <- tools::file_ext(origin)
 
   back_dir  <- dirname(potential_backups)
   assert(
     all_are_identical(back_dir),
-    "All backups of `file` must be in the same directory, not \n",
+    "All backups of `origin` must be in the same directory, not \n",
     paste("*", unique(back_dir), collapse = "\n")
   )
   back_names <- basename(potential_backups)

@@ -5,11 +5,12 @@
   replacement for `base::saveRDS()` that supports creating backups instead of
   just overwriting the destination file.
 * added `Cache`, an R6 class for managing cache directories
-* **breaking**: renamed some methods and active fields of BackupQueue to more
-  universal names:
+* **breaking** R6 API: renamed some methods and active fields of BackupQueue to
+  more universal names:
    - `$push_backup()` -> `$push()`
    - `$backup_dir` -> `dir()`
    - `$backups` -> `$files`
+   - `$file` -> `$origin`
    
   
 # rotor 0.2.4

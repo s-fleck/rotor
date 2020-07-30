@@ -97,7 +97,7 @@ test_that("BackupQueue works as expected", {
   expect_identical(n_backups(tf), 0L)
 
   bq <- BackupQueue$new(tf)
-  expect_path_equal(bq$file, tf)
+  expect_path_equal(bq$origin, tf)
   expect_path_equal(bq$dir, dirname(tf))
   file.remove(tf)
 })

@@ -29,7 +29,9 @@ Other R6 Classes:
 \describe{
 \item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
 
-\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$file}}
+\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$origin}}
+
+\item{\code{file}}{\code{character} scalar. The file to backup/rotate.}
 }
 \if{html}{\out{</div>}}
 }
@@ -38,7 +40,7 @@ Other R6 Classes:
 \describe{
 \item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
 
-\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$file}}
+\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$origin}}
 
 \item{\code{file}}{\code{character} scalar. The file to backup/rotate.}
 
@@ -47,9 +49,9 @@ Other R6 Classes:
 \item{\code{max_backups}}{Maximum number/size/age of backups. See \code{max_backups}
 argument of \code{\link[=rotate]{rotate()}}}
 
-\item{\code{has_backups}}{Returns \code{TRUE} if at least one backup of \code{BackupQueue$file}
+\item{\code{has_backups}}{Returns \code{TRUE} if at least one backup of \code{BackupQueue$origin}
 exists
-All backups of self$file}
+All backups of self$origin}
 }
 \if{html}{\out{</div>}}
 }
@@ -59,7 +61,7 @@ All backups of self$file}
 \item \href{#method-new}{\code{BackupQueue$new()}}
 \item \href{#method-prune}{\code{BackupQueue$prune()}}
 \item \href{#method-print}{\code{BackupQueue$print()}}
-\item \href{#method-set_file}{\code{BackupQueue$set_file()}}
+\item \href{#method-set_origin}{\code{BackupQueue$set_origin()}}
 \item \href{#method-set_compression}{\code{BackupQueue$set_compression()}}
 \item \href{#method-set_max_backups}{\code{BackupQueue$set_max_backups()}}
 }
@@ -78,8 +80,8 @@ All backups of self$file}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$new(
-  file,
-  dir = dirname(file),
+  origin,
+  dir = dirname(origin),
   max_backups = Inf,
   compression = FALSE
 )}\if{html}{\out{</div>}}
@@ -106,11 +108,11 @@ Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{pr
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_file"></a>}}
-\if{latex}{\out{\hypertarget{method-set_file}{}}}
-\subsection{Method \code{set_file()}}{
+\if{html}{\out{<a id="method-set_origin"></a>}}
+\if{latex}{\out{\hypertarget{method-set_origin}{}}}
+\subsection{Method \code{set_origin()}}{
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_file(x)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_origin(x)}\if{html}{\out{</div>}}
 }
 
 }

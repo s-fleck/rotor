@@ -40,8 +40,8 @@ Other R6 Classes:
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="initialize">}\href{../../rotor/html/BackupQueue.html#method-initialize}{\code{rotor::BackupQueue$initialize()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_max_backups">}\href{../../rotor/html/BackupQueue.html#method-set_max_backups}{\code{rotor::BackupQueue$set_max_backups()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin">}\href{../../rotor/html/BackupQueue.html#method-set_origin}{\code{rotor::BackupQueue$set_origin()}}\out{</span>}
 }
 \out{</details>}
 }

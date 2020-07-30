@@ -57,7 +57,7 @@ second)
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin">}\href{../../rotor/html/BackupQueue.html#method-set_origin}{\code{rotor::BackupQueue$set_origin()}}\out{</span>}
 }
 \out{</details>}
 }
@@ -67,8 +67,8 @@ second)
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDateTime$new(
-  file,
-  dir = dirname(file),
+  origin,
+  dir = dirname(origin),
   max_backups = Inf,
   compression = FALSE,
   fmt = "\%Y-\%m-\%d--\%H-\%M-\%S",
@@ -119,7 +119,7 @@ arguments of \code{\link[=rotate_date]{rotate_date()}}. \code{now} overrides the
   size,
   age,
   now = Sys.time(),
-  last_rotation = self$last_rotation \%||\% file.info(self$file)$ctime,
+  last_rotation = self$last_rotation \%||\% file.info(self$origin)$ctime,
   verbose = FALSE
 )}\if{html}{\out{</div>}}
 }

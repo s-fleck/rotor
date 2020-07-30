@@ -36,7 +36,7 @@ Other R6 Classes:
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
+\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin">}\href{../../rotor/html/BackupQueue.html#method-set_origin}{\code{rotor::BackupQueue$set_origin()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="prune">}\href{../../rotor/html/BackupQueueDateTime.html#method-prune}{\code{rotor::BackupQueueDateTime$prune()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="push">}\href{../../rotor/html/BackupQueueDateTime.html#method-push}{\code{rotor::BackupQueueDateTime$push()}}\out{</span>}
 \item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="set_cache_backups">}\href{../../rotor/html/BackupQueueDateTime.html#method-set_cache_backups}{\code{rotor::BackupQueueDateTime$set_cache_backups()}}\out{</span>}
@@ -52,8 +52,8 @@ Other R6 Classes:
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDate$new(
-  file,
-  dir = dirname(file),
+  origin,
+  dir = dirname(origin),
   max_backups = Inf,
   compression = FALSE,
   fmt = "\%Y-\%m-\%d",
