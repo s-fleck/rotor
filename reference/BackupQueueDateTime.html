@@ -172,7 +172,7 @@ second)
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print"><a href='../../rotor/html/BackupQueue.html#method-print'><code>rotor::BackupQueue$print()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression"><a href='../../rotor/html/BackupQueue.html#method-set_compression'><code>rotor::BackupQueue$set_compression()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file"><a href='../../rotor/html/BackupQueue.html#method-set_file'><code>rotor::BackupQueue$set_file()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin"><a href='../../rotor/html/BackupQueue.html#method-set_origin'><code>rotor::BackupQueue$set_origin()</code></a></span></p></li>
 </ul>
 </details>
 
@@ -181,8 +181,8 @@ second)
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>BackupQueueDateTime</span>$<span class='fu'>new</span>(
-  <span class='no'>file</span>,
-  <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>),
+  <span class='no'>origin</span>,
+  <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>origin</span>),
   <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d--%H-%M-%S"</span>,
@@ -218,7 +218,7 @@ arguments of <code><a href='rotate.html'>rotate_date()</a></code>. <code>now</co
   <span class='no'>size</span>,
   <span class='no'>age</span>,
   <span class='kw'>now</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/Sys.time.html'>Sys.time</a></span>(),
-  <span class='kw'>last_rotation</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>last_rotation</span> <span class='kw'>%||%</span> <span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.info</a></span>(<span class='no'>self</span>$<span class='no'>file</span>)$<span class='no'>ctime</span>,
+  <span class='kw'>last_rotation</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>last_rotation</span> <span class='kw'>%||%</span> <span class='fu'><a href='https://rdrr.io/r/base/file.info.html'>file.info</a></span>(<span class='no'>self</span>$<span class='no'>origin</span>)$<span class='no'>ctime</span>,
   <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre><p></div></p>
 

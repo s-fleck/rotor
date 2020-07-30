@@ -152,7 +152,7 @@ the simpler functional API is recommended (see <code><a href='rotate.html'>rotat
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print"><a href='../../rotor/html/BackupQueue.html#method-print'><code>rotor::BackupQueue$print()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression"><a href='../../rotor/html/BackupQueue.html#method-set_compression'><code>rotor::BackupQueue$set_compression()</code></a></span></p></li>
-<li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file"><a href='../../rotor/html/BackupQueue.html#method-set_file'><code>rotor::BackupQueue$set_file()</code></a></span></p></li>
+<li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin"><a href='../../rotor/html/BackupQueue.html#method-set_origin'><code>rotor::BackupQueue$set_origin()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="prune"><a href='../../rotor/html/BackupQueueDateTime.html#method-prune'><code>rotor::BackupQueueDateTime$prune()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="push"><a href='../../rotor/html/BackupQueueDateTime.html#method-push'><code>rotor::BackupQueueDateTime$push()</code></a></span></p></li>
 <li><p><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="set_cache_backups"><a href='../../rotor/html/BackupQueueDateTime.html#method-set_cache_backups'><code>rotor::BackupQueueDateTime$set_cache_backups()</code></a></span></p></li>
@@ -167,8 +167,8 @@ the simpler functional API is recommended (see <code><a href='rotate.html'>rotat
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>BackupQueueDate</span>$<span class='fu'>new</span>(
-  <span class='no'>file</span>,
-  <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>),
+  <span class='no'>origin</span>,
+  <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>origin</span>),
   <span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='fl'>Inf</span>,
   <span class='kw'>compression</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
   <span class='kw'>fmt</span> <span class='kw'>=</span> <span class='st'>"%Y-%m-%d"</span>,
