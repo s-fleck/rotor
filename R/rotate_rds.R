@@ -10,13 +10,16 @@
 #'   silently not rotate the file, while `rotate_rds_date()` will throw an
 #'   error.
 #'
+#' @param on_change_only `logical` scalar. Rotate only if `object` is different
+#'   from the object saved in `file`.
+#'
 #' @inheritParams base::saveRDS
 #' @inheritDotParams rotate
 #' @inheritParams  rotate_date
 #' @inheritDotParams rotate_date
 #' @inheritDotParams rotate_time
 #'
-#' @return `NULL` (invisibly)
+#' @return the path to `file` (invisibly)
 #' @export
 #'
 #' @examples
@@ -37,8 +40,24 @@ rotate_rds <- function(
   version = NULL,
   compress = TRUE,
   refhook = NULL,
-  ...
+  ...,
+  on_change_only = FALSE
 ){
+  assert(is_scalar_character(file))
+  assert(is_scalar_bool(on_change_only))
+
+  if (on_change_only && file.exists(file)){
+    comp <- readRDS(file)
+
+    if (
+      identical(object, comp) ||
+      (inherits(object, "data.table") && isTRUE(all.equal(object, comp)))
+    ){
+      message(ObjectHasNotChangedMessage("No change"))
+      return(invisible(file))
+    }
+  }
+
   if (file.exists(file))
     rotate(file, ...)
 
@@ -50,6 +69,7 @@ rotate_rds <- function(
     compress = compress,
     refhook = refhook
   )
+  invisible(file)
 }
 
 

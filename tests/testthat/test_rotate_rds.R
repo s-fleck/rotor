@@ -50,3 +50,27 @@ test_that("rotate_rds_time works as expected", {
 
   expect_identical(n_backups(tf), 2L)
 })
+
+
+
+
+test_that("rotate_rds on_change_only", {
+  v <- LETTERS
+  df <- iris
+  dt <- data.table::as.data.table(iris)
+
+  td <- file.path(tempdir(), "rotate_rds_test_temp")
+  dir.create(td)
+  tf <- file.path(td, "testfile.rds")
+
+  on.exit(unlink(td, recursive = TRUE))
+
+  expect_silent(rotate_rds(v, tf, on_change_only = TRUE))
+  expect_message(rotate_rds(v, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+
+  expect_silent(rotate_rds(df, tf, on_change_only = TRUE))
+  expect_message(rotate_rds(df, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+
+  expect_silent(rotate_rds(dt, tf, on_change_only = TRUE))
+  expect_message(rotate_rds(dt, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+})

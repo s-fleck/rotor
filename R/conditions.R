@@ -69,6 +69,30 @@ NotImplementedError <- function(
 
 
 
+ObjectHasNotChangedMessage <- function(message, ..., class = NULL, call = NULL){
+  condition(
+    message = as.character(message),
+      call = call,
+      class = union(class, c("ObjectHasNotChangedMessage", "message"))
+  )
+}
+
+
+
+
+condition <- function(message, ..., class = NULL, call = NULL){
+  structure(
+    list(
+      message = as.character(message),
+      call = call,
+      ...),
+    class = union(class, c("condition"))
+  )
+}
+
+
+
+
 error <- function(message, ..., class = NULL, call = NULL){
   structure(
     list(
