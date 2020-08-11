@@ -22,10 +22,11 @@ Imports:
 Suggests: 
     covr,
     crayon,
+    data.table,
+    digest,
     rmarkdown,
     testthat,
     uuid,
-    digest,
     zip
 Encoding: UTF-8
 LazyData: true

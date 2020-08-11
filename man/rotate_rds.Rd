@@ -2,8 +2,8 @@
 % Please edit documentation in R/rotate_rds.R
 \name{rotate_rds}
 \alias{rotate_rds}
-\alias{rotate_rds_time}
 \alias{rotate_rds_date}
+\alias{rotate_rds_time}
 \title{Serialize R objects to disk (with backup)}
 \usage{
 rotate_rds(
@@ -13,18 +13,8 @@ rotate_rds(
   version = NULL,
   compress = TRUE,
   refhook = NULL,
-  ...
-)
-
-rotate_rds_time(
-  object,
-  file = "",
-  ascii = FALSE,
-  version = NULL,
-  compress = TRUE,
-  refhook = NULL,
-  age = -1L,
-  ...
+  ...,
+  on_change_only = FALSE
 )
 
 rotate_rds_date(
@@ -34,8 +24,21 @@ rotate_rds_date(
   version = NULL,
   compress = TRUE,
   refhook = NULL,
+  ...,
   age = -1L,
-  ...
+  on_change_only = FALSE
+)
+
+rotate_rds_time(
+  object,
+  file = "",
+  ascii = FALSE,
+  version = NULL,
+  compress = TRUE,
+  refhook = NULL,
+  ...,
+  age = -1L,
+  on_change_only = FALSE
 )
 }
 \arguments{
@@ -125,6 +128,9 @@ understood by \code{\link[=as.POSIXct]{as.POSIXct()}} or \code{\link[=as.Date]{a
 of the same name (usually due to timestamp collision) exists.}
   }}
 
+\item{on_change_only}{\code{logical} scalar. Rotate only if \code{object} is different
+from the object saved in \code{file}.}
+
 \item{age}{minimum age after which to backup/rotate a file; can be
 \itemize{
 \item a \code{character} scalar representing an Interval in the form
@@ -135,7 +141,7 @@ which Date/Datetime formats are supported by rotor.
 }}
 }
 \value{
-\code{NULL} (invisibly)
+the path to \code{file} (invisibly)
 }
 \description{
 The \verb{rotate_rds*()} functions are wrappers around \link[base:readRDS]{base::saveRDS()} that

@@ -33,6 +33,8 @@
 #' # cleanup
 #' unlink(list_backups(dest))
 #' unlink(dest)
+#' @rdname rotate_rds
+#' @export
 rotate_rds <- function(
   object,
   file = "",
@@ -43,32 +45,46 @@ rotate_rds <- function(
   ...,
   on_change_only = FALSE
 ){
-  assert(is_scalar_character(file))
-  assert(is_scalar_bool(on_change_only))
-
-  if (file.exists(file)){
-    if (on_change_only){
-      comp <- readRDS(file)
-      if (
-        identical(object, comp) ||
-        (inherits(object, "data.table") && assert_namespace("data.table") && isTRUE(all.equal(object, comp)))
-      ){
-        message(ObjectHasNotChangedMessage("No change"))
-        return(invisible(file))
-      }
-    }
-    rotate(file, ...)
-  }
-
-  saveRDS(
+  rotate_rds_internal(
     object = object,
     file = file,
     ascii = ascii,
     version = version,
     compress = compress,
-    refhook = refhook
+    refhook = refhook,
+    ...,
+    on_change_only = on_change_only,
+    fun = rotate
   )
-  invisible(file)
+}
+
+
+
+#' @rdname rotate_rds
+#' @export
+rotate_rds_date <- function(
+  object,
+  file = "",
+  ascii = FALSE,
+  version = NULL,
+  compress = TRUE,
+  refhook = NULL,
+  ...,
+  age = -1L,
+  on_change_only = FALSE
+){
+  rotate_rds_internal(
+    object = object,
+    file = file,
+    ascii = ascii,
+    version = version,
+    compress = compress,
+    refhook = refhook,
+    ...,
+    age = age,
+    on_change_only = on_change_only,
+    fun = rotate_date
+  )
 }
 
 
@@ -87,50 +103,33 @@ rotate_rds_time <- function(
   age = -1L,
   on_change_only = FALSE
 ){
-  assert(is_scalar_character(file))
-  assert(is_scalar_bool(on_change_only))
-
-  if (file.exists(file)){
-    if (on_change_only){
-      comp <- readRDS(file)
-      if (
-        identical(object, comp) ||
-        (inherits(object, "data.table") && assert_namespace("data.table") && isTRUE(all.equal(object, comp)))
-      ){
-        message(ObjectHasNotChangedMessage("No change"))
-        return(invisible(file))
-      }
-    }
-    rotate_time(file, ..., age = age)
-  }
-
-  saveRDS(
+  rotate_rds_internal(
     object = object,
     file = file,
     ascii = ascii,
     version = version,
     compress = compress,
-    refhook = refhook
+    refhook = refhook,
+    ...,
+    age = age,
+    on_change_only = on_change_only,
+    fun = rotate_time
   )
-
-  invisible(file)
 }
 
 
 
 
-#' @rdname rotate_rds
-#' @export
-rotate_rds_date <- function(
+rotate_rds_internal <- function(
   object,
-  file = "",
-  ascii = FALSE,
-  version = NULL,
-  compress = TRUE,
-  refhook = NULL,
+  file,
+  ascii,
+  version,
+  compress,
+  refhook,
   ...,
-  age = -1L,
-  on_change_only = FALSE
+  on_change_only,
+  fun
 ){
   assert(is_scalar_character(file))
   assert(is_scalar_bool(on_change_only))
@@ -142,11 +141,11 @@ rotate_rds_date <- function(
         identical(object, comp) ||
         (inherits(object, "data.table") && assert_namespace("data.table") && isTRUE(all.equal(object, comp)))
       ){
-        message(ObjectHasNotChangedMessage("No change"))
+        message(ObjectHasNotChangedMessage("not rotating: object has not changed"))
         return(invisible(file))
       }
     }
-    rotate_date(file, ..., age = age)
+    fun(file, ...)
   }
 
   saveRDS(

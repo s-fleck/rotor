@@ -2,8 +2,8 @@ context("rotate_rds")
 
 dr <- tempdir()
 td <- file.path(dr, "rotor")
-tf <- "iris.rds"
 dir.create(td, recursive = TRUE)
+tf <- file.path(td, "iris.rds")
 
 teardown({
   unlink(td, recursive = TRUE)
