@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -188,15 +188,15 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 <span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
 
 <span class='fu'>backup_info</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt;                                     path             name sfx ext size isdir
-#&gt; 1 /tmp/RtmpLzYf5h/test61cb29b21c89.1.rds test61cb29b21c89   1 rds  287 FALSE
-#&gt; 2 /tmp/RtmpLzYf5h/test61cb29b21c89.2.rds test61cb29b21c89   2 rds  287 FALSE
+#&gt; 1 /tmp/RtmpuHNhr0/test13bf7cd618a2.1.rds test13bf7cd618a2   1 rds  287 FALSE
+#&gt; 2 /tmp/RtmpuHNhr0/test13bf7cd618a2.2.rds test13bf7cd618a2   2 rds  287 FALSE
 #&gt;   mode               mtime               ctime               atime  uid  gid
-#&gt; 1  664 2020-07-30 07:28:10 2020-07-30 07:28:10 2020-07-30 07:28:10 2000 2000
-#&gt; 2  664 2020-07-30 07:28:10 2020-07-30 07:28:10 2020-07-30 07:28:10 2000 2000
+#&gt; 1  666 2020-08-11 08:16:07 2020-08-11 08:16:07 2020-08-11 08:16:07 2000 2000
+#&gt; 2  666 2020-08-11 08:16:07 2020-08-11 08:16:07 2020-08-11 08:16:07 2000 2000
 #&gt;    uname grname index
 #&gt; 1 travis travis     1
-#&gt; 2 travis travis     2</div><div class='input'><span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpLzYf5h/test61cb29b21c89.1.rds"
-#&gt; [2] "/tmp/RtmpLzYf5h/test61cb29b21c89.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpLzYf5h/test61cb29b21c89.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpLzYf5h/test61cb29b21c89.2.rds"</div><div class='input'>
+#&gt; 2 travis travis     2</div><div class='input'><span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpuHNhr0/test13bf7cd618a2.1.rds"
+#&gt; [2] "/tmp/RtmpuHNhr0/test13bf7cd618a2.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpuHNhr0/test13bf7cd618a2.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpuHNhr0/test13bf7cd618a2.2.rds"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='rotate.html'>prune_backups</a></span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
 <span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>

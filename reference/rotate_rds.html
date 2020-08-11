@@ -74,7 +74,7 @@ overwriting it." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4.9002</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4.9003</span>
       </span>
     </div>
 
@@ -131,18 +131,8 @@ overwriting it.</p>
   <span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>refhook</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>
-)
-
-<span class='fu'>rotate_rds_time</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>ascii</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>refhook</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>age</span> <span class='kw'>=</span> -<span class='fl'>1L</span>,
-  <span class='no'>...</span>
+  <span class='no'>...</span>,
+  <span class='kw'>on_change_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )
 
 <span class='fu'>rotate_rds_date</span>(
@@ -152,8 +142,21 @@ overwriting it.</p>
   <span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
   <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
   <span class='kw'>refhook</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
   <span class='kw'>age</span> <span class='kw'>=</span> -<span class='fl'>1L</span>,
-  <span class='no'>...</span>
+  <span class='kw'>on_change_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+)
+
+<span class='fu'>rotate_rds_time</span>(
+  <span class='no'>object</span>,
+  <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>""</span>,
+  <span class='kw'>ascii</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
+  <span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
+  <span class='kw'>refhook</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
+  <span class='no'>...</span>,
+  <span class='kw'>age</span> <span class='kw'>=</span> -<span class='fl'>1L</span>,
+  <span class='kw'>on_change_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -257,6 +260,11 @@ of the same name (usually due to timestamp collision) exists.</p></dd>
 </dl></td>
     </tr>
     <tr>
+      <th>on_change_only</th>
+      <td><p><code>logical</code> scalar. Rotate only if <code>object</code> is different
+from the object saved in <code>file</code>.</p></td>
+    </tr>
+    <tr>
       <th>age</th>
       <td><p>minimum age after which to backup/rotate a file; can be</p><ul>
 <li><p>a <code>character</code> scalar representing an Interval in the form
@@ -270,7 +278,7 @@ which Date/Datetime formats are supported by rotor.</p></li>
 
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
-    <p><code>NULL</code> (invisibly)</p>
+    <p>the path to <code>file</code> (invisibly)</p>
     <h2 class="hasAnchor" id="note"><a class="anchor" href="#note"></a>Note</h2>
 
     <p>The default value for <code>age</code> is different for <code>rotate_rds_date()</code> (<code>-1</code>)
@@ -285,7 +293,7 @@ error.</p>
 <span class='fu'>rotate_rds</span>(<span class='no'>iris</span>, <span class='no'>dest</span>)
 <span class='fu'>rotate_rds</span>(<span class='no'>iris</span>, <span class='no'>dest</span>)
 
-<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>dest</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpLzYf5h/file61cb5cf581b6.1" "/tmp/RtmpLzYf5h/file61cb5cf581b6.2"</div><div class='input'>
+<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>dest</span>)</div><div class='output co'>#&gt; [1] "/tmp/RtmpuHNhr0/file13bf7031c58d.1" "/tmp/RtmpuHNhr0/file13bf7031c58d.2"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>dest</span>))
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>dest</span>)</div></pre>
