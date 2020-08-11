@@ -65,12 +65,66 @@ test_that("rotate_rds on_change_only", {
 
   on.exit(unlink(td, recursive = TRUE))
 
-  expect_silent(rotate_rds(v, tf, on_change_only = TRUE))
-  expect_message(rotate_rds(v, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+  expect_identical(expect_silent(rotate_rds(v, tf, on_change_only = TRUE)), tf)
+  expect_identical(expect_message(rotate_rds(v, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage"), tf)
 
   expect_silent(rotate_rds(df, tf, on_change_only = TRUE))
   expect_message(rotate_rds(df, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+  prune_backups(tf, 0)
 
   expect_silent(rotate_rds(dt, tf, on_change_only = TRUE))
   expect_message(rotate_rds(dt, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+  prune_backups(tf, 0)
+})
+
+
+
+
+test_that("rotate_rds on_change_only", {
+  v <- LETTERS
+  df <- iris
+  dt <- data.table::as.data.table(iris)
+
+  td <- file.path(tempdir(), "rotate_rds_test_temp")
+  dir.create(td)
+  tf <- file.path(td, "testfile.rds")
+
+  on.exit(unlink(td, recursive = TRUE))
+
+  expect_identical(expect_silent(rotate_rds_time(v, tf, on_change_only = TRUE)), tf)
+  expect_identical(expect_message(rotate_rds_time(v, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage"), tf)
+
+  expect_silent(rotate_rds_time(df, tf, on_change_only = TRUE))
+  expect_message(rotate_rds_time(df, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+  prune_backups(tf, 0)
+
+  expect_silent(rotate_rds_time(dt, tf, on_change_only = TRUE))
+  expect_message(rotate_rds_time(dt, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+  prune_backups(tf, 0)
+})
+
+
+
+
+test_that("rotate_rds on_change_only", {
+  v <- LETTERS
+  df <- iris
+  dt <- data.table::as.data.table(iris)
+
+  td <- file.path(tempdir(), "rotate_rds_test_temp")
+  dir.create(td)
+  tf <- file.path(td, "testfile.rds")
+
+  on.exit(unlink(td, recursive = TRUE))
+
+  expect_identical(expect_silent(rotate_rds_date(v, tf, on_change_only = TRUE)), tf)
+  expect_identical(expect_message(rotate_rds_date(v, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage"), tf)
+
+  expect_silent(rotate_rds_date(df, tf, on_change_only = TRUE))
+  expect_message(rotate_rds_date(df, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+  prune_backups(tf, 0)
+
+  expect_silent(rotate_rds_date(dt, tf, on_change_only = TRUE))
+  expect_message(rotate_rds_date(dt, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+  prune_backups(tf, 0)
 })
