@@ -310,6 +310,36 @@ BackupQueueIndex <- R6::R6Class(
     },
 
 
+    prune_identical = function(
+    ){
+      dd <- self$files
+      dd$md5 <- tools::md5sum(self$files$path)
+
+      dd <- dd[nrow(dd):1L, ]
+      sel <- duplicated(dd$md5)
+
+      remove <- dd[sel,  ]
+      keep   <- dd[!sel, ]
+
+      unlink(remove$path)
+
+      keep$path_new <- paste(
+        file.path(dirname(keep$path), keep$name),
+        pad_left(nrow(keep):1, pad = "0"),
+        keep$ext,
+        sep = "."
+      )
+      keep$path_new <- gsub("\\.$", "", keep$path_new)
+
+      # path_new will always have identical or lower indices than the old path.
+      # if we sort be sfx we can prevent race conditions in file.rename
+      # (i.e. where files would be overwriten because)
+      keep <- keep[order(keep$sfx), ]
+      file.rename(keep$path, keep$path_new)
+      self
+    },
+
+
     #' @description Should a file of `size` be rotated? See `size` argument of [`rotate()`]
     #' @return `TRUE` or `FALSE`
     should_rotate = function(size, verbose = FALSE){

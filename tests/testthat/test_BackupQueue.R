@@ -488,6 +488,39 @@ test_that("BackupQueueIndex: $should_rotate(verbose = TRUE) displays helpful mes
 
 
 
+
+test_that("BackupQueueIndex: $prune_identical works", {
+  tf <- file.path(td, "test")
+
+  saveRDS(iris, tf)
+  iris_md5 <- tools::md5sum(tf)
+  bq <- BackupQueueIndex$new(tf)
+  on.exit({
+    bq$prune(0)
+    unlink(tf)
+  })
+  backup(tf)
+  backup(tf)
+  rotate(tf)
+
+  saveRDS(cars, tf)
+  cars_md5 <- tools::md5sum(tf)
+  backup(tf)
+  saveRDS(cars, tf)
+  rotate(tf)
+
+  saveRDS(iris, tf)
+
+  bq$prune_identical()
+
+  expect_identical(
+    unname(tools::md5sum(bq$files$path)),
+    unname(c(cars_md5, iris_md5))
+  )
+})
+
+
+
 # BackupQueueDateTime -----------------------------------------------------
 context("BackupQueueDateTime")
 

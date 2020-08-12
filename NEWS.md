@@ -11,6 +11,7 @@
    - `$backup_dir` -> `dir()`
    - `$backups` -> `$files`
    - `$file` -> `$origin`
+* `BackupQueue$prune_identical()` removes identical backups for a BackupQueue
    
   
 # rotor 0.2.4
