@@ -123,3 +123,36 @@ test_that("backup/rotate dry_run", {
 
   expect_snapshot_unchanged(snap)
 })
+
+
+
+
+test_that("BackupQueueIndex: $prune_identical works", {
+  tf <- file.path(td, "test")
+
+  saveRDS(iris, tf)
+  iris_md5 <- tools::md5sum(tf)
+  bq <- BackupQueueIndex$new(tf)
+  on.exit({
+    bq$prune(0)
+    unlink(tf)
+  })
+  backup(tf)
+  backup(tf)
+  rotate(tf)
+
+  saveRDS(cars, tf)
+  cars_md5 <- tools::md5sum(tf)
+  backup(tf)
+  saveRDS(cars, tf)
+  rotate(tf)
+
+  saveRDS(iris, tf)
+
+  prune_identical_backups(tf)
+
+  expect_identical(
+    unname(tools::md5sum(bq$files$path)),
+    unname(c(cars_md5, iris_md5))
+  )
+})

@@ -58,6 +58,7 @@ All backups of self$origin}
 \itemize{
 \item \href{#method-new}{\code{BackupQueue$new()}}
 \item \href{#method-prune}{\code{BackupQueue$prune()}}
+\item \href{#method-prune_identical}{\code{BackupQueue$prune_identical()}}
 \item \href{#method-print}{\code{BackupQueue$print()}}
 \item \href{#method-push_backup}{\code{BackupQueue$push_backup()}}
 \item \href{#method-set_origin}{\code{BackupQueue$set_origin()}}
@@ -97,6 +98,17 @@ All backups of self$origin}
 Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{prune_backups()}}.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$prune(max_backups = self$max_backups)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-prune_identical"></a>}}
+\if{latex}{\out{\hypertarget{method-prune_identical}{}}}
+\subsection{Method \code{prune_identical()}}{
+Delete all identical backups. Uses \code{\link[tools:md5sum]{tools::md5sum()}} to
+compare the files.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$prune_identical()}\if{html}{\out{</div>}}
 }
 
 }

@@ -59,6 +59,14 @@ BackupQueue <- R6::R6Class(
     },
 
 
+
+    #' @description Delete all identical backups. Uses [tools::md5sum()] to
+    #'   compare the files.
+    prune_identical = function(){
+      NotImplementedError()
+    },
+
+
     print = function(){
       cat(fmt_class(class(self)[[1]]), "\n\n")
 

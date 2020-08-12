@@ -307,3 +307,34 @@ prune_backups <- function(
   invisible(file)
 }
 
+
+
+
+#' @description `prune_backups()` physically deletes all backups of a file
+#'   based on `max_backups`
+#' @section Side Effects:
+#' `prune_backups()` may delete files, depending on `max_backups`.
+#' @export
+#' @rdname rotate
+prune_identical_backups <- function(
+  file,
+  dir = dirname(file),
+  dry_run = FALSE,
+  verbose = dry_run
+){
+  assert_pure_BackupQueue(file, dir = dir)
+  assert(is_scalar_character(file))
+
+  if (dry_run){
+    DRY_RUN$activate()
+    on.exit(DRY_RUN$deactivate())
+  }
+
+  bq <- BackupQueueIndex$new(file, dir = dir)
+
+  if (!bq$has_backups)
+    bq <- BackupQueueDateTime$new(file, dir = dir)
+
+  bq$prune_identical()
+  invisible(file)
+}

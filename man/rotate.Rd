@@ -4,6 +4,7 @@
 \alias{rotate}
 \alias{backup}
 \alias{prune_backups}
+\alias{prune_identical_backups}
 \alias{rotate_date}
 \alias{backup_date}
 \alias{rotate_time}
@@ -34,6 +35,13 @@ backup(
 prune_backups(
   file,
   max_backups,
+  dir = dirname(file),
+  dry_run = FALSE,
+  verbose = dry_run
+)
+
+prune_identical_backups(
+  file,
   dir = dirname(file),
   dry_run = FALSE,
   verbose = dry_run
@@ -190,6 +198,9 @@ with an empty one (this is useful for log rotation)
 
 \code{prune_backups()} physically deletes all backups of a file
 based on \code{max_backups}
+
+\code{prune_backups()} physically deletes all backups of a file
+based on \code{max_backups}
 }
 \section{Side Effects}{
 
@@ -200,6 +211,9 @@ specified conditions are met). They may also delete backups, based on
 \code{rotate()}, \code{rotate_date()} and \code{rotate_time()} do the same, but in
 addition delete the input \code{file}, or replace it with an empty file if
 \code{create_file == TRUE} (the default).
+
+
+\code{prune_backups()} may delete files, depending on \code{max_backups}.
 
 
 \code{prune_backups()} may delete files, depending on \code{max_backups}.

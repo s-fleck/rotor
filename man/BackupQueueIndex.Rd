@@ -28,6 +28,7 @@ Other R6 Classes:
 \itemize{
 \item \href{#method-push}{\code{BackupQueueIndex$push()}}
 \item \href{#method-prune}{\code{BackupQueueIndex$prune()}}
+\item \href{#method-prune_identical}{\code{BackupQueueIndex$prune_identical()}}
 \item \href{#method-should_rotate}{\code{BackupQueueIndex$should_rotate()}}
 \item \href{#method-pad_index}{\code{BackupQueueIndex$pad_index()}}
 \item \href{#method-increment_index}{\code{BackupQueueIndex$increment_index()}}
@@ -64,6 +65,15 @@ Create a new index-stamped backup (e.g. \file{logfile.1.log})
 \subsection{Method \code{prune()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$prune(max_backups = self$max_backups)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-prune_identical"></a>}}
+\if{latex}{\out{\hypertarget{method-prune_identical}{}}}
+\subsection{Method \code{prune_identical()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$prune_identical()}\if{html}{\out{</div>}}
 }
 
 }
