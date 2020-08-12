@@ -175,6 +175,7 @@ All backups of self$origin</p></dd>
 <ul>
 <li><p><a href='#method-new'><code>BackupQueue$new()</code></a></p></li>
 <li><p><a href='#method-prune'><code>BackupQueue$prune()</code></a></p></li>
+<li><p><a href='#method-prune_identical'><code>BackupQueue$prune_identical()</code></a></p></li>
 <li><p><a href='#method-print'><code>BackupQueue$print()</code></a></p></li>
 <li><p><a href='#method-push_backup'><code>BackupQueue$push_backup()</code></a></p></li>
 <li><p><a href='#method-set_origin'><code>BackupQueue$set_origin()</code></a></p></li>
@@ -206,6 +207,12 @@ All backups of self$origin</p></dd>
 <a id="method-prune"></a></p><h3>Method <code>prune()</code></h3>
 <p>Delete all backups except <code>max_backups</code>. See <code><a href='rotate.html'>prune_backups()</a></code>.</p><h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>BackupQueue</span>$<span class='fu'>prune</span>(<span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>max_backups</span>)</pre><p></div></p>
+
+<p><hr>
+<a id="method-prune_identical"></a></p><h3>Method <code>prune_identical()</code></h3>
+<p>Delete all identical backups. Uses <code><a href='https://rdrr.io/r/tools/md5sum.html'>tools::md5sum()</a></code> to
+compare the files.</p><h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackupQueue</span>$<span class='fu'>prune_identical</span>()</pre><p></div></p>
 
 <p><hr>
 <a id="method-print"></a></p><h3>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>

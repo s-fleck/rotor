@@ -146,6 +146,7 @@ the simpler functional API is recommended (see <code><a href='rotate.html'>rotat
 <ul>
 <li><p><a href='#method-push'><code>BackupQueueIndex$push()</code></a></p></li>
 <li><p><a href='#method-prune'><code>BackupQueueIndex$prune()</code></a></p></li>
+<li><p><a href='#method-prune_identical'><code>BackupQueueIndex$prune_identical()</code></a></p></li>
 <li><p><a href='#method-should_rotate'><code>BackupQueueIndex$should_rotate()</code></a></p></li>
 <li><p><a href='#method-pad_index'><code>BackupQueueIndex$pad_index()</code></a></p></li>
 <li><p><a href='#method-increment_index'><code>BackupQueueIndex$increment_index()</code></a></p></li>
@@ -174,6 +175,12 @@ the simpler functional API is recommended (see <code><a href='rotate.html'>rotat
 
 <h3>Usage</h3>
 <p><div class="r"></p><pre><span class='no'>BackupQueueIndex</span>$<span class='fu'>prune</span>(<span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>max_backups</span>)</pre><p></div></p>
+
+<p><hr>
+<a id="method-prune_identical"></a></p><h3>Method <code>prune_identical()</code></h3>
+
+<h3>Usage</h3>
+<p><div class="r"></p><pre><span class='no'>BackupQueueIndex</span>$<span class='fu'>prune_identical</span>()</pre><p></div></p>
 
 <p><hr>
 <a id="method-should_rotate"></a></p><h3>Method <code>should_rotate()</code></h3>
