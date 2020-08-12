@@ -141,7 +141,7 @@ rotate_rds_internal <- function(
         identical(object, comp) ||
         (inherits(object, "data.table") && assert_namespace("data.table") && isTRUE(all.equal(object, comp)))
       ){
-        message(ObjectHasNotChangedMessage("not rotating: object has not changed"))
+        message(ObjectHasNotChangedMessage("not rotating: object has not changed\n"), appendLF = FALSE)
         return(invisible(file))
       }
     }
