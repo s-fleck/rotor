@@ -141,7 +141,7 @@ the simpler functional API is recommended (see <code><a href='rotate.html'>rotat
     <h2 class="hasAnchor" id="methods"><a class="anchor" href="#methods"></a>Methods</h2>
 
     
-<h3>Public methods</h3>
+<h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Public methods</h3>
 
 <ul>
 <li><p><a href='#method-push'><code>BackupQueueIndex$push()</code></a></p></li>
@@ -166,41 +166,41 @@ the simpler functional API is recommended (see <code><a href='rotate.html'>rotat
 </details>
 
 <hr>
-<a id="method-push"></a></p><h3>Method <code>push()</code></h3>
-<p>Create a new index-stamped backup (e.g. <code class="file">logfile.1.log</code>)</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>BackupQueueIndex</span>$<span class='fu'>push</span>()</pre><p></div></p>
+<a id="method-push"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>push()</code></h3>
+<p>Create a new index-stamped backup (e.g. <code class="file">logfile.1.log</code>)</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>BackupQueueIndex</span><span class='op'>$</span><span class='fu'>push</span>()</pre><p></div></p>
 
 <p><hr>
-<a id="method-prune"></a></p><h3>Method <code>prune()</code></h3>
+<a id="method-prune"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>prune()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>BackupQueueIndex</span>$<span class='fu'>prune</span>(<span class='kw'>max_backups</span> <span class='kw'>=</span> <span class='no'>self</span>$<span class='no'>max_backups</span>)</pre><p></div></p>
-
-<p><hr>
-<a id="method-prune_identical"></a></p><h3>Method <code>prune_identical()</code></h3>
-
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>BackupQueueIndex</span>$<span class='fu'>prune_identical</span>()</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>BackupQueueIndex</span><span class='op'>$</span><span class='fu'>prune</span>(max_backups = <span class='kw'>self</span><span class='op'>$</span><span class='kw'>max_backups</span>)</pre><p></div></p>
 
 <p><hr>
-<a id="method-should_rotate"></a></p><h3>Method <code>should_rotate()</code></h3>
-<p>Should a file of <code>size</code> be rotated? See <code>size</code> argument of <code><a href='rotate.html'>rotate()</a></code></p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>BackupQueueIndex</span>$<span class='fu'>should_rotate</span>(<span class='no'>size</span>, <span class='kw'>verbose</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>)</pre><p></div></p>
+<a id="method-prune_identical"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>prune_identical()</code></h3>
 
-<h3>Returns</h3>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>BackupQueueIndex</span><span class='op'>$</span><span class='fu'>prune_identical</span>()</pre><p></div></p>
+
+<p><hr>
+<a id="method-should_rotate"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>should_rotate()</code></h3>
+<p>Should a file of <code>size</code> be rotated? See <code>size</code> argument of <code><a href='rotate.html'>rotate()</a></code></p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>BackupQueueIndex</span><span class='op'>$</span><span class='fu'>should_rotate</span>(<span class='kw'>size</span>, verbose = <span class='fl'>FALSE</span>)</pre><p></div></p>
+
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Returns</h4>
 <p><code>TRUE</code> or <code>FALSE</code></p>
 <p><hr>
-<a id="method-pad_index"></a></p><h3>Method <code>pad_index()</code></h3>
+<a id="method-pad_index"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>pad_index()</code></h3>
 <p>Pad the indices in the filenames of indexed backups
 to the number of digits of the largest index. Usually does not have to
-be called manually.</p><h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>BackupQueueIndex</span>$<span class='fu'>pad_index</span>()</pre><p></div></p>
+be called manually.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>BackupQueueIndex</span><span class='op'>$</span><span class='fu'>pad_index</span>()</pre><p></div></p>
 
 <p><hr>
-<a id="method-increment_index"></a></p><h3>Method <code>increment_index()</code></h3>
+<a id="method-increment_index"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>increment_index()</code></h3>
 
-<h3>Usage</h3>
-<p><div class="r"></p><pre><span class='no'>BackupQueueIndex</span>$<span class='fu'>increment_index</span>(<span class='kw'>n</span> <span class='kw'>=</span> <span class='fl'>1</span>)</pre><p></div></p>
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='kw'>BackupQueueIndex</span><span class='op'>$</span><span class='fu'>increment_index</span>(n = <span class='fl'>1</span>)</pre><p></div></p>
 
 
 
@@ -220,7 +220,7 @@ be called manually.</p><h3>Usage</h3>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

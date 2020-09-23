@@ -120,15 +120,15 @@
     <p>These function return information on the backups of a file (if any exist)</p>
     </div>
 
-    <pre class="usage"><span class='fu'>backup_info</span>(<span class='no'>file</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>))
+    <pre class="usage"><span class='fu'>backup_info</span>(<span class='kw'>file</span>, dir = <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='kw'>file</span>))
 
-<span class='fu'>list_backups</span>(<span class='no'>file</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>))
+<span class='fu'>list_backups</span>(<span class='kw'>file</span>, dir = <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='kw'>file</span>))
 
-<span class='fu'>n_backups</span>(<span class='no'>file</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>))
+<span class='fu'>n_backups</span>(<span class='kw'>file</span>, dir = <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='kw'>file</span>))
 
-<span class='fu'>newest_backup</span>(<span class='no'>file</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>))
+<span class='fu'>newest_backup</span>(<span class='kw'>file</span>, dir = <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='kw'>file</span>))
 
-<span class='fu'>oldest_backup</span>(<span class='no'>file</span>, <span class='kw'>dir</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='no'>file</span>))</pre>
+<span class='fu'>oldest_backup</span>(<span class='kw'>file</span>, dir = <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='kw'>file</span>))</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -182,24 +182,31 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># setup example files</span>
-<span class='no'>tf</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"test"</span>, <span class='kw'>fileext</span> <span class='kw'>=</span> <span class='st'>".rds"</span>)
-<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span>(<span class='no'>cars</span>, <span class='no'>tf</span>)
-<span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
-<span class='fu'><a href='rotate.html'>backup</a></span>(<span class='no'>tf</span>)
+<span class='kw'>tf</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>(<span class='st'>"test"</span>, fileext = <span class='st'>".rds"</span>)
+<span class='fu'><a href='https://rdrr.io/r/base/readRDS.html'>saveRDS</a></span>(<span class='kw'>cars</span>, <span class='kw'>tf</span>)
+<span class='fu'><a href='rotate.html'>backup</a></span>(<span class='kw'>tf</span>)
+<span class='fu'><a href='rotate.html'>backup</a></span>(<span class='kw'>tf</span>)
 
-<span class='fu'>backup_info</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt;                                     path             name sfx ext size isdir
-#&gt; 1 /tmp/Rtmp1oDuOG/test13b15848cf15.1.rds test13b15848cf15   1 rds  287 FALSE
-#&gt; 2 /tmp/Rtmp1oDuOG/test13b15848cf15.2.rds test13b15848cf15   2 rds  287 FALSE
+<span class='fu'>backup_info</span>(<span class='kw'>tf</span>)
+</div><div class='output co'>#&gt;                                     path             name sfx ext size isdir
+#&gt; 1 /tmp/RtmpaGBpN1/test1d8c2cf88df9.1.rds test1d8c2cf88df9   1 rds  289 FALSE
+#&gt; 2 /tmp/RtmpaGBpN1/test1d8c2cf88df9.2.rds test1d8c2cf88df9   2 rds  289 FALSE
 #&gt;   mode               mtime               ctime               atime  uid  gid
-#&gt; 1  666 2020-08-12 08:39:03 2020-08-12 08:39:03 2020-08-12 08:39:03 2000 2000
-#&gt; 2  666 2020-08-12 08:39:02 2020-08-12 08:39:03 2020-08-12 08:39:02 2000 2000
+#&gt; 1  666 2020-09-23 06:54:02 2020-09-23 06:54:02 2020-09-23 06:54:02 2000 2000
+#&gt; 2  666 2020-09-23 06:54:02 2020-09-23 06:54:02 2020-09-23 06:54:02 2000 2000
 #&gt;    uname grname index
 #&gt; 1 travis travis     1
-#&gt; 2 travis travis     2</div><div class='input'><span class='fu'>list_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp1oDuOG/test13b15848cf15.1.rds"
-#&gt; [2] "/tmp/Rtmp1oDuOG/test13b15848cf15.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp1oDuOG/test13b15848cf15.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp1oDuOG/test13b15848cf15.2.rds"</div><div class='input'>
+#&gt; 2 travis travis     2</div><div class='input'><span class='fu'>list_backups</span>(<span class='kw'>tf</span>)
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpaGBpN1/test1d8c2cf88df9.1.rds"
+#&gt; [2] "/tmp/RtmpaGBpN1/test1d8c2cf88df9.2.rds"</div><div class='input'><span class='fu'>n_backups</span>(<span class='kw'>tf</span>)
+</div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span>(<span class='kw'>tf</span>)
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpaGBpN1/test1d8c2cf88df9.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span>(<span class='kw'>tf</span>)
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpaGBpN1/test1d8c2cf88df9.2.rds"</div><div class='input'>
 <span class='co'># cleanup</span>
-<span class='fu'><a href='rotate.html'>prune_backups</a></span>(<span class='no'>tf</span>, <span class='fl'>0</span>)
-<span class='fu'>n_backups</span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='no'>tf</span>)</div><div class='output co'>#&gt; [1] TRUE</div></pre>
+<span class='fu'><a href='rotate.html'>prune_backups</a></span>(<span class='kw'>tf</span>, <span class='fl'>0</span>)
+<span class='fu'>n_backups</span>(<span class='kw'>tf</span>)
+</div><div class='output co'>#&gt; [1] 0</div><div class='input'><span class='fu'><a href='https://rdrr.io/r/base/files.html'>file.remove</a></span>(<span class='kw'>tf</span>)
+</div><div class='output co'>#&gt; [1] TRUE</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -215,7 +222,7 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

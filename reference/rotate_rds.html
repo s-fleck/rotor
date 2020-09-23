@@ -125,38 +125,38 @@ overwriting it.</p>
     </div>
 
     <pre class="usage"><span class='fu'>rotate_rds</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>ascii</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>refhook</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>on_change_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>object</span>,
+  file = <span class='st'>""</span>,
+  ascii = <span class='fl'>FALSE</span>,
+  version = <span class='kw'>NULL</span>,
+  compress = <span class='fl'>TRUE</span>,
+  refhook = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>,
+  on_change_only = <span class='fl'>FALSE</span>
 )
 
 <span class='fu'>rotate_rds_date</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>ascii</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>refhook</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>age</span> <span class='kw'>=</span> -<span class='fl'>1L</span>,
-  <span class='kw'>on_change_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>object</span>,
+  file = <span class='st'>""</span>,
+  ascii = <span class='fl'>FALSE</span>,
+  version = <span class='kw'>NULL</span>,
+  compress = <span class='fl'>TRUE</span>,
+  refhook = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>,
+  age = <span class='op'>-</span><span class='fl'>1L</span>,
+  on_change_only = <span class='fl'>FALSE</span>
 )
 
 <span class='fu'>rotate_rds_time</span>(
-  <span class='no'>object</span>,
-  <span class='kw'>file</span> <span class='kw'>=</span> <span class='st'>""</span>,
-  <span class='kw'>ascii</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>,
-  <span class='kw'>version</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='kw'>compress</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>,
-  <span class='kw'>refhook</span> <span class='kw'>=</span> <span class='kw'>NULL</span>,
-  <span class='no'>...</span>,
-  <span class='kw'>age</span> <span class='kw'>=</span> -<span class='fl'>1L</span>,
-  <span class='kw'>on_change_only</span> <span class='kw'>=</span> <span class='fl'>FALSE</span>
+  <span class='kw'>object</span>,
+  file = <span class='st'>""</span>,
+  ascii = <span class='fl'>FALSE</span>,
+  version = <span class='kw'>NULL</span>,
+  compress = <span class='fl'>TRUE</span>,
+  refhook = <span class='kw'>NULL</span>,
+  <span class='kw'>...</span>,
+  age = <span class='op'>-</span><span class='fl'>1L</span>,
+  on_change_only = <span class='fl'>FALSE</span>
 )</pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -196,7 +196,7 @@ overwriting it.</p>
     </tr>
     <tr>
       <th>...</th>
-      <td><p>Arguments passed on to <code><a href='rotate.html'>rotate</a></code>, <code><a href='rotate.html'>rotate_date</a></code>, <code><a href='rotate.html'>rotate_time</a></code></p><dl'>
+      <td><p>Arguments passed on to <code><a href='rotate.html'>rotate</a></code>, <code><a href='rotate.html'>rotate_date</a></code>, <code><a href='rotate.html'>rotate_time</a></code></p><dl>
     <dt><code>max_backups</code></dt><dd><p>maximum number of backups to keep
 <ul>
 <li><p>an <code>integer</code> scalar: Maximum number of backups to keep</p></li>
@@ -288,15 +288,17 @@ silently not rotate the file, while <code>rotate_rds_date()</code> will throw an
 error.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>dest</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
-<span class='fu'>rotate_rds</span>(<span class='no'>iris</span>, <span class='no'>dest</span>)
-<span class='fu'>rotate_rds</span>(<span class='no'>iris</span>, <span class='no'>dest</span>)
-<span class='fu'>rotate_rds</span>(<span class='no'>iris</span>, <span class='no'>dest</span>)
+    <pre class="examples"><div class='input'><span class='kw'>dest</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/tempfile.html'>tempfile</a></span>()
+<span class='fu'>rotate_rds</span>(<span class='kw'>iris</span>, <span class='kw'>dest</span>)
+<span class='fu'>rotate_rds</span>(<span class='kw'>iris</span>, <span class='kw'>dest</span>)
+<span class='fu'>rotate_rds</span>(<span class='kw'>iris</span>, <span class='kw'>dest</span>)
 
-<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>dest</span>)</div><div class='output co'>#&gt; [1] "/tmp/Rtmp1oDuOG/file13b168dca590.1" "/tmp/Rtmp1oDuOG/file13b168dca590.2"</div><div class='input'>
+<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='kw'>dest</span>)
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpaGBpN1/file1d8c40108979.1" "/tmp/RtmpaGBpN1/file1d8c40108979.2"</div><div class='input'>
 <span class='co'># cleanup</span>
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='no'>dest</span>))
-<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='no'>dest</span>)</div></pre>
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='fu'><a href='backup_info.html'>list_backups</a></span>(<span class='kw'>dest</span>))
+<span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span>(<span class='kw'>dest</span>)
+</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -312,7 +314,7 @@ error.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
