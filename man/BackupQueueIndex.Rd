@@ -106,9 +106,18 @@ be called manually.
 \if{html}{\out{<a id="method-increment_index"></a>}}
 \if{latex}{\out{\hypertarget{method-increment_index}{}}}
 \subsection{Method \code{increment_index()}}{
+Increment die Indices of all backups by \code{n} Usually does
+not have to be called manually.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$increment_index(n = 1)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{n}}{\code{integer} > 0}
+}
+\if{html}{\out{</div>}}
+}
 }
 }
