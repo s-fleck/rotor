@@ -1,4 +1,4 @@
-# CacheQueue --------------------------------------------------------------
+# Cache ----------------------------------------------------------------
 
 #' An R6 class for managing a persistent file-based cache
 #'
@@ -112,7 +112,7 @@ Cache <- R6::R6Class(
       invisible(NULL)
     },
 
-    #' @description Read anr remove a single file from the cache
+    #' @description Read and remove a single file from the cache
     #' @param key `character` scalar. key of the cached file to read/remove
     pop = function(
       key

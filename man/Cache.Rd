@@ -248,7 +248,7 @@ remove a single file from the cache
 \if{html}{\out{<a id="method-pop"></a>}}
 \if{latex}{\out{\hypertarget{method-pop}{}}}
 \subsection{Method \code{pop()}}{
-Read anr remove a single file from the cache
+Read and remove a single file from the cache
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$pop(key)}\if{html}{\out{</div>}}
 }

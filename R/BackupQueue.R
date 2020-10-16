@@ -116,6 +116,8 @@ BackupQueue <- R6::R6Class(
 
 
     # ... setters -------------------------------------------------------------
+    #' Set the file to be backed up
+    #' @param x a `character` scalar. Path to a file
     set_origin = function(
       x
     ){
@@ -129,6 +131,8 @@ BackupQueue <- R6::R6Class(
     },
 
 
+    #' Set the file to be backed up
+    #' @param x a `character` scalar. Path to a file
     set_compression = function(
       x
     ){
@@ -401,6 +405,10 @@ BackupQueueIndex <- R6::R6Class(
     },
 
 
+    #' @description Increment die Indices of all backups by `n` Usually does
+    #' not have to be called manually.
+    #'
+    #' @param n `integer` > 0
     increment_index = function(
       n = 1
     ){
@@ -433,6 +441,7 @@ BackupQueueIndex <- R6::R6Class(
 
   # ... getters -------------------------------------------------------------
   active = list(
+
     files = function(){
       res <- super$files
       if (nrow(res) < 1)

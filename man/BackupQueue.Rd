@@ -107,6 +107,7 @@ Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{pr
 \subsection{Method \code{prune_identical()}}{
 Delete all identical backups. Uses \code{\link[tools:md5sum]{tools::md5sum()}} to
 compare the files.
+Set the file to be backed up
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$prune_identical()}\if{html}{\out{</div>}}
 }
@@ -138,6 +139,14 @@ compare the files.
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_origin(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{a \code{character} scalar. Path to a file
+Set the file to be backed up}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_compression"></a>}}
@@ -147,6 +156,13 @@ compare the files.
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_compression(x)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{x}}{a \code{character} scalar. Path to a file}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-set_max_backups"></a>}}
