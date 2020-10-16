@@ -501,8 +501,8 @@ BackupQueueDateTime <- R6::R6Class(
 
     #' @description Create a new time-stamped backup (e.g. \file{logfile.2020-07-22_12-26-29.log})
     #' @param overwrite `logical` scalar. Overwrite backups with the same
-    #'   fielename (i.e timestamp)?
-    #' @param now `POSIXct` scalar. Can be used as an override meachanism for
+    #'   filename (i.e timestamp)?
+    #' @param now `POSIXct` scalar. Can be used as an override mechanism for
     #'   the current system time if necessary.
     push = function(
       overwrite = FALSE,
@@ -701,7 +701,7 @@ BackupQueueDateTime <- R6::R6Class(
     #' Caching brings a significant speedup for checking whether to rotate or
     #' not based on the `age` of the last backup, but is only safe if there are
     #' no other programs/functions interacting with the backups. This is only
-    #' advantagous for high frequency file rotation (i.e. several times per
+    #' advantageous for high frequency file rotation (i.e. several times per
     #' second)
     cache_backups = function(){
       get(".cache_backups", envir = private, mode = "logical")

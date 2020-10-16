@@ -1,4 +1,4 @@
-# rotor 0.2.5
+# rotor 0.3.0
 
 * Improved some error messages
 * Added `rotate_rds()`, `rotate_rds_time()`, and `rotate_rds_date()` as a

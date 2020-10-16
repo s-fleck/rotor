@@ -32,7 +32,7 @@ if \code{FALSE} it is read from disk every time this appender triggers.
 Caching brings a significant speedup for checking whether to rotate or
 not based on the \code{age} of the last backup, but is only safe if there are
 no other programs/functions interacting with the backups. This is only
-advantagous for high frequency file rotation (i.e. several times per
+advantageous for high frequency file rotation (i.e. several times per
 second)
 \code{POSIXct} scalar. Timestamp of the last rotation (the last backup)}
 }
@@ -95,9 +95,9 @@ Create a new time-stamped backup (e.g. \file{logfile.2020-07-22_12-26-29.log})
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{overwrite}}{\code{logical} scalar. Overwrite backups with the same
-fielename (i.e timestamp)?}
+filename (i.e timestamp)?}
 
-\item{\code{now}}{\code{POSIXct} scalar. Can be used as an override meachanism for
+\item{\code{now}}{\code{POSIXct} scalar. Can be used as an override mechanism for
 the current system time if necessary.}
 }
 \if{html}{\out{</div>}}
