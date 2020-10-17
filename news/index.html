@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -114,6 +114,35 @@
       <small>Source: <a href='https://github.com/s-fleck/rotor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rotor-0-3-0" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.0">
+<a href="#rotor-0-3-0" class="anchor"></a>rotor 0.3.0<small> 2020-10-16 </small>
+</h1>
+<ul>
+<li>Improved some error messages</li>
+<li>Added <code><a href="../reference/rotate_rds.html">rotate_rds()</a></code>, <code><a href="../reference/rotate_rds.html">rotate_rds_time()</a></code>, and <code><a href="../reference/rotate_rds.html">rotate_rds_date()</a></code> as a replacement for <code><a href="https://rdrr.io/r/base/readRDS.html">base::saveRDS()</a></code> that supports creating backups instead of just overwriting the destination file.</li>
+<li>added <code>Cache</code>, an R6 class for managing cache directories. The <code>Cache</code> API is still experimental and might change.</li>
+<li>
+<strong>breaking</strong> R6 API: renamed some methods and active fields of BackupQueue to more universal names:
+<ul>
+<li>
+<code>$push_backup()</code> -&gt; <code>$push()</code>
+</li>
+<li>
+<code>$backup_dir</code> -&gt; <code><a href="https://rdrr.io/r/base/list.files.html">dir()</a></code>
+</li>
+<li>
+<code>$backups</code> -&gt; <code>$files</code>
+</li>
+<li>
+<code>$file</code> -&gt; <code>$origin</code>
+</li>
+</ul>
+</li>
+<li>
+<code>BackupQueue$prune_identical()</code> removes identical backups for a BackupQueue</li>
+</ul>
+</div>
     <div id="rotor-0-2-4" class="section level1">
 <h1 class="page-header" data-toc-text="0.2.4">
 <a href="#rotor-0-2-4" class="anchor"></a>rotor 0.2.4<small> 2020-01-07 </small>

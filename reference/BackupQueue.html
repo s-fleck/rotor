@@ -73,7 +73,7 @@ BackupQueueIndex, BackupQueueDateTime, BackupQueueDate instead." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.2.4.9003</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
       </span>
     </div>
 
@@ -126,7 +126,7 @@ BackupQueueIndex, BackupQueueDateTime, BackupQueueDate instead." />
 
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
-    <p>This class is part of the <a href='https://rdrr.io/pkg/R6/man/R6Class.html'>R6</a> API of <strong>rotor</strong> which is
+    <p>This class is part of the <a href='https://r6.r-lib.org/reference/R6Class.html'>R6</a> API of <strong>rotor</strong> which is
 intended for developers that want to extend this package. For normal usage,
 the simpler functional API is recommended (see <code><a href='rotate.html'>rotate()</a></code>).</p>
     <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
@@ -195,66 +195,78 @@ All backups of self$origin</p></dd>
 <a id="method-new"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>new()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'>new</span>(
-  <span class='kw'>origin</span>,
-  dir = <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span>(<span class='kw'>origin</span>),
-  max_backups = <span class='fl'>Inf</span>,
-  compression = <span class='fl'>FALSE</span>,
-  backup_dir = <span class='kw'>NULL</span>
-)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span>
+  <span class='va'>origin</span>,
+  dir <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/basename.html'>dirname</a></span><span class='op'>(</span><span class='va'>origin</span><span class='op'>)</span>,
+  max_backups <span class='op'>=</span> <span class='cn'>Inf</span>,
+  compression <span class='op'>=</span> <span class='cn'>FALSE</span>,
+  backup_dir <span class='op'>=</span> <span class='cn'>NULL</span>
+<span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-prune"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>prune()</code></h3>
 <p>Delete all backups except <code>max_backups</code>. See <code><a href='rotate.html'>prune_backups()</a></code>.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'>prune</span>(max_backups = <span class='kw'>self</span><span class='op'>$</span><span class='kw'>max_backups</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>prune</span><span class='op'>(</span>max_backups <span class='op'>=</span> <span class='va'>self</span><span class='op'>$</span><span class='va'>max_backups</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-prune_identical"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>prune_identical()</code></h3>
 <p>Delete all identical backups. Uses <code><a href='https://rdrr.io/r/tools/md5sum.html'>tools::md5sum()</a></code> to
-compare the files.</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'>prune_identical</span>()</pre><p></div></p>
+compare the files.
+Set the file to be backed up</p><h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>prune_identical</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-print"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code><a href='https://rdrr.io/r/base/print.html'>print()</a></code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'><a href='https://rdrr.io/r/base/print.html'>print</a></span>()</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>print</span><span class='op'>(</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-push_backup"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>push_backup()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'>push_backup</span>(<span class='kw'>...</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>push_backup</span><span class='op'>(</span><span class='va'>...</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-set_origin"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_origin()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_origin</span>(<span class='kw'>x</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_origin</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>x</code></dt><dd><p>a <code>character</code> scalar. Path to a file
+Set the file to be backed up</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-set_compression"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_compression()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_compression</span>(<span class='kw'>x</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_compression</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
+<h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Arguments</h4>
+<p><div class="arguments"></p><dl>
+<dt><code>x</code></dt><dd><p>a <code>character</code> scalar. Path to a file</p></dd>
+
+</dl><p></div></p>
 <p><hr>
 <a id="method-set_max_backups"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_max_backups()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_max_backups</span>(<span class='kw'>x</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_max_backups</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-set_file"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_file()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_file</span>(<span class='kw'>x</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_file</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
 <p><hr>
 <a id="method-set_backup_dir"></a></p><h3 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Method <code>set_backup_dir()</code></h3>
 
 <h4 class='hasAnchor' id='arguments'><a class='anchor' href='#arguments'></a>Usage</h4>
-<p><div class="r"></p><pre><span class='kw'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_backup_dir</span>(<span class='kw'>x</span>)</pre><p></div></p>
+<p><div class="r"></p><pre><span class='va'>BackupQueue</span><span class='op'>$</span><span class='fu'>set_backup_dir</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre><p></div></p>
 
 
 
