@@ -1,3 +1,12 @@
+# rotor 0.3.1
+
+* fixes time zone related issue in `Cache$prune()`.
+* fixes bug in `rotate_rds(on_change_only = TRUE)` that occurs if a version
+  of data.table < 1.3.0 is installed and either the source or target object are a 
+  `data.table` (but not both)
+* more robust clean up of temporary files in most unit tests 
+
+
 # rotor 0.3.0
 
 * Improved some error messages

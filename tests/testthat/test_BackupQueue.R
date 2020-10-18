@@ -1,7 +1,6 @@
 context("BackupQueue")
 
 td <- file.path(tempdir(), "rotor")
-dir.create(td, recursive = TRUE)
 
 teardown({
   unlink(td, recursive = TRUE)
@@ -17,12 +16,10 @@ test_that("get_backups works as expected", {
     "foo.1.txt"
   )
 
-
   expect_identical(
     get_backups("foo.txt", c("foo.1.txt", "bar"), sfx_patterns = "\\d{1}"),
     "foo.1.txt"
   )
-
 
   expect_path_equal(
     get_backups("foo.txt", c("path/to/foo.1.txt", "path/to/bar"), sfx_patterns = "\\d{1}"),
@@ -33,7 +30,6 @@ test_that("get_backups works as expected", {
     get_backups("foo.txt", c("path/to/foo.1.txt", "path/bar"), sfx_patterns = "\\d{1}")
   )
 
-
   expect_setequal(
     get_backups(
       "foo.txt",
@@ -42,7 +38,6 @@ test_that("get_backups works as expected", {
     ),
     c("foo.1.txt", "foo.1.txt.zip", "foo.1.txt.tar.gz", "foo.1.txt.7z")
   )
-
 
   expect_setequal(
     get_backups(
@@ -53,7 +48,6 @@ test_that("get_backups works as expected", {
     c("foo.1", "foo.1.zip", "foo.1.tar.gz", "foo.1.7z")
   )
 
-
   sfx_real <- c(
     "\\d+",
     "\\d{4}-\\d{2}-\\d{2}",
@@ -61,12 +55,9 @@ test_that("get_backups works as expected", {
     "\\d{4}-\\d{2}"
   )
 
-
-
   expect_length(
     get_backups("test.jsonl", "test.7z", sfx_patterns = sfx_real), 0
   )
-
 
   bus <- c(
     "test.1.log.zip", "test.2.log.tar.gz", "test.2019-01-01T22-22-22.log.zip",
@@ -92,6 +83,9 @@ test_that("get_backups works as expected", {
 
 
 test_that("BackupQueue works as expected", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
   expect_identical(n_backups(tf), 0L)
@@ -99,17 +93,21 @@ test_that("BackupQueue works as expected", {
   bq <- BackupQueue$new(tf)
   expect_path_equal(bq$origin, tf)
   expect_path_equal(bq$dir, dirname(tf))
-  file.remove(tf)
 })
 
 
 
 
 test_that("BackupQueue finding backups works as expected for files with extension", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
+
   expect_identical(n_backups(tf), 0L)
   bq <- BackupQueue$new(tf)
+  on.exit(bq$prune(0), add = TRUE)
 
   sfxs <-c(1:12, "2019-12-31")
   bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs, ".log")
@@ -118,16 +116,18 @@ test_that("BackupQueue finding backups works as expected for files with extensio
   expect_path_setequal(bq$files$path, bus)
   expect_setequal(bq$files$sfx, sfxs)
   expect_setequal(bq$files$ext, "log")
-  bq$prune(0)
 })
 
 
 
 
 test_that("BackupQueue finding backups works as expected for files without extension", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
-  on.exit(unlink(bus))
+
   expect_identical(n_backups(tf), 0L)
   bq <- BackupQueue$new(tf)
 
@@ -144,6 +144,9 @@ test_that("BackupQueue finding backups works as expected for files without exten
 
 
 test_that("dryrun/verbose prune", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
   expect_identical(n_backups(tf), 0L)
@@ -154,7 +157,7 @@ test_that("dryrun/verbose prune", {
   file.create(bus)
 
   DRY_RUN$activate()
-  on.exit(DRY_RUN$deactivate())
+  on.exit(DRY_RUN$deactivate(), add = TRUE)
   bq$prune(0)
   DRY_RUN$deactivate()
   expect_identical(bq$n, length(sfxs))
@@ -213,9 +216,12 @@ test_that("filenames_as_matrix works as expected with paths", {
 
 
 test_that("$print() does not fail", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
-  on.exit(file.remove(tf))
+
   bq <- BackupQueue$new(tf)
 
   # printing empty bq succeedes
@@ -225,7 +231,6 @@ test_that("$print() does not fail", {
   sfxs <-c(1:12, "2019-12-31")
   bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs)
   file.create(bus)
-  on.exit(file.remove(bus), add = TRUE)
   expect_output(print(bq))
 })
 
@@ -236,6 +241,9 @@ test_that("$print() does not fail", {
 context("BackupQueueIndex")
 
 test_that("BackupQueueIndex can find and prune backup trails", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bt <- BackupQueueIndex$new(tf)
@@ -264,6 +272,9 @@ test_that("BackupQueueIndex can find and prune backup trails", {
 
 
 test_that("BackupQueueIndex only shows indexed backups", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
 
   file.create(c(
@@ -281,12 +292,15 @@ test_that("BackupQueueIndex only shows indexed backups", {
   expect_true(all(bq$files$sfx == as.integer(bq$files$sfx)))
 
   BackupQueue$new(tf)$prune(0)
-  file.remove(tf)
+  unlink(tf)
 })
 
 
 
 test_that("BackupQueue pruning works as expected for files without extension", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
   bt <- BackupQueueIndex$new(tf)
@@ -308,6 +322,9 @@ test_that("BackupQueue pruning works as expected for files without extension", {
 
 
 test_that("BackupQueue works as expected for files with extension", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   expect_identical(n_backups(tf), 0L)
@@ -328,6 +345,9 @@ test_that("BackupQueue works as expected for files with extension", {
 
 
 test_that("BackupQueue$pad_index works as expected", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   expect_identical(n_backups(tf), 0L)
@@ -349,6 +369,9 @@ test_that("BackupQueue$pad_index works as expected", {
 
 
 test_that("BackupQueue$increment_index works as expected", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   expect_identical(n_backups(tf), 0L)
@@ -371,6 +394,9 @@ test_that("BackupQueue$increment_index works as expected", {
 
 
 test_that("BackupQueue$push() works as expected", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -401,6 +427,9 @@ test_that("BackupQueue$push() works as expected", {
 
 
 test_that("BackupQueueIndex$push() can push to different directory", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -409,7 +438,7 @@ test_that("BackupQueueIndex$push() can push to different directory", {
   dir.create(bu_dir)
   file.create(tf)
   expect_identical(n_backups(tf), 0L)
-  on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
+  on.exit(unlink(c(bu_dir, tf), recursive = TRUE), add = TRUE)
 
 
   bt <- BackupQueueIndex$new(tf, dir = bu_dir)
@@ -429,6 +458,9 @@ test_that("BackupQueueIndex$push() can push to different directory", {
 
 
 test_that("BackupQueueIndex dry run doesnt modify file system", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   expect_identical(n_backups(tf), 0L)
@@ -441,7 +473,7 @@ test_that("BackupQueueIndex dry run doesnt modify file system", {
     unlink(tf)
     unlink(bus)
     DRY_RUN$deactivate()
-  })
+  }, add = TRUE)
 
   snap <- utils::fileSnapshot(td, md5sum = TRUE)
 
@@ -462,10 +494,12 @@ test_that("BackupQueueIndex dry run doesnt modify file system", {
 
 
 test_that("BackupQueueIndex: $should_rotate", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
   expect_identical(n_backups(tf), 0L)
-  on.exit(file.remove(tf))
 
   bq <- BackupQueueIndex$new(tf)
   expect_false(bq$should_rotate("1gb"))
@@ -477,9 +511,12 @@ test_that("BackupQueueIndex: $should_rotate", {
 
 
 test_that("BackupQueueIndex: $should_rotate(verbose = TRUE) displays helpful messages", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
-  on.exit(unlink(tf))
+  on.exit(unlink(tf), add = TRUE)
   bq <- BackupQueueIndex$new(tf)
 
   expect_message(bq$should_rotate(size = "1 tb", verbose = TRUE), "1 TiB")
@@ -490,6 +527,9 @@ test_that("BackupQueueIndex: $should_rotate(verbose = TRUE) displays helpful mes
 
 
 test_that("BackupQueueIndex: $prune_identical works", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
 
   saveRDS(iris, tf)
@@ -498,7 +538,7 @@ test_that("BackupQueueIndex: $prune_identical works", {
   on.exit({
     bq$prune(0)
     unlink(tf)
-  })
+  }, add = TRUE)
   backup(tf)
   backup(tf)
   rotate(tf)
@@ -528,9 +568,13 @@ context("BackupQueueDateTime")
 
 
 test_that("BackupQueueDatetime: backups_cache", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
-  on.exit(unlink(tf))
+  on.exit(unlink(tf), add = TRUE)
+
   expect_identical(n_backups(tf), 0L)
   bq <- BackupQueueDateTime$new(tf, cache_backups = TRUE)
   file.create(paste0(tools::file_path_sans_ext(tf), ".2019-01-01T22-22-22.log.zip"))
@@ -565,6 +609,9 @@ test_that("BackupQueueDatetime: backups_cache", {
 
 
 test_that("BackupQueueDateTime can find and prune backup trails", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(".2019-01-01T22-22-22.log.zip", ".20190102---1212.log.tar.gz", ".20190103174919.log", ".12.log"))
@@ -591,6 +638,9 @@ test_that("BackupQueueDateTime can find and prune backup trails", {
 
 
 test_that("BackupQueueDatetime works with supported timestamp formats", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   datetime <- as.POSIXct("2019-01-01 00:00:00")
@@ -627,7 +677,6 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
   bq$files$timestamp
   noback <- file.path(dirname(tf), ".2019-a2-20.log")
   file.create(noback)
-  on.exit(file.remove(noback))
 
   expect_identical(
     as.character(bq$files$timestamp),
@@ -635,12 +684,14 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
   )
 
   bq$prune(0)
-  file.remove(tf)
 })
 
 
 
 test_that("Prune BackupQueueDate based on date", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -670,6 +721,9 @@ test_that("Prune BackupQueueDate based on date", {
 
 
 test_that("Prune BackupQueueDate based on year interval", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -699,6 +753,9 @@ test_that("Prune BackupQueueDate based on year interval", {
 
 
 test_that("Prune BackupQueueDate based on month interval", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -726,6 +783,9 @@ test_that("Prune BackupQueueDate based on month interval", {
 
 
 test_that("Prune BackupQueueDate based on week interval", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -752,6 +812,9 @@ test_that("Prune BackupQueueDate based on week interval", {
 
 
 test_that("Prune BackupQueueDate based on days interval", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -778,6 +841,9 @@ test_that("Prune BackupQueueDate based on days interval", {
 
 
 test_that("BackupQueueDate $last_date", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bq <- BackupQueueDateTime$new(tf, cache_backups = FALSE)
@@ -796,6 +862,9 @@ test_that("BackupQueueDate $last_date", {
 
 
 test_that("BackupQueueDateTime$push() can push to different directory", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -803,7 +872,7 @@ test_that("BackupQueueDateTime$push() can push to different directory", {
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
   file.create(tf)
-  on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
+  on.exit(unlink(c(bu_dir, tf), recursive = TRUE), add = TRUE)
 
 
   bt <- BackupQueueDateTime$new(tf, dir = bu_dir)
@@ -822,16 +891,14 @@ test_that("BackupQueueDateTime$push() can push to different directory", {
 
 
 test_that("BackupQueueDateTime: $should_rotate", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
-  on.exit(file.remove(tf))
 
   bq <- BackupQueueDateTime$new(tf)
   bq$push(now = "2019-01-01")
-  on.exit({
-    bq$prune(0)
-    file.remove(tf)
-  })
 
   expect_false(bq$should_rotate("0.5kb", age = "1 year", now = "2019-12-31"))
   expect_true(bq$should_rotate("0.5kb", age = "1 year", now = "2020-01-01"))
@@ -842,9 +909,12 @@ test_that("BackupQueueDateTime: $should_rotate", {
 
 
 test_that("BackupQueueDateTime: `age` works with no backups", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
-  on.exit(unlink(tf))
+  on.exit(unlink(tf), add = TRUE)
 
   now <- as.Date(as.character(file.info(tf)$ctime))
   bq <- BackupQueueDateTime$new(tf)
@@ -857,9 +927,12 @@ test_that("BackupQueueDateTime: `age` works with no backups", {
 
 
 test_that("BackupQueueDateTime: $should_rotate(verbose = TRUE) displays helpful messages", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
-  on.exit(unlink(tf))
+  on.exit(unlink(tf), add = TRUE)
   bq <- BackupQueueDateTime$new(tf)
 
   expect_message(bq$should_rotate(age = Inf, size = "1 tb", verbose = TRUE), "age.*size")
@@ -878,9 +951,12 @@ context("BackupQueueDate")
 
 
 test_that("BackupQueueDate: $set_max_backups", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
-  on.exit(unlink(tf))
+  on.exit(unlink(tf), add = TRUE)
 
   bq <- BackupQueueDateTime$new(tf)
 
@@ -903,6 +979,9 @@ test_that("BackupQueueDate: $set_max_backups", {
 
 
 test_that("BackupQueueDate can find and prune backup trails", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bq <- BackupQueueDate$new(tf)
@@ -927,6 +1006,9 @@ test_that("BackupQueueDate can find and prune backup trails", {
 
 
 test_that("BackupQueueDate works with supported datestamp formats", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   date <- as.Date("2019-01-01")
@@ -950,7 +1032,6 @@ test_that("BackupQueueDate works with supported datestamp formats", {
 
   noback <- file.path(dirname(tf), ".2019-a2-20.log")
   file.create(noback)
-  on.exit(file.remove(noback))
 
   expect_path_equal(
     basename(bq$files$path),
@@ -962,14 +1043,14 @@ test_that("BackupQueueDate works with supported datestamp formats", {
       "test.2019.log"
     )
   )
-
-  bq$prune(0)
-  file.remove(tf)
 })
 
 
 
 test_that("Prune BackupQueueDate based on date", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -998,6 +1079,9 @@ test_that("Prune BackupQueueDate based on date", {
 
 
 test_that("Prune BackupQueueDate based on year interval", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -1027,6 +1111,9 @@ test_that("Prune BackupQueueDate based on year interval", {
 
 
 test_that("Prune BackupQueueDate based on month interval", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -1054,6 +1141,9 @@ test_that("Prune BackupQueueDate based on month interval", {
 
 
 test_that("Prune BackupQueueDate based on week interval", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -1080,6 +1170,9 @@ test_that("Prune BackupQueueDate based on week interval", {
 
 
 test_that("Prune BackupQueueDate based on days interval", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bus <- paste0(tools::file_path_sans_ext(tf), c(
@@ -1106,6 +1199,9 @@ test_that("Prune BackupQueueDate based on days interval", {
 
 
 test_that("BackupQueueDate $last_rotation", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
   bq <- BackupQueueDate$new(tf, cache_backups = FALSE)
@@ -1125,6 +1221,9 @@ test_that("BackupQueueDate $last_rotation", {
 
 
 test_that("BackupQueueDateTime$push() can push to different directory", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   if (!is_zipcmd_available())
     skip("Test requires a workings system zip command")
 
@@ -1132,7 +1231,7 @@ test_that("BackupQueueDateTime$push() can push to different directory", {
   bu_dir <- file.path(td, "backups")
   dir.create(bu_dir)
   file.create(tf)
-  on.exit(unlink(c(bu_dir, tf), recursive = TRUE))
+  on.exit(unlink(c(bu_dir, tf), recursive = TRUE), add = TRUE)
 
 
   bt <- BackupQueueDate$new(tf, dir = bu_dir)
@@ -1151,16 +1250,14 @@ test_that("BackupQueueDateTime$push() can push to different directory", {
 
 
 test_that("BackupQueueDate: $should_rotate", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)
-  on.exit(file.remove(tf))
 
   bq <- BackupQueueDate$new(tf)
   bq$push(now = "2019-01-01")
-  on.exit({
-    bq$prune(0)
-    file.remove(tf)
-  })
 
   expect_false(bq$should_rotate("0.5kb", age = "1 year", now = "2019-12-31"))
   expect_true(bq$should_rotate("0.5kb", age = "1 year", now = "2020-01-01"))
@@ -1171,9 +1268,12 @@ test_that("BackupQueueDate: $should_rotate", {
 
 
 test_that("BackupQueueDate: backups_cache", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test.log")
   file.create(tf)
-  on.exit(unlink(tf))
+  on.exit(unlink(tf), add = TRUE)
   bq <- BackupQueueDate$new(tf, cache_backups = TRUE)
   file.create(paste0(tools::file_path_sans_ext(tf), ".2019-01-01T22-22-22.log.zip"))
 
@@ -1207,9 +1307,12 @@ test_that("BackupQueueDate: backups_cache", {
 
 
 test_that("BackupQueueDateTime: `age` works with no backups", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
-  on.exit(unlink(tf))
+  on.exit(unlink(tf), add = TRUE)
 
   now <- as.Date(as.character(file.info(tf)$ctime))
   bq <- BackupQueueDate$new(tf)
@@ -1221,9 +1324,12 @@ test_that("BackupQueueDateTime: `age` works with no backups", {
 
 
 test_that("BackupQueueDate: $should_rotate(verbose = TRUE) displays helpful messages", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   tf <- file.path(td, "test")
   file.create(tf)
-  on.exit(unlink(tf))
+  on.exit(unlink(tf), add = TRUE)
   bq <- BackupQueueDate$new(tf)
 
   expect_message(bq$should_rotate(age = Inf, size = "1 tb", verbose = TRUE), "age.*size")
@@ -1240,3 +1346,4 @@ test_that("BackupQueueDate: $should_rotate(verbose = TRUE) displays helpful mess
 test_that("BackupQueue: all cleanup succesfull", {
   expect_length(list.files(td), 0)
 })
+

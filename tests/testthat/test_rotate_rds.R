@@ -1,19 +1,17 @@
 context("rotate_rds")
 
-dr <- tempdir()
-td <- file.path(dr, "rotor")
-dir.create(td, recursive = TRUE)
+td <- file.path(tempdir(), "rotor")
 tf <- file.path(td, "iris.rds")
 
 teardown({
   unlink(td, recursive = TRUE)
-  if (!length(list.files(dr))) unlink(dr, recursive = TRUE)
 })
 
 
 
 test_that("rotate_rds works as expected", {
-  on.exit(unlink(c(tf, list_backups(tf))))
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
 
   rotate_rds(iris, tf)
   rotate_rds(iris, tf)
@@ -25,8 +23,10 @@ test_that("rotate_rds works as expected", {
 
 
 test_that("rotate_rds_date works as expected", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   now <- Sys.Date()
-  on.exit(unlink(c(tf, list_backups(tf))))
 
   rotate_rds_date(iris, tf, now = now)
   rotate_rds_date(iris, tf, now = now)
@@ -40,8 +40,10 @@ test_that("rotate_rds_date works as expected", {
 
 
 test_that("rotate_rds_time works as expected", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   now <- Sys.time()
-  on.exit(unlink(c(tf, list_backups(tf))))
 
   rotate_rds_time(iris, tf, now = now)
   rotate_rds_time(iris, tf, now = now)
@@ -55,15 +57,13 @@ test_that("rotate_rds_time works as expected", {
 
 
 test_that("rotate_rds on_change_only", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   v <- LETTERS
   df <- iris
   dt <- data.table::as.data.table(iris)
-
-  td <- file.path(tempdir(), "rotate_rds_test_temp")
-  dir.create(td)
   tf <- file.path(td, "testfile.rds")
-
-  on.exit(unlink(td, recursive = TRUE))
 
   expect_identical(expect_silent(rotate_rds(v, tf, on_change_only = TRUE)), tf)
   expect_identical(expect_message(rotate_rds(v, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage"), tf)
@@ -80,16 +80,14 @@ test_that("rotate_rds on_change_only", {
 
 
 
-test_that("rotate_rds on_change_only", {
+test_that("rotate_rds_time on_change_only", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   v <- LETTERS
   df <- iris
   dt <- data.table::as.data.table(iris)
-
-  td <- file.path(tempdir(), "rotate_rds_test_temp")
-  dir.create(td)
   tf <- file.path(td, "testfile.rds")
-
-  on.exit(unlink(td, recursive = TRUE))
 
   expect_identical(expect_silent(rotate_rds_time(v, tf, on_change_only = TRUE)), tf)
   expect_identical(expect_message(rotate_rds_time(v, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage"), tf)
@@ -106,16 +104,14 @@ test_that("rotate_rds on_change_only", {
 
 
 
-test_that("rotate_rds on_change_only", {
+test_that("rotate_rds_date on_change_only", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
   v <- LETTERS
   df <- iris
   dt <- data.table::as.data.table(iris)
-
-  td <- file.path(tempdir(), "rotate_rds_test_temp")
-  dir.create(td)
   tf <- file.path(td, "testfile.rds")
-
-  on.exit(unlink(td, recursive = TRUE))
 
   expect_identical(expect_silent(rotate_rds_date(v, tf, on_change_only = TRUE)), tf)
   expect_identical(expect_message(rotate_rds_date(v, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage"), tf)

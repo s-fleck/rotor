@@ -137,9 +137,10 @@ rotate_rds_internal <- function(
   if (file.exists(file)){
     if (on_change_only){
       comp <- readRDS(file)
+
       if (
         identical(object, comp) ||
-        (inherits(object, "data.table") && assert_namespace("data.table") && isTRUE(all.equal(object, comp)))
+        (inherits(object, "data.table") && inherits(comp, "data.table") && assert_namespace("data.table") && isTRUE(all.equal(object, comp)))
       ){
         message(ObjectHasNotChangedMessage("not rotating: object has not changed"))
         return(invisible(file))

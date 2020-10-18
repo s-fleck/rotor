@@ -935,7 +935,7 @@ select_prune_files_by_age <- function(
       limit <- dint::first_of_isoweek(dint::as_date_yw(now) - max_age$value + 1L)
 
     } else if (identical(max_age[["unit"]], "day")){
-      limit <- as.Date(now) - max_age$value + 1L
+      limit <- as.Date(as.character(now)) - max_age$value + 1L
     }
 
     to_remove <- path[as.Date(as.character(timestamp)) < limit]

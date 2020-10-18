@@ -70,11 +70,15 @@ test_that("pruning works by number of files works", {
   # be added to the cache once
   cache <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate())
   k1 <- cache$push(iris)
-  Sys.sleep(0.1)
+  Sys.sleep(1)
   k2 <- cache$push(letters)
-  Sys.sleep(0.1)
+  Sys.sleep(1)
   k3 <- cache$push(cars)
   expect_identical(cache$n, 3L)
+
+  expect_identical(cache$files$key[[1]], k1)
+  expect_identical(cache$files$key[[2]], k2)
+  expect_identical(cache$files$key[[3]], k3)
 
   cache$prune(max_files = 2)
   cache$files
@@ -154,7 +158,6 @@ test_that("pruning by age works", {
   td <- file.path(tempdir(), "cache-test")
   on.exit(unlink(td, recursive = TRUE))
 
-
   # create mock class that always
   MockCache <-  R6::R6Class(
     inherit = Cache,
@@ -191,8 +194,8 @@ test_that("pruning by age works", {
     )
   )
 
-  cache <- MockCache$new(td, hashfun = function(x) uuid::UUIDgenerate())
-  on.exit(cache$purge, add = TRUE)
+  cache <- MockCache$new(dir = td, hashfun = function(x) uuid::UUIDgenerate())
+  on.exit(cache$purge(), add = TRUE)
   cache$push(iris)
   Sys.sleep(0.1)
   cache$push(iris)
@@ -203,6 +206,8 @@ test_that("pruning by age works", {
   Sys.sleep(0.1)
   cache$push(iris)
   Sys.sleep(0.1)
+
+  expect_identical(nrow(cache$files), 5L)
 
   cache$mock_timestamp <- as.POSIXct(c(
     "2020-01-01",
@@ -211,17 +216,35 @@ test_that("pruning by age works", {
     "2020-01-04",
     "2020-01-05"
   ))
-  keep <- cache$files$key[2:5]
+  keep <- cache$files[cache$files$mtime >= as.POSIXct("2020-01-02"), ]
+  expect_identical(
+    nrow(keep),
+    4L,
+    label = paste0(nrow(keep), " (timestamps:", comma(keep$mtime), ")")
+  )
   cache$prune(max_age = "2020-01-02")
-  expect_setequal(cache$files$key, keep)
-
+  expect_setequal(cache$files$key, keep$key)
   cache$mock_timestamp <- as.POSIXct(c(
-    Sys.Date() - 0:4
+    "2020-01-02",
+    "2020-01-03",
+    "2020-01-04",
+    "2020-01-05"
   ))
 
-  keep <- cache$files$key[3:4]
+  keep <- cache$files[cache$files$mtime >= as.POSIXct("2020-01-04"), ]
+  expect_identical(
+    nrow(keep),
+    2L,
+    label = paste0(nrow(keep), " (timestamps:", comma(keep$mtime), ")")
+  )
   cache$prune(max_age = "2 days", now = max(cache$files$mtime))
-  expect_setequal(cache$files$key, keep)
+  expect_true(
+    setequal(cache$files$key, keep$key),
+    label = paste0(
+      "[", paste(cache$files$mtime, cache$files$key, collapse = ", ", sep = ": "), "] == [",
+      paste(keep$mtime, keep$key, collapse = " -- ", sep = ": "), "]"
+    )
+  )
 
   expect_error(
     cache$prune(max_age = "2 foos", now = max(cache$files$mtime)),
@@ -248,4 +271,5 @@ test_that("$destroy works as expected", {
   expect_false(dir.exists(cache$dir))
   expect_error(cache$push(iris), class = "DirDoesNotExistError")
 })
+
 
