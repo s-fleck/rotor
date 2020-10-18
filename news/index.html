@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.1</span>
       </span>
     </div>
 
@@ -114,6 +114,16 @@
       <small>Source: <a href='https://github.com/s-fleck/rotor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rotor-0-3-1" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.1">
+<a href="#rotor-0-3-1" class="anchor"></a>rotor 0.3.1<small> Unreleased </small>
+</h1>
+<ul>
+<li>fixes time zone related issue in <code>Cache$prune()</code>.</li>
+<li>fixes bug in <code><a href="../reference/rotate_rds.html">rotate_rds(on_change_only = TRUE)</a></code> that occurs if a version of data.table &lt; 1.3.0 is installed and either the source or target object are a <code>data.table</code> (but not both)</li>
+<li>more robust clean up of temporary files in most unit tests</li>
+</ul>
+</div>
     <div id="rotor-0-3-0" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.0">
 <a href="#rotor-0-3-0" class="anchor"></a>rotor 0.3.0<small> 2020-10-16 </small>
