@@ -188,20 +188,20 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 <span class='fu'><a href='rotate.html'>backup</a></span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
 
 <span class='fu'>backup_info</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt;                                    path            name sfx ext size isdir mode
-#&gt; 1 /tmp/RtmppFsW62/test222f2593eb0.1.rds test222f2593eb0   1 rds  289 FALSE  666
-#&gt; 2 /tmp/RtmppFsW62/test222f2593eb0.2.rds test222f2593eb0   2 rds  289 FALSE  666
-#&gt;                 mtime               ctime               atime  uid  gid  uname
-#&gt; 1 2020-10-18 10:42:34 2020-10-18 10:42:34 2020-10-18 10:42:34 2000 2000 travis
-#&gt; 2 2020-10-18 10:42:34 2020-10-18 10:42:34 2020-10-18 10:42:34 2000 2000 travis
-#&gt;   grname index
-#&gt; 1 travis     1
-#&gt; 2 travis     2</div><div class='input'><span class='fu'>list_backups</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmppFsW62/test222f2593eb0.1.rds"
-#&gt; [2] "/tmp/RtmppFsW62/test222f2593eb0.2.rds"</div><div class='input'><span class='fu'>n_backups</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
+</div><div class='output co'>#&gt;                                     path             name sfx ext size isdir
+#&gt; 1 /tmp/RtmpofAXld/test2236750ac018.1.rds test2236750ac018   1 rds  289 FALSE
+#&gt; 2 /tmp/RtmpofAXld/test2236750ac018.2.rds test2236750ac018   2 rds  289 FALSE
+#&gt;   mode               mtime               ctime               atime  uid  gid
+#&gt; 1  666 2020-10-18 13:05:24 2020-10-18 13:05:24 2020-10-18 13:05:24 2000 2000
+#&gt; 2  666 2020-10-18 13:05:24 2020-10-18 13:05:24 2020-10-18 13:05:24 2000 2000
+#&gt;    uname grname index
+#&gt; 1 travis travis     1
+#&gt; 2 travis travis     2</div><div class='input'><span class='fu'>list_backups</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpofAXld/test2236750ac018.1.rds"
+#&gt; [2] "/tmp/RtmpofAXld/test2236750ac018.2.rds"</div><div class='input'><span class='fu'>n_backups</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmppFsW62/test222f2593eb0.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmppFsW62/test222f2593eb0.2.rds"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpofAXld/test2236750ac018.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpofAXld/test2236750ac018.2.rds"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='rotate.html'>prune_backups</a></span><span class='op'>(</span><span class='va'>tf</span>, <span class='fl'>0</span><span class='op'>)</span>
 <span class='fu'>n_backups</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
