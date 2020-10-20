@@ -10,21 +10,12 @@
 
 0 errors | 0 warnings | 0 notes
 
-* fixes time zone related issue in `Cache$prune()` that causes macOS tests to fail
-* more robust cleanup of temporary files between some tests
-* resubmission that improves one test where 
-  `https://cran.r-project.org/web/checks/check_results_rotor.html` shows an
-  error that I could not reproduce on any machine available on rhub. 
-  Hopefully the test succeedes now, but if not it will give me more useful 
-  debug information for another resubmission.
+Sorry for the many resubmissions. This package currently has an issue that
+only to occur on macOS. It does not occur on the same macOS version available
+on Rhub. 
 
-
-Notes:
-
-There was a timezone related issue that only occured on macos. I fixed it and
-was able to test it on macOS 10.13.6 High Sierra with R-release (but not devel)
-on Rhub.
-
-I could not reproduce the other errors; however, it looks as if they were caused
-by improperly cleaned-up temporary files between failing tests. I made the
-cleanup code a bit more robust and hope the problem is fixed now.
+My current theory is that the error is caused by the accuracy of the
+'mtime' filestamp, which is linked to the file system the machine uses. 
+I implemented a workaround under that assumption, but I cannot be 100% sure 
+that this fixes that error. If the error still persists... could you please
+inform me which file system you use on r-release-macos-x86_64?

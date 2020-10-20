@@ -1,6 +1,21 @@
 context("Cache")
 
 
+# generate lexically sortable ids. For equal timestamp, Cache$files is sorted
+# by id, so that the tests do not fail on file systems with low-accuracy
+# timestamps
+
+
+.id_cache <- new.env()
+assign("id", 0L, .id_cache)
+ascending_id <- function(){
+  x <- get("id", .id_cache)
+  x <- as.character(as.integer(x) + 1L)
+  assign("id", x, .id_cache)
+  x
+}
+
+
 test_that("Cache works as expected", {
   td <- file.path(tempdir(), "cache-test")
   on.exit(unlink(td, recursive = TRUE))
@@ -47,14 +62,14 @@ test_that("setting hash functions work", {
 
 
   # To override this behaviour use a generate for unique ids, such as
-  cache_uid <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate())
+  cache_uid <- Cache$new(td, hashfun = function(x) ascending_id())
   cache_uid$push(iris)
   cache_uid$push(iris)
   expect_identical(cache_hash$n, 2L)
   cache_hash$purge()
 
   # ensure hashfun allways returns a scalar
-  cache_err <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate(n = 2))
+  cache_err <- Cache$new(td, hashfun = function(x) c(ascending_id(),  ascending_id()))
   expect_error(cache_err$push(iris), class = "ValueError")
 })
 
@@ -66,13 +81,9 @@ test_that("pruning works by number of files works", {
   td <- file.path(tempdir(), "cache-test")
   on.exit(unlink(td, recursive = TRUE))
 
-  # When using a real hash function as hashfun, identical objects will only
-  # be added to the cache once
-  cache <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate())
+  cache <- Cache$new(td, hashfun = function(x) ascending_id())
   k1 <- cache$push(iris)
-  Sys.sleep(1)
   k2 <- cache$push(letters)
-  Sys.sleep(1)
   k3 <- cache$push(cars)
   expect_identical(cache$n, 3L)
 
@@ -81,7 +92,6 @@ test_that("pruning works by number of files works", {
   expect_identical(cache$files$key[[3]], k3)
 
   cache$prune(max_files = 2)
-  cache$files
   expect_identical(cache$read(cache$files$key[[1]]), letters)
   expect_identical(cache$read(cache$files$key[[2]]), cars)
   cache$purge()
@@ -96,7 +106,7 @@ test_that("pruning by size works", {
 
   # When using a real hash function as hashfun, identical objects will only
   # be added to the cache once
-  cache <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate())
+  cache <- Cache$new(td, hashfun = function(x) ascending_id())
   cache$push(iris)
   Sys.sleep(0.1)
   cache$push(iris)
@@ -128,7 +138,7 @@ test_that("Inf max_* do not prunes", {
 
   # When using a real hash function as hashfun, identical objects will only
   # be added to the cache once
-  cache <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate())
+  cache <- Cache$new(td, hashfun = function(x) ascending_id())
   cache$push(iris)
   Sys.sleep(0.1)
   cache$push(iris)
@@ -194,7 +204,7 @@ test_that("pruning by age works", {
     )
   )
 
-  cache <- MockCache$new(dir = td, hashfun = function(x) uuid::UUIDgenerate())
+  cache <- MockCache$new(dir = td, hashfun = function(x) ascending_id())
   on.exit(cache$purge(), add = TRUE)
   cache$push(iris)
   Sys.sleep(0.1)
