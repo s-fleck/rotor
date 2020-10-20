@@ -333,7 +333,8 @@ Cache <- R6::R6Class(
       )
       row.names(res) <- NULL
 
-      res[order(res$mtime), ]
+      assert(!is.null(res$mtime))
+      res[order(res$mtime, res$key), ]
     },
 
     size = function(){

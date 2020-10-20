@@ -70,9 +70,7 @@ test_that("pruning works by number of files works", {
   # be added to the cache once
   cache <- Cache$new(td, hashfun = function(x) uuid::UUIDgenerate())
   k1 <- cache$push(iris)
-  Sys.sleep(1)
   k2 <- cache$push(letters)
-  Sys.sleep(1)
   k3 <- cache$push(cars)
   expect_identical(cache$n, 3L)
 
@@ -81,7 +79,6 @@ test_that("pruning works by number of files works", {
   expect_identical(cache$files$key[[3]], k3)
 
   cache$prune(max_files = 2)
-  cache$files
   expect_identical(cache$read(cache$files$key[[1]]), letters)
   expect_identical(cache$read(cache$files$key[[2]]), cars)
   cache$purge()
