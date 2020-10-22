@@ -108,7 +108,9 @@ test_that("pruning works by number of files sorts by key if timestamp are identi
   k3 <- cache$push(cars)
   expect_identical(cache$n, 3L)
 
-  Sys.setFileTime(cache$files$path, "1999-01-01 00:00:00")
+  for (p in cache$files$path){  # loop necessary for compat with R < 3.6.0
+    Sys.setFileTime(p, "1999-01-01 00:00:00")
+  }
 
   expect_identical(cache$files$key[[1]], k1)
   expect_identical(cache$files$key[[2]], k2)
