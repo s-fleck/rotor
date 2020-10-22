@@ -4,8 +4,6 @@ context("Cache")
 # generate lexically sortable ids. For equal timestamp, Cache$files is sorted
 # by id, so that the tests do not fail on file systems with low-accuracy
 # timestamps
-
-
 .id_cache <- new.env()
 assign("id", 0L, .id_cache)
 ascending_id <- function(){

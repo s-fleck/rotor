@@ -301,6 +301,13 @@ Cache <- R6::R6Class(
     #'   a storage key must be supplied manually in `cache$push()`. If a new
     #'   object is added with the same key as an existing object, the existing
     #'   object will be overwritten without warning.
+    #'
+    #'   *Note:*
+    #'   If hashfun is something that generates a unique ID instead of a hash,
+    #'   it is recommended to use a lexically sortable unique ID (such as ulid).
+    #'   This ensures that `$prune()` and co will delete objects in order of
+    #'   their creation at sub-second accuracy. This is only an issue on
+    #'   file-systems with low precission timestamp such as ext3 or FAT.
     hashfun = function(fun){
       if (missing(fun)){
         res <- get(".hashfun", envir = private)
