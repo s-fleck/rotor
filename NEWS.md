@@ -1,4 +1,4 @@
-# rotor 0.3.1
+# rotor 0.3.2
 
 * fixes time zone related issue in `Cache$prune()`.
 * fixes bug in `rotate_rds(on_change_only = TRUE)` that occurs if a version
