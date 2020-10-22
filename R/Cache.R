@@ -123,6 +123,19 @@ Cache <- R6::R6Class(
     },
 
     #' @description Prune the cache
+    #'
+    #' Delete cached objects that match certain criteria. `max_files` and
+    #' `max_size` deletes the oldest cached objects first; however, this is
+    #' dependent on accuracy of the file modification timestamps on your system.
+    #' For example, ext3 only supports second-accuracy, and some windows
+    #' version only support timestamps at a resolution of two seconds.
+    #'
+    #' If two files have the same timestamp, they are deleted in the lexical
+    #' sort order of their key. This means that by using a function that
+    #' generates lexically sortable keys as `hashfun` (such as
+    #' [ulid::generate()]) you can enforce the correct deletion order. There
+    #' is no such workaround if you use a real hash function.
+    #'
     #' @param max_files,max_size,max_age see section Active Bindings.
     #' @param now a `POSIXct` datetime scalar. The current time (for max_age)
     prune = function(
@@ -301,13 +314,6 @@ Cache <- R6::R6Class(
     #'   a storage key must be supplied manually in `cache$push()`. If a new
     #'   object is added with the same key as an existing object, the existing
     #'   object will be overwritten without warning.
-    #'
-    #'   *Note:*
-    #'   If hashfun is something that generates a unique ID instead of a hash,
-    #'   it is recommended to use a lexically sortable unique ID (such as ulid).
-    #'   This ensures that `$prune()` and co will delete objects in order of
-    #'   their creation at sub-second accuracy. This is only an issue on
-    #'   file-systems with low precission timestamp such as ext3 or FAT.
     hashfun = function(fun){
       if (missing(fun)){
         res <- get(".hashfun", envir = private)

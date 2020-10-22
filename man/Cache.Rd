@@ -266,6 +266,18 @@ Read and remove a single file from the cache
 \if{latex}{\out{\hypertarget{method-prune}{}}}
 \subsection{Method \code{prune()}}{
 Prune the cache
+
+Delete cached objects that match certain criteria. \code{max_files} and
+\code{max_size} deletes the oldest cached objects first; however, this is
+dependent on accuracy of the file modification timestamps on your system.
+For example, ext3 only supports second-accuracy, and some windows
+version only support timestamps at a resolution of two seconds.
+
+If two files have the same timestamp, they are deleted in the lexical
+sort order of their key. This means that by using a function that
+generates lexically sortable keys as \code{hashfun} (such as
+\code{\link[ulid:ULIDgenerate]{ulid::generate()}}) you can enforce the correct deletion order. There
+is no such workaround if you use a real hash function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$prune(
   max_files = self$max_files,
