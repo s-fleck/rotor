@@ -1,4 +1,4 @@
-# rotor 0.3.2
+# rotor 0.3.3
 
 * Hotfix for some tests related to the `Cache` R6 class that fail on systems
   with low-precision file system timestamps (such as ext3 and old Windows
