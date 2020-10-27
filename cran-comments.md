@@ -10,12 +10,9 @@
 
 0 errors | 0 warnings | 0 notes
 
-Sorry for the many resubmissions. This package currently has an issue that
-only to occur on macOS. It does not occur on the same macOS version available
-on Rhub. 
+Another - hopefully final attempt - to fix a hard to debug issue where some
+tests can fail on systems with low-precission filesystem-timestamps 
+(such as ext3 and old Windows filesystems).
 
-My current theory is that the error is caused by the accuracy of the
-'mtime' filestamp, which is linked to the file system the machine uses. 
-I implemented a workaround under that assumption, but I cannot be 100% sure 
-that this fixes that error. If the error still persists... could you please
-inform me which file system you use on r-release-macos-x86_64?
+Added a test that mocks low-precision filesystem-timestamps to be on the safe
+side.
