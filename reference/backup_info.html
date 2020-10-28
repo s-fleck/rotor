@@ -72,7 +72,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.3</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4</span>
       </span>
     </div>
 
@@ -189,19 +189,19 @@ a backup and then remove all backups of <code>myfile</code> before <code>2019-01
 
 <span class='fu'>backup_info</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
 </div><div class='output co'>#&gt;                                     path             name sfx ext size isdir
-#&gt; 1 /tmp/RtmpMseL9k/test22ce547aca6d.1.rds test22ce547aca6d   1 rds  289 FALSE
-#&gt; 2 /tmp/RtmpMseL9k/test22ce547aca6d.2.rds test22ce547aca6d   2 rds  289 FALSE
+#&gt; 1 /tmp/RtmpEnJTBR/test22e2367f6f03.1.rds test22e2367f6f03   1 rds  289 FALSE
+#&gt; 2 /tmp/RtmpEnJTBR/test22e2367f6f03.2.rds test22e2367f6f03   2 rds  289 FALSE
 #&gt;   mode               mtime               ctime               atime  uid  gid
-#&gt; 1  666 2020-10-27 07:04:41 2020-10-27 07:04:41 2020-10-27 07:04:41 2000 2000
-#&gt; 2  666 2020-10-27 07:04:41 2020-10-27 07:04:41 2020-10-27 07:04:41 2000 2000
+#&gt; 1  666 2020-10-28 12:07:56 2020-10-28 12:07:56 2020-10-28 12:07:56 2000 2000
+#&gt; 2  666 2020-10-28 12:07:56 2020-10-28 12:07:56 2020-10-28 12:07:56 2000 2000
 #&gt;    uname grname index
 #&gt; 1 travis travis     1
 #&gt; 2 travis travis     2</div><div class='input'><span class='fu'>list_backups</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpMseL9k/test22ce547aca6d.1.rds"
-#&gt; [2] "/tmp/RtmpMseL9k/test22ce547aca6d.2.rds"</div><div class='input'><span class='fu'>n_backups</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpEnJTBR/test22e2367f6f03.1.rds"
+#&gt; [2] "/tmp/RtmpEnJTBR/test22e2367f6f03.2.rds"</div><div class='input'><span class='fu'>n_backups</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] 2</div><div class='input'><span class='fu'>newest_backup</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpMseL9k/test22ce547aca6d.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/RtmpMseL9k/test22ce547aca6d.2.rds"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpEnJTBR/test22e2367f6f03.1.rds"</div><div class='input'><span class='fu'>oldest_backup</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "/tmp/RtmpEnJTBR/test22e2367f6f03.2.rds"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='rotate.html'>prune_backups</a></span><span class='op'>(</span><span class='va'>tf</span>, <span class='fl'>0</span><span class='op'>)</span>
 <span class='fu'>n_backups</span><span class='op'>(</span><span class='va'>tf</span><span class='op'>)</span>
