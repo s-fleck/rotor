@@ -1,3 +1,7 @@
+# rotor 0.3.4
+
+* Further fixes for the issue mentioned in 0.3.3
+
 # rotor 0.3.3
 
 * Hotfix for some tests related to the `Cache` R6 class that fail on systems

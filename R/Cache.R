@@ -162,8 +162,7 @@ Cache <- R6::R6Class(
 
       if (!is.null(max_size) && !is.infinite(max_size)){
         max_size  <- parse_size(max_size)
-        files <- files[order(files$mtime, decreasing = TRUE), ]
-        files$cumsize <- cumsum(files$size)
+        files$cumsize <- rev(cumsum(rev(files$size)))
         rem$size <- files[files$cumsize > max_size, ]
       }
 

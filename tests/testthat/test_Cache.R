@@ -126,25 +126,21 @@ test_that("$files is ordered by key if timestamps are identical", {
 
 
 
-test_that("pruning by size works", {
+test_that("pruning by size works, even if timestamps are identical", {
   td <- file.path(tempdir(), "cache-test")
   on.exit(unlink(td, recursive = TRUE))
 
   # When using a real hash function as hashfun, identical objects will only
   # be added to the cache once
   cache <- Cache$new(td, hashfun = function(x) ascending_id())
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
+  for (i in 1:5)  cache$push(iris)
   cache$push(cars)
   expect_identical(cache$n, 6L)
+
+
+  for (p in cache$files$path){  # loop necessary for compat with R < 3.6.0
+    Sys.setFileTime(p, "1999-01-01 00:00:00")
+  }
 
   expect_true(cache$size > 2048)
   cache$prune(max_size = "2kb")
@@ -165,16 +161,7 @@ test_that("Inf max_* do not prunes", {
   # When using a real hash function as hashfun, identical objects will only
   # be added to the cache once
   cache <- Cache$new(td, hashfun = function(x) ascending_id())
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
+  for (i in 1:5)  cache$push(iris)
   cache$push(cars)
   expect_identical(cache$n, 6L)
 
@@ -232,16 +219,7 @@ test_that("pruning by age works", {
 
   cache <- MockCache$new(dir = td, hashfun = function(x) ascending_id())
   on.exit(cache$purge(), add = TRUE)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
-  cache$push(iris)
-  Sys.sleep(0.1)
+  for (i in 1:5)  cache$push(iris)
 
   expect_identical(nrow(cache$files), 5L)
 

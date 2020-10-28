@@ -10,9 +10,5 @@
 
 0 errors | 0 warnings | 0 notes
 
-Another - hopefully final attempt - to fix a hard to debug issue where some
-tests can fail on systems with low-precission filesystem-timestamps 
-(such as ext3 and old Windows filesystems).
-
-Added a test that mocks low-precision filesystem-timestamps to be on the safe
-side.
+More fixes for file-system timestamp related bugs that I could not reproduce on
+my test systems. Sorry again for all the trouble.
