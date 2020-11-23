@@ -10,12 +10,5 @@
 
 0 errors | 0 warnings | 0 notes
 
-Sorry for the many resubmissions. This package currently has an issue that
-only to occur on macOS. It does not occur on the same macOS version available
-on Rhub. 
-
-My current theory is that the error is caused by the accuracy of the
-'mtime' filestamp, which is linked to the file system the machine uses. 
-I implemented a workaround under that assumption, but I cannot be 100% sure 
-that this fixes that error. If the error still persists... could you please
-inform me which file system you use on r-release-macos-x86_64?
+More fixes for file-system timestamp related bugs that I could not reproduce on
+my test systems. Sorry again for all the trouble.

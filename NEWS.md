@@ -3,6 +3,11 @@
 * Backups now retain their original timestamp (created, last modified) where
   possible (even when zipped)
   
+# rotor 0.3.4
+
+* Hotfix for some tests related to the `Cache` R6 class that fail on systems
+  with low-precision file system timestamps (such as ext3 and old Windows
+  file systems)
 
 # rotor 0.3.2
 

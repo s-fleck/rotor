@@ -458,6 +458,7 @@ test_that("BackupQueueIndex$push() can push to different directory", {
 
 
 test_that("BackupQueueIndex dry run doesnt modify file system", {
+  try({unlink(td, recursive = TRUE)})
   dir.create(td, recursive = TRUE)
   on.exit(unlink(td, recursive = TRUE))
 
