@@ -81,5 +81,6 @@ copy_or_compress <- function(
       stop("should not be possible to arrive here")
     }
 
+  Sys.setFileTime(outname, file.mtime(file))
   outname
 }

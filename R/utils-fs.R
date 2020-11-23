@@ -29,7 +29,7 @@ file_copy <- function(
     return(DRY_RUN$create(to))
   }
 
-  file.copy(from, to, ...)
+  file.copy(from, to, ..., copy.date = TRUE)
 }
 
 

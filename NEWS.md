@@ -1,3 +1,9 @@
+# rotor (dev)
+
+* Backups now retain their original timestamp (created, last modified) where
+  possible (even when zipped)
+  
+
 # rotor 0.3.2
 
 * fixes time zone related issue in `Cache$prune()`.
