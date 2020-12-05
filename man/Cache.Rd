@@ -276,7 +276,7 @@ version only support timestamps at a resolution of two seconds.
 If two files have the same timestamp, they are deleted in the lexical
 sort order of their key. This means that by using a function that
 generates lexically sortable keys as \code{hashfun} (such as
-\code{\link[ulid:generate]{ulid::generate()}}) you can enforce the correct deletion order. There
+\code{\link[ulid:ULIDgenerate]{ulid::generate()}}) you can enforce the correct deletion order. There
 is no such workaround if you use a real hash function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$prune(

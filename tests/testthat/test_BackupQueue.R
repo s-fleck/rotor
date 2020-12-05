@@ -562,13 +562,31 @@ test_that("BackupQueueIndex: $prune_identical works", {
 
 
 
+test_that("BackupQueueIndex: rotations trigger as expected", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test")
+  saveRDS(iris, tf)
+  on.exit(unlink(tf), add = TRUE)
+  bq <- BackupQueueIndex$new(tf)
+
+  # size threshold is not met
+  expect_false(bq$should_rotate(size = file.size(tf) + 1))
+
+  # size threshold is met
+  expect_true(bq$should_rotate(size = file.size(tf) / 2))
+})
+
+
+
 # BackupQueueDateTime -----------------------------------------------------
 context("BackupQueueDateTime")
 
 
 
 
-test_that("BackupQueueDatetime: backups_cache", {
+test_that("BackupQueueDatetime: Caching the last rotation date works (cache_backups = TRUE)", {
   dir.create(td, recursive = TRUE)
   on.exit(unlink(td, recursive = TRUE))
 
@@ -943,6 +961,31 @@ test_that("BackupQueueDateTime: $should_rotate(verbose = TRUE) displays helpful 
 })
 
 
+
+
+test_that("BackupQueueDateTime: rotations trigger as expected", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test")
+  saveRDS(iris, tf)
+  on.exit(unlink(tf), add = TRUE)
+  bq <- BackupQueueDateTime$new(tf)
+
+  fake_time <- as.POSIXct("2020-01-01 01:00:00")
+
+  # neither age nor size threshold is met
+  expect_false(bq$should_rotate(size = file.size(tf) + 1, age = Inf))
+
+  # size threshold is met but not age
+  expect_false(bq$should_rotate(size = file.size(tf) / 2, age = "2 days", now = as.POSIXct("2020-01-01 02:00:00"), last_rotation = fake_time))
+
+  # age threshold is met but not size
+  expect_false(bq$should_rotate(size = file.size(tf) + 1, age = "2 days", now = as.POSIXct("2020-01-04 02:00:00"), last_rotation = fake_time))
+
+  # both criteria are met
+  expect_true(bq$should_rotate(size = file.size(tf) / 2, age = "2 days", now = as.POSIXct("2020-01-06 02:00:00"), last_rotation = fake_time))
+})
 
 
 # BackupQueueDate ---------------------------------------------------------
@@ -1340,6 +1383,31 @@ test_that("BackupQueueDate: $should_rotate(verbose = TRUE) displays helpful mess
 })
 
 
+
+
+test_that("BackupQueueDate: rotations trigger as expected", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test")
+  saveRDS(iris, tf)
+  on.exit(unlink(tf), add = TRUE)
+  bq <- BackupQueueDate$new(tf)
+
+  fake_time <- as.POSIXct("2020-01-01 01:00:00")
+
+  # neither age nor size threshold is met
+  expect_false(bq$should_rotate(size = file.size(tf) + 1, age = Inf))
+
+  # size threshold is met but not age
+  expect_false(bq$should_rotate(size = file.size(tf) / 2, age = "2 days", now = as.POSIXct("2020-01-01 02:00:00"), last_rotation = fake_time))
+
+  # age threshold is met but not size
+  expect_false(bq$should_rotate(size = file.size(tf) + 1, age = "2 days", now = as.POSIXct("2020-01-04 02:00:00"), last_rotation = fake_time))
+
+  # both criteria are met
+  expect_true(bq$should_rotate(size = file.size(tf) / 2, age = "2 days", now = as.POSIXct("2020-01-06 02:00:00"), last_rotation = fake_time))
+})
 
 
 # cleanup -----------------------------------------------------------------

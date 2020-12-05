@@ -114,7 +114,10 @@ can pass \code{character} vectors that contain a file size suffix like \verb{1k}
 (kilobytes), \verb{3M} (megabytes), \verb{4G} (gigabytes), \verb{5T} (terabytes). Instead
 of these short forms you can also be explicit and use the IEC suffixes
 \code{KiB}, \code{MiB}, \code{GiB}, \code{TiB}. In Both cases \code{1} kilobyte is \code{1024} bytes, 1
-\code{megabyte} is \code{1024} kilobytes, etc... .}
+\code{megabyte} is \code{1024} kilobytes, etc... .
+
+(if \code{age} \emph{and} \code{size} are provided, both criteria must be \code{TRUE} to
+trigger rotation)}
 
 \item{max_backups}{maximum number of backups to keep
 \itemize{
@@ -159,7 +162,10 @@ are printed}
 \item a \code{Date} or a \code{character} scalar representing a Date for
 a fixed point in time after which to backup/rotate. See \code{format} for
 which Date/Datetime formats are supported by rotor.
-}}
+}
+
+(if \code{age} \emph{and} \code{size} are provided, both criteria must be \code{TRUE} to
+trigger rotation)}
 
 \item{format}{a scalar \code{character} that can be a subset of of valid
 \code{strftime()} formatting strings. The default setting is

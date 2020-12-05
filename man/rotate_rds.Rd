@@ -82,7 +82,10 @@ can pass \code{character} vectors that contain a file size suffix like \verb{1k}
 (kilobytes), \verb{3M} (megabytes), \verb{4G} (gigabytes), \verb{5T} (terabytes). Instead
 of these short forms you can also be explicit and use the IEC suffixes
 \code{KiB}, \code{MiB}, \code{GiB}, \code{TiB}. In Both cases \code{1} kilobyte is \code{1024} bytes, 1
-\code{megabyte} is \code{1024} kilobytes, etc... .}
+\code{megabyte} is \code{1024} kilobytes, etc... .
+
+(if \code{age} \emph{and} \code{size} are provided, both criteria must be \code{TRUE} to
+trigger rotation)}
     \item{\code{dir}}{\code{character} scalar. The directory in which the backups
 of \code{file} are stored (defaults to \code{dirname(file)})}
     \item{\code{compression}}{Whether or not backups should be compressed
@@ -138,7 +141,10 @@ from the object saved in \code{file}.}
 \item a \code{Date} or a \code{character} scalar representing a Date for
 a fixed point in time after which to backup/rotate. See \code{format} for
 which Date/Datetime formats are supported by rotor.
-}}
+}
+
+(if \code{age} \emph{and} \code{size} are provided, both criteria must be \code{TRUE} to
+trigger rotation)}
 }
 \value{
 the path to \code{file} (invisibly)

@@ -13,6 +13,8 @@
 #'     a fixed point in time after which to backup/rotate. See `format` for
 #'     which Date/Datetime formats are supported by rotor.
 #'
+#'   (if `age` *and* `size` are provided, both criteria must be `TRUE` to
+#'   trigger rotation)
 #' @param format a scalar `character` that can be a subset of of valid
 #'   `strftime()` formatting strings. The default setting is
 #'   `"%Y-%m-%d--%H-%M-%S"`.
@@ -50,6 +52,9 @@
 #'   of these short forms you can also be explicit and use the IEC suffixes
 #'   `KiB`, `MiB`, `GiB`, `TiB`. In Both cases `1` kilobyte is `1024` bytes, 1
 #'   `megabyte` is `1024` kilobytes, etc... .
+#'
+#'   (if `age` *and* `size` are provided, both criteria must be `TRUE` to
+#'   trigger rotation)
 #'
 #' @param dir `character` scalar. The directory in which the backups
 #'   of `file` are stored (defaults to `dirname(file)`)
