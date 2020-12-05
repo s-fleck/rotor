@@ -51,10 +51,15 @@ BackupQueue <- R6::R6Class(
         "recommended, because it is not defined which backups will be",
         "deleted. Use BackupQueueIndex or BackupQueueDate instead."
       )}
-      to_keep   <- self$files$path[seq_len(max_backups)]
-      to_remove <- setdiff(self$files$path, to_keep)
-      file_remove(to_remove)
 
+      if (self$n <= max_backups){
+        to_remove <- character()
+      } else {
+        to_keep   <- self$files$path[seq_len(max_backups)]
+        to_remove <- setdiff(self$files$path, to_keep)
+      }
+
+      file_remove(to_remove)
       self
     },
 
@@ -314,10 +319,12 @@ BackupQueueIndex <- R6::R6Class(
       if (!should_prune(self, max_backups))
         return(self)
 
-      to_keep   <- self$files$path[seq_len(max_backups)]
-      to_remove <- setdiff(self$files$path, to_keep)
+      if (self$n > max_backups){
+        to_keep   <- self$files$path[seq_len(max_backups)]
+        to_remove <- setdiff(self$files$path, to_keep)
+        file_remove(to_remove)
+      }
 
-      file_remove(to_remove)
       self$pad_index()
     },
 
@@ -551,14 +558,19 @@ BackupQueueDateTime <- R6::R6Class(
       if (!should_prune(self, max_backups)){
         return(self)
       } else {
-        # to be save
+        # to be safe
         self$update_backups_cache()
       }
 
       if (is_integerish(max_backups) && is.finite(max_backups)){
         # prune based on number of backups
         backups   <- rev(sort(self$files$path))
-        to_remove <- backups[(max_backups + 1):length(backups)]
+
+        if (length(backups) <= max_backups){
+          to_remove <- character()
+        } else {
+          to_remove <- backups[(max_backups + 1):length(backups)]
+        }
 
       } else {
         to_remove <- select_prune_files_by_age(

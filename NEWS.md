@@ -2,6 +2,8 @@
 
 * Backups now retain their original timestamp (created, last modified) where
   possible (even when zipped)
+* fixed broken behaviour when pruning with max_backups where max_backups is
+  the maximum number of files
   
 # rotor 0.3.4
 
