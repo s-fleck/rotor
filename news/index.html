@@ -71,7 +71,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">rotor</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.4.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.3.5</span>
       </span>
     </div>
 
@@ -114,6 +114,17 @@
       <small>Source: <a href='https://github.com/s-fleck/rotor/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="rotor-0-3-5" class="section level1">
+<h1 class="page-header" data-toc-text="0.3.5">
+<a href="#rotor-0-3-5" class="anchor"></a>rotor 0.3.5<small> Unreleased </small>
+</h1>
+<ul>
+<li>Backups now retain their original timestamp (created, last modified) where possible (even when zipped)</li>
+<li>fixed broken behaviour when pruning with max_backups where max_backups is the maximum number of files</li>
+<li>
+<code>parse_size()</code> now accepts (and rounds down) decimal file sizes, but throws a warning</li>
+</ul>
+</div>
     <div id="rotor-0-3-4" class="section level1">
 <h1 class="page-header" data-toc-text="0.3.4">
 <a href="#rotor-0-3-4" class="anchor"></a>rotor 0.3.4<small> 2020-10-28 </small>
