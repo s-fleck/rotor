@@ -5,7 +5,7 @@ context("utils-predicates")
 
 test_that("is_zipcmd_available detects zipcommand", {
   # can only return true on platforms with a zip command
-  skip_if_not(is_zipcmd_available(), "No zipcommand found")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
   expect_true(is_zipcmd_available())
 })
 

@@ -25,8 +25,7 @@ create_testfile <- function(){
 
 
 test_that("copy_or_compress works with default zip command", {
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
 
   tf <- file.path(td, "compresstest.log")
   on.exit(unlink(tf))
@@ -42,8 +41,7 @@ test_that("copy_or_compress works with default zip command", {
 
 
 test_that("copy_or_compress works with internal zip command", {
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
 
   tf <- file.path(td, "compresstest.log")
   on.exit(unlink(tf))
@@ -60,6 +58,7 @@ test_that("copy_or_compress works with internal zip command", {
 
 test_that("copy_or_compress works with zip::zipr", {
   skip_if_not_installed("zip")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
 
   tf <- file.path(td, "compresstest.log")
   on.exit(unlink(tf))
@@ -75,6 +74,9 @@ test_that("copy_or_compress works with zip::zipr", {
 
 
 test_that("copy_or_compress preserves timestamp", {
+  skip_if_not_installed("zip")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
+
   tf <- create_testfile()
   on.exit(unlink(tf))
 
@@ -90,4 +92,5 @@ test_that("copy_or_compress preserves timestamp", {
   zip <- copy_or_compress(tf, tf, compression = "zip::zipr")
   expect_true(equalish(file.mtime(zip), file.mtime(tf), timestamp_tolerance))
 })
+
 

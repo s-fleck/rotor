@@ -14,8 +14,7 @@ teardown({
 
 
 test_that("backup/rotate happy path", {
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
 
   tf <- file.path(td, "test.log")
   saveRDS(iris, tf)

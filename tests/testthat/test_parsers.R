@@ -39,6 +39,15 @@ test_that("parse_info_unit works", {
 
 
 
+test_that("parse_size throws warning when it encounters floats", {
+  x <- parse_size(18)
+  expect_warning({y <- parse_size(18.9)})
+  expect_identical(x, y)
+})
+
+
+
+
 test_that("parse_datetime works as expected", {
   d <- as.Date("2019-12-01")
   expect_equal(parse_datetime(d), as.POSIXct(as.character(d)))
@@ -114,5 +123,4 @@ test_that("parse_date works as expected", {
   expect_equal(parse_date("20190412"), d)
   expect_equal(parse_date("201904"), as.Date("2019-04-01"))
   expect_equal(parse_date("2019"), as.Date("2019-01-01"))
-
 })

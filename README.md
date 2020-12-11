@@ -83,8 +83,8 @@ backup(tf, compression = TRUE)
 
 # display backups of a file
 list_backups(tf)  
-#> [1] "/tmp/Rtmpw73XUg/rotor/mylogfile.1.log.zip"
-#> [2] "/tmp/Rtmpw73XUg/rotor/mylogfile.2.log"
+#> [1] "/tmp/RtmpRZc2Qd/rotor/mylogfile.1.log.zip"
+#> [2] "/tmp/RtmpRZc2Qd/rotor/mylogfile.2.log"
 ```
 
 `rotate()` also backs up a file, but replaces the original file with an
@@ -93,9 +93,9 @@ empty one.
 ``` r
 rotate(tf)
 list_backups(tf)
-#> [1] "/tmp/Rtmpw73XUg/rotor/mylogfile.1.log"    
-#> [2] "/tmp/Rtmpw73XUg/rotor/mylogfile.2.log.zip"
-#> [3] "/tmp/Rtmpw73XUg/rotor/mylogfile.3.log"
+#> [1] "/tmp/RtmpRZc2Qd/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmpRZc2Qd/rotor/mylogfile.2.log.zip"
+#> [3] "/tmp/RtmpRZc2Qd/rotor/mylogfile.3.log"
 
 # the original file is now empty
 readLines(tf)
@@ -118,10 +118,10 @@ backup(tf, max_backups = 4)
 backup(tf, max_backups = 4)
 
 list_backups(tf)
-#> [1] "/tmp/Rtmpw73XUg/rotor/mylogfile.1.log"    
-#> [2] "/tmp/Rtmpw73XUg/rotor/mylogfile.2.log"    
-#> [3] "/tmp/Rtmpw73XUg/rotor/mylogfile.3.log"    
-#> [4] "/tmp/Rtmpw73XUg/rotor/mylogfile.4.log.zip"
+#> [1] "/tmp/RtmpRZc2Qd/rotor/mylogfile.1.log"    
+#> [2] "/tmp/RtmpRZc2Qd/rotor/mylogfile.2.log"    
+#> [3] "/tmp/RtmpRZc2Qd/rotor/mylogfile.3.log"    
+#> [4] "/tmp/RtmpRZc2Qd/rotor/mylogfile.4.log.zip"
 ```
 
 We can also use `prune_backups()` to delete old backups. Other than
@@ -154,29 +154,29 @@ backup_time(tf, format = "%Y%m%dT%H%M%S")  # ISO 8601 compatible
 
 backup_info(tf)
 #>                                                       path      name
-#> 1  /tmp/Rtmpw73XUg/rotor/mylogfile.2020-07-24_10-54-30.log mylogfile
-#> 2 /tmp/Rtmpw73XUg/rotor/mylogfile.2020-07-24--10-54-30.log mylogfile
-#> 5      /tmp/Rtmpw73XUg/rotor/mylogfile.20200724T105430.log mylogfile
-#> 3           /tmp/Rtmpw73XUg/rotor/mylogfile.2020-07-24.log mylogfile
-#> 4              /tmp/Rtmpw73XUg/rotor/mylogfile.2020-07.log mylogfile
+#> 1  /tmp/RtmpRZc2Qd/rotor/mylogfile.2020-12-11_20-23-35.log mylogfile
+#> 2 /tmp/RtmpRZc2Qd/rotor/mylogfile.2020-12-11--20-23-35.log mylogfile
+#> 5      /tmp/RtmpRZc2Qd/rotor/mylogfile.20201211T202335.log mylogfile
+#> 3           /tmp/RtmpRZc2Qd/rotor/mylogfile.2020-12-11.log mylogfile
+#> 4              /tmp/RtmpRZc2Qd/rotor/mylogfile.2020-12.log mylogfile
 #>                    sfx ext size isdir mode               mtime
-#> 1  2020-07-24_10-54-30 log   26 FALSE  664 2020-07-24 10:54:30
-#> 2 2020-07-24--10-54-30 log   26 FALSE  664 2020-07-24 10:54:30
-#> 5      20200724T105430 log   26 FALSE  664 2020-07-24 10:54:30
-#> 3           2020-07-24 log   26 FALSE  664 2020-07-24 10:54:30
-#> 4              2020-07 log   26 FALSE  664 2020-07-24 10:54:30
-#>                 ctime               atime   uid   gid uname grname
-#> 1 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck
-#> 2 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck
-#> 5 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck
-#> 3 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck
-#> 4 2020-07-24 10:54:30 2020-07-24 10:54:30 11861 11861 fleck  fleck
+#> 1  2020-12-11_20-23-35 log   26 FALSE  664 2020-12-11 20:23:35
+#> 2 2020-12-11--20-23-35 log   26 FALSE  664 2020-12-11 20:23:35
+#> 5      20201211T202335 log   26 FALSE  664 2020-12-11 20:23:35
+#> 3           2020-12-11 log   26 FALSE  664 2020-12-11 20:23:35
+#> 4              2020-12 log   26 FALSE  664 2020-12-11 20:23:35
+#>                 ctime               atime  uid  gid uname grname
+#> 1 2020-12-11 20:23:35 2020-12-11 20:23:35 1000 1000 hoelk  hoelk
+#> 2 2020-12-11 20:23:35 2020-12-11 20:23:35 1000 1000 hoelk  hoelk
+#> 5 2020-12-11 20:23:35 2020-12-11 20:23:35 1000 1000 hoelk  hoelk
+#> 3 2020-12-11 20:23:35 2020-12-11 20:23:35 1000 1000 hoelk  hoelk
+#> 4 2020-12-11 20:23:35 2020-12-11 20:23:35 1000 1000 hoelk  hoelk
 #>             timestamp
-#> 1 2020-07-24 10:54:30
-#> 2 2020-07-24 10:54:30
-#> 5 2020-07-24 10:54:30
-#> 3 2020-07-24 00:00:00
-#> 4 2020-07-01 00:00:00
+#> 1 2020-12-11 20:23:35
+#> 2 2020-12-11 20:23:35
+#> 5 2020-12-11 20:23:35
+#> 3 2020-12-11 00:00:00
+#> 4 2020-12-01 00:00:00
 ```
 
 If we examine the “timestamp” column in the example above, we see that
@@ -203,20 +203,20 @@ prune_backups(tf, "2018-04-01")
 
 ## Cache
 
-rotor also provides a simple on-disk key-value store that can be used as
-a persistent cache.
+rotor also provides a simple on-disk key-value store that can be pruned
+by size, age or number of files.
 
 ``` r
 cache <- Cache$new(file.path(tempdir(), "cache-test"), hashfun = digest::digest)
-#> creating directory '/tmp/Rtmpw73XUg/cache-test'
+#> creating directory '/tmp/RtmpRZc2Qd/cache-test'
 key1 <- cache$push(iris)
 key2 <- cache$push(cars)
 key3 <- cache$push(mtcars)
 
 cache$files$path
-#> [1] "/tmp/Rtmpw73XUg/cache-test/d3c5d071001b61a9f6131d3004fd0988"
-#> [2] "/tmp/Rtmpw73XUg/cache-test/f98a59010652c8e1ee062ed4c43f648e"
-#> [3] "/tmp/Rtmpw73XUg/cache-test/a63c70e73b58d0823ab3bcbd3b543d6f"
+#> [1] "/tmp/RtmpRZc2Qd/cache-test/d3c5d071001b61a9f6131d3004fd0988"
+#> [2] "/tmp/RtmpRZc2Qd/cache-test/f98a59010652c8e1ee062ed4c43f648e"
+#> [3] "/tmp/RtmpRZc2Qd/cache-test/a63c70e73b58d0823ab3bcbd3b543d6f"
 
 head(cache$read(key1))
 #>   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
@@ -229,7 +229,7 @@ head(cache$read(key1))
 
 cache$prune(max_files = 1)
 cache$files$path
-#> [1] "/tmp/Rtmpw73XUg/cache-test/a63c70e73b58d0823ab3bcbd3b543d6f"
+#> [1] "/tmp/RtmpRZc2Qd/cache-test/a63c70e73b58d0823ab3bcbd3b543d6f"
 cache$purge()  # deletes all cached files
 cache$destroy()  # deletes the cache directory
 ```
@@ -251,11 +251,14 @@ anything outside of base R)
 
 Optional dependencies:
 
-  - [digest](https://github.com/eddelbuettel/digest) or
+  - [digest](https://github.com/eddelbuettel/digest),  
+    [ulid](https://cran.r-project.org/package=ulid), or
     [uuid](https://CRAN.R-project.org/package=uuid) for generating
-    hashes or UIDs when using Cache. Storage keys for cache files can
+    hashes or UIDs when using `Cache`. Storage keys for cache files can
     also be set manually, in which case no external dependencies are
     required.
   - [zip](https://CRAN.R-project.org/package=zip) is supported as an
     alternative to the integrated zip function in R. Might work better
     on some systems and worse on others.
+  - [crayon](https://cran.r-project.org/package=crayon) for terminal
+    colors

@@ -166,8 +166,8 @@ unlink(td, recursive = TRUE)
 
 ## Cache
 
-rotor also provides a simple on-disk key-value store that can be used as a
-persistent cache.
+rotor also provides a simple on-disk key-value store that can be pruned by size,
+age or number of files.
  
 ```{r}
 cache <- Cache$new(file.path(tempdir(), "cache-test"), hashfun = digest::digest)
@@ -205,10 +205,13 @@ anything outside of base R)
 
 Optional dependencies:
 
-* [digest](https://github.com/eddelbuettel/digest) or 
+* [digest](https://github.com/eddelbuettel/digest),  
+  [ulid](https://cran.r-project.org/package=ulid), or
   [uuid](https://CRAN.R-project.org/package=uuid ) for generating
-  hashes or UIDs when using Cache. Storage keys for cache files can also be set 
+  hashes or UIDs when using `Cache`. Storage keys for cache files can also be set 
   manually, in which case no external dependencies are required.
 * [zip](https://CRAN.R-project.org/package=zip) is supported as an alternative 
   to the integrated zip function in R. Might work better on some systems and
   worse on others.
+* [crayon](https://cran.r-project.org/package=crayon) for 
+  terminal colors

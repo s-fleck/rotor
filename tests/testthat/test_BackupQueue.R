@@ -397,8 +397,8 @@ test_that("BackupQueue$push() works as expected", {
   dir.create(td, recursive = TRUE)
   on.exit(unlink(td, recursive = TRUE))
 
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
+
 
   tf <- file.path(td, "test.log")
   file.create(tf)
@@ -430,8 +430,7 @@ test_that("BackupQueueIndex$push() can push to different directory", {
   dir.create(td, recursive = TRUE)
   on.exit(unlink(td, recursive = TRUE))
 
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
 
   tf <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
@@ -575,7 +574,7 @@ test_that("BackupQueueIndex: rotations trigger as expected", {
   expect_false(bq$should_rotate(size = file.size(tf) + 1))
 
   # size threshold is met
-  expect_true(bq$should_rotate(size = file.size(tf) / 2))
+  expect_true(bq$should_rotate(size = round(file.size(tf) / 2)))
 })
 
 
@@ -884,8 +883,7 @@ test_that("BackupQueueDateTime$push() can push to different directory", {
   dir.create(td, recursive = TRUE)
   on.exit(unlink(td, recursive = TRUE))
 
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
 
   tf <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
@@ -978,13 +976,13 @@ test_that("BackupQueueDateTime: rotations trigger as expected", {
   expect_false(bq$should_rotate(size = file.size(tf) + 1, age = Inf))
 
   # size threshold is met but not age
-  expect_false(bq$should_rotate(size = file.size(tf) / 2, age = "2 days", now = as.POSIXct("2020-01-01 02:00:00"), last_rotation = fake_time))
+  expect_false(bq$should_rotate(size = round(file.size(tf) / 2), age = "2 days", now = as.POSIXct("2020-01-01 02:00:00"), last_rotation = fake_time))
 
   # age threshold is met but not size
   expect_false(bq$should_rotate(size = file.size(tf) + 1, age = "2 days", now = as.POSIXct("2020-01-04 02:00:00"), last_rotation = fake_time))
 
   # both criteria are met
-  expect_true(bq$should_rotate(size = file.size(tf) / 2, age = "2 days", now = as.POSIXct("2020-01-06 02:00:00"), last_rotation = fake_time))
+  expect_true(bq$should_rotate(size = round(file.size(tf) / 2), age = "2 days", now = as.POSIXct("2020-01-06 02:00:00"), last_rotation = fake_time))
 })
 
 
@@ -1268,8 +1266,7 @@ test_that("BackupQueueDateTime$push() can push to different directory", {
   dir.create(td, recursive = TRUE)
   on.exit(unlink(td, recursive = TRUE))
 
-  if (!is_zipcmd_available())
-    skip("Test requires a workings system zip command")
+  skip_if_not(is_zipcmd_available(), "system zip-command is available")
 
   tf <- file.path(td, "test.log")
   bu_dir <- file.path(td, "backups")
@@ -1400,13 +1397,13 @@ test_that("BackupQueueDate: rotations trigger as expected", {
   expect_false(bq$should_rotate(size = file.size(tf) + 1, age = Inf))
 
   # size threshold is met but not age
-  expect_false(bq$should_rotate(size = file.size(tf) / 2, age = "2 days", now = as.POSIXct("2020-01-01 02:00:00"), last_rotation = fake_time))
+  expect_false(bq$should_rotate(size = floor(file.size(tf) / 2), age = "2 days", now = as.POSIXct("2020-01-01 02:00:00"), last_rotation = fake_time))
 
   # age threshold is met but not size
-  expect_false(bq$should_rotate(size = file.size(tf) + 1, age = "2 days", now = as.POSIXct("2020-01-04 02:00:00"), last_rotation = fake_time))
+  expect_false(bq$should_rotate(size = round(file.size(tf) + 1), age = "2 days", now = as.POSIXct("2020-01-04 02:00:00"), last_rotation = fake_time))
 
   # both criteria are met
-  expect_true(bq$should_rotate(size = file.size(tf) / 2, age = "2 days", now = as.POSIXct("2020-01-06 02:00:00"), last_rotation = fake_time))
+  expect_true(bq$should_rotate(size = floor(file.size(tf) / 2), age = "2 days", now = as.POSIXct("2020-01-06 02:00:00"), last_rotation = fake_time))
 })
 
 

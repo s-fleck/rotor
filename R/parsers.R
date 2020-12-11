@@ -7,16 +7,20 @@ parse_size <- function(x){
   assert(is_scalar(x) && !is.na(x))
 
   if (is_integerish(x)){
-    return(as.integer(x))
+    res <- as.integer(x)
+  } else if (is.numeric(x)){
+    res <- as.integer(floor(x))
+    warning("`x` ist not an integer file size, rounding down to ", res, " bits")
+
+  } else if (is.character(x)){
+    unit_start <- regexec("[kmgt]", tolower(x))[[1]]
+    num  <- trimws(substr(x, 1, unit_start - 1L))
+    unit <- trimws(substr(x, unit_start, nchar(x)))
+    res  <- as.numeric(num) * parse_info_unit(unit)
+
   } else {
-    assert(is.character(x))
+    stop(ValueError(paste("`x` is not a valid file size but ", preview_object(x))))
   }
-
-  unit_start <- regexec("[kmgt]", tolower(x))[[1]]
-
-  num  <- trimws(substr(x, 1, unit_start - 1L))
-  unit <- trimws(substr(x, unit_start, nchar(x)))
-  res  <- as.numeric(num) * parse_info_unit(unit)
 
   assert(is_scalar(res) && !is.na(res) && is_scalar_numeric(res))
   res
