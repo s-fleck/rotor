@@ -402,15 +402,15 @@ is no such workaround if you use a real hash function.</p><h4 class='hasAnchor' 
 <span class='co'># When using a real hash function as hashfun, identical objects will only</span>
 <span class='co'># be added to the cache once</span>
 <span class='va'>cache_hash</span> <span class='op'>&lt;-</span> <span class='va'>Cache</span><span class='op'>$</span><span class='fu'>new</span><span class='op'>(</span><span class='va'>td</span>, hashfun <span class='op'>=</span> <span class='fu'>digest</span><span class='fu'>::</span><span class='va'><a href='https://rdrr.io/pkg/digest/man/digest.html'>digest</a></span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span class='message'>creating directory '/tmp/Rtmpo5yUvN/cache-test'</span></div><div class='input'><span class='va'>cache_hash</span><span class='op'>$</span><span class='fu'>push</span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span class='message'>creating directory '/tmp/RtmpcVSVQT/cache-test'</span></div><div class='input'><span class='va'>cache_hash</span><span class='op'>$</span><span class='fu'>push</span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "d3c5d071001b61a9f6131d3004fd0988"</div><div class='input'><span class='va'>cache_hash</span><span class='op'>$</span><span class='fu'>push</span><span class='op'>(</span><span class='va'>iris</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; [1] "d3c5d071001b61a9f6131d3004fd0988"</div><div class='input'><span class='va'>cache_hash</span><span class='op'>$</span><span class='va'>files</span>
 </div><div class='output co'>#&gt;                                                          path
-#&gt; 1 /tmp/Rtmpo5yUvN/cache-test/d3c5d071001b61a9f6131d3004fd0988
+#&gt; 1 /tmp/RtmpcVSVQT/cache-test/d3c5d071001b61a9f6131d3004fd0988
 #&gt;                                key size isdir mode               mtime
-#&gt; 1 d3c5d071001b61a9f6131d3004fd0988 1094 FALSE  666 2020-12-12 22:13:25
+#&gt; 1 d3c5d071001b61a9f6131d3004fd0988 1094 FALSE  666 2020-12-13 15:24:54
 #&gt;                 ctime               atime  uid  gid  uname grname
-#&gt; 1 2020-12-12 22:13:25 2020-12-12 22:13:25 2000 2000 travis travis</div><div class='input'><span class='va'>cache_hash</span><span class='op'>$</span><span class='fu'>purge</span><span class='op'>(</span><span class='op'>)</span>
+#&gt; 1 2020-12-13 15:24:54 2020-12-13 15:24:54 2000 2000 travis travis</div><div class='input'><span class='va'>cache_hash</span><span class='op'>$</span><span class='fu'>purge</span><span class='op'>(</span><span class='op'>)</span>
 
 <span class='co'># To override this behaviour use a generator for unique ids, such as uuid</span>
 <span class='kw'>if</span> <span class='op'>(</span><span class='fu'><a href='https://rdrr.io/r/base/ns-load.html'>requireNamespace</a></span><span class='op'>(</span><span class='st'>"uuid"</span><span class='op'>)</span><span class='op'>)</span><span class='op'>{</span>
