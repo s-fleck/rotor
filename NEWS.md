@@ -1,3 +1,9 @@
+# rotor (dev)
+
+* `rotate()`, `backup()` and co no longer fail on filenames that 
+  contain  special regex characters (such as `*` or `+`)
+
+
 # rotor 0.3.5
 
 * Backups now retain their original timestamp (created, last modified) where

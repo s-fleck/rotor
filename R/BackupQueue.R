@@ -837,7 +837,7 @@ filenames_as_matrix <- function(
   back_names <- basename(backups)
 
   filename_end <-
-    attr(gregexpr(file_name, back_names[[1]])[[1]], "match.length") + 1L
+    attr(gregexpr(file_name, back_names[[1]], fixed = TRUE)[[1]], "match.length") + 1L
 
   a <- strsplit_at_seperator_pos(back_names, filename_end)
   assert(
@@ -890,7 +890,9 @@ get_backups <- function(
   )
   back_names <- basename(potential_backups)
 
-  sel <- grepl(paste0("^", file_name), back_names)
+  sel <- grepl(file_name, back_names, fixed = TRUE)
+  sel[regexpr(file_name, back_names, fixed = TRUE) != 1] <- FALSE
+
   backups    <- potential_backups[sel]
   back_names <- basename(backups)
 

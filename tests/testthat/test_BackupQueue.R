@@ -143,6 +143,28 @@ test_that("BackupQueue finding backups works as expected for files without exten
 
 
 
+test_that("BackupQueue finding backups works on files with regex characters", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test+-[(")
+  file.create(tf)
+
+  expect_identical(n_backups(tf), 0L)
+  bq <- BackupQueue$new(tf)
+
+  sfxs <-c(1:12, "2019-12-31")
+  bus <- paste0(tools::file_path_sans_ext(tf), ".", sfxs)
+  file.create(bus)
+
+  expect_path_setequal(bq$files$path, bus)
+  expect_setequal(bq$files$sfx, sfxs)
+  expect_setequal(bq$files$ext, "")
+})
+
+
+
+
 test_that("dryrun/verbose prune", {
   dir.create(td, recursive = TRUE)
   on.exit(unlink(td, recursive = TRUE))
