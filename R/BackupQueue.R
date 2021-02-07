@@ -292,7 +292,7 @@ BackupQueueIndex <- R6::R6Class(
           tools::file_path_sans_ext(basename(self$origin))
         )
         ext  <- tools::file_ext(self$origin)
-        sfx <- "1"
+        sfx <- "1"  # the new file will always have the 1 suffix, the old ones are incremented
         if (is_blank(ext)) {
           name_new <- paste(name, sfx, sep = ".")
         } else {

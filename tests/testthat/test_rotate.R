@@ -155,3 +155,27 @@ test_that("BackupQueueIndex: $prune_identical works", {
     unname(c(cars_md5, iris_md5))
   )
 })
+
+
+
+
+
+test_that("rotate works with funky filenames", {
+  td2 <- file.path(td, "test")
+  dir.create(td2)
+  on.exit(unlink(td2, recursive = TRUE))
+
+  fn <- "...one long incredibly unbroken sentence ... xzy12+-.test.ext"
+
+  tf <- file.path(td2, fn)
+  saveRDS(iris, tf)
+  expect_true(file.exists(tf))
+
+  rotate(tf)
+  rotate(tf, verbose = TRUE, size = 0)
+
+  expect_length(list_backups(tf), 2)
+  expect_match(basename(list_backups(tf)),".*\\.[1,2]\\.ext$")
+  prune_backups(tf, 0)
+  expect_length(list_backups(tf), 0)
+})

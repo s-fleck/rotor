@@ -1,7 +1,8 @@
 # rotor (dev)
 
-* `rotate()`, `backup()` and co no longer fail on filenames that 
+* `rotate()`, `backup()` and co. no longer fail on filenames that 
   contain  special regex characters (such as `*` or `+`)
+* `rotate()`, `backup()` and co. now work with hidden files
 
 
 # rotor 0.3.5

@@ -79,7 +79,7 @@ DirectoryQueue <- R6::R6Class(
 
     files = function(){
 
-      files <- list.files(self$dir, full.names = TRUE)
+      files <- list.files(self$dir, full.names = TRUE, all.files = TRUE, no.. = TRUE,)
 
       if (!length(files)){
         return(data.frame())

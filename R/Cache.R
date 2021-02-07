@@ -189,7 +189,7 @@ Cache <- R6::R6Class(
     #' @description purge the cache (remove all cached files)
     destroy = function(
     ){
-      files <- list.files(self$dir, recursive = TRUE, all.files = TRUE)
+      files <- list.files(self$dir, recursive = TRUE, all.files = TRUE, no.. = TRUE)
       assert(!length(files), DirIsNotEmptyError(dir = self$dir))
 
       unlink(self$dir, recursive = TRUE)
@@ -330,7 +330,7 @@ Cache <- R6::R6Class(
     #'   [base::file.info()] returns
     files = function(){
 
-      files <- list.files(self$dir, full.names = TRUE)
+      files <- list.files(self$dir, full.names = TRUE, all.files = TRUE, no.. = TRUE)
 
       if (!length(files)){
         return(EMPTY_CACHE_INDEX)

@@ -88,7 +88,9 @@ list_files <- function(
   full.names = FALSE,
   ...,
   dry_run = DRY_RUN$active,
-  verbose = dry_run
+  verbose = dry_run,
+  all.files = TRUE,
+  no.. = TRUE
 ){
   if (dry_run) {
     res <- DRY_RUN$list(path, ...)
@@ -96,7 +98,7 @@ list_files <- function(
     return(res)
   }
 
-  list.files(path = path, full.names = full.names, ...)
+  list.files(path = path, full.names = full.names, ..., no.. = no.., all.files = all.files)
 }
 
 

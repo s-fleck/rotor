@@ -26,7 +26,7 @@ DryRunMemory <- R6::R6Class(
 
 
     list = function(path){
-      x <- path_standardize(list.files(path, full.names = TRUE))
+      x <- path_standardize(list.files(path, full.names = TRUE, all.files = TRUE, no.. = TRUE))
       unique(self$fake(x))
     },
 
