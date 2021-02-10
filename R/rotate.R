@@ -1,8 +1,14 @@
 #' Rotate or backup files
 #'
+#' @description
 #' Functions starting with `backup` create backups of a `file`, while functions
 #' starting with `rotate` do the same but also replace the original `file`
 #' with an empty one (this is useful for log rotation)
+#'
+#' **Note:**: `rotate()` and co will not work reliable on filenames that contain
+#' dots but have no file extension (e.g. `my.holiday.picture.jpg` is OK but
+#' `my.holiday.picture` is not)
+#'
 #'
 #' @param file `character` scalar: file to backup/rotate
 #'
