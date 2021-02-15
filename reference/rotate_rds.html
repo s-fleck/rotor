@@ -262,8 +262,10 @@ of the same name (usually due to timestamp collision) exists.</p></dd>
     </tr>
     <tr>
       <th>on_change_only</th>
-      <td><p><code>logical</code> scalar. Rotate only if <code>object</code> is different
-from the object saved in <code>file</code>.</p></td>
+      <td><p><code>logical</code> scalaror a <code>list</code>. Rotate only if <code>object</code>
+is different from the object saved in <code>file</code>. If a <code>list</code>, arguments
+that will be passed on to <code><a href='https://Rdatatable.gitlab.io/data.table/reference/all.equal.data.table.html'>data.table::all.equal</a></code> (only when both obects
+are <code>data.tables</code>)</p></td>
     </tr>
     <tr>
       <th>age</th>
@@ -298,7 +300,7 @@ error.</p>
 <span class='fu'>rotate_rds</span><span class='op'>(</span><span class='va'>iris</span>, <span class='va'>dest</span><span class='op'>)</span>
 
 <span class='fu'><a href='backup_info.html'>list_backups</a></span><span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "/tmp/Rtmp2xRBFO/file23ce3f4a3a8d.1" "/tmp/Rtmp2xRBFO/file23ce3f4a3a8d.2"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "/tmp/Rtmpcd6YgS/file2394463943e3.1" "/tmp/Rtmpcd6YgS/file2394463943e3.2"</div><div class='input'>
 <span class='co'># cleanup</span>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='fu'><a href='backup_info.html'>list_backups</a></span><span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span><span class='op'>)</span>
 <span class='fu'><a href='https://rdrr.io/r/base/unlink.html'>unlink</a></span><span class='op'>(</span><span class='va'>dest</span><span class='op'>)</span>
