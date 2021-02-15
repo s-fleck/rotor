@@ -202,6 +202,10 @@ Functions starting with \code{backup} create backups of a \code{file}, while fun
 starting with \code{rotate} do the same but also replace the original \code{file}
 with an empty one (this is useful for log rotation)
 
+\strong{Note:}: \code{rotate()} and co will not work reliable on filenames that contain
+dots but have no file extension (e.g. \code{my.holiday.picture.jpg} is OK but
+\code{my.holiday.picture} is not)
+
 \code{prune_backups()} physically deletes all backups of a file
 based on \code{max_backups}
 

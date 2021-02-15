@@ -131,8 +131,10 @@ understood by \code{\link[=as.POSIXct]{as.POSIXct()}} or \code{\link[=as.Date]{a
 of the same name (usually due to timestamp collision) exists.}
   }}
 
-\item{on_change_only}{\code{logical} scalar. Rotate only if \code{object} is different
-from the object saved in \code{file}.}
+\item{on_change_only}{\code{logical} scalaror a \code{list}. Rotate only if \code{object}
+is different from the object saved in \code{file}. If a \code{list}, arguments
+that will be passed on to \code{data.table::all.equal} (only when both obects
+are \code{data.tables})}
 
 \item{age}{minimum age after which to backup/rotate a file; can be
 \itemize{

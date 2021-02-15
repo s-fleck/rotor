@@ -124,3 +124,34 @@ test_that("rotate_rds_date on_change_only", {
   expect_message(rotate_rds_date(dt, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
   prune_backups(tf, 0)
 })
+
+
+
+test_that("rotate_rds `on_change_only` works with arguments list", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  dt1 <- data.table::as.data.table(iris)
+  dt2 <- dt1[rev(seq_len(nrow(dt1))), ]
+  tf <- file.path(td, "testfile.rds")
+
+  expect_silent(rotate_rds(dt1, tf, on_change_only = TRUE))
+  expect_message(rotate_rds(dt1, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+  expect_message(rotate_rds(dt2, tf, on_change_only = list(ignore.row.order = TRUE)), class = "ObjectHasNotChangedMessage")
+  expect_message(rotate_rds(dt1, tf, on_change_only = TRUE), class = "ObjectHasNotChangedMessage")
+  expect_silent(rotate_rds(dt2, tf, on_change_only = TRUE))
+
+  expect_identical(n_backups(tf), 1L)
+  prune_backups(tf, 0)
+})
+
+
+
+
+test_that("objects_are_equal ", {
+  x <- data.table::data.table(a = 1:3)
+  y <- data.table::data.table(a = 3:1)
+
+  expect_false(objects_are_equal(x, y, extra_args = list()))
+  expect_true(objects_are_equal(x, y, extra_args = list(ignore.row.order = TRUE)))
+})

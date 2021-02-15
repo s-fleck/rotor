@@ -3,6 +3,8 @@
 * `rotate()`, `backup()` and co. no longer fail on filenames that 
   contain  special regex characters (such as `*` or `+`)
 * `rotate()`, `backup()` and co. now work with hidden files
+* `rotate_rds`: the `on_change_only` argument now also accepts a `list()` of
+  paramters to be passed on to `all.equal.data.table` when comparing `data.tables`
 
 
 # rotor 0.3.5

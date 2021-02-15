@@ -10,8 +10,10 @@
 #'   silently not rotate the file, while `rotate_rds_date()` will throw an
 #'   error.
 #'
-#' @param on_change_only `logical` scalar. Rotate only if `object` is different
-#'   from the object saved in `file`.
+#' @param on_change_only `logical` scalaror a `list`. Rotate only if `object`
+#'   is different from the object saved in `file`. If a `list`, arguments
+#'   that will be passed on to `data.table::all.equal` (only when both obects
+#'   are `data.tables`)
 #'
 #' @inheritParams base::saveRDS
 #' @inheritDotParams rotate
@@ -132,16 +134,18 @@ rotate_rds_internal <- function(
   fun
 ){
   assert(is_scalar_character(file))
-  assert(is_scalar_bool(on_change_only))
+  assert(is_scalar_bool(on_change_only) || is.list(on_change_only))
 
   if (file.exists(file)){
-    if (on_change_only){
+    if (isTRUE(on_change_only) || is.list(on_change_only)){
       comp <- readRDS(file)
+      if (is.list(on_change_only)){
+        extra_args <- on_change_only
+      } else {
+        extra_args <- list()
+      }
 
-      if (
-        identical(object, comp) ||
-        (inherits(object, "data.table") && inherits(comp, "data.table") && assert_namespace("data.table") && isTRUE(all.equal(object, comp)))
-      ){
+      if (objects_are_equal(object, comp, extra_args)){
         message(ObjectHasNotChangedMessage("not rotating: object has not changed"))
         return(invisible(file))
       }
@@ -159,4 +163,24 @@ rotate_rds_internal <- function(
   )
 
   invisible(file)
+}
+
+
+
+
+objects_are_equal <- function(
+  x,
+  y,
+  extra_args = NULL
+){
+  if (identical(x, y)){
+    return(TRUE)
+  }
+
+  if (inherits(x, "data.table") && inherits(y, "data.table")){
+    assert_namespace("data.table")
+    return(isTRUE(do.call(all.equal, c(list(x, y), extra_args))))
+  }
+
+  FALSE
 }
