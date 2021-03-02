@@ -876,7 +876,7 @@ get_backups <- function(
   if (!length(potential_backups))
     return(character())
 
-  sfx_patterns <- paste0("(", sfx_patterns, ")", collapse = "|")
+  sfx_patterns <- paste0("(\\.", sfx_patterns, ")", collapse = "|")
 
   file_dir  <- dirname(origin)
   file_name <- basename(tools::file_path_sans_ext(origin))
@@ -890,7 +890,7 @@ get_backups <- function(
   )
   back_names <- basename(potential_backups)
 
-  sel <- grepl(file_name, back_names, fixed = TRUE)
+  sel <- grepl(paste0(file_name, "."), back_names, fixed = TRUE)
   sel[regexpr(file_name, back_names, fixed = TRUE) != 1] <- FALSE
 
   backups    <- potential_backups[sel]

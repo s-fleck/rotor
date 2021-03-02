@@ -179,3 +179,26 @@ test_that("rotate works with funky filenames", {
   prune_backups(tf, 0)
   expect_length(list_backups(tf), 0)
 })
+
+
+
+
+test_that("rotate works with funky filenames 2", {
+  td2 <- file.path(td, "test")
+  dir.create(td2)
+  on.exit(unlink(td2, recursive = TRUE))
+
+  tfs <- file.path(td2, c(
+    "2021.zip",
+    "2021.q1.zip",
+    "2021.q1.test.zip",
+    "2021.q1.test.1.zip"
+  ))
+
+  file.create(tfs)
+  on.exit(unlink(td2, recursive = TRUE))
+
+  expect_length(list_backups(tfs[[1]]), 0L)
+  expect_lengt(list_backups(tfs[[2]]), 0L)
+  epect_length(list_backups(tfs[[3]]), 1L)
+})
