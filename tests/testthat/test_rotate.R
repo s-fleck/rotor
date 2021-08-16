@@ -199,6 +199,6 @@ test_that("rotate works with funky filenames 2", {
   on.exit(unlink(td2, recursive = TRUE))
 
   expect_length(list_backups(tfs[[1]]), 0L)
-  expect_lengt(list_backups(tfs[[2]]), 0L)
-  epect_length(list_backups(tfs[[3]]), 1L)
+  expect_length(list_backups(tfs[[2]]), 0L)
+  expect_length(list_backups(tfs[[3]]), 1L)
 })
