@@ -111,32 +111,32 @@ All cached files}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{Cache$new()}}
-\item \href{#method-push}{\code{Cache$push()}}
-\item \href{#method-read}{\code{Cache$read()}}
-\item \href{#method-remove}{\code{Cache$remove()}}
-\item \href{#method-pop}{\code{Cache$pop()}}
-\item \href{#method-prune}{\code{Cache$prune()}}
-\item \href{#method-purge}{\code{Cache$purge()}}
-\item \href{#method-destroy}{\code{Cache$destroy()}}
-\item \href{#method-print}{\code{Cache$print()}}
-\item \href{#method-set_max_files}{\code{Cache$set_max_files()}}
-\item \href{#method-set_max_age}{\code{Cache$set_max_age()}}
-\item \href{#method-set_max_size}{\code{Cache$set_max_size()}}
-\item \href{#method-set_compression}{\code{Cache$set_compression()}}
-\item \href{#method-set_hashfun}{\code{Cache$set_hashfun()}}
+\item \href{#method-Cache-new}{\code{Cache$new()}}
+\item \href{#method-Cache-push}{\code{Cache$push()}}
+\item \href{#method-Cache-read}{\code{Cache$read()}}
+\item \href{#method-Cache-remove}{\code{Cache$remove()}}
+\item \href{#method-Cache-pop}{\code{Cache$pop()}}
+\item \href{#method-Cache-prune}{\code{Cache$prune()}}
+\item \href{#method-Cache-purge}{\code{Cache$purge()}}
+\item \href{#method-Cache-destroy}{\code{Cache$destroy()}}
+\item \href{#method-Cache-print}{\code{Cache$print()}}
+\item \href{#method-Cache-set_max_files}{\code{Cache$set_max_files()}}
+\item \href{#method-Cache-set_max_age}{\code{Cache$set_max_age()}}
+\item \href{#method-Cache-set_max_size}{\code{Cache$set_max_size()}}
+\item \href{#method-Cache-set_compression}{\code{Cache$set_compression()}}
+\item \href{#method-Cache-set_hashfun}{\code{Cache$set_hashfun()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-Cache-new"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$new(
@@ -187,8 +187,8 @@ unlink(td, recursive = TRUE)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-push"></a>}}
-\if{latex}{\out{\hypertarget{method-push}{}}}
+\if{html}{\out{<a id="method-Cache-push"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-push}{}}}
 \subsection{Method \code{push()}}{
 push a new object to the cache
 \subsection{Usage}{
@@ -211,8 +211,8 @@ a \code{character} scalar: the key of the newly added object
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-read"></a>}}
-\if{latex}{\out{\hypertarget{method-read}{}}}
+\if{html}{\out{<a id="method-Cache-read"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-read}{}}}
 \subsection{Method \code{read()}}{
 read a cached file
 \subsection{Usage}{
@@ -228,8 +228,8 @@ read a cached file
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-remove"></a>}}
-\if{latex}{\out{\hypertarget{method-remove}{}}}
+\if{html}{\out{<a id="method-Cache-remove"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-remove}{}}}
 \subsection{Method \code{remove()}}{
 remove a single file from the cache
 \subsection{Usage}{
@@ -245,8 +245,8 @@ remove a single file from the cache
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-pop"></a>}}
-\if{latex}{\out{\hypertarget{method-pop}{}}}
+\if{html}{\out{<a id="method-Cache-pop"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-pop}{}}}
 \subsection{Method \code{pop()}}{
 Read and remove a single file from the cache
 \subsection{Usage}{
@@ -262,8 +262,8 @@ Read and remove a single file from the cache
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-prune"></a>}}
-\if{latex}{\out{\hypertarget{method-prune}{}}}
+\if{html}{\out{<a id="method-Cache-prune"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-prune}{}}}
 \subsection{Method \code{prune()}}{
 Prune the cache
 
@@ -276,7 +276,7 @@ version only support timestamps at a resolution of two seconds.
 If two files have the same timestamp, they are deleted in the lexical
 sort order of their key. This means that by using a function that
 generates lexically sortable keys as \code{hashfun} (such as
-\code{\link[ulid:ULIDgenerate]{ulid::generate()}}) you can enforce the correct deletion order. There
+\code{\link[ulid:generate]{ulid::generate()}}) you can enforce the correct deletion order. There
 is no such workaround if you use a real hash function.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$prune(
@@ -298,8 +298,8 @@ is no such workaround if you use a real hash function.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-purge"></a>}}
-\if{latex}{\out{\hypertarget{method-purge}{}}}
+\if{html}{\out{<a id="method-Cache-purge"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-purge}{}}}
 \subsection{Method \code{purge()}}{
 purge the cache (remove all cached files)
 \subsection{Usage}{
@@ -308,8 +308,8 @@ purge the cache (remove all cached files)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-destroy"></a>}}
-\if{latex}{\out{\hypertarget{method-destroy}{}}}
+\if{html}{\out{<a id="method-Cache-destroy"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-destroy}{}}}
 \subsection{Method \code{destroy()}}{
 purge the cache (remove all cached files)
 \subsection{Usage}{
@@ -318,8 +318,8 @@ purge the cache (remove all cached files)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-Cache-print"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-print}{}}}
 \subsection{Method \code{print()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$print()}\if{html}{\out{</div>}}
@@ -327,8 +327,8 @@ purge the cache (remove all cached files)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_max_files"></a>}}
-\if{latex}{\out{\hypertarget{method-set_max_files}{}}}
+\if{html}{\out{<a id="method-Cache-set_max_files"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-set_max_files}{}}}
 \subsection{Method \code{set_max_files()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$set_max_files(x)}\if{html}{\out{</div>}}
@@ -336,8 +336,8 @@ purge the cache (remove all cached files)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_max_age"></a>}}
-\if{latex}{\out{\hypertarget{method-set_max_age}{}}}
+\if{html}{\out{<a id="method-Cache-set_max_age"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-set_max_age}{}}}
 \subsection{Method \code{set_max_age()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$set_max_age(x)}\if{html}{\out{</div>}}
@@ -345,8 +345,8 @@ purge the cache (remove all cached files)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_max_size"></a>}}
-\if{latex}{\out{\hypertarget{method-set_max_size}{}}}
+\if{html}{\out{<a id="method-Cache-set_max_size"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-set_max_size}{}}}
 \subsection{Method \code{set_max_size()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$set_max_size(x)}\if{html}{\out{</div>}}
@@ -354,8 +354,8 @@ purge the cache (remove all cached files)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_compression"></a>}}
-\if{latex}{\out{\hypertarget{method-set_compression}{}}}
+\if{html}{\out{<a id="method-Cache-set_compression"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-set_compression}{}}}
 \subsection{Method \code{set_compression()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$set_compression(x)}\if{html}{\out{</div>}}
@@ -363,8 +363,8 @@ purge the cache (remove all cached files)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_hashfun"></a>}}
-\if{latex}{\out{\hypertarget{method-set_hashfun}{}}}
+\if{html}{\out{<a id="method-Cache-set_hashfun"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-set_hashfun}{}}}
 \subsection{Method \code{set_hashfun()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Cache$set_hashfun(x)}\if{html}{\out{</div>}}

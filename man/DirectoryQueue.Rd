@@ -32,15 +32,15 @@ the cache files}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{DirectoryQueue$new()}}
-\item \href{#method-push}{\code{DirectoryQueue$push()}}
-\item \href{#method-prune}{\code{DirectoryQueue$prune()}}
-\item \href{#method-set_dir}{\code{DirectoryQueue$set_dir()}}
+\item \href{#method-DirectoryQueue-new}{\code{DirectoryQueue$new()}}
+\item \href{#method-DirectoryQueue-push}{\code{DirectoryQueue$push()}}
+\item \href{#method-DirectoryQueue-prune}{\code{DirectoryQueue$prune()}}
+\item \href{#method-DirectoryQueue-set_dir}{\code{DirectoryQueue$set_dir()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-DirectoryQueue-new"></a>}}
+\if{latex}{\out{\hypertarget{method-DirectoryQueue-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DirectoryQueue$new(...)}\if{html}{\out{</div>}}
@@ -48,8 +48,8 @@ the cache files}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-push"></a>}}
-\if{latex}{\out{\hypertarget{method-push}{}}}
+\if{html}{\out{<a id="method-DirectoryQueue-push"></a>}}
+\if{latex}{\out{\hypertarget{method-DirectoryQueue-push}{}}}
 \subsection{Method \code{push()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DirectoryQueue$push(x, ...)}\if{html}{\out{</div>}}
@@ -57,8 +57,8 @@ the cache files}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-prune"></a>}}
-\if{latex}{\out{\hypertarget{method-prune}{}}}
+\if{html}{\out{<a id="method-DirectoryQueue-prune"></a>}}
+\if{latex}{\out{\hypertarget{method-DirectoryQueue-prune}{}}}
 \subsection{Method \code{prune()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DirectoryQueue$prune(x, ...)}\if{html}{\out{</div>}}
@@ -66,8 +66,8 @@ the cache files}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_dir"></a>}}
-\if{latex}{\out{\hypertarget{method-set_dir}{}}}
+\if{html}{\out{<a id="method-DirectoryQueue-set_dir"></a>}}
+\if{latex}{\out{\hypertarget{method-DirectoryQueue-set_dir}{}}}
 \subsection{Method \code{set_dir()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{DirectoryQueue$set_dir(x, create = TRUE)}\if{html}{\out{</div>}}

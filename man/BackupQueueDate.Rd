@@ -26,33 +26,33 @@ Other R6 Classes:
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{BackupQueueDate$new()}}
-\item \href{#method-set_fmt}{\code{BackupQueueDate$set_fmt()}}
+\item \href{#method-BackupQueueDate-new}{\code{BackupQueueDate$new()}}
+\item \href{#method-BackupQueueDate-set_fmt}{\code{BackupQueueDate$set_fmt()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="prune_identical">}\href{../../rotor/html/BackupQueue.html#method-prune_identical}{\code{rotor::BackupQueue$prune_identical()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="push_backup">}\href{../../rotor/html/BackupQueue.html#method-push_backup}{\code{rotor::BackupQueue$push_backup()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir">}\href{../../rotor/html/BackupQueue.html#method-set_backup_dir}{\code{rotor::BackupQueue$set_backup_dir()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin">}\href{../../rotor/html/BackupQueue.html#method-set_origin}{\code{rotor::BackupQueue$set_origin()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="prune">}\href{../../rotor/html/BackupQueueDateTime.html#method-prune}{\code{rotor::BackupQueueDateTime$prune()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="push">}\href{../../rotor/html/BackupQueueDateTime.html#method-push}{\code{rotor::BackupQueueDateTime$push()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="set_cache_backups">}\href{../../rotor/html/BackupQueueDateTime.html#method-set_cache_backups}{\code{rotor::BackupQueueDateTime$set_cache_backups()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="set_max_backups">}\href{../../rotor/html/BackupQueueDateTime.html#method-set_max_backups}{\code{rotor::BackupQueueDateTime$set_max_backups()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="should_rotate">}\href{../../rotor/html/BackupQueueDateTime.html#method-should_rotate}{\code{rotor::BackupQueueDateTime$should_rotate()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="update_backups_cache">}\href{../../rotor/html/BackupQueueDateTime.html#method-update_backups_cache}{\code{rotor::BackupQueueDateTime$update_backups_cache()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-print'><code>rotor::BackupQueue$print()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="prune_identical"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-prune_identical'><code>rotor::BackupQueue$prune_identical()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="push_backup"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-push_backup'><code>rotor::BackupQueue$push_backup()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_backup_dir'><code>rotor::BackupQueue$set_backup_dir()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_compression'><code>rotor::BackupQueue$set_compression()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_file'><code>rotor::BackupQueue$set_file()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_origin'><code>rotor::BackupQueue$set_origin()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="prune"><a href='../../rotor/html/BackupQueueDateTime.html#method-BackupQueueDateTime-prune'><code>rotor::BackupQueueDateTime$prune()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="push"><a href='../../rotor/html/BackupQueueDateTime.html#method-BackupQueueDateTime-push'><code>rotor::BackupQueueDateTime$push()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="set_cache_backups"><a href='../../rotor/html/BackupQueueDateTime.html#method-BackupQueueDateTime-set_cache_backups'><code>rotor::BackupQueueDateTime$set_cache_backups()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="set_max_backups"><a href='../../rotor/html/BackupQueueDateTime.html#method-BackupQueueDateTime-set_max_backups'><code>rotor::BackupQueueDateTime$set_max_backups()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="should_rotate"><a href='../../rotor/html/BackupQueueDateTime.html#method-BackupQueueDateTime-should_rotate'><code>rotor::BackupQueueDateTime$should_rotate()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueueDateTime" data-id="update_backups_cache"><a href='../../rotor/html/BackupQueueDateTime.html#method-BackupQueueDateTime-update_backups_cache'><code>rotor::BackupQueueDateTime$update_backups_cache()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-BackupQueueDate-new"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDate-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDate$new(
@@ -68,8 +68,8 @@ Other R6 Classes:
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_fmt"></a>}}
-\if{latex}{\out{\hypertarget{method-set_fmt}{}}}
+\if{html}{\out{<a id="method-BackupQueueDate-set_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDate-set_fmt}{}}}
 \subsection{Method \code{set_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDate$set_fmt(x)}\if{html}{\out{</div>}}

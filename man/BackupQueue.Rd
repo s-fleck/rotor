@@ -56,29 +56,29 @@ All backups of self$origin}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{BackupQueue$new()}}
-\item \href{#method-prune}{\code{BackupQueue$prune()}}
-\item \href{#method-prune_identical}{\code{BackupQueue$prune_identical()}}
-\item \href{#method-print}{\code{BackupQueue$print()}}
-\item \href{#method-push_backup}{\code{BackupQueue$push_backup()}}
-\item \href{#method-set_origin}{\code{BackupQueue$set_origin()}}
-\item \href{#method-set_compression}{\code{BackupQueue$set_compression()}}
-\item \href{#method-set_max_backups}{\code{BackupQueue$set_max_backups()}}
-\item \href{#method-set_file}{\code{BackupQueue$set_file()}}
-\item \href{#method-set_backup_dir}{\code{BackupQueue$set_backup_dir()}}
+\item \href{#method-BackupQueue-new}{\code{BackupQueue$new()}}
+\item \href{#method-BackupQueue-prune}{\code{BackupQueue$prune()}}
+\item \href{#method-BackupQueue-prune_identical}{\code{BackupQueue$prune_identical()}}
+\item \href{#method-BackupQueue-print}{\code{BackupQueue$print()}}
+\item \href{#method-BackupQueue-push_backup}{\code{BackupQueue$push_backup()}}
+\item \href{#method-BackupQueue-set_origin}{\code{BackupQueue$set_origin()}}
+\item \href{#method-BackupQueue-set_compression}{\code{BackupQueue$set_compression()}}
+\item \href{#method-BackupQueue-set_max_backups}{\code{BackupQueue$set_max_backups()}}
+\item \href{#method-BackupQueue-set_file}{\code{BackupQueue$set_file()}}
+\item \href{#method-BackupQueue-set_backup_dir}{\code{BackupQueue$set_backup_dir()}}
 }
 }
-\if{html}{
-\out{<details open ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="push">}\href{../../rotor/html/DirectoryQueue.html#method-push}{\code{rotor::DirectoryQueue$push()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details open><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="push"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-push'><code>rotor::DirectoryQueue$push()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-BackupQueue-new"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$new(
@@ -92,8 +92,8 @@ All backups of self$origin}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-prune"></a>}}
-\if{latex}{\out{\hypertarget{method-prune}{}}}
+\if{html}{\out{<a id="method-BackupQueue-prune"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-prune}{}}}
 \subsection{Method \code{prune()}}{
 Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{prune_backups()}}.
 \subsection{Usage}{
@@ -102,8 +102,8 @@ Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{pr
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-prune_identical"></a>}}
-\if{latex}{\out{\hypertarget{method-prune_identical}{}}}
+\if{html}{\out{<a id="method-BackupQueue-prune_identical"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-prune_identical}{}}}
 \subsection{Method \code{prune_identical()}}{
 Delete all identical backups. Uses \code{\link[tools:md5sum]{tools::md5sum()}} to
 compare the files.
@@ -114,8 +114,8 @@ Set the file to be backed up
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-print"></a>}}
-\if{latex}{\out{\hypertarget{method-print}{}}}
+\if{html}{\out{<a id="method-BackupQueue-print"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-print}{}}}
 \subsection{Method \code{print()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$print()}\if{html}{\out{</div>}}
@@ -123,8 +123,8 @@ Set the file to be backed up
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-push_backup"></a>}}
-\if{latex}{\out{\hypertarget{method-push_backup}{}}}
+\if{html}{\out{<a id="method-BackupQueue-push_backup"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-push_backup}{}}}
 \subsection{Method \code{push_backup()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$push_backup(...)}\if{html}{\out{</div>}}
@@ -132,8 +132,8 @@ Set the file to be backed up
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_origin"></a>}}
-\if{latex}{\out{\hypertarget{method-set_origin}{}}}
+\if{html}{\out{<a id="method-BackupQueue-set_origin"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-set_origin}{}}}
 \subsection{Method \code{set_origin()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_origin(x)}\if{html}{\out{</div>}}
@@ -149,8 +149,8 @@ Set the file to be backed up}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_compression"></a>}}
-\if{latex}{\out{\hypertarget{method-set_compression}{}}}
+\if{html}{\out{<a id="method-BackupQueue-set_compression"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-set_compression}{}}}
 \subsection{Method \code{set_compression()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_compression(x)}\if{html}{\out{</div>}}
@@ -165,8 +165,8 @@ Set the file to be backed up}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_max_backups"></a>}}
-\if{latex}{\out{\hypertarget{method-set_max_backups}{}}}
+\if{html}{\out{<a id="method-BackupQueue-set_max_backups"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-set_max_backups}{}}}
 \subsection{Method \code{set_max_backups()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_max_backups(x)}\if{html}{\out{</div>}}
@@ -174,8 +174,8 @@ Set the file to be backed up}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_file"></a>}}
-\if{latex}{\out{\hypertarget{method-set_file}{}}}
+\if{html}{\out{<a id="method-BackupQueue-set_file"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-set_file}{}}}
 \subsection{Method \code{set_file()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_file(x)}\if{html}{\out{</div>}}
@@ -183,8 +183,8 @@ Set the file to be backed up}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_backup_dir"></a>}}
-\if{latex}{\out{\hypertarget{method-set_backup_dir}{}}}
+\if{html}{\out{<a id="method-BackupQueue-set_backup_dir"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-set_backup_dir}{}}}
 \subsection{Method \code{set_backup_dir()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_backup_dir(x)}\if{html}{\out{</div>}}

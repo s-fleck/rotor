@@ -12,3 +12,4 @@
 ^codecov\.yml$
 ^vignettes/benchmarks\.Rmd$
 ^revdep$
+^CRAN-SUBMISSION$

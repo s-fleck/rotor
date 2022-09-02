@@ -41,33 +41,33 @@ second)
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{BackupQueueDateTime$new()}}
-\item \href{#method-push}{\code{BackupQueueDateTime$push()}}
-\item \href{#method-prune}{\code{BackupQueueDateTime$prune()}}
-\item \href{#method-should_rotate}{\code{BackupQueueDateTime$should_rotate()}}
-\item \href{#method-update_backups_cache}{\code{BackupQueueDateTime$update_backups_cache()}}
-\item \href{#method-set_max_backups}{\code{BackupQueueDateTime$set_max_backups()}}
-\item \href{#method-set_fmt}{\code{BackupQueueDateTime$set_fmt()}}
-\item \href{#method-set_cache_backups}{\code{BackupQueueDateTime$set_cache_backups()}}
+\item \href{#method-BackupQueueDateTime-new}{\code{BackupQueueDateTime$new()}}
+\item \href{#method-BackupQueueDateTime-push}{\code{BackupQueueDateTime$push()}}
+\item \href{#method-BackupQueueDateTime-prune}{\code{BackupQueueDateTime$prune()}}
+\item \href{#method-BackupQueueDateTime-should_rotate}{\code{BackupQueueDateTime$should_rotate()}}
+\item \href{#method-BackupQueueDateTime-update_backups_cache}{\code{BackupQueueDateTime$update_backups_cache()}}
+\item \href{#method-BackupQueueDateTime-set_max_backups}{\code{BackupQueueDateTime$set_max_backups()}}
+\item \href{#method-BackupQueueDateTime-set_fmt}{\code{BackupQueueDateTime$set_fmt()}}
+\item \href{#method-BackupQueueDateTime-set_cache_backups}{\code{BackupQueueDateTime$set_cache_backups()}}
 }
 }
-\if{html}{
-\out{<details ><summary>Inherited methods</summary>}
-\itemize{
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir">}\href{../../rotor/html/DirectoryQueue.html#method-set_dir}{\code{rotor::DirectoryQueue$set_dir()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print">}\href{../../rotor/html/BackupQueue.html#method-print}{\code{rotor::BackupQueue$print()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="prune_identical">}\href{../../rotor/html/BackupQueue.html#method-prune_identical}{\code{rotor::BackupQueue$prune_identical()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="push_backup">}\href{../../rotor/html/BackupQueue.html#method-push_backup}{\code{rotor::BackupQueue$push_backup()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir">}\href{../../rotor/html/BackupQueue.html#method-set_backup_dir}{\code{rotor::BackupQueue$set_backup_dir()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression">}\href{../../rotor/html/BackupQueue.html#method-set_compression}{\code{rotor::BackupQueue$set_compression()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file">}\href{../../rotor/html/BackupQueue.html#method-set_file}{\code{rotor::BackupQueue$set_file()}}\out{</span>}
-\item \out{<span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin">}\href{../../rotor/html/BackupQueue.html#method-set_origin}{\code{rotor::BackupQueue$set_origin()}}\out{</span>}
-}
-\out{</details>}
-}
+\if{html}{\out{
+<details><summary>Inherited methods</summary>
+<ul>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-print'><code>rotor::BackupQueue$print()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="prune_identical"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-prune_identical'><code>rotor::BackupQueue$prune_identical()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="push_backup"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-push_backup'><code>rotor::BackupQueue$push_backup()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_backup_dir'><code>rotor::BackupQueue$set_backup_dir()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_compression'><code>rotor::BackupQueue$set_compression()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_file'><code>rotor::BackupQueue$set_file()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_origin'><code>rotor::BackupQueue$set_origin()</code></a></span></li>
+</ul>
+</details>
+}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-BackupQueueDateTime-new"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDateTime-new}{}}}
 \subsection{Method \code{new()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDateTime$new(
@@ -83,8 +83,8 @@ second)
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-push"></a>}}
-\if{latex}{\out{\hypertarget{method-push}{}}}
+\if{html}{\out{<a id="method-BackupQueueDateTime-push"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDateTime-push}{}}}
 \subsection{Method \code{push()}}{
 Create a new time-stamped backup (e.g. \file{logfile.2020-07-22_12-26-29.log})
 \subsection{Usage}{
@@ -104,8 +104,8 @@ the current system time if necessary.}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-prune"></a>}}
-\if{latex}{\out{\hypertarget{method-prune}{}}}
+\if{html}{\out{<a id="method-BackupQueueDateTime-prune"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDateTime-prune}{}}}
 \subsection{Method \code{prune()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDateTime$prune(max_backups = self$max_backups)}\if{html}{\out{</div>}}
@@ -113,8 +113,8 @@ the current system time if necessary.}
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-should_rotate"></a>}}
-\if{latex}{\out{\hypertarget{method-should_rotate}{}}}
+\if{html}{\out{<a id="method-BackupQueueDateTime-should_rotate"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDateTime-should_rotate}{}}}
 \subsection{Method \code{should_rotate()}}{
 Should a file of \code{size} and \code{age} be rotated? See \code{size} and \code{age}
 arguments of \code{\link[=rotate_date]{rotate_date()}}. \code{now} overrides the current system time,
@@ -134,8 +134,8 @@ arguments of \code{\link[=rotate_date]{rotate_date()}}. \code{now} overrides the
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-update_backups_cache"></a>}}
-\if{latex}{\out{\hypertarget{method-update_backups_cache}{}}}
+\if{html}{\out{<a id="method-BackupQueueDateTime-update_backups_cache"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDateTime-update_backups_cache}{}}}
 \subsection{Method \code{update_backups_cache()}}{
 Force update of the backups cache (only if \verb{$cache_backups == TRUE}).
 \subsection{Usage}{
@@ -144,8 +144,8 @@ Force update of the backups cache (only if \verb{$cache_backups == TRUE}).
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_max_backups"></a>}}
-\if{latex}{\out{\hypertarget{method-set_max_backups}{}}}
+\if{html}{\out{<a id="method-BackupQueueDateTime-set_max_backups"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDateTime-set_max_backups}{}}}
 \subsection{Method \code{set_max_backups()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDateTime$set_max_backups(x)}\if{html}{\out{</div>}}
@@ -153,8 +153,8 @@ Force update of the backups cache (only if \verb{$cache_backups == TRUE}).
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_fmt"></a>}}
-\if{latex}{\out{\hypertarget{method-set_fmt}{}}}
+\if{html}{\out{<a id="method-BackupQueueDateTime-set_fmt"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDateTime-set_fmt}{}}}
 \subsection{Method \code{set_fmt()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDateTime$set_fmt(x)}\if{html}{\out{</div>}}
@@ -162,8 +162,8 @@ Force update of the backups cache (only if \verb{$cache_backups == TRUE}).
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_cache_backups"></a>}}
-\if{latex}{\out{\hypertarget{method-set_cache_backups}{}}}
+\if{html}{\out{<a id="method-BackupQueueDateTime-set_cache_backups"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueueDateTime-set_cache_backups}{}}}
 \subsection{Method \code{set_cache_backups()}}{
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{BackupQueueDateTime$set_cache_backups(x)}\if{html}{\out{</div>}}

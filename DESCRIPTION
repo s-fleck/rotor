@@ -1,7 +1,7 @@
 Type: Package
 Package: rotor
 Title: Log Rotation and Conditional Backups
-Version: 0.3.5.9000
+Version: 0.3.6
 Authors@R: 
     person(given = "Stefan",
            family = "Fleck",
@@ -32,4 +32,4 @@ Suggests:
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1.9000
+RoxygenNote: 7.2.1.9000
