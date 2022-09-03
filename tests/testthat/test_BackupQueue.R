@@ -478,7 +478,7 @@ test_that("BackupQueueIndex$push() can push to different directory", {
 
 
 
-test_that("BackupQueueIndex dry run doesnt modify file system", {
+test_that("BackupQueueIndex dry run does not modify file system", {
   try({unlink(td, recursive = TRUE)})
   dir.create(td, recursive = TRUE)
   on.exit(unlink(td, recursive = TRUE))
@@ -505,7 +505,7 @@ test_that("BackupQueueIndex dry run doesnt modify file system", {
   expect_silent(bt$pad_index())
   expect_snapshot_unchanged(snap)
 
-  expect_message(bt$push(), "test.log -> test.1.log")
+  expect_message(bt$push(), ".*test.log -> .*test.1.log")
   expect_snapshot_unchanged(snap)
 
   expect_message(bt$prune(0), "test.01.log")
