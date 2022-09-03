@@ -99,7 +99,14 @@ BackupQueue <- R6::R6Class(
           dd,
           c(paste(nrow(dd), "files total"), sum(as.integer(dd[, "size"])))
         )
-        dd[, "size"] <- pad_left(fmt_bytes(dd[, "size"]))
+
+        if (DRY_RUN$active){
+          dd[, "size"] <- pad_left(fmt_bytes(dd[, "size"], na = "<dry run>"))
+        } else {
+          dd[, "size"] <- pad_left(fmt_bytes(dd[, "size"]))
+        }
+
+
         dd[, "file"] <- pad_right(dd[, "file"])
         assert(nrow(dd) >= 3)
         sel <- 2:(nrow(dd) - 1)

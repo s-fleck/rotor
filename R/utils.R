@@ -13,17 +13,23 @@ first <- function(x){
 
 
 fmt_bytes <- function(
-  x
+  x,
+  na = "<NA>"
 ){
   x <- as.numeric(x)
 
   readablifiy <- function(.x){
+    if (is.na(.x) || is.null(.x)){
+      return(na)
+    }
+
     for (unit in c("B", "KiB", "MiB", "GiB", "TiB")){
-      if (max(abs(.x)) < 1024 || unit == "TiB")
+      if (max(abs(.x), na.rm = TRUE) < 1024 || unit == "TiB")
         break
       else
         .x <- .x / 1024
     }
+
     return(paste(round(.x, 1), unit))
   }
 
