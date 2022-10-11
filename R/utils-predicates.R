@@ -184,7 +184,7 @@ is_backup_older_than_datetime <- function(
   verbose = FALSE
 ){
   if (is_Date(backup_date))
-    backup_date <- as.POSIXct(as.character(backup_date))
+    backup_date <- as.POSIXct(format(backup_date))
 
   assert(is_scalar_POSIXct(backup_date))
   assert(is_parsable_datetime(datetime))
@@ -212,10 +212,10 @@ is_backup_older_than_interval <- function(
   verbose = FALSE
 ){
   if (is_POSIXct(backup_date))
-    backup_date <- as.Date(as.character(backup_date))
+    backup_date <- as.Date(format(backup_date))
 
   if (is_POSIXct(now)){
-    now <- as.Date(as.character(now))
+    now <- as.Date(format(now))
   } else if (is.character(now)){
     now <- as.Date(parse_datetime(now))
   }

@@ -35,7 +35,7 @@ test_that("backup_time common usecases", {
   expect_identical(bq$n, 4L)
   expect_equal(bq$last_rotation, as.POSIXct("2019-03-01 00:00:01"))
   expect_identical(
-    as.character(min(bq$files$timestamp)),
+    format(min(bq$files$timestamp)),
     "2019-01-01"
   )
 

@@ -584,7 +584,7 @@ BackupQueueDateTime <- R6::R6Class(
           self$files$path,
           self$files$timestamp,
           max_age = max_backups,
-          now = as.Date(as.character(self$last_rotation))
+          now = as.Date(format(self$last_rotation))
         )
       }
 
@@ -813,7 +813,7 @@ BackupQueueDate <- R6::R6Class(
       if (nrow(bus) < 1) {
         NULL
       } else {
-        as.Date(as.character(max(get("files", envir = self)$timestamp)))
+        as.Date(format(max(get("files", envir = self)$timestamp)))
       }
     }
   )
@@ -933,7 +933,7 @@ select_prune_files_by_age <- function(
 
   if (is_parsable_date(max_age)){
     limit     <- parse_date(max_age)
-    to_remove <- path[as.Date(as.character(timestamp)) < limit]
+    to_remove <- path[as.Date(format(timestamp)) < limit]
 
   } else if (is_parsable_datetime(max_age)){
     limit     <- parse_datetime(max_age)
@@ -956,10 +956,10 @@ select_prune_files_by_age <- function(
       limit <- dint::first_of_isoweek(dint::as_date_yw(now) - max_age$value + 1L)
 
     } else if (identical(max_age[["unit"]], "day")){
-      limit <- as.Date(as.character(now)) - max_age$value + 1L
+      limit <- as.Date(format(now)) - max_age$value + 1L
     }
 
-    to_remove <- path[as.Date(as.character(timestamp)) < limit]
+    to_remove <- path[as.Date(format(timestamp)) < limit]
   } else {
     stop(ValueError(paste0(preview_object(max_age), " is not a valid timestamp or interval. See ?rotate_time for more info.")))
   }

@@ -50,7 +50,7 @@ test_that("parse_size throws warning when it encounters floats", {
 
 test_that("parse_datetime works as expected", {
   d <- as.Date("2019-12-01")
-  expect_equal(parse_datetime(d), as.POSIXct(as.character(d)))
+  expect_equal(parse_datetime(d), as.POSIXct(format(d)))
 
   expect_equal(parse_datetime("2018-12-01"), as.POSIXct("2018-12-01"))
   expect_equal(parse_datetime("20181201"), as.POSIXct("2018-12-01"))

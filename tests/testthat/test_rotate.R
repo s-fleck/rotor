@@ -43,7 +43,7 @@ test_that("backup/rotate happy path", {
   expect_identical(bq$n, 3L)
   expect_equal(file.size(tf), 0)
   expect_equal(file.size(bq$files$path[[1]]), tf_size)
-  expect_equal(bq$files$sfx, as.character(1:3))
+  expect_equal(bq$files$sfx, format(1:3))
 
   bq$prune(0)
   file.remove(tf)

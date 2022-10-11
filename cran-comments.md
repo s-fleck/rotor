@@ -2,4 +2,5 @@
 
 0 errors | 0 warnings | 0 notes
 
-Rebuild help files for new R 4.2.0
+Fix issues related to the change in behaviour of `as.character.POSIXct()` & co 
+in r-devel.

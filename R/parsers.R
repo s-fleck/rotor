@@ -76,7 +76,7 @@ parse_date <- function(x){
     return(x)
 
   } else if (is_POSIXct(x)){
-    return(as.Date(as.character(x)))
+    return(as.Date(format(x)))
 
   } else if (!is.character(x) && !is_integerish(x)) {
     stop(
@@ -100,7 +100,7 @@ parse_datetime <- function(x){
   if (is_POSIXct(x)){
     return(x)
   } else if (is_Date(x)) {
-    return(as.POSIXct(as.character(x)))
+    return(as.POSIXct(format(x)))
   } else if (!is.character(x) && !is_integerish(x)) {
     stop(
       "`", deparse(substitute(x)), "` must be a character, Date, or POSIXt, ",
@@ -145,14 +145,14 @@ prep_hms <- function(.x){
 
 
 standardize_datetime_stamp <- function(x){
-  gsub("T|-|_|\\s", "", as.character(x))
+  gsub("T|-|_|\\s", "", format(x))
 }
 
 
 
 
 standardize_date_stamp <- function(x){
-  gsub("-|_|\\s", "", as.character(x))
+  gsub("-|_|\\s", "", format(x))
 }
 
 

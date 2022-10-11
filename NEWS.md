@@ -1,3 +1,9 @@
+# rotor 0.3.7
+
+* Some internal changes to date formatting for compatibility with
+  R-devel revision >= r82904 (2022-09-24 19:32:52).
+
+
 # rotor 0.3.6
 
 * `rotate()`, `backup()` and co. no longer fail on filenames that 

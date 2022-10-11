@@ -710,7 +710,7 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
   )
 
   expect_identical(
-    as.character(bq$files$timestamp),
+    format(bq$files$timestamp),
     eres
   )
 
@@ -719,7 +719,7 @@ test_that("BackupQueueDatetime works with supported timestamp formats", {
   file.create(noback)
 
   expect_identical(
-    as.character(bq$files$timestamp),
+    format(bq$files$timestamp),
     eres
   )
 
@@ -955,7 +955,7 @@ test_that("BackupQueueDateTime: `age` works with no backups", {
   file.create(tf)
   on.exit(unlink(tf), add = TRUE)
 
-  now <- as.Date(as.character(file.info(tf)$ctime))
+  now <- as.Date(format(file.info(tf)$ctime))
   bq <- BackupQueueDateTime$new(tf)
   expect_false(bq$should_rotate(age = "10 day", now = now, size = 0))
   expect_true(bq$should_rotate(age = "0 day", now = now, size = 0))
@@ -1377,7 +1377,7 @@ test_that("BackupQueueDateTime: `age` works with no backups", {
   file.create(tf)
   on.exit(unlink(tf), add = TRUE)
 
-  now <- as.Date(as.character(file.info(tf)$ctime))
+  now <- as.Date(format(file.info(tf)$ctime))
   bq <- BackupQueueDate$new(tf)
   expect_false(bq$should_rotate(age = "10 day", now = now, size = 0))
   expect_true(bq$should_rotate(age = "0 day", now = now, size = 0))

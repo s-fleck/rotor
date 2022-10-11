@@ -147,7 +147,7 @@ Cache <- R6::R6Class(
       assert(is.null(max_files) || is.infinite(max_files) || is_n0(max_files))
       files <- self$files
       files <- files[order(files$mtime), ]
-      now <- as.Date(as.character(now))
+      now <- as.Date(format(now))
 
       rem <- list()
 
