@@ -1,5 +1,8 @@
 version = 1
 
+[pipeline]
+default_model = "deepseek/deepseek-flash"
+
 [repo]
 base_branch = "master"
 
