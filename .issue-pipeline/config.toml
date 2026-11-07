@@ -1,0 +1,7 @@
+version = 1
+
+[repo]
+base_branch = "master"
+
+[verification]
+checks = ["Rscript -e 'testthat::test_local()'"]
