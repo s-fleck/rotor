@@ -18,15 +18,21 @@ Stable form rules for issues and comments in the project's GitHub issue tracker.
 
 ## Issue Body
 
-Use the project's section skeleton (default: `**Problem**` / `**Fix**` / `**Rulings**` / `**Done when**` / `**Out of scope**`). Delete sections that stay empty before filing. Aim for under ~40 lines; if the evidence itself will not fit, split the issue rather than cutting the evidence.
+Use the project's section skeleton (default: `**Abstract**` / `**Problem**` / `**Fix**` / `**Rulings**` / `**Done when**` / `**Out of scope**`). Delete sections that stay empty before filing. Length is a symptom, not a rule: keep the body as long as the evidence requires for one coherent unit, and use [Issue Sizing](#issue-sizing) to decide whether to split.
+
+### Abstract
+
+Two or three plain-language sentences for a human skimming the issue: what is wrong or missing, why it matters, and what this issue changes. No `file:line` references, checklists, test commands or verification stamp. Title + abstract must make sense on their own; `Done when` must make sense with the abstract.
+
+For a deliberate batch, state the shared acceptance path in one sentence: "This batch fixes six blockers that share one acceptance path: `doctor` and `preview` succeed against a provisioned target." Then use a short table in `Fix` when the parts are independent enough to list.
 
 ### Problem
 
-What is wrong or missing, and why it matters. Reference code and docs per **Notation and Hygiene**. Close the Problem with the verification stamp `verified YYYY-MM-DD (model: <model_id>)` — use `repro` instead of `verified` when a run backs the claim. The stamp is the issue's signature and is required on every agent-authored issue, including a feature issue that only inspected the code; there is no end-of-body signature line.
+The detail layer below the abstract: what is wrong or missing, why it matters, and the evidence a reviewer needs. Reference code and docs per **Notation and Hygiene**. Close the Problem with the verification stamp `verified YYYY-MM-DD (model: <model_id>)` — use `repro` instead of `verified` when a run backs the claim. The stamp is the issue's signature and is required on every agent-authored issue, including a feature issue that only inspected the code; there is no end-of-body signature line.
 
 ### Fix
 
-A concrete task list (`- [ ]`); name the required spec delta inline (project notation, e.g. `Δspec: <capability>`).
+A concrete task list (`- [ ]`); name the required spec delta inline (project notation, e.g. `Δspec: <capability>`). `Fix` is the approach; `Done when` is the acceptance. Do not repeat the same bullets in both. For a batch, group the tasks or use a table instead of splitting the issue by line count.
 
 ### Rulings
 
@@ -39,6 +45,34 @@ Machine-checkable acceptance: tests that must exist/pass, commands to run, doc b
 ### Out of scope
 
 Only when a reader (human or agent) might plausibly wander there.
+
+## Issue Sizing
+
+The unit is the largest coherent change one pipeline cycle can deliver: one `propose → review → apply` pass, one spec delta, one PR and one verification path. A new issue costs a full cycle, so do not split for line count.
+
+Keep together when:
+
+- the parts share one outcome or root cause;
+- they need one spec delta or capability change;
+- they share one verification path;
+- one PR can land them and one review can judge them;
+- the batch fits the pipeline's issue timeout and context budget.
+
+Split when:
+
+- the parts can land independently;
+- they need separate decisions or spec deltas;
+- their checks, rollback boundaries or risk differ;
+- the batch cannot finish in one cycle.
+
+A batch issue must state the shared acceptance path in the abstract; use a table or grouped bullets in `Fix` for the parts. A separate issue should reduce review risk or pipeline cost. If it only adds a cycle, fold it back into the parent. The pipeline's issue timeout is the practical upper bound: split when the batch cannot finish in one cycle, not when the body is long.
+
+## Before Filing
+
+- Title + abstract + `Done when` stand alone; the reader does not need `Problem` to understand the unit.
+- The abstract has no `file:line` references, checklist, command or verification stamp.
+- A batch names its shared acceptance path; a split is justified by independent outcomes, separate decisions, different risk boundaries or cycle overflow — not line count.
+- `Fix` and `Done when` do not repeat each other.
 
 ## Labels
 

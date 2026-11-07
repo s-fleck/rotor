@@ -39,10 +39,10 @@ Do not audit labels unrelated to the issue at hand.
 Fetch the repository's labels as part of resolving the set, and again whenever the project's label setup may have changed:
 
 ```bash
-python3 .opencode/skills/github-issue/scripts/github-rest.py --paginate GET "/labels?per_page=100"
+python3 .opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py --paginate GET "/labels?per_page=100"
 ```
 
-`scripts/github-rest.py` is one level up from this reference, in the skill's `scripts/` directory; from the canonical repo that is `skills/github-issue/scripts/github-rest.py`. It is the project's only GitHub client; `--paginate` follows `Link rel=next` and prints one JSON array. Do not use the `gh` CLI.
+`scripts/github-rest.py` is one level up from this reference, in the skill's `scripts/` directory; from the project root that is `.opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py`. It is the project's only GitHub client; `--paginate` follows `Link rel=next` and prints one JSON array. Do not use the `gh` CLI.
 
 - Use the exact name and casing returned by GitHub.
 - Skip labels with a non-null `archived_at` when choosing a write label; they cannot be applied to new work. A read-only signal already on an issue is still read.
@@ -80,7 +80,7 @@ The standard GitHub labels (`bug`, `documentation`, `duplicate`, `enhancement`, 
 All writes go through the same helper. A `.json` payload is sent verbatim; any other file is wrapped as `{"body": <text>}`. The payload rules and token handling are in the parent `SKILL.md`.
 
 ```bash
-python3 .opencode/skills/github-issue/scripts/github-rest.py POST /issues/42/labels /tmp/opencode/labels.json
+python3 .opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py POST /issues/42/labels /tmp/opencode/labels.json
 # /tmp/opencode/labels.json: {"labels": ["P2", "needs-ruling"]}
 ```
 

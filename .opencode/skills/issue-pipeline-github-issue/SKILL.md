@@ -3,11 +3,7 @@ name: issue-pipeline-github-issue
 description: Use when filing, drafting, or reformatting a GitHub issue — turning notes or discussion into an issue, filing follow-up work from a solved issue, or checking an issue body against house style — and when maintaining an issue's body or labels, posting or editing the post-solve implementation comment, or applying the signature and traceability policy to agent-authored GitHub content. Carries the self-contained GitHub helper (`scripts/github-rest.py`: REST plus one GraphQL draft-ready mutation — a skill script, not the `gh` CLI); label resolution and read-only triage signals live in `references/labels.md`.
 metadata:
   author: Stefan Fleck
-  version: "9.0.0+autocode.1"
-  variant: autocode
-  upstream: github-issue@9.0.0
-  upstream_commit: 39b1ce32923a7f22cfca8ba82274e42a2107b728
-  local_changes: "Namespace prefix and bundle-relative paths only"
+  version: "10.0.0"
 ---
 
 # GitHub Issue
@@ -45,18 +41,18 @@ Skip the comment when it would add nothing beyond the issue text and the diff: m
 
 ## GitHub Access: `scripts/github-rest.py`, not the `gh` CLI
 
-`scripts/github-rest.py` (in this skill's `scripts/` directory) is the project's only GitHub client. There is no `gh` CLI dependency: no `gh` binary is installed for this workflow and none is needed. The helper is a standard-library Python script, not executable and not on `PATH` — always call it by path with `python3`; `--help` lists the methods, `--paginate`, and the payload rules. The paths below show a vendored copy; from the canonical repo use `skills/github-issue/scripts/github-rest.py`. It uses REST for everything except the one draft-ready GraphQL mutation below, because REST has no draft toggle.
+`scripts/github-rest.py` is the project's only GitHub client and the authoritative copy lives at `.opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py`. There is no `gh` CLI dependency: no `gh` binary is installed for this workflow and none is needed. The helper is a standard-library Python script, not executable and not on `PATH` — always call it by path with `python3`; `--help` lists the methods, `--paginate`, and the payload rules. It uses REST for everything except the one draft-ready GraphQL mutation below, because REST has no draft toggle.
 
 It derives `owner/repo` from `git remote get-url origin` and resolves the token from `AGENT_GH_TOKEN`, then `$XDG_CONFIG_HOME/issue-pipeline/github-token` (one line, chmod 600), then a per-repository `<REPO>_GH_TOKEN`, then `GH_TOKEN` and `GITHUB_TOKEN`; the token is never printed or logged. Call it directly — no heredoc:
 
 ```bash
-python3 .opencode/skills/github-issue/scripts/github-rest.py GET /issues/42
-python3 .opencode/skills/github-issue/scripts/github-rest.py --paginate GET "/issues?state=open&per_page=100"
-python3 .opencode/skills/github-issue/scripts/github-rest.py POST /issues /tmp/opencode/issue.json                      # create: {"title", "body", "labels"}
-python3 .opencode/skills/github-issue/scripts/github-rest.py PATCH /issues/42 /tmp/opencode/issue-42-body.md            # rulings, `Change:` link
-python3 .opencode/skills/github-issue/scripts/github-rest.py POST /issues/42/comments /tmp/opencode/issue-42-comment.md
-python3 .opencode/skills/github-issue/scripts/github-rest.py DELETE /issues/42/labels/needs-ruling         # resolved needs-ruling label
-python3 .opencode/skills/github-issue/scripts/github-rest.py GRAPHQL /graphql /tmp/opencode/pr-ready.json  # {"query", "variables"}; mark a draft PR ready
+python3 .opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py GET /issues/42
+python3 .opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py --paginate GET "/issues?state=open&per_page=100"
+python3 .opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py POST /issues /tmp/opencode/issue.json                      # create: {"title", "body", "labels"}
+python3 .opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py PATCH /issues/42 /tmp/opencode/issue-42-body.md            # rulings, `Change:` link
+python3 .opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py POST /issues/42/comments /tmp/opencode/issue-42-comment.md
+python3 .opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py DELETE /issues/42/labels/needs-ruling         # resolved needs-ruling label
+python3 .opencode/skills/issue-pipeline-github-issue/scripts/github-rest.py GRAPHQL /graphql /tmp/opencode/pr-ready.json  # {"query", "variables"}; mark a draft PR ready
 ```
 
 - `--paginate` follows `Link rel=next` for a `GET` list endpoint and prints one JSON array; it refuses a next link outside the API host. Without it, one page is returned.
