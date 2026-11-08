@@ -209,8 +209,9 @@ dots but have no file extension (e.g. \code{my.holiday.picture.jpg} is OK but
 \code{prune_backups()} physically deletes all backups of a file
 based on \code{max_backups}
 
-\code{prune_backups()} physically deletes all backups of a file
-based on \code{max_backups}
+\code{prune_identical_backups()} deletes all backups of a file that
+are identical to a newer backup. It keeps the newest backup of each
+distinct file content.
 }
 \section{Side Effects}{
 
@@ -226,7 +227,8 @@ addition delete the input \code{file}, or replace it with an empty file if
 \code{prune_backups()} may delete files, depending on \code{max_backups}.
 
 
-\code{prune_backups()} may delete files, depending on \code{max_backups}.
+\code{prune_identical_backups()} may delete files. Identical backups are removed;
+no files are removed during a dry run.
 }
 
 \section{Intervals}{

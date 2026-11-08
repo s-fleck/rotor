@@ -13,65 +13,73 @@ intended for developers that want to extend this package. For normal usage,
 the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
 }
 \seealso{
-Other R6 Classes: 
-\code{\link{BackupQueueDateTime}},
-\code{\link{BackupQueueDate}},
-\code{\link{BackupQueueIndex}},
+Other R6 Classes:
 \code{\link{BackupQueue}},
+\code{\link{BackupQueueDate}},
+\code{\link{BackupQueueDateTime}},
+\code{\link{BackupQueueIndex}},
 \code{\link{Cache}}
 }
 \concept{R6 Classes}
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{dir}}{a \code{character} scalar. path of the directory in which to store
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{dir}}{a \code{character} scalar. path of the directory in which to store
 the cache files}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-DirectoryQueue-new}{\code{DirectoryQueue$new()}}
-\item \href{#method-DirectoryQueue-push}{\code{DirectoryQueue$push()}}
-\item \href{#method-DirectoryQueue-prune}{\code{DirectoryQueue$prune()}}
-\item \href{#method-DirectoryQueue-set_dir}{\code{DirectoryQueue$set_dir()}}
-}
+  \itemize{
+    \item \href{#method-DirectoryQueue-initialize}{\code{DirectoryQueue$new()}}
+    \item \href{#method-DirectoryQueue-push}{\code{DirectoryQueue$push()}}
+    \item \href{#method-DirectoryQueue-prune}{\code{DirectoryQueue$prune()}}
+    \item \href{#method-DirectoryQueue-set_dir}{\code{DirectoryQueue$set_dir()}}
+  }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-DirectoryQueue-new"></a>}}
-\if{latex}{\out{\hypertarget{method-DirectoryQueue-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DirectoryQueue$new(...)}\if{html}{\out{</div>}}
+\if{html}{\out{<a id="method-DirectoryQueue-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-DirectoryQueue-initialize}{}}}
+\subsection{\code{DirectoryQueue$new()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DirectoryQueue$new(...)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DirectoryQueue-push"></a>}}
 \if{latex}{\out{\hypertarget{method-DirectoryQueue-push}{}}}
-\subsection{Method \code{push()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DirectoryQueue$push(x, ...)}\if{html}{\out{</div>}}
+\subsection{\code{DirectoryQueue$push()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DirectoryQueue$push(x, ...)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DirectoryQueue-prune"></a>}}
 \if{latex}{\out{\hypertarget{method-DirectoryQueue-prune}{}}}
-\subsection{Method \code{prune()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DirectoryQueue$prune(x, ...)}\if{html}{\out{</div>}}
+\subsection{\code{DirectoryQueue$prune()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DirectoryQueue$prune(x, ...)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-DirectoryQueue-set_dir"></a>}}
 \if{latex}{\out{\hypertarget{method-DirectoryQueue-set_dir}{}}}
-\subsection{Method \code{set_dir()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{DirectoryQueue$set_dir(x, create = TRUE)}\if{html}{\out{</div>}}
+\subsection{\code{DirectoryQueue$set_dir()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{DirectoryQueue$set_dir(x, create = TRUE)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 }

@@ -19,7 +19,7 @@ the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
 \examples{
 
 ## ------------------------------------------------
-## Method `Cache$new`
+## Method `Cache$new()`
 ## ------------------------------------------------
 
 td <- file.path(tempdir(), "cache-test")
@@ -44,46 +44,46 @@ if (requireNamespace("uuid")){
 unlink(td, recursive = TRUE)
 }
 \seealso{
-Other R6 Classes: 
-\code{\link{BackupQueueDateTime}},
-\code{\link{BackupQueueDate}},
-\code{\link{BackupQueueIndex}},
+Other R6 Classes:
 \code{\link{BackupQueue}},
+\code{\link{BackupQueueDate}},
+\code{\link{BackupQueueDateTime}},
+\code{\link{BackupQueueIndex}},
 \code{\link{DirectoryQueue}}
 }
 \concept{R6 Classes}
 \section{Super class}{
-\code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{Cache}
+\code{\link[rotor:DirectoryQueue]{DirectoryQueue}} -> \code{Cache}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{dir}}{a \code{character} scalar. path of the directory in which to store the cache files}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{dir}}{a \code{character} scalar. path of the directory in which to store the cache files}
 
-\item{\code{n}}{\code{integer} scalar: number of files in the cache}
+    \item{\code{n}}{\code{integer} scalar: number of files in the cache}
 
-\item{\code{max_files}}{see the \code{compress} argument of \code{\link[base:readRDS]{base::saveRDS()}}.
+    \item{\code{max_files}}{see the \code{compress} argument of \code{\link[base:saveRDS]{base::saveRDS()}}.
 \strong{Note}: this differs from the \verb{$compress} argument of \code{\link[=rotate]{rotate()}}.}
 
-\item{\code{max_files}}{\code{integer} scalar: maximum number of files to keep in
+    \item{\code{max_files}}{\code{integer} scalar: maximum number of files to keep in
 the cache}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{dir}}{a \code{character} scalar. path of the directory in which to store the cache files}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{dir}}{a \code{character} scalar. path of the directory in which to store the cache files}
 
-\item{\code{n}}{\code{integer} scalar: number of files in the cache}
+    \item{\code{n}}{\code{integer} scalar: number of files in the cache}
 
-\item{\code{max_files}}{see the \code{compress} argument of \code{\link[base:readRDS]{base::saveRDS()}}.
+    \item{\code{max_files}}{see the \code{compress} argument of \code{\link[base:saveRDS]{base::saveRDS()}}.
 \strong{Note}: this differs from the \verb{$compress} argument of \code{\link[=rotate]{rotate()}}.}
 
-\item{\code{max_files}}{\code{integer} scalar: maximum number of files to keep in
+    \item{\code{max_files}}{\code{integer} scalar: maximum number of files to keep in
 the cache}
 
-\item{\code{max_size}}{scalar \code{integer}, \code{character} or \code{Inf}. Delete
+    \item{\code{max_size}}{scalar \code{integer}, \code{character} or \code{Inf}. Delete
 cached files (starting with the oldest) until the total size of the
 cache is below \code{max_size}. \code{Integers} are interpreted as bytes. You
 can pass \code{character} vectors that contain a file size suffix like \verb{1k}
@@ -92,54 +92,53 @@ of these short forms you can also be explicit and use the IEC suffixes
 \code{KiB}, \code{MiB}, \code{GiB}, \code{TiB}. In Both cases \code{1} kilobyte is \code{1024} bytes, 1
 \code{megabyte} is \code{1024} kilobytes, etc... .}
 
-\item{\code{max_age}}{\itemize{
+    \item{\code{max_age}}{\itemize{
 \item a \code{Date} scalar: Remove all backups before this date
 \item a \code{character} scalar representing a Date in ISO format (e.g. \code{"2019-12-31"})
 \item a \code{character} scalar representing an Interval in the form \code{"<number> <interval>"} (see \code{\link[=rotate]{rotate()}})
 }}
 
-\item{\code{hashfun}}{\code{NULL} or a \code{function} to generate a unique hash from the
+    \item{\code{hashfun}}{\code{NULL} or a \code{function} to generate a unique hash from the
 object to be cached (see example). The hash \emph{must} be a text string
 that is a valid filename on the target system. If \verb{$hashfun} is \code{NULL},
 a storage key must be supplied manually in \code{cache$push()}. If a new
 object is added with the same key as an existing object, the existing
 object will be overwritten without warning.
 All cached files}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-Cache-new}{\code{Cache$new()}}
-\item \href{#method-Cache-push}{\code{Cache$push()}}
-\item \href{#method-Cache-read}{\code{Cache$read()}}
-\item \href{#method-Cache-remove}{\code{Cache$remove()}}
-\item \href{#method-Cache-pop}{\code{Cache$pop()}}
-\item \href{#method-Cache-prune}{\code{Cache$prune()}}
-\item \href{#method-Cache-purge}{\code{Cache$purge()}}
-\item \href{#method-Cache-destroy}{\code{Cache$destroy()}}
-\item \href{#method-Cache-print}{\code{Cache$print()}}
-\item \href{#method-Cache-set_max_files}{\code{Cache$set_max_files()}}
-\item \href{#method-Cache-set_max_age}{\code{Cache$set_max_age()}}
-\item \href{#method-Cache-set_max_size}{\code{Cache$set_max_size()}}
-\item \href{#method-Cache-set_compression}{\code{Cache$set_compression()}}
-\item \href{#method-Cache-set_hashfun}{\code{Cache$set_hashfun()}}
+  \itemize{
+    \item \href{#method-Cache-initialize}{\code{Cache$new()}}
+    \item \href{#method-Cache-push}{\code{Cache$push()}}
+    \item \href{#method-Cache-read}{\code{Cache$read()}}
+    \item \href{#method-Cache-remove}{\code{Cache$remove()}}
+    \item \href{#method-Cache-pop}{\code{Cache$pop()}}
+    \item \href{#method-Cache-prune}{\code{Cache$prune()}}
+    \item \href{#method-Cache-purge}{\code{Cache$purge()}}
+    \item \href{#method-Cache-destroy}{\code{Cache$destroy()}}
+    \item \href{#method-Cache-print}{\code{Cache$print()}}
+    \item \href{#method-Cache-set_max_files}{\code{Cache$set_max_files()}}
+    \item \href{#method-Cache-set_max_age}{\code{Cache$set_max_age()}}
+    \item \href{#method-Cache-set_max_size}{\code{Cache$set_max_size()}}
+    \item \href{#method-Cache-set_compression}{\code{Cache$set_compression()}}
+    \item \href{#method-Cache-set_hashfun}{\code{Cache$set_hashfun()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>DirectoryQueue$set_dir()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-Cache-new"></a>}}
-\if{latex}{\out{\hypertarget{method-Cache-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$new(
+\if{html}{\out{<a id="method-Cache-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-Cache-initialize}{}}}
+\subsection{\code{Cache$new()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$new(
   dir = dirname(file),
   max_files = Inf,
   max_size = Inf,
@@ -147,20 +146,45 @@ All cached files}
   compression = TRUE,
   hashfun = digest::digest,
   create_dir = TRUE
-)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{create_dir}}{\code{logical} scalar. If \code{TRUE} \code{dir} is created if it
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{dir}}{a \code{character} scalar. path of the directory in which to store the cache files}
+      \item{\code{max_files}}{see the \code{compress} argument of \code{\link[base:saveRDS]{base::saveRDS()}}.
+\strong{Note}: this differs from the \verb{$compress} argument of \code{\link[=rotate]{rotate()}}.}
+      \item{\code{max_files}}{\code{integer} scalar: maximum number of files to keep in
+the cache}
+      \item{\code{max_size}}{scalar \code{integer}, \code{character} or \code{Inf}. Delete
+cached files (starting with the oldest) until the total size of the
+cache is below \code{max_size}. \code{Integers} are interpreted as bytes. You
+can pass \code{character} vectors that contain a file size suffix like \verb{1k}
+(kilobytes), \verb{3M} (megabytes), \verb{4G} (gigabytes), \verb{5T} (terabytes). Instead
+of these short forms you can also be explicit and use the IEC suffixes
+\code{KiB}, \code{MiB}, \code{GiB}, \code{TiB}. In Both cases \code{1} kilobyte is \code{1024} bytes, 1
+\code{megabyte} is \code{1024} kilobytes, etc... .}
+      \item{\code{max_age}}{\itemize{
+\item a \code{Date} scalar: Remove all backups before this date
+\item a \code{character} scalar representing a Date in ISO format (e.g. \code{"2019-12-31"})
+\item a \code{character} scalar representing an Interval in the form \code{"<number> <interval>"} (see \code{\link[=rotate]{rotate()}})
+}}
+      \item{\code{hashfun}}{\code{NULL} or a \code{function} to generate a unique hash from the
+object to be cached (see example). The hash \emph{must} be a text string
+that is a valid filename on the target system. If \verb{$hashfun} is \code{NULL},
+a storage key must be supplied manually in \code{cache$push()}. If a new
+object is added with the same key as an existing object, the existing
+object will be overwritten without warning.
+All cached files}
+      \item{\code{create_dir}}{\code{logical} scalar. If \code{TRUE} \code{dir} is created if it
 does not exist.}
-}
-\if{html}{\out{</div>}}
-}
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{td <- file.path(tempdir(), "cache-test")
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Examples}{
+    \if{html}{\out{<div class="r example copy">}}
+    \preformatted{td <- file.path(tempdir(), "cache-test")
 
 # When using a real hash function as hashfun, identical objects will only
 # be added to the cache once
@@ -181,91 +205,97 @@ if (requireNamespace("uuid")){
 
 unlink(td, recursive = TRUE)
 }
-\if{html}{\out{</div>}}
-
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-push"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-push}{}}}
-\subsection{Method \code{push()}}{
-push a new object to the cache
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$push(x, key = self$hashfun(x))}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{any \R object}
-
-\item{\code{key}}{a \code{character} scalar. Key under which to store the cached
+\subsection{\code{Cache$push()}}{
+  push a new object to the cache
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$push(x, key = self$hashfun(x))}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{any \R object}
+      \item{\code{key}}{a \code{character} scalar. Key under which to store the cached
 object. Must be a valid filename. Defaults to being generated by
 \verb{$hashfun()} but may also be supplied manually.}
+    }
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    a \code{character} scalar: the key of the newly added object
+  }
 }
-\if{html}{\out{</div>}}
-}
-\subsection{Returns}{
-a \code{character} scalar: the key of the newly added object
-}
-}
+
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-read"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-read}{}}}
-\subsection{Method \code{read()}}{
-read a cached file
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$read(key)}\if{html}{\out{</div>}}
+\subsection{\code{Cache$read()}}{
+  read a cached file
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$read(key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{\code{character} scalar. key of the cached file to read.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{\code{character} scalar. key of the cached file to read.}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-remove"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-remove}{}}}
-\subsection{Method \code{remove()}}{
-remove a single file from the cache
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$remove(key)}\if{html}{\out{</div>}}
+\subsection{\code{Cache$remove()}}{
+  remove a single file from the cache
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$remove(key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{\code{character} scalar. key of the cached file to remove}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{\code{character} scalar. key of the cached file to remove}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-pop"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-pop}{}}}
-\subsection{Method \code{pop()}}{
-Read and remove a single file from the cache
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$pop(key)}\if{html}{\out{</div>}}
+\subsection{\code{Cache$pop()}}{
+  Read and remove a single file from the cache
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$pop(key)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{key}}{\code{character} scalar. key of the cached file to read/remove}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{key}}{\code{character} scalar. key of the cached file to read/remove}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-prune"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-prune}{}}}
-\subsection{Method \code{prune()}}{
-Prune the cache
+\subsection{\code{Cache$prune()}}{
+  Prune the cache
 
 Delete cached objects that match certain criteria. \code{max_files} and
 \code{max_size} deletes the oldest cached objects first; however, this is
@@ -276,99 +306,116 @@ version only support timestamps at a resolution of two seconds.
 If two files have the same timestamp, they are deleted in the lexical
 sort order of their key. This means that by using a function that
 generates lexically sortable keys as \code{hashfun} (such as
-\code{\link[ulid:ULIDgenerate]{ulid::generate()}}) you can enforce the correct deletion order. There
+\code{\link[ulid:generate]{ulid::generate()}}) you can enforce the correct deletion order. There
 is no such workaround if you use a real hash function.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$prune(
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$prune(
   max_files = self$max_files,
   max_size = self$max_size,
   max_age = self$max_age,
   now = Sys.time()
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{max_files, max_size, max_age}}{see section Active Bindings.}
+      \item{\code{now}}{a \code{POSIXct} datetime scalar. The current time (for max_age)}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{max_files, max_size, max_age}}{see section Active Bindings.}
-
-\item{\code{now}}{a \code{POSIXct} datetime scalar. The current time (for max_age)}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-purge"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-purge}{}}}
-\subsection{Method \code{purge()}}{
-purge the cache (remove all cached files)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$purge()}\if{html}{\out{</div>}}
+\subsection{\code{Cache$purge()}}{
+  purge the cache (remove all cached files)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$purge()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-destroy"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-destroy}{}}}
-\subsection{Method \code{destroy()}}{
-purge the cache (remove all cached files)
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$destroy()}\if{html}{\out{</div>}}
+\subsection{\code{Cache$destroy()}}{
+  purge the cache (remove all cached files)
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$destroy()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-print"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-print}{}}}
-\subsection{Method \code{print()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$print()}\if{html}{\out{</div>}}
+\subsection{\code{Cache$print()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-set_max_files"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-set_max_files}{}}}
-\subsection{Method \code{set_max_files()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$set_max_files(x)}\if{html}{\out{</div>}}
+\subsection{\code{Cache$set_max_files()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$set_max_files(x)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-set_max_age"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-set_max_age}{}}}
-\subsection{Method \code{set_max_age()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$set_max_age(x)}\if{html}{\out{</div>}}
+\subsection{\code{Cache$set_max_age()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$set_max_age(x)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-set_max_size"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-set_max_size}{}}}
-\subsection{Method \code{set_max_size()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$set_max_size(x)}\if{html}{\out{</div>}}
+\subsection{\code{Cache$set_max_size()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$set_max_size(x)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-set_compression"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-set_compression}{}}}
-\subsection{Method \code{set_compression()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$set_compression(x)}\if{html}{\out{</div>}}
+\subsection{\code{Cache$set_compression()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$set_compression(x)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Cache-set_hashfun"></a>}}
 \if{latex}{\out{\hypertarget{method-Cache-set_hashfun}{}}}
-\subsection{Method \code{set_hashfun()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Cache$set_hashfun(x)}\if{html}{\out{</div>}}
+\subsection{\code{Cache$set_hashfun()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{Cache$set_hashfun(x)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 }
