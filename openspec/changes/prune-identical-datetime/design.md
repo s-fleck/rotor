@@ -118,6 +118,8 @@ None.
 
 Triaged the implementation diff (`R/BackupQueue.R`, `R/rotate.R`, `tests/testthat/test_BackupQueue.R`, `tests/testthat/test_rotate.R`, `DESCRIPTION`, `NEWS.md`, `man/*.Rd`, `tasks.md`), the `## Finding Classification` above and the `<!-- issue-pipeline:review -->` / `<!-- issue-pipeline:refine -->` marker comments. Verification `Rscript -e 'testthat::test_local()'`: 617 pass, 0 fail, 0 skip, 0 warn.
 
+Re-verified at `e1bbbe8` after the spec refresh: the implementation and test diff is unchanged, the added "Backups cache is refreshed" scenario maps to task 2.7 and its test, `Rscript -e 'testthat::test_local()'` still reports 617 pass, `openspec validate --changes` passes, and re-running `roxygen2::roxygenise()` leaves the tree clean. No new finding and no blocking finding; no decision form was needed.
+
 | Finding | Classification | Disposition |
 | --- | --- | --- |
 | `R/conditions.R` defines `NotImplementedError()` twice; the later definition requires `dir`. | Out of scope | `R/conditions.R` is untouched by the diff. Grouped into the post-solve follow-up with the other Index/conditions findings. |
