@@ -1,6 +1,6 @@
 ## 1. Implement the method
 
-- [ ] 1.1 Add `prune_identical()` to the `BackupQueueDateTime` public list in `R/BackupQueue.R` after `$prune()` and before `should_rotate()`: refresh the cache, return `self` when fewer than two backups exist, compute `tools::md5sum()` over `$files$path`, select older duplicates with `duplicated()`, remove them with `file_remove()`, refresh the cache and return `self`. Give it a roxygen `#' @description` so the generated method appears on `BackupQueueDateTime` and the inherited-method link in `man/BackupQueueDate.Rd` moves from `BackupQueue$prune_identical` to `BackupQueueDateTime$prune_identical`
+- [ ] 1.1 Add `prune_identical()` to the `BackupQueueDateTime` public list in `R/BackupQueue.R` after `$prune()` and before `should_rotate()`: refresh the cache, return `self` when fewer than two backups exist, compute `tools::md5sum()` over `$files$path`, select older duplicates with `duplicated()`, remove them with `file_remove()` only when at least one duplicate was found, refresh the cache and return `self`. Give it a roxygen `#' @description` so the generated method appears on `BackupQueueDateTime` and the inherited-method link in `man/BackupQueueDate.Rd` moves from `BackupQueue$prune_identical` to `BackupQueueDateTime$prune_identical`
 - [ ] 1.2 Verify `BackupQueueDate` inherits the method and requires no override; leave `BackupQueue$prune_identical()` as `NotImplementedError()` and `BackupQueueIndex$prune_identical()` unchanged
 
 ## 2. Tests
@@ -15,9 +15,9 @@
 
 ## 3. Documentation
 
-- [ ] 3.1 Fix the copied roxygen description on `prune_identical_backups()` in `R/rotate.R` so it describes keeping the newest backup per distinct content instead of `prune_backups()`/`max_backups` (auto-fixable finding from review/refine)
+- [ ] 3.1 Fix the copied roxygen description on `prune_identical_backups()` in `R/rotate.R` so its `@description` and `@section Side Effects` describe keeping the newest backup per distinct content instead of `prune_backups()`/`max_backups` (auto-fixable finding from review/refine)
 - [ ] 3.2 Set `Version: 0.3.7.9000` in `DESCRIPTION` and prepend `# rotor (dev)` to `NEWS.md` with the `BackupQueueDateTime$prune_identical()` bullet
-- [ ] 3.3 Regenerate docs with `Rscript -e 'roxygen2::roxygenise()'`; confirm `NAMESPACE` is unchanged and only the expected `man/*.Rd` files and roxygen metadata change
+- [ ] 3.3 Regenerate docs with `Rscript -e 'roxygen2::roxygenise()'`; confirm `NAMESPACE` is unchanged and only the expected `man/*.Rd` files (including `man/rotate.Rd` from task 3.1) and roxygen metadata change
 
 ## 4. Verification
 

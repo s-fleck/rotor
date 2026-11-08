@@ -12,7 +12,7 @@
 #### Scenario: Fewer than two backups
 
 - **WHEN** a `BackupQueueDateTime` holds zero or one backup
-- **THEN** `$prune_identical()` removes nothing, reports no removals, and returns the queue object
+- **THEN** `$prune_identical()` removes nothing, emits no removal message, and returns the queue object
 
 #### Scenario: Distinct backups are preserved
 

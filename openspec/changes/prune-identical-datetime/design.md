@@ -19,6 +19,7 @@
 - Implementing a generic `BackupQueue$prune_identical()` for direct use of the abstract class.
 - Fixing the pre-existing dry-run defect in `BackupQueueIndex$prune_identical()`.
 - Fixing the duplicate `NotImplementedError()` definition in `R/conditions.R`.
+- Propagating `prune_identical_backups()`'s `verbose` argument to removal messages outside dry runs.
 
 ## Decisions
 
@@ -36,7 +37,7 @@
 - **Options:** (a) regenerate with the installed 8.0.0; (b) pin 7.2.1.9000; (c) hand-edit the `.Rd` files.
 - **Choice:** (a) — regenerate with 8.0.0 and include the resulting `man/*.Rd` rewrite plus the metadata change to `Config/roxygen2/version: 8.0.0`.
 - **Discarded:** (b) that version is not installed/not in the support matrix; (c) `man/*.Rd` carry the "do not edit by hand" header.
-- **Evidence:** `roxygen2::roxygenise()` on a workspace copy rewrote eight man pages, changed `RoxygenNote` to `Config/roxygen2/version: 8.0.0`, left `NAMESPACE` unchanged, and exited 0; the generated-file headers forbid manual edits.
+- **Evidence:** `roxygen2::roxygenise()` on a workspace copy rewrote the expected man pages (`BackupQueue`, `BackupQueueIndex`, `BackupQueueDateTime`, `BackupQueueDate`, `Cache`, `DirectoryQueue`, `rotate`, `rotate_rds`, `rotor-package`), changed `RoxygenNote` to `Config/roxygen2/version: 8.0.0`, left `NAMESPACE` unchanged, and exited 0; the generated-file headers forbid manual edits. Task 3.3 has the implementer confirm the actual changed file set during `apply`.
 
 ### Decision 3: Method placement
 
@@ -87,25 +88,24 @@ None.
 | `prune_identical_backups()` roxygen description is a copy of `prune_backups()`'s text and mentions `max_backups`. | Auto-fixable (docs/wording) | Fixed in `R/rotate.R` during `apply` and regenerated into `man/rotate.Rd`; no runtime change. Task 3.1. |
 | roxygen 8 emits pre-existing `Cache`/`DirectoryQueue` documentation warnings. | Out of scope (tooling noise) | Expected when regenerating with the installed roxygen2; not fixed in this unit. |
 | `prune_identical_backups()` treats all-digit date/timestamp formats (`%Y%m%d`, `%Y%m`, `%Y`) as indexed backups and routes them to `BackupQueueIndex`, whose renumbering path is not dry-run aware. | Out of scope | The routing rule is pre-existing Index behavior and changing it is an explicit non-goal; the spec and tasks cover the default `%Y-%m-%d--%H-%M-%S` and `%Y-%m-%d` formats. Pre-archive triage groups it with the Index dry-run follow-up. |
+| `prune_identical_backups()` ignores its `verbose` argument outside a dry run (`R/rotate.R:330-351`), so `verbose = TRUE` alone does not report removals despite the `@param verbose` promise. | Out of scope | The issue only requires dry-run reporting, which sets `verbose = dry_run`; propagating verbosity to the new method would add runtime behavior outside this unit's scope. Recorded as a non-goal; pre-archive triage groups it with the helper follow-ups. |
 
 ## Spec Review
 
 **Status:** Approved (second review)
 
-**Reviews run:** two. The first review returned Issues Found and the second returned Approved.
+**Reviews run:** two. Both reviews returned Approved; each carried advisory recommendations only.
 
 **Applied fixes:**
 
-- Narrowed the `prune_identical_backups()` requirement and scenarios to the formats that actually reach the `BackupQueueDateTime` fallback (default `%Y-%m-%d--%H-%M-%S` and `%Y-%m-%d`), stated that all-digit formats are claimed by `BackupQueueIndex` and out of scope, and recorded that routing as an out-of-scope finding.
-- Corrected Decision 3's evidence: fallback selection is based on `!BackupQueueIndex$has_backups` (`R/rotate.R:344-347`) and the dash-containing default suffixes (`R/BackupQueue.R:464`), not on `is_parsable_datetime()` alone.
-- Added a roxygen `#' @description` for the new public method to task 1.1 and noted the inherited-method link move in `man/BackupQueueDate.Rd`.
-- Changed task 2.1 to assert on `unname(tools::md5sum(...))`, matching the existing test style.
-- Corrected the Index dry-run citation to `R/BackupQueue.R:350` and `:363-364`.
-- Added tasks 2.6 and 2.7 for the zero/one-backup and all-distinct scenarios and for cache refresh with `cache_backups = TRUE`.
-- Added the `assert_pure_BackupQueue()` precondition to the helper requirement.
+- First review: corrected Decision 2's evidence to name the expected regenerated man pages instead of asserting an unverified count, and changed the "Fewer than two backups" scenario wording to "emits no removal message" so it matches task 2.6's silent return.
+- Second review: added `man/rotate.Rd` to Decision 2's expected file list and task 3.3 (the task 3.1 roxygen edit rewrites it); expanded task 3.1 to fix the copied `@section Side Effects` as well as the `@description`; clarified task 1.1 to call `file_remove()` only when at least one duplicate was found; recorded the ignored `verbose` argument as a non-goal and an out-of-scope finding.
 
-**Leftover advisory items:** none.
+**Leftover advisory items:**
 
-**Blocking findings:** none. Every finding from the review marker comment and the refine brief is recorded in `## Finding Classification` above.
+- Keep the roxygen 8 regeneration as a separate commit so the behavioral diff stays reviewable. Not applicable to the spec stage, which commits only change artifacts; noted for `apply`.
+- Roxygen 8's unrelated `man/*.Rd` rewrites remain deliberate per Decision 2; task 3.3 requires the implementer to confirm the actual changed file set.
+
+**Blocking findings:** none. Every finding from the review marker comment and the refine brief is recorded in `## Finding Classification` above; the two review-stage advisories that remain open (commit separation, docs diff size) are recorded here.
 
 **Docs sync:** `AGENTS.md` defines only the verification command (`Rscript -e 'testthat::test_local()'`); it defines neither a docs-sync review nor a doc checker, so neither applies. The change's own docs work (roxygen regeneration, `NEWS.md`) is covered by tasks 3.1-3.3.
