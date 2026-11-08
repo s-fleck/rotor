@@ -19,6 +19,11 @@
 - **WHEN** every backup has distinct content
 - **THEN** `$prune_identical()` removes no backups and keeps all timestamped filenames unchanged
 
+#### Scenario: Backups cache is refreshed
+
+- **WHEN** the queue keeps a backups cache and `$prune_identical()` removes a duplicate
+- **THEN** `$files` reflects only the surviving backups without an explicit refresh
+
 ### Requirement: Datestamped queues inherit identical pruning
 
 `BackupQueueDate` SHALL inherit `prune_identical()` from `BackupQueueDateTime` so datestamped backups are deduplicated with the same newest-copy retention and no renumbering.

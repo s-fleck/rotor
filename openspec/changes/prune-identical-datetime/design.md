@@ -45,7 +45,7 @@
 - **Options:** (a) `BackupQueueDateTime` only, inherited by `BackupQueueDate`; (b) implement in the abstract `BackupQueue`; (c) override separately in both DateTime and Date.
 - **Choice:** (a).
 - **Discarded:** (b) the issue explicitly keeps the abstract method as `NotImplementedError`; (c) duplicate code for identical timestamp semantics.
-- **Evidence:** the issue's Fix bullets; `BackupQueueDate <- R6::R6Class(inherit = BackupQueueDateTime, ...)` at `R/BackupQueue.R:768-770`; `prune_identical_backups()` falls back to `BackupQueueDateTime` when `BackupQueueIndex$has_backups` is false (`R/rotate.R:344-347`). The default timestamp (`%Y-%m-%d--%H-%M-%S`) and datestamp (`%Y-%m-%d`) suffixes contain dashes, so `BackupQueueIndex$files` does not claim them (`R/BackupQueue.R:464`) and the fallback reaches both. All-digit formats such as `%Y%m%d` are claimed by the index and are out of scope.
+- **Evidence:** the issue's Fix bullets; `BackupQueueDate <- R6::R6Class(inherit = BackupQueueDateTime, ...)` at `R/BackupQueue.R:789-791`; `prune_identical_backups()` falls back to `BackupQueueDateTime` when `BackupQueueIndex$has_backups` is false (`R/rotate.R:348-349`). The default timestamp (`%Y-%m-%d--%H-%M-%S`) and datestamp (`%Y-%m-%d`) suffixes contain dashes, so `BackupQueueIndex$files` does not claim them (`R/BackupQueue.R:464`) and the fallback reaches both. All-digit formats such as `%Y%m%d` are claimed by the index and are out of scope.
 
 ### Decision 4: Deduplication algorithm
 
@@ -53,7 +53,7 @@
 - **Options:** (a) newest-first `$files` + `tools::md5sum()` + `duplicated()` + `file_remove()` + cache refresh + return `self`; (b) reuse `BackupQueueIndex`'s renumbering path; (c) pairwise `identical()` comparisons.
 - **Choice:** (a).
 - **Discarded:** (b) would rename timestamped files and is out of scope; (c) MD5 comparison is the documented contract and handles compressed backups.
-- **Evidence:** `BackupQueueDateTime$update_backups_cache()` orders `timestamp` decreasing (`R/BackupQueue.R:651-666`), so the first occurrence of each MD5 is the newest copy and `duplicated()` selects older duplicates; the reference `BackupQueueIndex$prune_identical()` uses `tools::md5sum()` and `duplicated()` and returns `self` (339-366); `file_remove()` is dry-run aware (`R/utils-fs.R:55-67`); a workspace proof-of-concept kept the newest duplicate for both DateTime and Date and left files in place under `DRY_RUN`.
+- **Evidence:** `BackupQueueDateTime$update_backups_cache()` orders `timestamp` decreasing (`R/BackupQueue.R:672-687`), so the first occurrence of each MD5 is the newest copy and `duplicated()` selects older duplicates; the reference `BackupQueueIndex$prune_identical()` uses `tools::md5sum()` and `duplicated()` and returns `self` (339-366); `file_remove()` is dry-run aware (`R/utils-fs.R:55-66`); a workspace proof-of-concept kept the newest duplicate for both DateTime and Date and left files in place under `DRY_RUN`.
 
 ### Decision 5: Test placement
 
@@ -94,19 +94,23 @@ None.
 
 **Status:** Approved (second review)
 
-**Reviews run:** two. Both reviews returned Approved; each carried advisory recommendations only.
+**Reviews run:** two. Both returned Approved; the first carried line-reference and clarity advisories, the second confirmed every artifact claim against the repository.
 
 **Applied fixes:**
 
-- First review: corrected Decision 2's evidence to name the expected regenerated man pages instead of asserting an unverified count, and changed the "Fewer than two backups" scenario wording to "emits no removal message" so it matches task 2.6's silent return.
-- Second review: added `man/rotate.Rd` to Decision 2's expected file list and task 3.3 (the task 3.1 roxygen edit rewrites it); expanded task 3.1 to fix the copied `@section Side Effects` as well as the `@description`; clarified task 1.1 to call `file_remove()` only when at least one duplicate was found; recorded the ignored `verbose` argument as a non-goal and an out-of-scope finding.
+- Pre-review update from the refine brief: refreshed the evidence references in Decisions 3 and 4 to the current tree (`BackupQueueDate` at `R/BackupQueue.R:789-791`, cache ordering at `:672-687`, fallback at `R/rotate.R:348-349`, `file_remove()` at `R/utils-fs.R:55-66`).
+- First review: flagged the `R/BackupQueue.R:460-462` reference as imprecise; corrected it to the digit-only index filter at `:464` (verified with `grep -n`).
+- Second review: added the "Backups cache is refreshed" scenario to the first requirement so the cache-refresh clause is self-verifying through task 2.7 and its test.
 
 **Leftover advisory items:**
 
-- Keep the roxygen 8 regeneration as a separate commit so the behavioral diff stays reviewable. Not applicable to the spec stage, which commits only change artifacts; noted for `apply`.
-- Roxygen 8's unrelated `man/*.Rd` rewrites remain deliberate per Decision 2; task 3.3 requires the implementer to confirm the actual changed file set.
+- The requirements name `tools::md5sum()` and `file_remove()`; both are the documented contract (content-identity comparison, dry-run awareness), so the mechanics remain as requirement text.
+- The "newest" rule assumes distinct parsable timestamps; mixed timestamp/datestamp formats on one file can tie. Out of scope for this change.
+- `## Finding Classification` and `## Pre-archive Triage` overlap; both are process records from review/refine and apply, kept for traceability.
+- The design reads as post-hoc because the branch already carries the implementation; no separate note was added because the task list and this record state it.
+- The post-solve `followups` stage must still file the grouped out-of-scope items (duplicate `NotImplementedError()`, non-dry-run `BackupQueueIndex$prune_identical()`, all-digit format routing, ignored `verbose`).
 
-**Blocking findings:** none. Every finding from the review marker comment and the refine brief is recorded in `## Finding Classification` above; the two review-stage advisories that remain open (commit separation, docs diff size) are recorded here.
+**Blocking findings:** none. Every finding from the `<!-- issue-pipeline:review -->` marker comment and the `<!-- issue-pipeline:refine -->` brief is carried into `## Finding Classification`; no decision form was raised.
 
 **Docs sync:** `AGENTS.md` defines only the verification command (`Rscript -e 'testthat::test_local()'`); it defines neither a docs-sync review nor a doc checker, so neither applies. The change's own docs work (roxygen regeneration, `NEWS.md`) is covered by tasks 3.1-3.3.
 
