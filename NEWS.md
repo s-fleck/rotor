@@ -1,3 +1,10 @@
+# rotor (dev)
+
+* `BackupQueueDateTime$prune_identical()` (inherited by `BackupQueueDate`) removes
+  identical timestamped/datestamped backups, keeping the newest copy of each
+  distinct file content.
+
+
 # rotor 0.3.7
 
 * Some internal changes to date formatting for compatibility with

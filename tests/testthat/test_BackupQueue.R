@@ -648,6 +648,155 @@ test_that("BackupQueueDatetime: Caching the last rotation date works (cache_back
 
 
 
+test_that("BackupQueueDateTime: $prune_identical keeps newest duplicate", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test.rds")
+  saveRDS(iris, tf)
+  iris_md5 <- tools::md5sum(tf)
+
+  bq <- BackupQueueDateTime$new(tf)
+  bq$push(now = "2020-01-01")
+  bq$push(now = "2020-01-02")
+
+  saveRDS(cars, tf)
+  cars_md5 <- tools::md5sum(tf)
+  bq$push(now = "2020-01-03")
+
+  expect_identical(bq$prune_identical(), bq)
+  expect_identical(bq$n, 2L)
+  expect_identical(
+    unname(tools::md5sum(bq$files$path)),
+    unname(c(cars_md5, iris_md5))
+  )
+  expect_identical(
+    bq$files$sfx,
+    c("2020-01-03--00-00-00", "2020-01-02--00-00-00")
+  )
+})
+
+
+
+
+test_that("BackupQueueDate: $prune_identical keeps newest duplicate", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test.rds")
+  saveRDS(iris, tf)
+
+  bq <- BackupQueueDate$new(tf)
+  bq$push(now = "2020-01-01")
+  bq$push(now = "2020-01-02")
+
+  saveRDS(cars, tf)
+  bq$push(now = "2020-01-03")
+
+  expect_identical(bq$prune_identical(), bq)
+  expect_identical(bq$n, 2L)
+  expect_identical(
+    bq$files$sfx,
+    c("2020-01-03", "2020-01-02")
+  )
+  expect_false(file.exists(file.path(td, "test.2020-01-01.rds")))
+})
+
+
+
+
+test_that("BackupQueueDateTime: $prune_identical dry run leaves files", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test.rds")
+  saveRDS(iris, tf)
+
+  bq <- BackupQueueDateTime$new(tf)
+  bq$push(now = "2020-01-01")
+  bq$push(now = "2020-01-02")
+
+  snap <- utils::fileSnapshot(td, md5sum = TRUE)
+
+  DRY_RUN$activate()
+  on.exit(DRY_RUN$deactivate(), add = TRUE)
+  expect_message(bq$prune_identical(), "dry_run")
+  expect_snapshot_unchanged(snap)
+})
+
+
+
+
+test_that("BackupQueueDateTime: $prune_identical with fewer than two backups is silent", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test.rds")
+  saveRDS(iris, tf)
+
+  bq <- BackupQueueDateTime$new(tf)
+  expect_silent(expect_identical(bq$prune_identical(), bq))
+  expect_identical(bq$n, 0L)
+
+  bq$push(now = "2020-01-01")
+  expect_silent(expect_identical(bq$prune_identical(), bq))
+  expect_identical(bq$n, 1L)
+})
+
+
+
+
+test_that("BackupQueueDateTime: $prune_identical keeps distinct backups", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test.rds")
+  saveRDS(iris, tf)
+
+  bq <- BackupQueueDateTime$new(tf)
+  bq$push(now = "2020-01-01")
+
+  saveRDS(cars, tf)
+  bq$push(now = "2020-01-02")
+
+  expect_identical(bq$prune_identical(), bq)
+  expect_identical(bq$n, 2L)
+  expect_identical(
+    bq$files$sfx,
+    c("2020-01-02--00-00-00", "2020-01-01--00-00-00")
+  )
+})
+
+
+
+
+test_that("BackupQueueDateTime: $prune_identical refreshes the backups cache", {
+  dir.create(td, recursive = TRUE)
+  on.exit(unlink(td, recursive = TRUE))
+
+  tf <- file.path(td, "test.rds")
+  saveRDS(iris, tf)
+
+  bq <- BackupQueueDateTime$new(tf, cache_backups = TRUE)
+  bq$push(now = "2020-01-01")
+  bq$push(now = "2020-01-02")
+
+  saveRDS(cars, tf)
+  bq$push(now = "2020-01-03")
+
+  bq$prune_identical()
+
+  # `$files` reads the cache without an explicit refresh
+  expect_identical(
+    bq$files$sfx,
+    c("2020-01-03--00-00-00", "2020-01-02--00-00-00")
+  )
+  expect_identical(bq$n, 2L)
+})
+
+
+
+
 test_that("BackupQueueDateTime can find and prune backup trails", {
   dir.create(td, recursive = TRUE)
   on.exit(unlink(td, recursive = TRUE))

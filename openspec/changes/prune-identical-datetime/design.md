@@ -109,3 +109,23 @@ None.
 **Blocking findings:** none. Every finding from the review marker comment and the refine brief is recorded in `## Finding Classification` above; the two review-stage advisories that remain open (commit separation, docs diff size) are recorded here.
 
 **Docs sync:** `AGENTS.md` defines only the verification command (`Rscript -e 'testthat::test_local()'`); it defines neither a docs-sync review nor a doc checker, so neither applies. The change's own docs work (roxygen regeneration, `NEWS.md`) is covered by tasks 3.1-3.3.
+
+## Pre-archive Triage
+
+Triaged the implementation diff (`R/BackupQueue.R`, `R/rotate.R`, `tests/testthat/test_BackupQueue.R`, `tests/testthat/test_rotate.R`, `DESCRIPTION`, `NEWS.md`, `man/*.Rd`, `tasks.md`), the `## Finding Classification` above and the `<!-- issue-pipeline:review -->` / `<!-- issue-pipeline:refine -->` marker comments. Verification `Rscript -e 'testthat::test_local()'`: 617 pass, 0 fail, 0 skip, 0 warn.
+
+| Finding | Classification | Disposition |
+| --- | --- | --- |
+| `R/conditions.R` defines `NotImplementedError()` twice; the later definition requires `dir`. | Out of scope | `R/conditions.R` is untouched by the diff. Grouped into the post-solve follow-up with the other Index/conditions findings. |
+| `BackupQueueIndex$prune_identical()` is not dry-run aware. | Out of scope | `BackupQueueIndex$prune_identical()` is unchanged; the new method uses `file_remove()`. Grouped into the follow-up. |
+| The Done-when bullet "Dry-run leaves all backups in place" can read as covering the indexed path. | Auto-fixable (wording) | Already narrowed in the spec and refine brief to the DateTime/Date path; no further code or issue-body edit. |
+| `prune_identical_backups()` roxygen description copied `prune_backups()`. | Auto-fixable (docs/wording) | Fixed in `R/rotate.R` (task 3.1) and regenerated into `man/rotate.Rd`; the diff shows the accurate description, so it is closed. |
+| roxygen 8 emits pre-existing `Cache`/`DirectoryQueue` documentation warnings. | Out of scope (tooling noise) | Regeneration exited 0; warnings are pre-existing and unrelated to the new method. |
+| `prune_identical_backups()` routes all-digit date/timestamp formats to `BackupQueueIndex`. | Out of scope | The routing rule is unchanged and the change is scoped to the default dashed formats. Grouped into the follow-up. |
+| `prune_identical_backups()` ignores `verbose` outside a dry run. | Out of scope | Recorded as a non-goal in `## Goals / Non-Goals`; the helper is unchanged apart from documentation. Grouped into the follow-up. |
+| The first dry-run helper test snapshotted the shared `td`, which contained an unrelated directory and made `utils::changedFiles()` return `NA`. | In scope, auto-fixable (test-only) | Fixed before the closing commit: the test now uses an isolated `td_dry` subdirectory and cleans it up recursively. Re-run passes. |
+| The roxygen 8 regeneration rewrites nine `man/*.Rd` files and moves `RoxygenNote` to `Config/roxygen2/version: 8.0.0`; `NAMESPACE` is unchanged. | Expected per Decision 2 (advisory) | Confirmed the changed file set is the expected generated docs plus `man/rotate.Rd`; no unexpected files. |
+
+**Advisories:** the review-stage request to keep the roxygen regeneration separate is honored by committing the behavioral/test changes and the regenerated `man/*.Rd` output separately. The docs-diff-size advisory is accepted per Decision 2. No blocking finding and no decision form was needed.
+
+**Follow-up group:** the post-solve `followups` stage should carry (a) the duplicate `NotImplementedError()` in `R/conditions.R`, (b) the non-dry-run `BackupQueueIndex$prune_identical()` deletion/renaming path, (c) all-digit date/timestamp routing to the index path, and (d) the ignored `verbose` argument of `prune_identical_backups()` except during dry runs.

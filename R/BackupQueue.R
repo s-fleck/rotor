@@ -594,6 +594,27 @@ BackupQueueDateTime <- R6::R6Class(
     },
 
 
+    #' @description Delete all identical backups. Uses [tools::md5sum()] to
+    #'   compare the files. Keeps the newest backup of each distinct file
+    #'   content.
+    prune_identical = function(){
+      self$update_backups_cache()
+      dd <- self$files
+
+      if (nrow(dd) < 2L)
+        return(self)
+
+      dd$md5 <- tools::md5sum(dd$path)
+      to_remove <- dd$path[duplicated(dd$md5)]
+
+      if (length(to_remove))
+        file_remove(to_remove)
+
+      self$update_backups_cache()
+      self
+    },
+
+
 
     #' @description
     #' Should a file of `size` and `age` be rotated? See `size` and `age`

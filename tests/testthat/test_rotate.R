@@ -159,6 +159,86 @@ test_that("BackupQueueIndex: $prune_identical works", {
 
 
 
+test_that("prune_identical_backups works for default timestamped and datestamped backups", {
+  # timestamped backups through the BackupQueueDateTime fallback
+  tf <- file.path(td, "prune_identical_time.rds")
+  saveRDS(iris, tf)
+  iris_md5 <- tools::md5sum(tf)
+
+  bq <- BackupQueueDateTime$new(tf)
+  bq$push(now = "2020-01-01")
+  bq$push(now = "2020-01-02")
+
+  saveRDS(cars, tf)
+  cars_md5 <- tools::md5sum(tf)
+  bq$push(now = "2020-01-03")
+
+  # datestamped backups through the same fallback
+  tf_date <- file.path(td, "prune_identical_date.rds")
+  saveRDS(iris, tf_date)
+  iris_date_md5 <- tools::md5sum(tf_date)
+
+  bq_date <- BackupQueueDate$new(tf_date)
+  bq_date$push(now = "2020-01-01")
+  bq_date$push(now = "2020-01-02")
+
+  saveRDS(cars, tf_date)
+  cars_date_md5 <- tools::md5sum(tf_date)
+  bq_date$push(now = "2020-01-03")
+
+  on.exit(
+    unlink(grep(
+      "^prune_identical_(time|date)",
+      list.files(td, full.names = TRUE),
+      value = TRUE
+    )),
+    add = TRUE
+  )
+
+  expect_identical(prune_identical_backups(tf), tf)
+  after <- BackupQueueDateTime$new(tf)
+  expect_identical(after$n, 2L)
+  expect_identical(
+    unname(tools::md5sum(after$files$path)),
+    unname(c(cars_md5, iris_md5))
+  )
+
+  expect_identical(prune_identical_backups(tf_date), tf_date)
+  after_date <- BackupQueueDateTime$new(tf_date)
+  expect_identical(after_date$n, 2L)
+  expect_identical(
+    unname(tools::md5sum(after_date$files$path)),
+    unname(c(cars_date_md5, iris_date_md5))
+  )
+})
+
+
+
+
+test_that("prune_identical_backups dry run leaves default timestamped backups", {
+  td_dry <- file.path(td, "prune_identical_dryrun")
+  dir.create(td_dry)
+  on.exit(unlink(td_dry, recursive = TRUE), add = TRUE)
+
+  tf <- file.path(td_dry, "test.rds")
+  saveRDS(iris, tf)
+
+  bq <- BackupQueueDateTime$new(tf)
+  bq$push(now = "2020-01-01")
+  bq$push(now = "2020-01-02")
+
+  snap <- utils::fileSnapshot(td_dry, md5sum = TRUE)
+
+  expect_message(
+    prune_identical_backups(tf, dry_run = TRUE),
+    "dry_run"
+  )
+  expect_snapshot_unchanged(snap)
+})
+
+
+
+
 
 test_that("rotate works with funky filenames", {
   td2 <- file.path(td, "test")
