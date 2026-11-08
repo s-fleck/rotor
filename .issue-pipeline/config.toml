@@ -1,7 +1,7 @@
 version = 1
 
 [pipeline]
-default_model = "deepseek/deepseek-flash"
+default_model = "nvidia/nvidia/nemotron-3-ultra-550b-a55b"
 
 [repo]
 base_branch = "master"
