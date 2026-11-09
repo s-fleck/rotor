@@ -13,182 +13,210 @@ intended for developers that want to extend this package. For normal usage,
 the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
 }
 \seealso{
-Other R6 Classes: 
-\code{\link{BackupQueueDateTime}},
+Other R6 Classes:
 \code{\link{BackupQueueDate}},
+\code{\link{BackupQueueDateTime}},
 \code{\link{BackupQueueIndex}},
 \code{\link{Cache}},
 \code{\link{DirectoryQueue}}
 }
 \concept{R6 Classes}
 \section{Super class}{
-\code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{BackupQueue}
+\code{\link[rotor:DirectoryQueue]{DirectoryQueue}} -> \code{BackupQueue}
 }
 \section{Public fields}{
-\if{html}{\out{<div class="r6-fields">}}
-\describe{
-\item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
+  \if{html}{\out{<div class="r6-fields">}}
+  \describe{
+    \item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
 
-\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$origin}}
-}
-\if{html}{\out{</div>}}
+    \item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$origin}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Active bindings}{
-\if{html}{\out{<div class="r6-active-bindings">}}
-\describe{
-\item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
+  \if{html}{\out{<div class="r6-active-bindings">}}
+  \describe{
+    \item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
 
-\item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$origin}}
+    \item{\code{n}}{\code{integer} scalar. The number of backups that exist for \code{BackupQueue$origin}}
 
-\item{\code{file}}{\code{character} scalar. The file to backup/rotate.}
+    \item{\code{file}}{\code{character} scalar. The file to backup/rotate.}
 
-\item{\code{compression}}{(Optional) compression to use \code{compression} argument of \code{\link[=rotate]{rotate()}}.}
+    \item{\code{compression}}{(Optional) compression to use \code{compression} argument of \code{\link[=rotate]{rotate()}}.}
 
-\item{\code{max_backups}}{Maximum number/size/age of backups. See \code{max_backups}
+    \item{\code{max_backups}}{Maximum number/size/age of backups. See \code{max_backups}
 argument of \code{\link[=rotate]{rotate()}}}
 
-\item{\code{has_backups}}{Returns \code{TRUE} if at least one backup of \code{BackupQueue$origin}
+    \item{\code{has_backups}}{Returns \code{TRUE} if at least one backup of \code{BackupQueue$origin}
 exists
 All backups of self$origin}
-}
-\if{html}{\out{</div>}}
+  }
+  \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-BackupQueue-new}{\code{BackupQueue$new()}}
-\item \href{#method-BackupQueue-prune}{\code{BackupQueue$prune()}}
-\item \href{#method-BackupQueue-prune_identical}{\code{BackupQueue$prune_identical()}}
-\item \href{#method-BackupQueue-print}{\code{BackupQueue$print()}}
-\item \href{#method-BackupQueue-push_backup}{\code{BackupQueue$push_backup()}}
-\item \href{#method-BackupQueue-set_origin}{\code{BackupQueue$set_origin()}}
-\item \href{#method-BackupQueue-set_compression}{\code{BackupQueue$set_compression()}}
-\item \href{#method-BackupQueue-set_max_backups}{\code{BackupQueue$set_max_backups()}}
-\item \href{#method-BackupQueue-set_file}{\code{BackupQueue$set_file()}}
-\item \href{#method-BackupQueue-set_backup_dir}{\code{BackupQueue$set_backup_dir()}}
+  \itemize{
+    \item \href{#method-BackupQueue-initialize}{\code{BackupQueue$new()}}
+    \item \href{#method-BackupQueue-prune}{\code{BackupQueue$prune()}}
+    \item \href{#method-BackupQueue-prune_identical}{\code{BackupQueue$prune_identical()}}
+    \item \href{#method-BackupQueue-print}{\code{BackupQueue$print()}}
+    \item \href{#method-BackupQueue-push_backup}{\code{BackupQueue$push_backup()}}
+    \item \href{#method-BackupQueue-set_origin}{\code{BackupQueue$set_origin()}}
+    \item \href{#method-BackupQueue-set_compression}{\code{BackupQueue$set_compression()}}
+    \item \href{#method-BackupQueue-set_max_backups}{\code{BackupQueue$set_max_backups()}}
+    \item \href{#method-BackupQueue-set_file}{\code{BackupQueue$set_file()}}
+    \item \href{#method-BackupQueue-set_backup_dir}{\code{BackupQueue$set_backup_dir()}}
+  }
 }
-}
-\if{html}{\out{
-<details open><summary>Inherited methods</summary>
+\if{html}{\out{<details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="push"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-push'><code>rotor::DirectoryQueue$push()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="push"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-push'><code>DirectoryQueue$push()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>DirectoryQueue$set_dir()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-BackupQueue-new"></a>}}
-\if{latex}{\out{\hypertarget{method-BackupQueue-new}{}}}
-\subsection{Method \code{new()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$new(
+\if{html}{\out{<a id="method-BackupQueue-initialize"></a>}}
+\if{latex}{\out{\hypertarget{method-BackupQueue-initialize}{}}}
+\subsection{\code{BackupQueue$new()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$new(
   origin,
   dir = dirname(origin),
   max_backups = Inf,
   compression = FALSE,
   backup_dir = NULL
-)}\if{html}{\out{</div>}}
+)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{dir}}{\code{character} scalar. Directory in which to place the backups.}
+      \item{\code{max_backups}}{Maximum number/size/age of backups. See \code{max_backups}
+argument of \code{\link[=rotate]{rotate()}}}
+      \item{\code{compression}}{(Optional) compression to use \code{compression} argument of \code{\link[=rotate]{rotate()}}.}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueue-prune"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueue-prune}{}}}
-\subsection{Method \code{prune()}}{
-Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{prune_backups()}}.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$prune(max_backups = self$max_backups)}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueue$prune()}}{
+  Delete all backups except \code{max_backups}. See \code{\link[=prune_backups]{prune_backups()}}.
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$prune(max_backups = self$max_backups)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueue-prune_identical"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueue-prune_identical}{}}}
-\subsection{Method \code{prune_identical()}}{
-Delete all identical backups. Uses \code{\link[tools:md5sum]{tools::md5sum()}} to
+\subsection{\code{BackupQueue$prune_identical()}}{
+  Delete all identical backups. Uses \code{\link[tools:md5sum]{tools::md5sum()}} to
 compare the files.
 Set the file to be backed up
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$prune_identical()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$prune_identical()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueue-print"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueue-print}{}}}
-\subsection{Method \code{print()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$print()}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueue$print()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$print()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueue-push_backup"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueue-push_backup}{}}}
-\subsection{Method \code{push_backup()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$push_backup(...)}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueue$push_backup()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$push_backup(...)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueue-set_origin"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueue-set_origin}{}}}
-\subsection{Method \code{set_origin()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_origin(x)}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueue$set_origin()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$set_origin(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{a \code{character} scalar. Path to a file
+Set the file to be backed up}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{a \code{character} scalar. Path to a file
-Set the file to be backed up}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueue-set_compression"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueue-set_compression}{}}}
-\subsection{Method \code{set_compression()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_compression(x)}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueue$set_compression()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$set_compression(x)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{x}}{a \code{character} scalar. Path to a file}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{x}}{a \code{character} scalar. Path to a file}
-}
-\if{html}{\out{</div>}}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueue-set_max_backups"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueue-set_max_backups}{}}}
-\subsection{Method \code{set_max_backups()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_max_backups(x)}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueue$set_max_backups()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$set_max_backups(x)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueue-set_file"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueue-set_file}{}}}
-\subsection{Method \code{set_file()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_file(x)}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueue$set_file()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$set_file(x)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueue-set_backup_dir"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueue-set_backup_dir}{}}}
-\subsection{Method \code{set_backup_dir()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueue$set_backup_dir(x)}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueue$set_backup_dir()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueue$set_backup_dir(x)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 }

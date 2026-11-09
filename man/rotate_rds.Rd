@@ -44,27 +44,49 @@ rotate_rds_time(
 \arguments{
 \item{object}{\R object to serialize.}
 
-\item{file}{a \link[base]{connection} or the name of the file where the \R object
-    is saved to or read from.}
+\item{file}{a \link[base]{connection} or the path name of the file where the
+    \R object is saved to or read from.}
 
 \item{ascii}{a logical.  If \code{TRUE} or \code{NA}, an ASCII
     representation is written; otherwise (default), a binary one is used.
     See the comments in the help for \code{\link[base]{save}}.}
 
 \item{version}{the workspace format version to use.  \code{NULL}
-    specifies the current default version (3). The only other supported
+    specifies the current default version (3).  The only other supported
     value is 2, the default from \R 1.4.0 to \R 3.5.0.}
 
 \item{compress}{a logical specifying whether saving to a named file is
     to use \code{"gzip"} compression, or one of \code{"gzip"},
-    \code{"bzip2"} or \code{"xz"} to indicate the type of compression to
-    be used.  Ignored if \code{file} is a connection.}
+    \code{"bzip2"}, \code{"xz"} or \code{"zstd"} to indicate the type of
+    compression to be used.  Ignored if \code{file} is a connection.}
 
 \item{refhook}{a hook function for handling reference objects.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=rotate]{rotate}}, \code{\link[=rotate_date]{rotate_date}}, \code{\link[=rotate_time]{rotate_time}}
+  Arguments passed on to \code{\link{rotate}}, \code{\link{rotate_date}}, \code{\link{rotate_time}}
   \describe{
+    \item{\code{format}}{a scalar \code{character} that can be a subset of of valid
+\code{strftime()} formatting strings. The default setting is
+\code{"\%Y-\%m-\%d--\%H-\%M-\%S"}.
+\itemize{
+\item You can use an arbitrary number of dashes anywhere in the format, so
+\code{"\%Y-\%m-\%d--\%H-\%M-\%S"} and \code{"\%Y\%m\%d\%H\%M\%S"} are both legal.
+\item \code{T} and \verb{_} can also be used as separators. For example, the following
+datetime formats are also possible:
+\verb{\%Y-\%m-\%d_\%H-\%M-\%S} (Python logging default),
+\verb{\%Y\%m\%dT\%H\%M\%S} (\href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601})
+\item All datetime components except \verb{\%Y} are optional. If you leave out part
+of the timestamp, the first point in time in the period is assumed. For
+example (assuming the current year is 2019) \verb{\%Y} is identical to
+\code{2019-01-01--00-00-00}.
+\item The timestamps must be lexically sortable, so \code{"\%Y-\%m-\%d"} is legal,
+\code{"\%m-\%d-\%Y"} and \verb{\%Y-\%d} are not.
+}}
+    \item{\code{now}}{The current \code{Date} or time (\code{POSIXct}) as a scalar. You can pass a
+custom value here to to override the real system time. As a convenience you
+can also pass in \code{character} strings that follow the guidelines outlined
+above for \code{format}, but please note that these differ from the formats
+understood by \code{\link[=as.POSIXct]{as.POSIXct()}} or \code{\link[=as.Date]{as.Date()}}.}
     \item{\code{max_backups}}{maximum number of backups to keep
 \itemize{
 \item an \code{integer} scalar: Maximum number of backups to keep
@@ -105,28 +127,6 @@ file system (no files are created or deleted)}
 are printed}
     \item{\code{create_file}}{\code{logical} scalar. If \code{TRUE} create an empty file in
 place of \code{file} after rotating.}
-    \item{\code{format}}{a scalar \code{character} that can be a subset of of valid
-\code{strftime()} formatting strings. The default setting is
-\code{"\%Y-\%m-\%d--\%H-\%M-\%S"}.
-\itemize{
-\item You can use an arbitrary number of dashes anywhere in the format, so
-\code{"\%Y-\%m-\%d--\%H-\%M-\%S"} and \code{"\%Y\%m\%d\%H\%M\%S"} are both legal.
-\item \code{T} and \verb{_} can also be used as separators. For example, the following
-datetime formats are also possible:
-\verb{\%Y-\%m-\%d_\%H-\%M-\%S} (Python logging default),
-\verb{\%Y\%m\%dT\%H\%M\%S} (\href{https://en.wikipedia.org/wiki/ISO_8601}{ISO 8601})
-\item All datetime components except \verb{\%Y} are optional. If you leave out part
-of the timestamp, the first point in time in the period is assumed. For
-example (assuming the current year is 2019) \verb{\%Y} is identical to
-\code{2019-01-01--00-00-00}.
-\item The timestamps must be lexically sortable, so \code{"\%Y-\%m-\%d"} is legal,
-\code{"\%m-\%d-\%Y"} and \verb{\%Y-\%d} are not.
-}}
-    \item{\code{now}}{The current \code{Date} or time (\code{POSIXct}) as a scalar. You can pass a
-custom value here to to override the real system time. As a convenience you
-can also pass in \code{character} strings that follow the guidelines outlined
-above for \code{format}, but please note that these differ from the formats
-understood by \code{\link[=as.POSIXct]{as.POSIXct()}} or \code{\link[=as.Date]{as.Date()}}.}
     \item{\code{overwrite}}{\code{logical} scalar. If \code{TRUE} overwrite backups if a backup
 of the same name (usually due to timestamp collision) exists.}
   }}

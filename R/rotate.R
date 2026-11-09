@@ -321,10 +321,12 @@ prune_backups <- function(
 
 
 
-#' @description `prune_backups()` physically deletes all backups of a file
-#'   based on `max_backups`
+#' @description `prune_identical_backups()` deletes all backups of a file that
+#'   are identical to a newer backup. It keeps the newest backup of each
+#'   distinct file content.
 #' @section Side Effects:
-#' `prune_backups()` may delete files, depending on `max_backups`.
+#' `prune_identical_backups()` may delete files. Identical backups are removed;
+#' no files are removed during a dry run.
 #' @export
 #' @rdname rotate
 prune_identical_backups <- function(

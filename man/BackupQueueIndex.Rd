@@ -12,112 +12,122 @@ intended for developers that want to extend this package. For normal usage,
 the simpler functional API is recommended (see \code{\link[=rotate]{rotate()}}).
 }
 \seealso{
-Other R6 Classes: 
-\code{\link{BackupQueueDateTime}},
-\code{\link{BackupQueueDate}},
+Other R6 Classes:
 \code{\link{BackupQueue}},
+\code{\link{BackupQueueDate}},
+\code{\link{BackupQueueDateTime}},
 \code{\link{Cache}},
 \code{\link{DirectoryQueue}}
 }
 \concept{R6 Classes}
 \section{Super classes}{
-\code{\link[rotor:DirectoryQueue]{rotor::DirectoryQueue}} -> \code{\link[rotor:BackupQueue]{rotor::BackupQueue}} -> \code{BackupQueueIndex}
+\code{\link[rotor:DirectoryQueue]{DirectoryQueue}} -> \code{\link[rotor:BackupQueue]{BackupQueue}} -> \code{BackupQueueIndex}
 }
 \section{Methods}{
 \subsection{Public methods}{
-\itemize{
-\item \href{#method-BackupQueueIndex-push}{\code{BackupQueueIndex$push()}}
-\item \href{#method-BackupQueueIndex-prune}{\code{BackupQueueIndex$prune()}}
-\item \href{#method-BackupQueueIndex-prune_identical}{\code{BackupQueueIndex$prune_identical()}}
-\item \href{#method-BackupQueueIndex-should_rotate}{\code{BackupQueueIndex$should_rotate()}}
-\item \href{#method-BackupQueueIndex-pad_index}{\code{BackupQueueIndex$pad_index()}}
-\item \href{#method-BackupQueueIndex-increment_index}{\code{BackupQueueIndex$increment_index()}}
+  \itemize{
+    \item \href{#method-BackupQueueIndex-push}{\code{BackupQueueIndex$push()}}
+    \item \href{#method-BackupQueueIndex-prune}{\code{BackupQueueIndex$prune()}}
+    \item \href{#method-BackupQueueIndex-prune_identical}{\code{BackupQueueIndex$prune_identical()}}
+    \item \href{#method-BackupQueueIndex-should_rotate}{\code{BackupQueueIndex$should_rotate()}}
+    \item \href{#method-BackupQueueIndex-pad_index}{\code{BackupQueueIndex$pad_index()}}
+    \item \href{#method-BackupQueueIndex-increment_index}{\code{BackupQueueIndex$increment_index()}}
+  }
 }
-}
-\if{html}{\out{
-<details><summary>Inherited methods</summary>
+\if{html}{\out{<details><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>rotor::DirectoryQueue$set_dir()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="initialize"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-initialize'><code>rotor::BackupQueue$initialize()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-print'><code>rotor::BackupQueue$print()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="push_backup"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-push_backup'><code>rotor::BackupQueue$push_backup()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_backup_dir'><code>rotor::BackupQueue$set_backup_dir()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_compression'><code>rotor::BackupQueue$set_compression()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_file'><code>rotor::BackupQueue$set_file()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_max_backups"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_max_backups'><code>rotor::BackupQueue$set_max_backups()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_origin'><code>rotor::BackupQueue$set_origin()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="DirectoryQueue" data-id="set_dir"><a href='../../rotor/html/DirectoryQueue.html#method-DirectoryQueue-set_dir'><code>DirectoryQueue$set_dir()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="initialize"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-initialize'><code>BackupQueue$initialize()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="print"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-print'><code>BackupQueue$print()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="push_backup"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-push_backup'><code>BackupQueue$push_backup()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_backup_dir"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_backup_dir'><code>BackupQueue$set_backup_dir()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_compression"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_compression'><code>BackupQueue$set_compression()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_file"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_file'><code>BackupQueue$set_file()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_max_backups"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_max_backups'><code>BackupQueue$set_max_backups()</code></a></span></li>
+  <li><span class="pkg-link" data-pkg="rotor" data-topic="BackupQueue" data-id="set_origin"><a href='../../rotor/html/BackupQueue.html#method-BackupQueue-set_origin'><code>BackupQueue$set_origin()</code></a></span></li>
 </ul>
-</details>
-}}
+</details>}}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueueIndex-push"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueueIndex-push}{}}}
-\subsection{Method \code{push()}}{
-Create a new index-stamped backup (e.g. \file{logfile.1.log})
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$push()}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueueIndex$push()}}{
+  Create a new index-stamped backup (e.g. \file{logfile.1.log})
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueueIndex$push()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueueIndex-prune"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueueIndex-prune}{}}}
-\subsection{Method \code{prune()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$prune(max_backups = self$max_backups)}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueueIndex$prune()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueueIndex$prune(max_backups = self$max_backups)}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueueIndex-prune_identical"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueueIndex-prune_identical}{}}}
-\subsection{Method \code{prune_identical()}}{
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$prune_identical()}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueueIndex$prune_identical()}}{
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueueIndex$prune_identical()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueueIndex-should_rotate"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueueIndex-should_rotate}{}}}
-\subsection{Method \code{should_rotate()}}{
-Should a file of \code{size} be rotated? See \code{size} argument of \code{\link[=rotate]{rotate()}}
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$should_rotate(size, verbose = FALSE)}\if{html}{\out{</div>}}
+\subsection{\code{BackupQueueIndex$should_rotate()}}{
+  Should a file of \code{size} be rotated? See \code{size} argument of \code{\link[=rotate]{rotate()}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueueIndex$should_rotate(size, verbose = FALSE)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Returns}{
+    \code{TRUE} or \code{FALSE}
+  }
 }
 
-\subsection{Returns}{
-\code{TRUE} or \code{FALSE}
-}
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueueIndex-pad_index"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueueIndex-pad_index}{}}}
-\subsection{Method \code{pad_index()}}{
-Pad the indices in the filenames of indexed backups
+\subsection{\code{BackupQueueIndex$pad_index()}}{
+  Pad the indices in the filenames of indexed backups
 to the number of digits of the largest index. Usually does not have to
 be called manually.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$pad_index()}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueueIndex$pad_index()}
+    \if{html}{\out{</div>}}
+  }
 }
 
-}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-BackupQueueIndex-increment_index"></a>}}
 \if{latex}{\out{\hypertarget{method-BackupQueueIndex-increment_index}{}}}
-\subsection{Method \code{increment_index()}}{
-Increment die Indices of all backups by \code{n} Usually does
+\subsection{\code{BackupQueueIndex$increment_index()}}{
+  Increment die Indices of all backups by \code{n} Usually does
 not have to be called manually.
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{BackupQueueIndex$increment_index(n = 1)}\if{html}{\out{</div>}}
+  \subsection{Usage}{
+    \if{html}{\out{<div class="r">}}
+    \preformatted{BackupQueueIndex$increment_index(n = 1)}
+    \if{html}{\out{</div>}}
+  }
+  \subsection{Arguments}{
+    \if{html}{\out{<div class="arguments">}}
+    \describe{
+      \item{\code{n}}{\code{integer} > 0}
+    }
+    \if{html}{\out{</div>}}
+  }
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{n}}{\code{integer} > 0}
-}
-\if{html}{\out{</div>}}
-}
-}
 }
